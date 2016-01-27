@@ -155,6 +155,8 @@
           (= x '%function) (expand-function form)
           (= x '%global-function) (expand-definition form)
           (= x '%local-function) (expand-definition form)
+          (and (string? x) (= (char x 0) "~"))
+          (macroexpand `(not (,(clip x 1) ,@(tl form))))
 	  (macro? x) (expand-macro form)
         (map macroexpand form)))))
 

@@ -737,7 +737,7 @@ setenv("define-global", {_stash = true, macro = function (name, x, ...)
   local _r35 = unstash({...})
   local _id29 = _r35
   local body = cut(_id29, 0)
-  setenv(name, {_stash = true, variable = true, toplevel = true})
+  setenv(name, {_stash = true, toplevel = true, variable = true})
   if some63(body) then
     return(join({"%global-function", name}, bind42(x, body)))
   else
@@ -913,6 +913,16 @@ setenv("export", {_stash = true, macro = function (...)
     end
     return({"return", join({"obj"}, x)})
   end
+end})
+setenv("undefined?", {_stash = true, macro = function (_var)
+  if target == "js" then
+    return({"=", {"typeof", _var}, "\"undefined\""})
+  else
+    return({"nil?", _var})
+  end
+end})
+setenv("set-default", {_stash = true, macro = function (_var, val)
+  return({"if", {"undefined?", _var}, {"set", _var, val}})
 end})
 local reader = require("reader")
 local compiler = require("compiler")

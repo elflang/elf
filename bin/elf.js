@@ -849,7 +849,7 @@ setenv("define-global", {_stash: true, macro: function (name, x) {
   var _r35 = unstash(Array.prototype.slice.call(arguments, 2));
   var _id29 = _r35;
   var body = cut(_id29, 0);
-  setenv(name, {_stash: true, variable: true, toplevel: true});
+  setenv(name, {_stash: true, toplevel: true, variable: true});
   if (some63(body)) {
     return(join(["%global-function", name], bind42(x, body)));
   } else {
@@ -1039,6 +1039,16 @@ setenv("export", {_stash: true, macro: function () {
     }
     return(["return", join(["obj"], x)]);
   }
+}});
+setenv("undefined?", {_stash: true, macro: function (_var) {
+  if (target === "js") {
+    return(["=", ["typeof", _var], "\"undefined\""]);
+  } else {
+    return(["nil?", _var]);
+  }
+}});
+setenv("set-default", {_stash: true, macro: function (_var, val) {
+  return(["if", ["undefined?", _var], ["set", _var, val]]);
 }});
 var reader = require("reader");
 var compiler = require("compiler");

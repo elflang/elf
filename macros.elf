@@ -220,3 +220,12 @@
       (each k names
         (set (get x k) k))
       `(return (obj ,@x)))))
+
+(define-macro undefined? (var)
+  (if (= target 'js)
+     `(= (typeof ,var) "undefined")
+   `(nil? ,var)))
+
+(define-macro set-default (var val)
+  `(if (undefined? ,var) (set ,var ,val)))
+

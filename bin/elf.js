@@ -1096,7 +1096,7 @@ var run_file = function (path) {
   return(compiler.run(system["read-file"](path)));
 };
 var usage = function () {
-  print("usage: lumen [options] <object files>");
+  print("usage: elf [options] <object files>");
   print("options:");
   print("  -c <input>\tCompile input file");
   print("  -o <output>\tOutput file");

@@ -984,7 +984,7 @@ local function run_file(path)
   return(compiler.run(system["read-file"](path)))
 end
 local function usage()
-  print("usage: lumen [options] <object files>")
+  print("usage: elf [options] <object files>")
   print("options:")
   print("  -c <input>\tCompile input file")
   print("  -o <output>\tOutput file")

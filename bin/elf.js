@@ -1059,7 +1059,7 @@ setenv("compile-later", {_stash: true, macro: function () {
   _37defer = join(_37defer, forms);
   return(undefined);
 }});
-setenv("compile-now", {_stash: true, special: function () {
+setenv("finish-compiling", {_stash: true, special: function () {
   if (typeof(_37defer) === "undefined") {
     _37defer = [];
   }
@@ -1070,11 +1070,10 @@ setenv("compile-now", {_stash: true, special: function () {
     var _i7 = 0;
     while (_i7 < _n7) {
       var e = _x334[_i7];
-      o = o + compile(macroexpand(e), {_stash: true, stmt: true});
+      o = o + compile(require("compiler").expand(e), {_stash: true, stmt: true});
       _i7 = _i7 + 1;
     }
     _37defer = [];
-    print(o);
     return(o);
   }
 }});

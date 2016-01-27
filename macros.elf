@@ -235,13 +235,12 @@
   (join! %defer forms)
   nil)
 
-(define-special compile-now ()
+(define-special finish-compiling ()
   (set-default %defer ())
   (when (some? %defer)
     (with o ""
       (step e %defer
-        (cat! o (compile (macroexpand e) :stmt)))
-      (set %defer ())
-      (print o))))
+        (cat! o (compile ((get (require 'compiler) 'expand) e) :stmt)))
+      (set %defer ()))))
 
 

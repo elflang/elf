@@ -226,7 +226,7 @@
   (define-macro undefined? (var)
     (if (= target 'js)
        `(= (typeof ,var) "undefined")
-     `(nil? ,var)))
+     `(= ,var nil)))
 
   (define-macro set-default (var val)
     `(if (undefined? ,var) (set ,var ,val)))
@@ -239,14 +239,26 @@
 
   (define-special finish-compiling ()
     (set-default %defer ())
-    (when (some? %defer)
-      (with o ""
+    (with o ""
+      (when (some? %defer)
         (step e %defer
           (cat! o (compile ((get (require 'compiler) 'expand) e) :stmt)))
-        (set %defer ())))))
+        (set %defer ()))))
 
-(define-global environment (list (obj)))
-(define-global target (language))
+  (define-global reload (module)
+    ; temporary hack: node host is trying to require bin/elf instead
+    ; of bin/elf.js
+    (target js:
+      (if (= module "elf")
+        (cat! module ".js")))
+    (target
+      js:  (wipe (get (get require 'cache) ((get require 'resolve) module)))
+      lua: (wipe (get (get package 'loaded) module)))
+    (require module)))
+
+(when (undefined? environment)
+  (define-global environment (list (obj)))
+  (define-global target (language)))
 
 (define-global nil? (x)
   (target
@@ -522,7 +534,7 @@
       (boolean? x) (if x "true" "false")
       (string? x) (escape x)
       (atom? x) (tostring x)
-      (function? x) "function"
+      (function? x) "fn"
     (let (s "(" sp ""
           xs () ks ()
           d (+ (or depth 0) 1))
@@ -586,4 +598,3 @@
 (define-global tanh (get math 'tanh))
 
 (finish-compiling)
-

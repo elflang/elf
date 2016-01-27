@@ -81,6 +81,9 @@
 
 (define-global bind (lh rh)
   (if (atom? lh) `(,lh ,rh)
+    (= (hd lh) 'o)
+     (let ((_ var val) lh)
+       (list var `(if (is? ,rh) ,rh ,val)))
     (let-unique (id)
       (with bs (list id rh)
         (each (k v) lh

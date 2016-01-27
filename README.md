@@ -1,8 +1,8 @@
-Lumen
+Elf
 =
-Lumen is a very small, self-hosted Lisp for Lua and JavaScript. It provides a flexible compilation environment with an extensible reader, macros, and extensible special forms, but otherwise attempts to match the target runtime environment as closely as possible. You can get started by running `bin/lumen` on a machine with Node.js, Lua, or LuaJIT installed.
+Elf is a very small, self-hosted Lisp for Lua and JavaScript. It provides a flexible compilation environment with an extensible reader, macros, and extensible special forms, but otherwise attempts to match the target runtime environment as closely as possible. You can get started by running `bin/elf` on a machine with Node.js, Lua, or LuaJIT installed.
 ## Introduction
-Every piece of code in Lumen is an expression, and expressions can be evaluated to give values. Lumen has a few kinds of expressions that evaluate to themselves:
+Every piece of code in Elf is an expression, and expressions can be evaluated to give values. Elf has a few kinds of expressions that evaluate to themselves:
 ```
 > 17
 17
@@ -193,7 +193,7 @@ false
 ```
 
 #### Functions
-Functions in Lumen are values, just like numbers and strings. Expressions that start with `fn` evaluate to functions:
+Functions in Elf are values, just like numbers and strings. Expressions that start with `fn` evaluate to functions:
 ```
 > (fn () 10)
 function
@@ -253,7 +253,7 @@ If the key's value is `true`, the same name as the key is used to bind the param
 30
 ```
 
-Parameters in Lumen are always optional, and those without a supplied argument have the value `nil`:
+Parameters in Elf are always optional, and those without a supplied argument have the value `nil`:
 ```
 > (let f (fn (a) a)
     (f))
@@ -301,7 +301,7 @@ The `rest` key works with destructuring as it does with function parameters, whi
 ```
 
 #### Iteration
-There are several iteration mechanisms in Lumen. The simplest is a `while` loop:
+There are several iteration mechanisms in Elf. The simplest is a `while` loop:
 ```
 > (let i 3
     (while (> i 0)
@@ -447,4 +447,4 @@ hi
 ```
 
 ##### Acknowledgements
-Lumen was conceived and designed with [Daniel Gackle](https://github.com/gruseom), and many fixes and improvements have been contributed by [Laarc](https://github.com/laarc).
+Elf is a fork of [Lumen](https://github.com/sctb/lumen#acknowledgements).

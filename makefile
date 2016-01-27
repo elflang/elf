@@ -7,7 +7,6 @@ ELF_HOST ?= $(ELF_LUA)
 ELF := ELF_HOST="$(ELF_HOST)" bin/elf
 
 OBJS :=	obj/runtime.o	\
-	obj/macros.o	\
 	obj/main.o
 
 MODS := bin/elf.x	\

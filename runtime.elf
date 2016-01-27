@@ -265,7 +265,7 @@
     js: (or (= x nil) (= x null))
     lua: (= x nil)))
 
-(define-global is? (x) (not (nil? x)))
+(define-global is? (x) (~nil? x))
 
 (define-global # (x)
   (target js: (or (get x 'length) 0) lua: |#x|))
@@ -291,7 +291,7 @@
 (define-global inf (/ 1 0))
 
 (define-global nan? (n)
-  (not (= n n)))
+  (~= n n))
 
 (define-global inf? (n)
   (or (= n inf) (= n -inf)))
@@ -446,7 +446,7 @@
 (define-global unstash (args)
   (if (none? args) ()
     (let l (last args)
-      (if (and (not (atom? l)) (get l '_stash))
+      (if (and (~atom? l) (~function? l) (get l '_stash))
           (with args1 (almost args)
             (each (k v) l
               (unless (= k '_stash)

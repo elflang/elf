@@ -21,7 +21,7 @@
   (is? (getenv k 'special)))
 
 (define special-form? (form)
-  (and (not (atom? form)) (special? (hd form))))
+  (and (~atom? form) (special? (hd form))))
 
 (define statement? (k)
   (and (special? k) (getenv k 'stmt)))
@@ -36,7 +36,7 @@
   (let b (first (fn (frame)
                   (get frame k))
                 (reverse environment))
-    (and (not (atom? b)) (is? (get b 'variable)))))
+    (and (~atom? b) (is? (get b 'variable)))))
 
 (define-global bound? (x)
   (or (macro? x)
@@ -73,7 +73,7 @@
 
 (define bias (k)
   (when (and (number? k)
-             (not (= target (language))))
+             (~= target (language)))
     (if (= target 'js)
         (dec k)
       (inc k)))
@@ -129,7 +129,7 @@
 
 (define quasisplice? (x depth)
   (and (can-unquote? depth)
-       (not (atom? x))
+       (~atom? x)
        (= (hd x) 'unquote-splicing)))
 
 (define expand-local ((x name value))
@@ -179,7 +179,7 @@
     (let pruned
         (keep (fn (x)
                 (or (> (# x) 1)
-                    (not (= (hd x) 'list))
+                    (~= (hd x) 'list)
                     (keys? x)))
               xs)
       (if (one? pruned)
@@ -347,7 +347,7 @@
     (cat (apply special args) tr)))
 
 (define parenthesize-call? (x)
-  (or (and (not (atom? x))
+  (or (and (~atom? x)
            (= (hd x) '%function))
       (> (precedence x) 0)))
 
@@ -392,8 +392,8 @@
 (define can-return? (form)
   (and (is? form)
        (or (atom? form)
-           (and (not (= (hd form) 'return))
-                (not (statement? (hd form)))))))
+           (and (~= (hd form) 'return)
+                (~statement? (hd form))))))
 
 (define-global compile (form :stmt)
   (if (nil? form) ""
@@ -423,10 +423,10 @@
       (= (hd form) '%object)))
 
 (define standalone? (form)
-  (and (not (atom? form))
-       (not (infix? (hd form)))
-       (not (literal? form))
-       (not (= 'get (hd form)))))
+  (and (~atom? form)
+       (~infix? (hd form))
+       (~literal? form)
+       (~= 'get (hd form))))
 
 (define lower-do (args hoist stmt? tail?)
   (step x (almost args)

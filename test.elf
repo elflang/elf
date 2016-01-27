@@ -83,6 +83,8 @@
   (test= true (not false))
   (test= true (not (and false true)))
   (test= false (not (or false true)))
+  (test= true (~and false true))
+  (test= false (~or false true))
   (test= true (and true true))
   (test= false (and true false))
   (test= false (and true true false)))

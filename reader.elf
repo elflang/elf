@@ -21,7 +21,7 @@
       (if (nil? c) (break)
           (get whitespace c) (read-char s)
           (= c ";")
-          (do (while (and c (not (= c "\n")))
+          (do (while (and c (~= c "\n"))
                 (set c (read-char s)))
               (skip-non-code s))
         (break)))))
@@ -73,13 +73,13 @@
     (number str)))
 
 (define real? (x)
-  (and (number? x) (not (nan? x)) (not (inf? x))))
+  (and (number? x) (~nan? x) (~inf? x)))
 
 (define valid-access? (str)
   (and (> (# str) 2)
-       (not (= "." (char str 0)))
-       (not (= "." (char str (edge str))))
-       (not (search str ".."))))
+       (~= "." (char str 0))
+       (~= "." (char str (edge str)))
+       (~search str "..")))
 
 (define parse-access (str)
   (reduce (fn (a b)
@@ -93,8 +93,8 @@
   (let (str "" dot? false)
     (while true
       (let c (peek-char s)
-	(if (and c (and (not (get whitespace c))
-			(not (get delimiters c))))
+	(if (and c (and (~get whitespace c)
+			(~get delimiters c)))
 	    (do (if (= c ".") (set dot? true))
                 (cat! str (read-char s)))
 	  (break))))

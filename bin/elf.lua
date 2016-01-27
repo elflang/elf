@@ -924,6 +924,34 @@ end})
 setenv("set-default", {_stash = true, macro = function (_var, val)
   return({"if", {"undefined?", _var}, {"set", _var, val}})
 end})
+setenv("compile-later", {_stash = true, macro = function (...)
+  local forms = unstash({...})
+  if nil63(_37defer) then
+    _37defer = {}
+  end
+  eval(join({"do"}, forms))
+  _37defer = join(_37defer, forms)
+  return(nil)
+end})
+setenv("compile-now", {_stash = true, special = function ()
+  if nil63(_37defer) then
+    _37defer = {}
+  end
+  if some63(_37defer) then
+    local o = ""
+    local _x363 = _37defer
+    local _n7 = _35(_x363)
+    local _i7 = 0
+    while _i7 < _n7 do
+      local e = _x363[_i7 + 1]
+      o = o .. compile(macroexpand(e), {_stash = true, stmt = true})
+      _i7 = _i7 + 1
+    end
+    _37defer = {}
+    print(o)
+    return(o)
+  end
+end})
 local reader = require("reader")
 local compiler = require("compiler")
 local system = require("system")

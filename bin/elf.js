@@ -1050,6 +1050,34 @@ setenv("undefined?", {_stash: true, macro: function (_var) {
 setenv("set-default", {_stash: true, macro: function (_var, val) {
   return(["if", ["undefined?", _var], ["set", _var, val]]);
 }});
+setenv("compile-later", {_stash: true, macro: function () {
+  var forms = unstash(Array.prototype.slice.call(arguments, 0));
+  if (typeof(_37defer) === "undefined") {
+    _37defer = [];
+  }
+  eval(join(["do"], forms));
+  _37defer = join(_37defer, forms);
+  return(undefined);
+}});
+setenv("compile-now", {_stash: true, special: function () {
+  if (typeof(_37defer) === "undefined") {
+    _37defer = [];
+  }
+  if (some63(_37defer)) {
+    var o = "";
+    var _x334 = _37defer;
+    var _n7 = _35(_x334);
+    var _i7 = 0;
+    while (_i7 < _n7) {
+      var e = _x334[_i7];
+      o = o + compile(macroexpand(e), {_stash: true, stmt: true});
+      _i7 = _i7 + 1;
+    }
+    _37defer = [];
+    print(o);
+    return(o);
+  }
+}});
 var reader = require("reader");
 var compiler = require("compiler");
 var system = require("system");

@@ -229,3 +229,19 @@
 (define-macro set-default (var val)
   `(if (undefined? ,var) (set ,var ,val)))
 
+(define-macro compile-later forms
+  (set-default %defer ())
+  (eval `(do ,@forms))
+  (join! %defer forms)
+  nil)
+
+(define-special compile-now ()
+  (set-default %defer ())
+  (when (some? %defer)
+    (with o ""
+      (step e %defer
+        (cat! o (compile (macroexpand e) :stmt)))
+      (set %defer ())
+      (print o))))
+
+

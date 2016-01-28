@@ -131,40 +131,60 @@ read_table[""] = function (s)
       break
     end
   end
+  local _e1
   if str == "true" then
-    return(true)
+    _e1 = true
   else
+    local _e2
     if str == "false" then
-      return(false)
+      _e2 = false
     else
+      local _e3
       if str == "nan" then
-        return(nan)
+        _e3 = nan
       else
+        local _e4
         if str == "-nan" then
-          return(nan)
+          _e4 = nan
         else
+          local _e5
           if str == "inf" then
-            return(inf)
+            _e5 = inf
           else
+            local _e6
             if str == "-inf" then
-              return(-inf)
+              _e6 = -inf
             else
               local n = maybe_number(str)
+              local _e7
               if real63(n) then
-                return(n)
+                _e7 = n
               else
+                local _e8
                 if dot63 and valid_access63(str) then
-                  return(parse_access(str))
+                  _e8 = parse_access(str)
                 else
-                  return(str)
+                  _e8 = str
                 end
+                _e7 = _e8
               end
+              _e6 = _e7
             end
+            _e5 = _e6
           end
+          _e4 = _e5
         end
+        _e3 = _e4
       end
+      _e2 = _e3
     end
+    _e1 = _e2
   end
+  local atom = _e1
+  while "(" == peek_char(s) do
+    atom = join({atom}, read(s))
+  end
+  return(atom)
 end
 read_table["("] = function (s)
   read_char(s)

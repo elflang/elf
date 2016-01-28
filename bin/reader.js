@@ -131,40 +131,60 @@ read_table[""] = function (s) {
       break;
     }
   }
+  var _e1;
   if (str === "true") {
-    return(true);
+    _e1 = true;
   } else {
+    var _e2;
     if (str === "false") {
-      return(false);
+      _e2 = false;
     } else {
+      var _e3;
       if (str === "nan") {
-        return(nan);
+        _e3 = nan;
       } else {
+        var _e4;
         if (str === "-nan") {
-          return(nan);
+          _e4 = nan;
         } else {
+          var _e5;
           if (str === "inf") {
-            return(inf);
+            _e5 = inf;
           } else {
+            var _e6;
             if (str === "-inf") {
-              return(-inf);
+              _e6 = -inf;
             } else {
               var n = maybe_number(str);
+              var _e7;
               if (real63(n)) {
-                return(n);
+                _e7 = n;
               } else {
+                var _e8;
                 if (dot63 && valid_access63(str)) {
-                  return(parse_access(str));
+                  _e8 = parse_access(str);
                 } else {
-                  return(str);
+                  _e8 = str;
                 }
+                _e7 = _e8;
               }
+              _e6 = _e7;
             }
+            _e5 = _e6;
           }
+          _e4 = _e5;
         }
+        _e3 = _e4;
       }
+      _e2 = _e3;
     }
+    _e1 = _e2;
   }
+  var atom = _e1;
+  while ("(" === peek_char(s)) {
+    atom = join([atom], read(s));
+  }
+  return(atom);
 };
 read_table["("] = function (s) {
   read_char(s);

@@ -38,7 +38,7 @@
     (let bs (map (fn ((a b))
                    (if (nil? b)
                        (list a)
-                     `((= ',a ,x) ,b)))
+                     `((= ,a ,x) ,b)))
                  (pair clauses))
       `(if ,@(apply join bs))))
 

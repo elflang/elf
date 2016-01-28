@@ -248,9 +248,7 @@
   (define-global reload (module)
     ; temporary hack: node host is trying to require bin/elf instead
     ; of bin/elf.js
-    (target js:
-      (if (= module "elf")
-        (cat! module ".js")))
+    (target js: (if (= module "elf") (cat! module ".js")))
     (target
       js:  (wipe (get (get require 'cache) ((get require 'resolve) module)))
       lua: (wipe (get (get package 'loaded) module)))

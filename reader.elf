@@ -1,5 +1,8 @@
 ;; -*- mode: lisp -*-
 
+(define-macro define-reader ((char s) rest: body)
+  `(set (get read-table ,char) (fn (,s) ,@body)))
+
 (define delimiters (set-of "(" ")" ";" "\n"))
 (define whitespace (set-of " " "\t" "\n"))
 

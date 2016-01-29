@@ -1,6 +1,38 @@
 ;; -*- mode: lisp -*-
 
-(compile-later
+;; This file defines a small runtime that implements the Elf language.
+;;
+;; Whenever this file is modified and recompiled, the compiler --
+;; which is using an older version of the Elf runtime when it begins
+;; compiling this file -- steps through each expression, generates
+;; equivalent JS or Lua code, then overwrites the old .js and .lua
+;; files with the new code.
+;;
+;; This enables us to implement the Elf language in Elf.  No external
+;; Javascript or Lua code files are used.
+
+(define load-macros ()
+
+  ;; We begin by defining the core language constructs as macros.
+  ;; 
+  ;; Each `define-macro` expression compiles to a call to `setenv`,
+  ;; but `setenv` hasn't been defined yet.  Therefore we put them
+  ;; inside this wrapper function, which is called at the bottom of
+  ;; the file.
+  ;;
+  ;; Note that whenever the compiler encounters a `(define-macro ...)`
+  ;; form, the compiler passes it to `eval` immediately.  In other
+  ;; words, it has an immediate effect on the compile-time
+  ;; environment.  This enables us to start using each macro right
+  ;; away, without even calling this wrapper function.
+  ;;
+  ;; In that case, why call this wrapper function at all?  Consider
+  ;; the following Javascript:
+  ;;
+  ;;   require("runtime.js");
+  ;;
+  ;; This doesn't recompile `runtime.elf`, but still needs to load all
+  ;; the macros defined in it.
 
   (define-macro quote (form)
     (quoted form))
@@ -90,9 +122,6 @@
   (define-macro define-symbol (name expansion)
     (setenv name symbol: expansion)
     `(setenv ',name symbol: ',expansion))
-
-  (define-macro define-reader ((char s) rest: body)
-    `(set (get read-table ,char) (fn (,s) ,@body)))
 
   (define-macro define (name x rest: body)
     (setenv name :variable)
@@ -231,20 +260,6 @@
 
   (define-macro set-default (var val)
     `(if (undefined? ,var) (set ,var ,val)))
-
-  (define-macro compile-later forms
-    (set-default %defer ())
-    (eval `(do ,@forms))
-    (join! %defer forms)
-    nil)
-
-  (define-special finish-compiling ()
-    (set-default %defer ())
-    (with o ""
-      (when (some? %defer)
-        (step e %defer
-          (cat! o (compile ((get (require 'compiler) 'expand) e) :stmt)))
-        (set %defer ()))))
 
   (define-global reload (module)
     ; temporary hack: node host is trying to require bin/elf instead
@@ -596,4 +611,4 @@
 (define-global tan (get math 'tan))
 (define-global tanh (get math 'tanh))
 
-(finish-compiling)
+(load-macros)

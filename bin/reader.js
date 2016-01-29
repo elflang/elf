@@ -1,13 +1,22 @@
+setenv("define-reader", {_stash: true, macro: function (_x6) {
+  var _id2 = _x6;
+  var char = _id2[0];
+  var s = _id2[1];
+  var _r1 = unstash(Array.prototype.slice.call(arguments, 1));
+  var _id3 = _r1;
+  var body = cut(_id3, 0);
+  return(["set", ["get", "read-table", char], join(["fn", [s]], body)]);
+}});
 var delimiters = {"(": true, ")": true, "\n": true, ";": true};
 var whitespace = {" ": true, "\n": true, "\t": true};
 var stream = function (str, more) {
   return({more: more, pos: 0, len: _35(str), string: str});
 };
 var peek_char = function (s) {
-  var _id = s;
-  var pos = _id.pos;
-  var len = _id.len;
-  var string = _id.string;
+  var _id4 = s;
+  var pos = _id4.pos;
+  var len = _id4.len;
+  var string = _id4.string;
   if (pos < len) {
     return(char(string, pos));
   }
@@ -75,13 +84,13 @@ var flag63 = function (atom) {
   return(string63(atom) && _35(atom) > 1 && char(atom, 0) === ":");
 };
 var expected = function (s, c) {
-  var _id1 = s;
-  var more = _id1.more;
-  var pos = _id1.pos;
-  var _id2 = more;
+  var _id5 = s;
+  var more = _id5.more;
+  var pos = _id5.pos;
+  var _id6 = more;
   var _e;
-  if (_id2) {
-    _e = _id2;
+  if (_id6) {
+    _e = _id6;
   } else {
     throw new Error("Expected " + c + " at " + pos);
     _e = undefined;

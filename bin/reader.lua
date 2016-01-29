@@ -1,13 +1,22 @@
+setenv("define-reader", {_stash = true, macro = function (_x6, ...)
+  local _id2 = _x6
+  local char = _id2[1]
+  local s = _id2[2]
+  local _r1 = unstash({...})
+  local _id3 = _r1
+  local body = cut(_id3, 0)
+  return({"set", {"get", "read-table", char}, join({"fn", {s}}, body)})
+end})
 local delimiters = {["("] = true, [")"] = true, ["\n"] = true, [";"] = true}
 local whitespace = {[" "] = true, ["\n"] = true, ["\t"] = true}
 local function stream(str, more)
   return({more = more, pos = 0, len = _35(str), string = str})
 end
 local function peek_char(s)
-  local _id = s
-  local pos = _id.pos
-  local len = _id.len
-  local string = _id.string
+  local _id4 = s
+  local pos = _id4.pos
+  local len = _id4.len
+  local string = _id4.string
   if pos < len then
     return(char(string, pos))
   end
@@ -75,13 +84,13 @@ local function flag63(atom)
   return(string63(atom) and _35(atom) > 1 and char(atom, 0) == ":")
 end
 local function expected(s, c)
-  local _id1 = s
-  local more = _id1.more
-  local pos = _id1.pos
-  local _id2 = more
+  local _id5 = s
+  local more = _id5.more
+  local pos = _id5.pos
+  local _id6 = more
   local _e
-  if _id2 then
-    _e = _id2
+  if _id6 then
+    _e = _id6
   else
     error("Expected " .. c .. " at " .. pos)
     _e = nil

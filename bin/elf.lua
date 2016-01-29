@@ -365,6 +365,14 @@ local function setup()
       return(join({"do"}, forms))
     end
   end})
+  setenv("define-js", {_stash = true, macro = function (...)
+    local l = unstash({...})
+    return({"%js", join({"define"}, l)})
+  end})
+  setenv("define-lua", {_stash = true, macro = function (...)
+    local l = unstash({...})
+    return({"%lua", join({"define"}, l)})
+  end})
   return(setenv("during-compile", {_stash = true, macro = function (...)
     local forms = unstash({...})
     eval(join({"do"}, forms))
@@ -571,11 +579,11 @@ function find(f, t)
   end
 end
 function first(f, l)
-  local _x362 = l
-  local _n11 = _35(_x362)
+  local _x374 = l
+  local _n11 = _35(_x374)
   local _i11 = 0
   while _i11 < _n11 do
-    local x = _x362[_i11 + 1]
+    local x = _x374[_i11 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -604,11 +612,11 @@ function sort(l, f)
 end
 function map(f, x)
   local t = {}
-  local _x364 = x
-  local _n12 = _35(_x364)
+  local _x376 = x
+  local _n12 = _35(_x376)
   local _i12 = 0
   while _i12 < _n12 do
-    local v = _x364[_i12 + 1]
+    local v = _x376[_i12 + 1]
     local y = f(v)
     if is63(y) then
       add(t, y)

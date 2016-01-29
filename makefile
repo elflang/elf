@@ -12,7 +12,9 @@ OBJS :=	obj/runtime.o	\
 MODS := bin/elf.x	\
 	bin/reader.x	\
 	bin/compiler.x	\
-	bin/system.x
+	bin/system.x \
+	bin/runtime.x \
+	bin/main.x
 
 all: $(MODS:.x=.js) $(MODS:.x=.lua)
 

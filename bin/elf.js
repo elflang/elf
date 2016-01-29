@@ -386,14 +386,6 @@ var setup = function () {
       return(join(["do"], forms));
     }
   }});
-  setenv("define-js", {_stash: true, macro: function () {
-    var forms = unstash(Array.prototype.slice.call(arguments, 0));
-    return(["%js", join(["define"], forms)]);
-  }});
-  setenv("define-lua", {_stash: true, macro: function () {
-    var forms = unstash(Array.prototype.slice.call(arguments, 0));
-    return(["%lua", join(["define"], forms)]);
-  }});
   return(setenv("during-compile", {_stash: true, macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));
     eval(join(["do"], forms));
@@ -635,11 +627,11 @@ find = function (f, t) {
   }
 };
 first = function (f, l) {
-  var _x341 = l;
-  var _n11 = _35(_x341);
+  var _x331 = l;
+  var _n11 = _35(_x331);
   var _i11 = 0;
   while (_i11 < _n11) {
-    var x = _x341[_i11];
+    var x = _x331[_i11];
     var y = f(x);
     if (y) {
       return(y);
@@ -677,11 +669,11 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var t = [];
-  var _x343 = x;
-  var _n12 = _35(_x343);
+  var _x333 = x;
+  var _n12 = _35(_x333);
   var _i12 = 0;
   while (_i12 < _n12) {
-    var v = _x343[_i12];
+    var v = _x333[_i12];
     var y = f(v);
     if (is63(y)) {
       add(t, y);

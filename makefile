@@ -21,9 +21,8 @@ rebuild:
 	@make -B
 
 clean:
-	# @git checkout *.js
-	# @git checkout *.lua
-	@rm -f obj/*
+	@git checkout *.js
+	@git checkout *.lua
 
 %.js : %.elf
 	@echo $@

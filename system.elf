@@ -72,7 +72,10 @@
     (os.exit code))
 
   (var argv
-    (if (is? arg) arg ())))
+    (if (nil? arg) ()
+      (with l ()
+        (for i (# arg)
+          (add l (at arg i)))))))
 
 (var reload (module)
   (%lua (wipe (get package.loaded module)))

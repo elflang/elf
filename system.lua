@@ -39,10 +39,16 @@ local function exit(code)
   return(os.exit(code))
 end
 local _e
-if is63(arg) then
-  _e = arg
-else
+if nil63(arg) then
   _e = {}
+else
+  local _l = {}
+  local i = 0
+  while i < _35(arg) do
+    add(_l, arg[i + 1])
+    i = i + 1
+  end
+  _e = _l
 end
 local argv = _e
 local function reload(module)

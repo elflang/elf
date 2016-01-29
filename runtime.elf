@@ -183,7 +183,7 @@
                 (fn () (set ,x ,expr))
                 (fn (m)
                   (set ,msg (clip m (+ (search m ": ") 2)))
-                  (set ,trace ((get debug 'traceback)))))
+                  (set ,trace (debug.traceback))))
                (list true ,x)
              (list false ,msg ,trace))))))
 
@@ -295,7 +295,7 @@
 (def is? (x) (~nil? x))
 
 (def # (x)
-  (%js (or (get x 'length) 0))
+  (%js (or x.length 0))
   (%lua |#x|))
 
 (def none? (x) (= (# x) 0))
@@ -325,8 +325,8 @@
   (or (= n inf) (= n -inf)))
 
 (def clip (s from upto)
-  (%js ((get s 'substring) from upto))
-  (%lua ((get string 'sub) s (+ from 1) upto)))
+  (%js (s.substring from upto))
+  (%lua (string.sub s (+ from 1) upto)))
 
 (def cut (x from upto)
   (with l ()
@@ -357,12 +357,12 @@
 (def tl (l) (cut l 1))
 
 (def char (s n)
-  (%js ((get s 'charAt) n))
+  (%js (s.charAt n))
   (%lua (clip s n (+ n 1))))
 
 (def code (s n)
-  (%js ((get s 'charCodeAt) n))
-  (%lua ((get string 'byte) s (if n (+ n 1)))))
+  (%js (s.charCodeAt n))
+  (%lua (string.byte s (if n (+ n 1)))))
 
 (def string-literal? (x)
   (and (string? x) (= (char x 0) "\"")))
@@ -371,12 +371,12 @@
   (and (string? x) (= (char x 0) "|")))
 
 (def add (l x)
-  (%js (do ((get l 'push) x) nil))
-  (%lua ((get table 'insert) l x)))
+  (%js (do (l.push x) nil))
+  (%lua (table.insert l x)))
 
 (def drop (l)
-  (%js ((get l 'pop)))
-  (%lua ((get table 'remove) l)))
+  (%js (l.pop))
+  (%lua (table.remove l)))
 
 (def last (l)
   (at l (edge l)))
@@ -431,8 +431,8 @@
       (inc i))))
 
 (def sort (l f)
-  (%lua (do ((get table 'sort) l f) l))
-  (%js ((get l 'sort) (when f (fn (a b) (if (f a b) -1 1))))))
+  (%lua (do (table.sort l f) l))
+  (%js (l.sort (when f (fn (a b) (if (f a b) -1 1))))))
 
 (def map (f x)
   (with t ()
@@ -466,14 +466,14 @@
       (each (k v) args
         (unless (number? k)
           (set (get p k) v)))
-      (set (get p '_stash) true)
+      (set p._stash true)
       (add args p)))
   args)
 
 (def unstash (args)
   (if (none? args) ()
     (let l (last args)
-      (if (and (~atom? l) (~function? l) (get l '_stash))
+      (if (and (~atom? l) (~function? l) l._stash)
           (with args1 (almost args)
             (each (k v) l
               (unless (= k '_stash)
@@ -482,11 +482,11 @@
 
 (def search (s pattern start)
   (%js
-    (let i ((get s 'indexOf) pattern start))
+    (let i (s.indexOf pattern start))
     (if (>= i 0) i))
   (%lua
     (let (start (if start (+ start 1))
-          i ((get string 'find) s pattern start true))
+          i (string.find s pattern start true))
       (and i (- i 1)))))
 
 (def split (s sep)
@@ -541,7 +541,7 @@
         (return false))))
   true)
 
-(%js (var tostring (x) ((get x 'toString))))
+(%js (var tostring (x) (x.toString)))
 
 (def escape (s)
   (let s1 "\""
@@ -577,11 +577,11 @@
         (set sp " "))
       (cat s  ")"))))
 
-(%lua (var values (or unpack (get table 'unpack))))
+(%lua (var values (or unpack table.unpack)))
 
 (def apply (f args)
   (let args (stash args)
-    (%js ((get f 'apply) f args))
+    (%js (f.apply f args))
     (%lua (f (values args)))))
 
 (def call (f) (f))
@@ -591,7 +591,7 @@
 
 (def setenv (k rest: keys)
   (when (string? k)
-    (let (frame (if (get keys 'toplevel)
+    (let (frame (if keys.toplevel
                     (hd environment)
                   (last environment))
           entry (or (get frame k) (obj)))
@@ -599,39 +599,39 @@
         (set (get entry k) v))
       (set (get frame k) entry))))
 
-(%js (def print (x) ((get console 'log) x)))
+(%js (def print (x) (console.log x)))
 
 (%js (var math Math))
 
-(def abs (get math 'abs))
-(def acos (get math 'acos))
-(def asin (get math 'asin))
-(def atan (get math 'atan))
-(def atan2 (get math 'atan2))
-(def ceil (get math 'ceil))
-(def cos (get math 'cos))
-(def floor (get math 'floor))
-(def log (get math 'log))
-(def log10 (get math 'log10))
-(def max (get math 'max))
-(def min (get math 'min))
-(def pow (get math 'pow))
-(def random (get math 'random))
-(def sin (get math 'sin))
-(def sinh (get math 'sinh))
-(def sqrt (get math 'sqrt))
-(def tan (get math 'tan))
-(def tanh (get math 'tanh))
+(def abs math.abs)
+(def acos math.acos)
+(def asin math.asin)
+(def atan math.atan)
+(def atan2 math.atan2)
+(def ceil math.ceil)
+(def cos math.cos)
+(def floor math.floor)
+(def log math.log)
+(def log10 math.log10)
+(def max math.max)
+(def min math.min)
+(def pow math.pow)
+(def random math.random)
+(def sin math.sin)
+(def sinh math.sinh)
+(def sqrt math.sqrt)
+(def tan math.tan)
+(def tanh math.tanh)
 
 (def reload (module)
   (%lua 
-    (wipe (get (get package 'loaded) module)))
+    (wipe (get package.loaded module)))
   (%js
     ;; A call to (require 'elf) will incorrectly try to load `bin/elf`
     ;; instead of `bin/elf.js`.  This is a temporary fix.
     (when (= module "elf")
       (cat! module ".js"))
-    (wipe (get (get require 'cache) ((get require 'resolve) module))))
+    (wipe (get require.cache (require.resolve module))))
   (require module))
 
 (setup)

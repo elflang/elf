@@ -30,7 +30,12 @@
     (process.exit code))
 
   (var argv
-    (cut process.argv 2)))
+    (cut process.argv 2))
+
+  (var shell (cmd)
+    (var childproc (require 'child_process))
+    (let x (childproc.execSync cmd)
+      (x.toString))))
 
 (%lua
 
@@ -75,7 +80,11 @@
     (if (nil? arg) ()
       (with l ()
         (for i (# arg)
-          (add l (at arg i)))))))
+          (add l (at arg i))))))
+
+  (var shell (cmd)
+    (let x (io.popen cmd)
+      (x.read x "*a"))))
 
 (var reload (module)
   (%lua (wipe (get package.loaded module)))
@@ -91,4 +100,5 @@
         write
         exit
         argv
+        shell
         reload)

@@ -26,6 +26,11 @@ var exit = function (code) {
   return(process.exit(code));
 };
 var argv = cut(process.argv, 2);
+var shell = function (cmd) {
+  var childproc = require("child_process");
+  var x = childproc.execSync(cmd);
+  return(x.toString());
+};
 var reload = function (module) {
   delete require.cache[require.resolve(module)];
   return(require(module));
@@ -39,4 +44,5 @@ exports["get-environment-variable"] = get_environment_variable;
 exports.write = write;
 exports.exit = exit;
 exports.argv = argv;
+exports.shell = shell;
 exports.reload = reload;

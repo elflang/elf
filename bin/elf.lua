@@ -1,4 +1,4 @@
-local function load_macros()
+local function setup()
   setenv("quote", {_stash = true, macro = function (form)
     return(quoted(form))
   end})
@@ -353,10 +353,23 @@ local function load_macros()
   setenv("set-default", {_stash = true, macro = function (_var, val)
     return({"if", {"undefined?", _var}, {"set", _var, val}})
   end})
-  function reload(module)
-    package.loaded[module] = nil
-    return(require(module))
-  end
+  setenv("%js", {_stash = true, macro = function (...)
+    local forms = unstash({...})
+    if target == "js" then
+      return(join({"do"}, forms))
+    end
+  end})
+  setenv("%lua", {_stash = true, macro = function (...)
+    local forms = unstash({...})
+    if target == "lua" then
+      return(join({"do"}, forms))
+    end
+  end})
+  return(setenv("during-compile", {_stash = true, macro = function (...)
+    local forms = unstash({...})
+    eval(join({"do"}, forms))
+    return(nil)
+  end}))
 end
 if environment == nil then
   environment = {{}}
@@ -558,11 +571,11 @@ function find(f, t)
   end
 end
 function first(f, l)
-  local _x350 = l
-  local _n11 = _35(_x350)
+  local _x362 = l
+  local _n11 = _35(_x362)
   local _i11 = 0
   while _i11 < _n11 do
-    local x = _x350[_i11 + 1]
+    local x = _x362[_i11 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -591,11 +604,11 @@ function sort(l, f)
 end
 function map(f, x)
   local t = {}
-  local _x352 = x
-  local _n12 = _35(_x352)
+  local _x364 = x
+  local _n12 = _35(_x364)
   local _i12 = 0
   while _i12 < _n12 do
-    local v = _x352[_i12 + 1]
+    local v = _x364[_i12 + 1]
     local y = f(v)
     if is63(y) then
       add(t, y)
@@ -882,8 +895,8 @@ function toplevel63()
   return(one63(environment))
 end
 function setenv(k, ...)
-  local _r143 = unstash({...})
-  local _id53 = _r143
+  local _r142 = unstash({...})
+  local _id53 = _r142
   local _keys = cut(_id53, 0)
   if string63(k) then
     local _e13
@@ -904,7 +917,6 @@ function setenv(k, ...)
     return(frame[k])
   end
 end
-local math = math
 abs = math.abs
 acos = math.acos
 asin = math.asin
@@ -924,7 +936,11 @@ sinh = math.sinh
 sqrt = math.sqrt
 tan = math.tan
 tanh = math.tanh
-load_macros()
+function reload(module)
+  package.loaded[module] = nil
+  return(require(module))
+end
+setup()
 local reader = require("reader")
 local compiler = require("compiler")
 local system = require("system")

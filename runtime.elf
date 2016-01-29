@@ -11,7 +11,7 @@
 ;; This enables us to implement the Elf language in Elf.  No external
 ;; Javascript or Lua code files are used.
 
-(define load-macros ()
+(define setup ()
 
   ;; We begin by defining the core language constructs as macros.
   ;; 
@@ -261,28 +261,39 @@
   (define-macro set-default (var val)
     `(if (undefined? ,var) (set ,var ,val)))
 
-  (define-global reload (module)
-    ; temporary hack: node host is trying to require bin/elf instead
-    ; of bin/elf.js
-    (target js: (if (= module "elf") (cat! module ".js")))
-    (target
-      js:  (wipe (get (get require 'cache) ((get require 'resolve) module)))
-      lua: (wipe (get (get package 'loaded) module)))
-    (require module)))
+  (define-macro %js forms
+    (when (= target 'js)
+      `(do ,@forms)))
+
+  (define-macro %lua forms
+    (when (= target 'lua)
+      `(do ,@forms)))
+
+  (define-macro during-compile forms
+    (eval `(do ,@forms))
+    nil)
+
+  ;; Since we're within a wrapper function, the above definitions were
+  ;; attached to a local compilation frame.  Normally this frame would
+  ;; be dropped at the end of this wrapper function's scope.  Since we
+  ;; want the definitions to persist, we insert them into the toplevel
+  ;; frame.
+  (during-compile
+    (join! (at environment 0) (at environment 1))))
 
 (when (undefined? environment)
   (define-global environment (list (obj)))
   (define-global target (language)))
 
 (define-global nil? (x)
-  (target
-    js: (or (= x nil) (= x null))
-    lua: (= x nil)))
+  (%js (or (= x nil) (= x null)))
+  (%lua (= x nil)))
 
 (define-global is? (x) (~nil? x))
 
 (define-global # (x)
-  (target js: (or (get x 'length) 0) lua: |#x|))
+  (%js (or (get x 'length) 0))
+  (%lua |#x|))
 
 (define-global none? (x) (= (# x) 0))
 (define-global some? (x) (> (# x) 0))
@@ -291,7 +302,7 @@
 
 (define-global hd (l) (at l 0))
 
-(target js: (define-global type (x) (typeof x)))
+(%js (define-global type (x) (typeof x)))
 
 (define-global string? (x) (= (type x) 'string))
 (define-global number? (x) (= (type x) 'number))
@@ -311,8 +322,8 @@
   (or (= n inf) (= n -inf)))
 
 (define-global clip (s from upto)
-  (target js: ((get s 'substring) from upto)
-          lua: ((get string 'sub) s (+ from 1) upto)))
+  (%js ((get s 'substring) from upto))
+  (%lua ((get string 'sub) s (+ from 1) upto)))
 
 (define-global cut (x from upto)
   (with l ()
@@ -343,12 +354,12 @@
 (define-global tl (l) (cut l 1))
 
 (define-global char (s n)
-  (target js: ((get s 'charAt) n) lua: (clip s n (+ n 1))))
+  (%js ((get s 'charAt) n))
+  (%lua (clip s n (+ n 1))))
 
 (define-global code (s n)
-  (target
-    js: ((get s 'charCodeAt) n)
-    lua: ((get string 'byte) s (if n (+ n 1)))))
+  (%js ((get s 'charCodeAt) n))
+  (%lua ((get string 'byte) s (if n (+ n 1)))))
 
 (define-global string-literal? (x)
   (and (string? x) (= (char x 0) "\"")))
@@ -357,12 +368,12 @@
   (and (string? x) (= (char x 0) "|")))
 
 (define-global add (l x)
-  (target js: (do ((get l 'push) x) nil)
-          lua: ((get table 'insert) l x)))
+  (%js (do ((get l 'push) x) nil))
+  (%lua ((get table 'insert) l x)))
 
 (define-global drop (l)
-  (target js: ((get l 'pop))
-          lua: ((get table 'remove) l)))
+  (%js ((get l 'pop)))
+  (%lua ((get table 'remove) l)))
 
 (define-global last (l)
   (at l (edge l)))
@@ -417,9 +428,8 @@
       (inc i))))
 
 (define-global sort (l f)
-  (target
-    lua: (do ((get table 'sort) l f) l)
-    js: ((get l 'sort) (when f (fn (a b) (if (f a b) -1 1))))))
+  (%lua (do ((get table 'sort) l f) l))
+  (%js ((get l 'sort) (when f (fn (a b) (if (f a b) -1 1))))))
 
 (define-global map (f x)
   (with t ()
@@ -468,12 +478,13 @@
         args))))
 
 (define-global search (s pattern start)
-  (target
-    js: (let i ((get s 'indexOf) pattern start)
-          (if (>= i 0) i))
-    lua: (let (start (if start (+ start 1))
-               i ((get string 'find) s pattern start true))
-           (and i (- i 1)))))
+  (%js
+    (let i ((get s 'indexOf) pattern start))
+    (if (>= i 0) i))
+  (%lua
+    (let (start (if start (+ start 1))
+          i ((get string 'find) s pattern start true))
+      (and i (- i 1)))))
 
 (define-global split (s sep)
   (if (or (= s "") (= sep "")) ()
@@ -511,10 +522,11 @@
 (define-global <= (a b) (<= a b))
 
 (define-global number (s)
-  (target
-    js: (let n (parseFloat s)
-          (unless (isNaN n) n))
-    lua: (tonumber s)))
+  (%lua
+    (tonumber s))
+  (%js
+    (let n (parseFloat s)
+        (unless (isNaN n) n))))
 
 (define-global number-code? (n)
   (and (> n 47) (< n 58)))
@@ -526,7 +538,7 @@
         (return false))))
   true)
 
-(target js: (define tostring (x) ((get x 'toString))))
+(%js (define tostring (x) ((get x 'toString))))
 
 (define-global escape (s)
   (let s1 "\""
@@ -562,13 +574,12 @@
         (set sp " "))
       (cat s  ")"))))
 
-(target lua:
-  (define values (or unpack (get table 'unpack))))
+(%lua (define values (or unpack (get table 'unpack))))
 
 (define-global apply (f args)
   (let args (stash args)
-    (target js: ((get f 'apply) f args)
-            lua: (f (values args)))))
+    (%js ((get f 'apply) f args))
+    (%lua (f (values args)))))
 
 (define-global call (f) (f))
 
@@ -585,11 +596,9 @@
         (set (get entry k) v))
       (set (get frame k) entry))))
 
-(target js:
-  (define-global print (x)
-    ((get console 'log) x)))
+(%js (define-global print (x) ((get console 'log) x)))
 
-(define math (target js: Math lua: math))
+(%js (define math Math))
 
 (define-global abs (get math 'abs))
 (define-global acos (get math 'acos))
@@ -611,4 +620,16 @@
 (define-global tan (get math 'tan))
 (define-global tanh (get math 'tanh))
 
-(load-macros)
+(define-global reload (module)
+  (%lua 
+    (wipe (get (get package 'loaded) module)))
+  (%js
+    ;; A call to (require 'elf) will incorrectly try to load `bin/elf`
+    ;; instead of `bin/elf.js`.  This is a temporary fix.
+    (when (= module "elf")
+      (cat! module ".js"))
+    (wipe (get (get require 'cache) ((get require 'resolve) module))))
+  (require module))
+
+(setup)
+

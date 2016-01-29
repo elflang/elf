@@ -1,4 +1,4 @@
-var load_macros = function () {
+var setup = function () {
   setenv("quote", {_stash: true, macro: function (form) {
     return(quoted(form));
   }});
@@ -374,13 +374,23 @@ var load_macros = function () {
   setenv("set-default", {_stash: true, macro: function (_var, val) {
     return(["if", ["undefined?", _var], ["set", _var, val]]);
   }});
-  reload = function (module) {
-    if (module === "elf") {
-      module = module + ".js";
+  setenv("%js", {_stash: true, macro: function () {
+    var forms = unstash(Array.prototype.slice.call(arguments, 0));
+    if (target === "js") {
+      return(join(["do"], forms));
     }
-    delete require.cache[require.resolve(module)];
-    return(require(module));
-  };
+  }});
+  setenv("%lua", {_stash: true, macro: function () {
+    var forms = unstash(Array.prototype.slice.call(arguments, 0));
+    if (target === "lua") {
+      return(join(["do"], forms));
+    }
+  }});
+  return(setenv("during-compile", {_stash: true, macro: function () {
+    var forms = unstash(Array.prototype.slice.call(arguments, 0));
+    eval(join(["do"], forms));
+    return(undefined);
+  }}));
 };
 if (typeof(environment) === "undefined") {
   environment = [{}];
@@ -617,11 +627,11 @@ find = function (f, t) {
   }
 };
 first = function (f, l) {
-  var _x322 = l;
-  var _n11 = _35(_x322);
+  var _x331 = l;
+  var _n11 = _35(_x331);
   var _i11 = 0;
   while (_i11 < _n11) {
-    var x = _x322[_i11];
+    var x = _x331[_i11];
     var y = f(x);
     if (y) {
       return(y);
@@ -659,11 +669,11 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var t = [];
-  var _x324 = x;
-  var _n12 = _35(_x324);
+  var _x333 = x;
+  var _n12 = _35(_x333);
   var _i12 = 0;
   while (_i12 < _n12) {
-    var v = _x324[_i12];
+    var v = _x333[_i12];
     var y = f(v);
     if (is63(y)) {
       add(t, y);
@@ -1001,8 +1011,8 @@ toplevel63 = function () {
   return(one63(environment));
 };
 setenv = function (k) {
-  var _r146 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _id53 = _r146;
+  var _r145 = unstash(Array.prototype.slice.call(arguments, 1));
+  var _id53 = _r145;
   var _keys = cut(_id53, 0);
   if (string63(k)) {
     var _e27;
@@ -1053,7 +1063,14 @@ sinh = math.sinh;
 sqrt = math.sqrt;
 tan = math.tan;
 tanh = math.tanh;
-load_macros();
+reload = function (module) {
+  if (module === "elf") {
+    module = module + ".js";
+  }
+  delete require.cache[require.resolve(module)];
+  return(require(module));
+};
+setup();
 var reader = require("reader");
 var compiler = require("compiler");
 var system = require("system");

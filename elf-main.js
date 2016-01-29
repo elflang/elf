@@ -1,4 +1,4 @@
-require("l");
+require("elf");
 reader = require("reader");
 compiler = require("compiler");
 system = require("system");

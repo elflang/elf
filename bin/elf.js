@@ -132,7 +132,7 @@ var setup = function () {
     var y = unique("y");
     return(["let", y, v, ["when", y, join(["let", [x, y]], body)]]);
   }});
-  setenv("define-macro", {_stash: true, macro: function (name, args) {
+  setenv("mac", {_stash: true, macro: function (name, args) {
     var _r26 = unstash(Array.prototype.slice.call(arguments, 2));
     var _id19 = _r26;
     var body = cut(_id19, 0);
@@ -158,7 +158,7 @@ var setup = function () {
     _x104.symbol = ["quote", expansion];
     return(_x104);
   }});
-  setenv("define", {_stash: true, macro: function (name, x) {
+  setenv("var", {_stash: true, macro: function (name, x) {
     var _r32 = unstash(Array.prototype.slice.call(arguments, 2));
     var _id23 = _r32;
     var body = cut(_id23, 0);
@@ -169,7 +169,7 @@ var setup = function () {
       return(["%local", name, x]);
     }
   }});
-  setenv("define-global", {_stash: true, macro: function (name, x) {
+  setenv("def", {_stash: true, macro: function (name, x) {
     var _r34 = unstash(Array.prototype.slice.call(arguments, 2));
     var _id25 = _r34;
     var body = cut(_id25, 0);
@@ -202,7 +202,7 @@ var setup = function () {
     var body = cut(_id31, 0);
     add(environment, {});
     map(function (m) {
-      return(macroexpand(join(["define-macro"], m)));
+      return(macroexpand(join(["mac"], m)));
     }, definitions);
     var _x143 = join(["do"], macroexpand(body));
     drop(environment);

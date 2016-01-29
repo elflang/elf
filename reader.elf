@@ -1,24 +1,24 @@
 ;; -*- mode: lisp -*-
 
-(define-macro define-reader ((char s) rest: body)
+(mac defreader ((char s) rest: body)
   `(set (get read-table ,char) (fn (,s) ,@body)))
 
-(define delimiters (set-of "(" ")" ";" "\n"))
-(define whitespace (set-of " " "\t" "\n"))
+(var delimiters (set-of "(" ")" ";" "\n"))
+(var whitespace (set-of " " "\t" "\n"))
 
-(define stream (str more)
+(var stream (str more)
   (obj pos: 0 string: str len: (# str) more: more))
 
-(define peek-char (s)
+(var peek-char (s)
   (let ((:pos :len :string) s)
     (when (< pos len)
       (char string pos))))
 
-(define read-char (s)
+(var read-char (s)
   (let c (peek-char s)
     (if c (do (inc (get s 'pos)) c))))
 
-(define skip-non-code (s)
+(var skip-non-code (s)
   (while true
     (let c (peek-char s)
       (if (nil? c) (break)
@@ -29,10 +29,10 @@
               (skip-non-code s))
         (break)))))
 
-(define read-table (obj))
-(define eof (obj))
+(var read-table (obj))
+(var eof (obj))
 
-(define read (s)
+(var read (s)
   (skip-non-code s)
   (let c (peek-char s)
     (if (is? c)
@@ -41,50 +41,50 @@
 	 s)
       eof)))
 
-(define read-all (s)
+(var read-all (s)
   (with l ()
     (while true
       (let form (read s)
         (if (= form eof) (break))
         (add l form)))))
 
-(define read-string (str more)
+(var read-string (str more)
   (let x (read (stream str more))
     (unless (= x eof) x)))
 
-(define key? (atom)
+(var key? (atom)
   (and (string? atom)
        (> (# atom) 1)
        (= (char atom (edge atom)) ":")))
 
-(define flag? (atom)
+(var flag? (atom)
   (and (string? atom)
        (> (# atom) 1)
        (= (char atom 0) ":")))
 
-(define expected (s c)
+(var expected (s c)
   (let ((:more :pos) s)
     (or more (error (cat "Expected " c " at " pos)))))
 
-(define wrap (s x)
+(var wrap (s x)
   (let y (read s)
     (if (= y (get s 'more)) y
       (list x y))))
 
-(define maybe-number (str)
+(var maybe-number (str)
   (when (number-code? (code str (edge str)))
     (number str)))
 
-(define real? (x)
+(var real? (x)
   (and (number? x) (~nan? x) (~inf? x)))
 
-(define valid-access? (str)
+(var valid-access? (str)
   (and (> (# str) 2)
        (~= "." (char str 0))
        (~= "." (char str (edge str)))
        (~search str "..")))
 
-(define parse-access (str)
+(var parse-access (str)
   (reduce (fn (a b)
             (let n (number a)
               (if (is? n)
@@ -92,7 +92,7 @@
                 `(get ,b (quote ,a)))))
           (reverse (split str "."))))
 
-(define-reader ("" s) ; atom
+(defreader ("" s) ; atom
   (let (str "" dot? false)
     (while true
       (let c (peek-char s)
@@ -116,7 +116,7 @@
     (while (= "(" (peek-char s))
       (set atom `(,atom ,@(read s)))))))
 
-(define-reader ("(" s)
+(defreader ("(" s)
   (read-char s)
   (with r nil
     (let l ()
@@ -133,10 +133,10 @@
                   (flag? x) (set (get l (clip x 1)) true)
                 (add l x)))))))))
 
-(define-reader (")" s)
+(defreader (")" s)
   (error (cat "Unexpected ) at " (get s 'pos))))
 
-(define-reader ("\"" s)
+(defreader ("\"" s)
   (read-char s)
   (with r nil
     (let str "\""
@@ -148,7 +148,7 @@
                   (cat! str (read-char s)))
                 (cat! str (read-char s)))))))))
 
-(define-reader ("|" s)
+(defreader ("|" s)
   (read-char s)
   (with r nil
     (let str "|"
@@ -158,15 +158,15 @@
               (nil? c) (set r (expected s "|"))
             (cat! str (read-char s))))))))
 
-(define-reader ("'" s)
+(defreader ("'" s)
   (read-char s)
   (wrap s 'quote))
 
-(define-reader ("`" s)
+(defreader ("`" s)
   (read-char s)
   (wrap s 'quasiquote))
 
-(define-reader ("," s)
+(defreader ("," s)
   (read-char s)
   (if (= (peek-char s) "@")
       (do (read-char s)

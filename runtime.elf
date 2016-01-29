@@ -11,16 +11,16 @@
 ;; This enables us to implement the Elf language in Elf.  No external
 ;; Javascript or Lua code files are used.
 
-(define setup ()
+(var setup ()
 
   ;; We begin by defining the core language constructs as macros.
   ;; 
-  ;; Each `define-macro` expression compiles to a call to `setenv`,
+  ;; Each `mac` expression compiles to a call to `setenv`,
   ;; but `setenv` hasn't been defined yet.  Therefore we put them
   ;; inside this wrapper function, which is called at the bottom of
   ;; the file.
   ;;
-  ;; Note that whenever the compiler encounters a `(define-macro ...)`
+  ;; Note that whenever the compiler encounters a `(mac ...)`
   ;; form, the compiler passes it to `eval` immediately.  In other
   ;; words, it has an immediate effect on the compile-time
   ;; environment.  This enables us to start using each macro right
@@ -34,25 +34,25 @@
   ;; This doesn't recompile `runtime.elf`, but still needs to load all
   ;; the macros defined in it.
 
-  (define-macro quote (form)
+  (mac quote (form)
     (quoted form))
 
-  (define-macro quasiquote (form)
+  (mac quasiquote (form)
     (quasiexpand form 1))
 
-  (define-macro at (l i)
+  (mac at (l i)
     (if (and (= target 'lua) (number? i))
         (inc i)
         (= target 'lua)
         (set i `(+ ,i 1)))
     `(get ,l ,i))
 
-  (define-macro wipe (place)
+  (mac wipe (place)
     (if (= target 'lua)
         `(set ,place nil)
       `(%delete ,place)))
 
-  (define-macro list body
+  (mac list body
     (let-unique (x)
       (let (l () forms ())
         (each (k v) body
@@ -63,10 +63,10 @@
             `(let ,x (%array ,@l) ,@forms ,x)
           `(%array ,@l)))))
 
-  (define-macro if branches
+  (mac if branches
     (hd (expand-if branches)))
 
-  (define-macro case (x rest: clauses)
+  (mac case (x rest: clauses)
     (let-unique (e)
       (let bs (map (fn ((a b))
                      (if (nil? b)
@@ -75,16 +75,16 @@
                    (pair clauses))
         `(let (,e ,x) (if ,@(apply join bs))))))
 
-  (define-macro when (cond rest: body)
+  (mac when (cond rest: body)
     `(if ,cond (do ,@body)))
 
-  (define-macro unless (cond rest: body)
+  (mac unless (cond rest: body)
     `(if (not ,cond) (do ,@body)))
 
-  (define-macro obj body
+  (mac obj body
     `(%object ,@(mapo (fn (x) x) body)))
 
-  (define-macro let (bs rest: body)
+  (mac let (bs rest: body)
     (if (atom? bs) `(let (,bs ,(hd body)) ,@(tl body))
         (none? bs) `(do ,@body)
       (let ((lh rh rest: bs2) bs
@@ -99,80 +99,80 @@
                (let-symbol ,renames
                  (let ,(join bs1 bs2) ,@body)))))))
 
-  (define-macro with (x v rest: body)
+  (mac with (x v rest: body)
     `(let (,x ,v) ,@body ,x))
 
-  (define-macro let-when (x v rest: body)
+  (mac let-when (x v rest: body)
     (let-unique (y)
       `(let ,y ,v
          (when ,y
            (let (,x ,y)
              ,@body)))))
 
-  (define-macro define-macro (name args rest: body)
+  (mac mac (name args rest: body)
     (let form `(setenv ',name macro: (fn ,args ,@body))
       (eval form)
       form))
 
-  (define-macro define-special (name args rest: body)
+  (mac define-special (name args rest: body)
     (let form `(setenv ',name special: (fn ,args ,@body) ,@(keys body))
       (eval form)
       form))
 
-  (define-macro define-symbol (name expansion)
+  (mac define-symbol (name expansion)
     (setenv name symbol: expansion)
     `(setenv ',name symbol: ',expansion))
 
-  (define-macro define (name x rest: body)
+  (mac var (name x rest: body)
     (setenv name :variable)
     (if (some? body)
         `(%local-function ,name ,@(bind* x body))
       `(%local ,name ,x)))
 
-  (define-macro define-global (name x rest: body)
+  (mac def (name x rest: body)
     (setenv name :toplevel :variable)
     (if (some? body)
         `(%global-function ,name ,@(bind* x body))
       `(set ,name ,x)))
 
-  (define-macro with-frame body
+  (mac with-frame body
     (let-unique (x)
       `(do (add environment (obj))
            (with ,x (do ,@body)
              (drop environment)))))
 
-  (define-macro with-bindings ((names) rest: body)
+  (mac with-bindings ((names) rest: body)
     (let-unique (x)
      `(with-frame
         (each ,x ,names
           (setenv ,x :variable))
         ,@body)))
 
-  (define-macro let-macro (definitions rest: body)
+  (mac let-macro (definitions rest: body)
     (with-frame
       (map (fn (m)
-             (macroexpand `(define-macro ,@m)))
+             (macroexpand `(mac ,@m)))
            definitions)
       `(do ,@(macroexpand body))))
 
-  (define-macro let-symbol (expansions rest: body)
+  (mac let-symbol (expansions rest: body)
     (with-frame
       (map (fn ((name exp))
              (macroexpand `(define-symbol ,name ,exp)))
            (pair expansions))
       `(do ,@(macroexpand body))))
 
-  (define-macro let-unique (names rest: body)
+  (mac let-unique (names rest: body)
     (let bs (map (fn (n)
                    (list n `(unique ',n)))
                  names)
       `(let ,(apply join bs)
          ,@body)))
 
-  (define-macro fn (args rest: body)
+  (mac fn (args rest: body)
     `(%function ,@(bind* args body)))
 
-  (define-macro guard (expr)
+  (mac guard (expr)
     (if (= target 'js)
         `((fn () (%try (list true ,expr))))
       (let-unique (x msg trace)
@@ -187,7 +187,7 @@
                (list true ,x)
              (list false ,msg ,trace))))))
 
-  (define-macro each (x t rest: body)
+  (mac each (x t rest: body)
     (let-unique (o n i)
       (let ((k v) (if (atom? x) (list i x)
                     (if (> (# x) 1) x
@@ -201,49 +201,49 @@
                                  ,k)
                          ,@body)))))))))
 
-  (define-macro for (i to rest: body)
+  (mac for (i to rest: body)
     `(let ,i 0
        (while (< ,i ,to)
          ,@body
          (inc ,i))))
 
-  (define-macro step (v t rest: body)
+  (mac step (v t rest: body)
     (let-unique (x n i)
       `(let (,x ,t ,n (# ,x))
          (for ,i ,n
            (let (,v (at ,x ,i))
              ,@body)))))
 
-  (define-macro set-of xs
+  (mac set-of xs
     (let l ()
       (each x xs
         (set (get l x) true))
       `(obj ,@l)))
 
-  (define-macro language () `',target)
+  (mac language () `',target)
 
-  (define-macro target clauses
+  (mac target clauses
     (get clauses target))
 
-  (define-macro join! (a rest: bs)
+  (mac join! (a rest: bs)
     `(set ,a (join ,a ,@bs)))
 
-  (define-macro cat! (a rest: bs)
+  (mac cat! (a rest: bs)
     `(set ,a (cat ,a ,@bs)))
 
-  (define-macro inc (n by)
+  (mac inc (n by)
     `(set ,n (+ ,n ,(or by 1))))
 
-  (define-macro dec (n by)
+  (mac dec (n by)
     `(set ,n (- ,n ,(or by 1))))
 
-  (define-macro with-indent (form)
+  (mac with-indent (form)
     (let-unique (x)
       `(do (inc indent-level)
            (with ,x ,form
              (dec indent-level)))))
 
-  (define-macro export names
+  (mac export names
     (if (= target 'js)
         `(do ,@(map (fn (k)
                       `(set (get exports ',k) ,k))
@@ -253,23 +253,23 @@
           (set (get x k) k))
         `(return (obj ,@x)))))
 
-  (define-macro undefined? (var)
+  (mac undefined? (var)
     (if (= target 'js)
        `(= (typeof ,var) "undefined")
      `(= ,var nil)))
 
-  (define-macro set-default (var val)
+  (mac set-default (var val)
     `(if (undefined? ,var) (set ,var ,val)))
 
-  (define-macro %js forms
+  (mac %js forms
     (when (= target 'js)
       `(do ,@forms)))
 
-  (define-macro %lua forms
+  (mac %lua forms
     (when (= target 'lua)
       `(do ,@forms)))
 
-  (define-macro during-compile forms
+  (mac during-compile forms
     (eval `(do ,@forms))
     nil)
 
@@ -282,50 +282,50 @@
     (join! (at environment 0) (at environment 1))))
 
 (when (undefined? environment)
-  (define-global environment (list (obj)))
-  (define-global target (language)))
+  (def environment (list (obj)))
+  (def target (language)))
 
-(define-global nil? (x)
+(def nil? (x)
   (%js (or (= x nil) (= x null)))
   (%lua (= x nil)))
 
-(define-global is? (x) (~nil? x))
+(def is? (x) (~nil? x))
 
-(define-global # (x)
+(def # (x)
   (%js (or (get x 'length) 0))
   (%lua |#x|))
 
-(define-global none? (x) (= (# x) 0))
-(define-global some? (x) (> (# x) 0))
-(define-global one? (x) (= (# x) 1))
-(define-global two? (x) (= (# x) 2))
+(def none? (x) (= (# x) 0))
+(def some? (x) (> (# x) 0))
+(def one? (x) (= (# x) 1))
+(def two? (x) (= (# x) 2))
 
-(define-global hd (l) (at l 0))
+(def hd (l) (at l 0))
 
-(%js (define-global type (x) (typeof x)))
+(%js (def type (x) (typeof x)))
 
-(define-global string? (x) (= (type x) 'string))
-(define-global number? (x) (= (type x) 'number))
-(define-global boolean? (x) (= (type x) 'boolean))
-(define-global function? (x) (= (type x) 'function))
+(def string? (x) (= (type x) 'string))
+(def number? (x) (= (type x) 'number))
+(def boolean? (x) (= (type x) 'boolean))
+(def function? (x) (= (type x) 'function))
 
-(define-global atom? (x)
+(def atom? (x)
   (or (nil? x) (string? x) (number? x) (boolean? x)))
 
-(define-global nan (/ 0 0))
-(define-global inf (/ 1 0))
+(def nan (/ 0 0))
+(def inf (/ 1 0))
 
-(define-global nan? (n)
+(def nan? (n)
   (~= n n))
 
-(define-global inf? (n)
+(def inf? (n)
   (or (= n inf) (= n -inf)))
 
-(define-global clip (s from upto)
+(def clip (s from upto)
   (%js ((get s 'substring) from upto))
   (%lua ((get string 'sub) s (+ from 1) upto)))
 
-(define-global cut (x from upto)
+(def cut (x from upto)
   (with l ()
     (let (j 0
           i (if (or (nil? from) (< from 0)) 0 from)
@@ -339,61 +339,61 @@
         (unless (number? k)
           (set (get l k) v))))))
 
-(define-global keys (x)
+(def keys (x)
   (with t ()
     (each (k v) x
       (unless (number? k)
         (set (get t k) v)))))
 
-(define-global edge (x)
+(def edge (x)
   (- (# x) 1))
 
-(define-global inner (x)
+(def inner (x)
   (clip x 1 (edge x)))
 
-(define-global tl (l) (cut l 1))
+(def tl (l) (cut l 1))
 
-(define-global char (s n)
+(def char (s n)
   (%js ((get s 'charAt) n))
   (%lua (clip s n (+ n 1))))
 
-(define-global code (s n)
+(def code (s n)
   (%js ((get s 'charCodeAt) n))
   (%lua ((get string 'byte) s (if n (+ n 1)))))
 
-(define-global string-literal? (x)
+(def string-literal? (x)
   (and (string? x) (= (char x 0) "\"")))
 
-(define-global id-literal? (x)
+(def id-literal? (x)
   (and (string? x) (= (char x 0) "|")))
 
-(define-global add (l x)
+(def add (l x)
   (%js (do ((get l 'push) x) nil))
   (%lua ((get table 'insert) l x)))
 
-(define-global drop (l)
+(def drop (l)
   (%js ((get l 'pop)))
   (%lua ((get table 'remove) l)))
 
-(define-global last (l)
+(def last (l)
   (at l (edge l)))
 
-(define-global almost (l)
+(def almost (l)
   (cut l 0 (edge l)))
 
-(define-global reverse (l)
+(def reverse (l)
   (with l1 (keys l)
     (let i (edge l)
       (while (>= i 0)
         (add l1 (at l i))
         (dec i)))))
 
-(define-global reduce (f x)
+(def reduce (f x)
   (if (none? x) nil
       (one? x) (hd x)
     (f (hd x) (reduce f (tl x)))))
 
-(define-global join ls
+(def join ls
   (if (two? ls)
       (let ((a b) ls)
         (if (and a b)
@@ -408,30 +408,30 @@
           (or a b ())))
     (or (reduce join ls) ())))
 
-(define-global find (f t)
+(def find (f t)
   (each x t
     (let y (f x)
       (if y (return y)))))
 
-(define-global first (f l)
+(def first (f l)
   (step x l
     (let y (f x)
       (if y (return y)))))
 
-(define-global in? (x t)
+(def in? (x t)
   (find (fn (y) (= x y)) t))
 
-(define-global pair (l)
+(def pair (l)
   (with l1 ()
     (for i (# l)
       (add l1 (list (at l i) (at l (+ i 1))))
       (inc i))))
 
-(define-global sort (l f)
+(def sort (l f)
   (%lua (do ((get table 'sort) l f) l))
   (%js ((get l 'sort) (when f (fn (a b) (if (f a b) -1 1))))))
 
-(define-global map (f x)
+(def map (f x)
   (with t ()
     (step v x
       (let y (f v)
@@ -443,21 +443,21 @@
           (when (is? y)
             (set (get t k) y)))))))
 
-(define-global keep (f x)
+(def keep (f x)
   (map (fn (v) (when (f v) v)) x))
 
-(define-global keys? (t)
+(def keys? (t)
   (each (k v) t
     (unless (number? k)
       (return true)))
   false)
 
-(define-global empty? (t)
+(def empty? (t)
   (each x t
     (return false))
   true)
 
-(define-global stash (args)
+(def stash (args)
   (when (keys? args)
     (let p ()
       (each (k v) args
@@ -467,7 +467,7 @@
       (add args p)))
   args)
 
-(define-global unstash (args)
+(def unstash (args)
   (if (none? args) ()
     (let l (last args)
       (if (and (~atom? l) (~function? l) (get l '_stash))
@@ -477,7 +477,7 @@
                 (set (get args1 k) v))))
         args))))
 
-(define-global search (s pattern start)
+(def search (s pattern start)
   (%js
     (let i ((get s 'indexOf) pattern start))
     (if (>= i 0) i))
@@ -486,7 +486,7 @@
           i ((get string 'find) s pattern start true))
       (and i (- i 1)))))
 
-(define-global split (s sep)
+(def split (s sep)
   (if (or (= s "") (= sep "")) ()
     (with l ()
       (let n (# sep)
@@ -497,50 +497,50 @@
                   (set s (clip s (+ i n)))))))
         (add l s)))))
 
-(define-global cat xs
+(def cat xs
   (or (reduce (fn (a b) (cat a b)) xs) ""))
 
-(define-global + xs
+(def + xs
   (or (reduce (fn (a b) (+ a b)) xs) 0))
 
-(define-global - xs
+(def - xs
   (or (reduce (fn (b a) (- a b)) (reverse xs)) 0))
 
-(define-global * xs
+(def * xs
   (or (reduce (fn (a b) (* a b)) xs) 1))
 
-(define-global / xs
+(def / xs
   (or (reduce (fn (b a) (/ a b)) (reverse xs)) 1))
 
-(define-global % xs
+(def % xs
   (or (reduce (fn (b a) (% a b)) (reverse xs)) 0))
 
-(define-global > (a b) (> a b))
-(define-global < (a b) (< a b))
-(define-global = (a b) (= a b))
-(define-global >= (a b) (>= a b))
-(define-global <= (a b) (<= a b))
+(def > (a b) (> a b))
+(def < (a b) (< a b))
+(def = (a b) (= a b))
+(def >= (a b) (>= a b))
+(def <= (a b) (<= a b))
 
-(define-global number (s)
+(def number (s)
   (%lua
     (tonumber s))
   (%js
     (let n (parseFloat s)
         (unless (isNaN n) n))))
 
-(define-global number-code? (n)
+(def number-code? (n)
   (and (> n 47) (< n 58)))
 
-(define-global numeric? (s)
+(def numeric? (s)
   (let n (# s)
     (for i n
       (unless (number-code? (code s i))
         (return false))))
   true)
 
-(%js (define tostring (x) ((get x 'toString))))
+(%js (var tostring (x) ((get x 'toString))))
 
-(define-global escape (s)
+(def escape (s)
   (let s1 "\""
     (for i (# s)
       (let (c (char s i)
@@ -551,7 +551,7 @@
         (cat! s1 c1)))
     (cat s1 "\"")))
 
-(define-global str (x depth)
+(def str (x depth)
   (if (and depth (> depth 40)) "circular"
       (nil? x) "nil"
       (nan? x) "nan"
@@ -574,19 +574,19 @@
         (set sp " "))
       (cat s  ")"))))
 
-(%lua (define values (or unpack (get table 'unpack))))
+(%lua (var values (or unpack (get table 'unpack))))
 
-(define-global apply (f args)
+(def apply (f args)
   (let args (stash args)
     (%js ((get f 'apply) f args))
     (%lua (f (values args)))))
 
-(define-global call (f) (f))
+(def call (f) (f))
 
-(define-global toplevel? ()
+(def toplevel? ()
   (one? environment))
 
-(define-global setenv (k rest: keys)
+(def setenv (k rest: keys)
   (when (string? k)
     (let (frame (if (get keys 'toplevel)
                     (hd environment)
@@ -596,31 +596,31 @@
         (set (get entry k) v))
       (set (get frame k) entry))))
 
-(%js (define-global print (x) ((get console 'log) x)))
+(%js (def print (x) ((get console 'log) x)))
 
-(%js (define math Math))
+(%js (var math Math))
 
-(define-global abs (get math 'abs))
-(define-global acos (get math 'acos))
-(define-global asin (get math 'asin))
-(define-global atan (get math 'atan))
-(define-global atan2 (get math 'atan2))
-(define-global ceil (get math 'ceil))
-(define-global cos (get math 'cos))
-(define-global floor (get math 'floor))
-(define-global log (get math 'log))
-(define-global log10 (get math 'log10))
-(define-global max (get math 'max))
-(define-global min (get math 'min))
-(define-global pow (get math 'pow))
-(define-global random (get math 'random))
-(define-global sin (get math 'sin))
-(define-global sinh (get math 'sinh))
-(define-global sqrt (get math 'sqrt))
-(define-global tan (get math 'tan))
-(define-global tanh (get math 'tanh))
+(def abs (get math 'abs))
+(def acos (get math 'acos))
+(def asin (get math 'asin))
+(def atan (get math 'atan))
+(def atan2 (get math 'atan2))
+(def ceil (get math 'ceil))
+(def cos (get math 'cos))
+(def floor (get math 'floor))
+(def log (get math 'log))
+(def log10 (get math 'log10))
+(def max (get math 'max))
+(def min (get math 'min))
+(def pow (get math 'pow))
+(def random (get math 'random))
+(def sin (get math 'sin))
+(def sinh (get math 'sinh))
+(def sqrt (get math 'sqrt))
+(def tan (get math 'tan))
+(def tanh (get math 'tanh))
 
-(define-global reload (module)
+(def reload (module)
   (%lua 
     (wipe (get (get package 'loaded) module)))
   (%js

@@ -2,39 +2,39 @@
 
 (%js
 
-  (define fs (require 'fs))
+  (var fs (require 'fs))
 
-  (define path (require 'path))
+  (var path (require 'path))
 
-  (define read-file (path)
+  (var read-file (path)
     (fs.readFileSync path 'utf8))
 
-  (define write-file (path data)
+  (var write-file (path data)
     (fs.writeFileSync path data 'utf8))
 
-  (define file-exists? (path)
+  (var file-exists? (path)
     (fs.existsSync path 'utf8))
 
-  (define path-separator path.sep)
+  (var path-separator path.sep)
 
-  (define path-join parts
+  (var path-join parts
     (or (reduce (fn (x y) (cat x path-separator y)) parts) ""))
 
-  (define get-environment-variable (name)
+  (var get-environment-variable (name)
     (get process.env name))
 
-  (define write (x)
+  (var write (x)
     (process.stdout.write x))
 
-  (define exit (code)
+  (var exit (code)
     (process.exit code))
 
-  (define argv
+  (var argv
     (cut process.argv 2)))
 
 (%lua
 
-  (define call-with-file (f file)
+  (var call-with-file (f file)
     (let |h,e| file
       (unless h
         (error e))
@@ -45,33 +45,33 @@
                `(call-with-file (fn (,var) ,@body)
                                 (io.open ,path ,mode))))
 
-    (define read-file (path)
+    (var read-file (path)
       (with-file (f path)
         (f.read f '*a)))
 
-    (define write-file (path data)
+    (var write-file (path data)
       (with-file (f path 'w)
         (f.write f data)))
 
-    (define file-exists? (path)
+    (var file-exists? (path)
       (with-file (f path)
         (is? f))))
 
-  (define path-separator (char _G.package.config 0))
+  (var path-separator (char _G.package.config 0))
 
-  (define path-join parts
+  (var path-join parts
     (or (reduce (fn (x y) (cat x path-separator y)) parts) ""))
 
-  (define get-environment-variable (name)
+  (var get-environment-variable (name)
     (os.getenv name))
 
-  (define write (x)
+  (var write (x)
     (io.write x))
 
-  (define exit (code)
+  (var exit (code)
     (os.exit code))
 
-  (define argv
+  (var argv
     (if (is? arg) arg ())))
 
 (export read-file

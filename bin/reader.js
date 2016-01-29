@@ -1,4 +1,4 @@
-setenv("define-reader", {_stash: true, macro: function (_x6) {
+setenv("defreader", {_stash: true, macro: function (_x6) {
   var _id2 = _x6;
   var char = _id2[0];
   var s = _id2[1];

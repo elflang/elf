@@ -1,10 +1,10 @@
 ;; -*- mode: lisp -*-
 
-(define reader (require 'reader))
-(define compiler (require 'compiler))
-(define system (require 'system))
+(var reader (require 'reader))
+(var compiler (require 'compiler))
+(var system (require 'system))
 
-(define eval-print (form)
+(var eval-print (form)
   (let ((ok x trace) (guard ((get compiler 'eval) form)))
     (if (not ok)
         (target
@@ -12,12 +12,12 @@
           lua: (print (cat "error: " x "\n" trace)))
         (is? x) (print (str x)))))
 
-(define rep (s)
+(var rep (s)
   (eval-print ((get reader 'read-string) s)))
 
-(define repl ()
+(var repl ()
   (let buf ""
-    (define rep1 (s)
+    (var rep1 (s)
       (cat! buf s)
       (let (more ()
             form ((get reader 'read-string) buf more))
@@ -34,19 +34,19 @@
            (let s ((get io 'read))
              (if s (rep1 (cat s "\n")) (break))))))
 
-(define-global compile-file (path)
+(def compile-file (path)
   (let (s ((get reader 'stream) ((get system 'read-file) path))
         body ((get reader 'read-all) s)
         form ((get compiler 'expand) `(do ,@body)))
     ((get compiler 'compile) form :stmt)))
 
-(define-global load (path)
+(def load (path)
   ((get compiler 'run) (compile-file path)))
 
-(define run-file (path)
+(var run-file (path)
   ((get compiler 'run) ((get system 'read-file) path)))
 
-(define usage ()
+(var usage ()
   (print "usage: elf [options] <object files>")
   (print "options:")
   (print "  -c <input>\tCompile input file")
@@ -55,7 +55,7 @@
   (print "  -e <expr>\tExpression to evaluate")
   ((get system 'exit)))
 
-(define main ()
+(var main ()
   (let arg (hd (get system 'argv))
     (when (or (= arg "-h")
               (= arg "--help"))
@@ -89,6 +89,7 @@
               ((get system 'write-file) output code)))))))
 
 (set-default running* false)
+
 (unless running*
   (set running* true)
   (main))

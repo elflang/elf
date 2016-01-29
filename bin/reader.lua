@@ -1,4 +1,4 @@
-setenv("define-reader", {_stash = true, macro = function (_x6, ...)
+setenv("defreader", {_stash = true, macro = function (_x6, ...)
   local _id2 = _x6
   local char = _id2[1]
   local s = _id2[2]

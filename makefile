@@ -6,13 +6,7 @@ ELF_HOST ?= $(ELF_LUA)
 
 ELF := ELF_HOST="$(ELF_HOST)" bin/elf
 
-MODS := elf.x	\
-	reader.x	\
-	compiler.x	\
-	system.x \
-	elf-main.x
-
-all: $(MODS:.x=.js) $(MODS:.x=.lua)
+all: *.js *.lua
 
 rebuild:
 	@make clean
@@ -21,8 +15,7 @@ rebuild:
 	@make -B
 
 clean:
-	@git checkout *.js
-	@git checkout *.lua
+	@git checkout *.js *.lua
 
 %.js : %.elf
 	@echo $@

@@ -624,14 +624,8 @@
 (def tanh math.tanh)
 
 (def reload (module)
-  (%lua 
-    (wipe (get package.loaded module)))
-  (%js
-    ;; A call to (require 'elf) will incorrectly try to load `bin/elf`
-    ;; instead of `bin/elf.js`.  This is a temporary fix.
-    (when (= module "elf")
-      (cat! module ".js"))
-    (wipe (get require.cache (require.resolve module))))
+  (%lua (wipe (get package.loaded module)))
+  (%js (wipe (get require.cache (require.resolve module))))
   (require module))
 
 (setup)

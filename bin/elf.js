@@ -1067,9 +1067,6 @@ sqrt = math.sqrt;
 tan = math.tan;
 tanh = math.tanh;
 reload = function (module) {
-  if (module === "elf") {
-    module = module + ".js";
-  }
   delete require.cache[require.resolve(module)];
   return(require(module));
 };

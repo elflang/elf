@@ -16,7 +16,7 @@
 
 (var read-char (s)
   (let c (peek-char s)
-    (if c (do (inc (get s 'pos)) c))))
+    (if c (do (inc s.pos) c))))
 
 (var skip-non-code (s)
   (while true
@@ -68,7 +68,7 @@
 
 (var wrap (s x)
   (let y (read s)
-    (if (= y (get s 'more)) y
+    (if (= y s.more) y
       (list x y))))
 
 (var maybe-number (str)
@@ -134,7 +134,7 @@
                 (add l x)))))))))
 
 (defreader (")" s)
-  (error (cat "Unexpected ) at " (get s 'pos))))
+  (error (cat "Unexpected ) at " s.pos)))
 
 (defreader ("\"" s)
   (read-char s)

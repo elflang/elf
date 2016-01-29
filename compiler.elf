@@ -36,7 +36,7 @@
   (let b (first (fn (frame)
                   (get frame k))
                 (reverse environment))
-    (and (~atom? b) (is? (get b 'variable)))))
+    (and (~atom? b) (is? b.variable))))
 
 (def bound? (x)
   (or (macro? x)
@@ -95,7 +95,7 @@
                 (join! bs (bind k x))))))))))
 
 (mac arguments% (from)
-  `((get (get (get Array 'prototype) 'slice) 'call) arguments ,from))
+  `(Array.prototype.slice.call arguments ,from))
 
 (def bind* (args body)
   (let args1 ()
@@ -539,7 +539,7 @@
 (var expand (form)
   (lower (macroexpand form)))
 
-(%js (set (get global 'require) require))
+(%js (set global.require require))
 (%js (var run eval))
 
 (%lua (var load1 load))

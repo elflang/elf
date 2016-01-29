@@ -32,7 +32,7 @@
   (print (cat " " passed " passed, " failed " failed")))
 
 (deftest reader
-  (let read (get reader 'read-string)
+  (let read reader.read-string
     (test= nil (read ""))
     (test= "nil" (read "nil"))
     (test= 17 (read "17"))
@@ -61,7 +61,7 @@
     (test= "0." (read "0."))))
 
 (deftest read-more
-  (let read (get reader 'read-string)
+  (let read reader.read-string
     (test= 17 (read "17" true))
     (let more ()
       (test= more (read "(open" more))

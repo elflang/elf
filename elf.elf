@@ -625,8 +625,12 @@
 
 (setup)
 
+(defspecial bang ()
+  (cat "#!/usr/bin/env " (%js "node") (%lua "luajit")))
+
 (mac elf ()
-  `(do (when (undef? elf*)
+  `(do (bang)
+       (when (undef? elf*)
          (def elf* true)
          (%js
            (unless (undef? process)
@@ -637,8 +641,8 @@
              (let Module (require 'module)
                (Module._initPaths))))
          (%lua
-           ,(let path '(get (debug.getinfo 1 "S") 'source)
+           ,(let p '(get (debug.getinfo 1 "S") 'source)
               `(cat! package.path
-                 ";" ((get ,path 'match) ,path "[@]?([^/]*/)") "?.lua"))))
+                 ";" (or ((get ,p 'match) ,p "[@]?(.*/)[^/]+[.]lua") "./") "?.lua"))))
        (require 'elf)))
 

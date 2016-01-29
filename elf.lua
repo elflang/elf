@@ -940,7 +940,10 @@ sqrt = math.sqrt
 tan = math.tan
 tanh = math.tanh
 setup()
+setenv("bang", {_stash = true, special = function ()
+  return("#!/usr/bin/env " .. "luajit")
+end})
 setenv("elf", {_stash = true, macro = function ()
-  local path = {"get", {{"get", "debug", {"quote", "getinfo"}}, 1, "\"S\""}, {"quote", "source"}}
-  return({"do", {"when", {"undef?", "elf*"}, {"def", "elf*", true}, {"%js", {"unless", {"undef?", "process"}, {"let-symbol", {"p", {"get", {"get", "process", {"quote", "env"}}, {"quote", "NODE_PATH"}}}, {"if", {"and", "p", {">", {"get", "p", {"quote", "length"}}, 0}}, {"cat!", "p", "\":\"", "__dirname"}, {"set", "p", "__dirname"}}}, {"let", "Module", {"require", {"quote", "module"}}, {{"get", "Module", {"quote", "_initPaths"}}}}}}, {"%lua", {"cat!", {"get", "package", {"quote", "path"}}, "\";\"", {{"get", path, {"quote", "match"}}, path, "\"[@]?([^/]*/)\""}, "\"?.lua\""}}}, {"require", {"quote", "elf"}}})
+  local p = {"get", {{"get", "debug", {"quote", "getinfo"}}, 1, "\"S\""}, {"quote", "source"}}
+  return({"do", {"bang"}, {"when", {"undef?", "elf*"}, {"def", "elf*", true}, {"%js", {"unless", {"undef?", "process"}, {"let-symbol", {"p", {"get", {"get", "process", {"quote", "env"}}, {"quote", "NODE_PATH"}}}, {"if", {"and", "p", {">", {"get", "p", {"quote", "length"}}, 0}}, {"cat!", "p", "\":\"", "__dirname"}, {"set", "p", "__dirname"}}}, {"let", "Module", {"require", {"quote", "module"}}, {{"get", "Module", {"quote", "_initPaths"}}}}}}, {"%lua", {"cat!", {"get", "package", {"quote", "path"}}, "\";\"", {"or", {{"get", p, {"quote", "match"}}, p, "\"[@]?(.*/)[^/]+[.]lua\""}, "\"./\""}, "\"?.lua\""}}}, {"require", {"quote", "elf"}}})
 end})

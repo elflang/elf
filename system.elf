@@ -1,59 +1,77 @@
 ;; -*- mode: lisp -*-
 
-(target js: (define fs (require 'fs)))
+(%js
 
-(target lua:
-  (define call-with-file (f path mode)
-    (let |h,e| ((get io 'open) path mode)
+  (define fs (require 'fs))
+
+  (define read-file (path)
+    ((get fs 'readFileSync) path 'utf8))
+
+  (define write-file (path data)
+    ((get fs 'writeFileSync) path data 'utf8))
+
+  (define file-exists? (path)
+    ((get fs 'existsSync) path 'utf8))
+
+  (define path-separator (get (require 'path) 'sep))
+
+  (define path-join parts
+    (or (reduce (fn (x y) (cat x path-separator y)) parts) ""))
+
+  (define get-environment-variable (name)
+    (get (get process 'env) name))
+
+  (define write (x)
+    (let out (get process 'stdout)
+      ((get out 'write) x)))
+
+  (define exit (code)
+    ((get process 'exit) code))
+
+  (define argv
+    (cut (get process 'argv) 2)))
+
+(%lua
+
+  (define call-with-file (f file)
+    (let |h,e| file
       (unless h
         (error e))
       (with x (f h)
-        ((get h 'close) h)))))
+        ((get h 'close) h))))
 
-(define read-file (path)
-  (target
-    js: ((get fs 'readFileSync) path 'utf8)
-    lua: (call-with-file
-          (fn (f) ((get f 'read) f '*a))
-          path)))
+  (let-macro ((with-file ((var path mode) rest: body)
+               `(call-with-file (fn (,var) ,@body)
+                                ((get io 'open) ,path ,mode))))
 
-(define write-file (path data)
-  (target
-    js: ((get fs 'writeFileSync) path data 'utf8)
-    lua: (call-with-file
-          (fn (f) ((get f 'write) f data))
-          path 'w)))
+    (define read-file (path)
+      (with-file (f path)
+        ((get f 'read) f '*a)))
 
-(define file-exists? (path)
-  (target
-    js: ((get fs 'existsSync) path 'utf8)
-    lua: (call-with-file ((get io 'open) path)
-           (fn (f) (is? f)))))
+    (define write-file (path data)
+      (with-file (f path 'w)
+        ((get f 'write) f data)))
 
-(define path-separator
-  (target
-    js: (get (require 'path) 'sep)
-    lua: (char (get (get _G 'package) 'config) 0)))
+    (define file-exists? (path)
+      (with-file (f path)
+        (is? f))))
 
-(define path-join parts
-  (or (reduce (fn (x y) (cat x path-separator y)) parts) ""))
+  (define path-separator (char (get (get _G 'package) 'config) 0))
 
-(define get-environment-variable (name)
-  (target
-    js: (get (get process 'env) name)
-    lua: ((get os 'getenv) name)))
+  (define path-join parts
+    (or (reduce (fn (x y) (cat x path-separator y)) parts) ""))
 
-(define write (x)
-  (target js: (let out (get process 'stdout)
-                ((get out 'write) x))
-          lua: ((get io 'write) x)))
+  (define get-environment-variable (name)
+    ((get os 'getenv) name))
 
-(define exit (code)
-  (target js: ((get process 'exit) code)
-          lua: ((get os 'exit) code)))
+  (define write (x)
+    ((get io 'write) x))
 
-(define argv
-  (target js: (cut (get process 'argv) 2) lua: (if (is? arg) arg ())))
+  (define exit (code)
+    ((get os 'exit) code))
+
+  (define argv
+    (if (is? arg) arg ())))
 
 (export read-file
         write-file

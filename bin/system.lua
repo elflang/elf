@@ -1,5 +1,5 @@
-local function call_with_file(f, path, mode)
-  local h,e = io.open(path, mode)
+local function call_with_file(f, file)
+  local h,e = file
   if not h then
     error(e)
   end
@@ -10,17 +10,17 @@ end
 local function read_file(path)
   return(call_with_file(function (f)
     return(f.read(f, "*a"))
-  end, path))
+  end, io.open(path)))
 end
 local function write_file(path, data)
   return(call_with_file(function (f)
     return(f.write(f, data))
-  end, path, "w"))
+  end, io.open(path, "w")))
 end
 local function file_exists63(path)
-  return(call_with_file(io.open(path), function (f)
+  return(call_with_file(function (f)
     return(is63(f))
-  end))
+  end, io.open(path)))
 end
 local path_separator = char(_G.package.config, 0)
 local function path_join(...)

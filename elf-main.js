@@ -1,7 +1,7 @@
 if (typeof(elf42) === "undefined") {
   elf42 = true;
   if (!( typeof(process) === "undefined")) {
-    if (process.env.NODE_PATH && some63(process.env.NODE_PATH)) {
+    if (process.env.NODE_PATH && process.env.NODE_PATH.length > 0) {
       process.env.NODE_PATH = process.env.NODE_PATH + ":" + __dirname;
     } else {
       process.env.NODE_PATH = __dirname;

@@ -631,7 +631,7 @@
          (%js
            (unless (undef? process)
              (let-symbol (p process.env.NODE_PATH)
-               (if (and p (some? p))
+               (if (and p (> p.length 0))
                    (cat! p ":" __dirname)
                  (set p __dirname)))
              (let Module (require 'module)

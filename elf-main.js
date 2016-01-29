@@ -1,3 +1,15 @@
+if (typeof(elf42) === "undefined") {
+  elf42 = true;
+  if (!( typeof(process) === "undefined")) {
+    if (process.env.NODE_PATH && some63(process.env.NODE_PATH)) {
+      process.env.NODE_PATH = process.env.NODE_PATH + ":" + __dirname;
+    } else {
+      process.env.NODE_PATH = __dirname;
+    }
+    var _Module = require("module");
+    _Module._initPaths();
+  }
+}
 require("elf");
 reader = require("reader");
 compiler = require("compiler");
@@ -107,11 +119,11 @@ var main = function () {
     }
     i = i + 1;
   }
-  var _x2 = pre;
-  var _n = _35(_x2);
+  var _x6 = pre;
+  var _n = _35(_x6);
   var _i = 0;
   while (_i < _n) {
-    var file = _x2[_i];
+    var file = _x6[_i];
     run_file(file);
     _i = _i + 1;
   }
@@ -133,7 +145,7 @@ var main = function () {
     }
   }
 };
-if (typeof(_x3) === "undefined") {
-  _x3 = true;
+if (typeof(_x7) === "undefined") {
+  _x7 = true;
   main();
 }

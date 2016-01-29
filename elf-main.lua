@@ -1,3 +1,7 @@
+if elf42 == nil then
+  elf42 = true
+  package.path = package.path .. ";" .. debug.getinfo(1, "S").source.match(debug.getinfo(1, "S").source, "[@]?([^/]*/)") .. "?.lua"
+end
 require("elf")
 reader = require("reader")
 compiler = require("compiler")

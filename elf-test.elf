@@ -1,6 +1,6 @@
 ;; -*- mode: lisp -*-
 
-(require 'elf)
+(elf)
 
 (var passed 0)
 (var failed 0)

@@ -940,3 +940,7 @@ sqrt = math.sqrt
 tan = math.tan
 tanh = math.tanh
 setup()
+setenv("elf", {_stash = true, macro = function ()
+  local path = {"get", {{"get", "debug", {"quote", "getinfo"}}, 1, "\"S\""}, {"quote", "source"}}
+  return({"do", {"when", {"undef?", "elf*"}, {"def", "elf*", true}, {"%js", {"unless", {"undef?", "process"}, {"let-symbol", {"p", {"get", {"get", "process", {"quote", "env"}}, {"quote", "NODE_PATH"}}}, {"if", {"and", "p", {"some?", "p"}}, {"cat!", "p", "\":\"", "__dirname"}, {"set", "p", "__dirname"}}}, {"let", "Module", {"require", {"quote", "module"}}, {{"get", "Module", {"quote", "_initPaths"}}}}}}, {"%lua", {"cat!", {"get", "package", {"quote", "path"}}, "\";\"", {{"get", path, {"quote", "match"}}, path, "\"[@]?([^/]*/)\""}, "\"?.lua\""}}}, {"require", {"quote", "elf"}}})
+end})

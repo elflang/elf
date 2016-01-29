@@ -625,3 +625,20 @@
 
 (setup)
 
+(mac elf ()
+  `(do (when (undef? elf*)
+         (def elf* true)
+         (%js
+           (unless (undef? process)
+             (let-symbol (p process.env.NODE_PATH)
+               (if (and p (some? p))
+                   (cat! p ":" __dirname)
+                 (set p __dirname)))
+             (let Module (require 'module)
+               (Module._initPaths))))
+         (%lua
+           ,(let path '(get (debug.getinfo 1 "S") 'source)
+              `(cat! package.path
+                 ";" ((get ,path 'match) ,path "[@]?([^/]*/)") "?.lua"))))
+       (require 'elf)))
+

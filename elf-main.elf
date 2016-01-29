@@ -1,6 +1,6 @@
 ;; -*- mode: lisp -*-
 
-(require 'elf)
+(elf)
 
 (def reader (require 'reader))
 (def compiler (require 'compiler))

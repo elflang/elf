@@ -277,7 +277,8 @@
   (and (two? form) (in? (hd form) '(not -))))
 
 (define index (k)
-  (target js: k lua: (when (number? k) (- k 1))))
+  (%js k)
+  (%lua (when (number? k) (- k 1))))
 
 (define precedence (form)
   (unless (or (atom? form) (unary? form))
@@ -538,11 +539,11 @@
 (define expand (form)
   (lower (macroexpand form)))
 
-(target js: (set (get global 'require) require))
-(target js: (define run eval))
+(%js (set (get global 'require) require))
+(%js (define run eval))
 
-(target lua: (define load1 load))
-(target lua:
+(%lua (define load1 load))
+(%lua
   (define run (code)
     (let |f,e| (load1 code)
       (if f (f) (error (cat e " in " code))))))

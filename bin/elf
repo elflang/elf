@@ -2,6 +2,7 @@
 
 dir="$(pwd)"
 cd "$(dirname "$0")"
+cd ..
 home="$(pwd)"
 cd "${dir}"
 
@@ -24,10 +25,10 @@ fi
 case $host in
     node*)
         code=elf-main.js
-        export NODE_PATH="$NODE_PATH:${home}:${dir}/lib";;
+        export NODE_PATH="$NODE_PATH:${home}";;
     *)
         code=elf-main.lua
-        export LUA_PATH="$LUA_PATH;${home}/?.lua;${dir}/lib/?.lua;;";;
+        export LUA_PATH="$LUA_PATH;${home}/?.lua;;";;
 esac
 
 exec ${host} "${home}/${code}" "$@"

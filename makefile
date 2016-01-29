@@ -6,11 +6,11 @@ ELF_HOST ?= $(ELF_LUA)
 
 ELF := ELF_HOST="$(ELF_HOST)" bin/elf
 
-MODS := bin/l.x	\
-	bin/reader.x	\
-	bin/compiler.x	\
-	bin/system.x \
-	bin/elf-main.x
+MODS := l.x	\
+	reader.x	\
+	compiler.x	\
+	system.x \
+	elf-main.x
 
 all: $(MODS:.x=.js) $(MODS:.x=.lua)
 
@@ -21,28 +21,20 @@ rebuild:
 	@make -B
 
 clean:
-	@git checkout bin/*.js
-	@git checkout bin/*.lua
+	# @git checkout *.js
+	# @git checkout *.lua
 	@rm -f obj/*
 
-obj/%.js : %.elf
-	@echo "  $@"
-	@$(ELF) -c $< -o $@ -t js
-
-obj/%.lua : %.elf
-	@echo "  $@"
-	@$(ELF) -c $< -o $@ -t lua
-
-bin/%.js : %.elf
+%.js : %.elf
 	@echo $@
 	@$(ELF) -c $< -o $@ -t js
 
-bin/%.lua : %.elf
+%.lua : %.elf
 	@echo $@
 	@$(ELF) -c $< -o $@ -t lua
 
-test: all obj/elf-test.js obj/elf-test.lua
+test: all elf-test.js elf-test.lua
 	@echo js:
-	@ELF_HOST=$(ELF_NODE) bin/elf obj/elf-test.js -e '(run)'
+	@ELF_HOST=$(ELF_NODE) bin/elf elf-test.js -e '(run)'
 	@echo lua:
-	@ELF_HOST=$(ELF_LUA) bin/elf obj/elf-test.lua -e '(run)'
+	@ELF_HOST=$(ELF_LUA) bin/elf elf-test.lua -e '(run)'

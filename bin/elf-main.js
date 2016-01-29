@@ -1,7 +1,7 @@
-require("elf");
-var reader = require("reader");
-var compiler = require("compiler");
-var system = require("system");
+require("l");
+reader = require("reader");
+compiler = require("compiler");
+system = require("system");
 var eval_print = function (form) {
   var _id = (function () {
     try {

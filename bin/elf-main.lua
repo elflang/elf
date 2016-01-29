@@ -1,7 +1,7 @@
-require("elf")
-local reader = require("reader")
-local compiler = require("compiler")
-local system = require("system")
+require("l")
+reader = require("reader")
+compiler = require("compiler")
+system = require("system")
 local function eval_print(form)
   local _x = nil
   local _msg = nil

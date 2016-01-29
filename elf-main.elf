@@ -1,10 +1,10 @@
 ;; -*- mode: lisp -*-
 
-(require 'elf)
+(require 'l)
 
-(var reader (require 'reader))
-(var compiler (require 'compiler))
-(var system (require 'system))
+(def reader (require 'reader))
+(def compiler (require 'compiler))
+(def system (require 'system))
 
 (var eval-print (form)
   (let ((ok x trace) (guard (compiler.eval form)))

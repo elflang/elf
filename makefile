@@ -6,7 +6,7 @@ ELF_HOST ?= $(ELF_LUA)
 
 ELF := ELF_HOST="$(ELF_HOST)" bin/elf
 
-MODS := bin/elf.x	\
+MODS := bin/l.x	\
 	bin/reader.x	\
 	bin/compiler.x	\
 	bin/system.x \

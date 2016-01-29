@@ -41,8 +41,8 @@ bin/%.lua : %.elf
 	@echo $@
 	@$(ELF) -c $< -o $@ -t lua
 
-test: all obj/test.js obj/test.lua
+test: all obj/elf-test.js obj/elf-test.lua
 	@echo js:
-	@ELF_HOST=$(ELF_NODE) bin/elf obj/test.js -e '(run)'
+	@ELF_HOST=$(ELF_NODE) bin/elf obj/elf-test.js -e '(run)'
 	@echo lua:
-	@ELF_HOST=$(ELF_LUA) bin/elf obj/test.lua -e '(run)'
+	@ELF_HOST=$(ELF_LUA) bin/elf obj/elf-test.lua -e '(run)'

@@ -1,4 +1,4 @@
-require("runtime");
+require("elf");
 var reader = require("reader");
 var compiler = require("compiler");
 var system = require("system");

@@ -1,4 +1,4 @@
-require("runtime")
+require("elf")
 local reader = require("reader")
 local compiler = require("compiler")
 local system = require("system")

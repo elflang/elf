@@ -6,15 +6,11 @@ ELF_HOST ?= $(ELF_LUA)
 
 ELF := ELF_HOST="$(ELF_HOST)" bin/elf
 
-OBJS :=	obj/runtime.o	\
-	obj/main.o
-
 MODS := bin/elf.x	\
 	bin/reader.x	\
 	bin/compiler.x	\
 	bin/system.x \
-	bin/runtime.x \
-	bin/main.x
+	bin/elf-main.x
 
 all: $(MODS:.x=.js) $(MODS:.x=.lua)
 
@@ -28,16 +24,6 @@ clean:
 	@git checkout bin/*.js
 	@git checkout bin/*.lua
 	@rm -f obj/*
-
-bin/elf.js: $(OBJS:.o=.js)
-	@echo $@
-	@cat $^ > $@.tmp
-	@mv $@.tmp $@
-
-bin/elf.lua: $(OBJS:.o=.lua)
-	@echo $@
-	@cat $^ > $@.tmp
-	@mv $@.tmp $@
 
 obj/%.js : %.elf
 	@echo "  $@"

@@ -29,9 +29,9 @@
   ;; In that case, why call this wrapper function at all?  Consider
   ;; the following Javascript:
   ;;
-  ;;   require("runtime.js");
+  ;;   require("elf.js");
   ;;
-  ;; This doesn't recompile `runtime.elf`, but still needs to load all
+  ;; This doesn't recompile `elf.elf`, but still needs to load all
   ;; the macros defined in it.
 
   (mac quote (form)

@@ -1,4 +1,4 @@
-.PHONY: all clean test
+.PHONY: all rebuild clean test
 
 ELF_LUA  ?= luajit
 ELF_NODE ?= node
@@ -15,6 +15,12 @@ MODS := bin/elf.x	\
 	bin/system.x
 
 all: $(MODS:.x=.js) $(MODS:.x=.lua)
+
+rebuild:
+	@make clean
+	@make -B
+	@make -B
+	@make -B
 
 clean:
 	@git checkout bin/*.js

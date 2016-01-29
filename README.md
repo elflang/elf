@@ -73,12 +73,12 @@ A shortcut for a key whose value is `true` looks like this, called a flag:
 ```
 
 #### Variables
-Variables are declared using `define` and `define-global`. Variables declared with `define` are available for use anywhere in subsequent expressions in the same scope, and `define-global` makes them globally available.
+Variables are declared using `var` and `def`. Variables declared with `var` are available for use anywhere in subsequent expressions in the same scope, and `def` makes them globally available.
 ```
-> (define-global zzz "ho")
+> (def zzz "ho")
 > zzz
 "ho"
-> (do (define x 10) (+ x 9))
+> (do (var x 10) (+ x 9))
 19
 ```
 `do` evaluates multiple expressions, and itself evaluates to the value of the last expression.
@@ -221,13 +221,13 @@ Because functions are values, we can use variables to name them. The same rules 
 30
 ```
 
-The most common shortcut for defining functions is to use `define` and `define-global` in the following way:
+The most common shortcut for defining functions is to use `var` and `def` in the following way:
 ```
-> (define-global f (n)
+> (def f (n)
     (* n 10))
 > (f 3)
 30
-> (do (define f (n) (* n 10))
+> (do (var f (n) (* n 10))
       (print (f 3))
       (print (f 4))
       (f 2.5))
@@ -436,7 +436,7 @@ The shorthand for `unquote-splicing` is `,@`:
 #### Macros
 Macros allow you to write functions that manipulate expressions before they have been evaluated. Macros take expressions as parameters and return an expression:
 ```
-> (define-macro when (condition rest: body)
+> (mac when (condition rest: body)
     `(if ,condition (do ,@body)))
 (macro: function)
 > (when true

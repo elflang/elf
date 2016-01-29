@@ -135,7 +135,7 @@ local function setup()
     eval(form)
     return(form)
   end})
-  setenv("define-special", {_stash = true, macro = function (name, args, ...)
+  setenv("defspecial", {_stash = true, macro = function (name, args, ...)
     local _r28 = unstash({...})
     local _id21 = _r28
     local body = cut(_id21, 0)
@@ -145,7 +145,7 @@ local function setup()
     eval(form)
     return(form)
   end})
-  setenv("define-symbol", {_stash = true, macro = function (name, expansion)
+  setenv("defsym", {_stash = true, macro = function (name, expansion)
     setenv(name, {_stash = true, symbol = expansion})
     local _x115 = {"setenv", {"quote", name}}
     _x115.symbol = {"quote", expansion}
@@ -210,7 +210,7 @@ local function setup()
       local _id35 = _x169
       local name = _id35[1]
       local exp = _id35[2]
-      return(macroexpand({"define-symbol", name, exp}))
+      return(macroexpand({"defsym", name, exp}))
     end, pair(expansions))
     local _x168 = join({"do"}, macroexpand(body))
     drop(environment)
@@ -343,15 +343,12 @@ local function setup()
       return({"return", join({"obj"}, x)})
     end
   end})
-  setenv("undefined?", {_stash = true, macro = function (_var)
+  setenv("undef?", {_stash = true, macro = function (_var)
     if target == "js" then
       return({"=", {"typeof", _var}, "\"undefined\""})
     else
       return({"=", _var, "nil"})
     end
-  end})
-  setenv("set-default", {_stash = true, macro = function (_var, val)
-    return({"if", {"undefined?", _var}, {"set", _var, val}})
   end})
   setenv("%js", {_stash = true, macro = function (...)
     local forms = unstash({...})
@@ -365,13 +362,19 @@ local function setup()
       return(join({"do"}, forms))
     end
   end})
-  return(setenv("during-compile", {_stash = true, macro = function (...)
+  setenv("eval-compile", {_stash = true, macro = function (...)
     local forms = unstash({...})
     eval(join({"do"}, forms))
     return(nil)
+  end})
+  return(setenv("eval-once", {_stash = true, macro = function (...)
+    local forms = unstash({...})
+    local x = unique("x")
+    return(join({"when", {"undef?", x}, {"set", x, true}}, forms))
   end}))
 end
-if environment == nil then
+if _x362 == nil then
+  _x362 = true
   environment = {{}}
   target = "lua"
 end
@@ -571,11 +574,11 @@ function find(f, t)
   end
 end
 function first(f, l)
-  local _x362 = l
-  local _n11 = _35(_x362)
+  local _x365 = l
+  local _n11 = _35(_x365)
   local _i11 = 0
   while _i11 < _n11 do
-    local x = _x362[_i11 + 1]
+    local x = _x365[_i11 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -604,11 +607,11 @@ function sort(l, f)
 end
 function map(f, x)
   local t = {}
-  local _x364 = x
-  local _n12 = _35(_x364)
+  local _x367 = x
+  local _n12 = _35(_x367)
   local _i12 = 0
   while _i12 < _n12 do
-    local v = _x364[_i12 + 1]
+    local v = _x367[_i12 + 1]
     local y = f(v)
     if is63(y) then
       add(t, y)
@@ -895,8 +898,8 @@ function toplevel63()
   return(one63(environment))
 end
 function setenv(k, ...)
-  local _r142 = unstash({...})
-  local _id53 = _r142
+  local _r140 = unstash({...})
+  local _id53 = _r140
   local _keys = cut(_id53, 0)
   if string63(k) then
     local _e13
@@ -1089,10 +1092,7 @@ local function main()
     end
   end
 end
-if running42 == nil then
-  running42 = false
-end
-if not running42 then
-  running42 = true
+if _x5 == nil then
+  _x5 = true
   main()
 end

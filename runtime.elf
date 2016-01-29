@@ -114,12 +114,12 @@
       (eval form)
       form))
 
-  (mac define-special (name args rest: body)
+  (mac defspecial (name args rest: body)
     (let form `(setenv ',name special: (fn ,args ,@body) ,@(keys body))
       (eval form)
       form))
 
-  (mac define-symbol (name expansion)
+  (mac defsym (name expansion)
     (setenv name symbol: expansion)
     `(setenv ',name symbol: ',expansion))
 
@@ -158,7 +158,7 @@
   (mac let-symbol (expansions rest: body)
     (with-frame
       (map (fn ((name exp))
-             (macroexpand `(define-symbol ,name ,exp)))
+             (macroexpand `(defsym ,name ,exp)))
            (pair expansions))
       `(do ,@(macroexpand body))))
 
@@ -253,13 +253,10 @@
           (set (get x k) k))
         `(return (obj ,@x)))))
 
-  (mac undefined? (var)
+  (mac undef? (var)
     (if (= target 'js)
        `(= (typeof ,var) "undefined")
      `(= ,var nil)))
-
-  (mac set-default (var val)
-    `(if (undefined? ,var) (set ,var ,val)))
 
   (mac %js forms
     (when (= target 'js)
@@ -269,19 +266,25 @@
     (when (= target 'lua)
       `(do ,@forms)))
 
-  (mac during-compile forms
+  (mac eval-compile forms
     (eval `(do ,@forms))
     nil)
+
+  (mac eval-once forms
+    (let-unique (x)
+      `(when (undef? ,x)
+         (set ,x true)
+         ,@forms)))
 
   ;; Since we're within a wrapper function, the above definitions were
   ;; attached to a local compilation frame.  Normally this frame would
   ;; be dropped at the end of this wrapper function's scope.  Since we
   ;; want the definitions to persist, we insert them into the toplevel
   ;; frame.
-  (during-compile
+  (eval-compile
     (join! (at environment 0) (at environment 1))))
 
-(when (undefined? environment)
+(eval-once
   (def environment (list (obj)))
   (def target (language)))
 

@@ -644,8 +644,8 @@ c"
       (test= 18 a)
       (test= 20 b))))
 
-(deftest define-symbol
-  (define-symbol zzz 42)
+(deftest defsym
+  (defsym zzz 42)
   (test= zzz 42))
 
 (deftest macros-and-symbols

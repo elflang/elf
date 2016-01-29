@@ -142,7 +142,7 @@ var setup = function () {
     eval(form);
     return(form);
   }});
-  setenv("define-special", {_stash: true, macro: function (name, args) {
+  setenv("defspecial", {_stash: true, macro: function (name, args) {
     var _r28 = unstash(Array.prototype.slice.call(arguments, 2));
     var _id21 = _r28;
     var body = cut(_id21, 0);
@@ -152,7 +152,7 @@ var setup = function () {
     eval(form);
     return(form);
   }});
-  setenv("define-symbol", {_stash: true, macro: function (name, expansion) {
+  setenv("defsym", {_stash: true, macro: function (name, expansion) {
     setenv(name, {_stash: true, symbol: expansion});
     var _x104 = ["setenv", ["quote", name]];
     _x104.symbol = ["quote", expansion];
@@ -217,7 +217,7 @@ var setup = function () {
       var _id35 = _x152;
       var name = _id35[0];
       var exp = _id35[1];
-      return(macroexpand(["define-symbol", name, exp]));
+      return(macroexpand(["defsym", name, exp]));
     }, pair(expansions));
     var _x151 = join(["do"], macroexpand(body));
     drop(environment);
@@ -364,15 +364,12 @@ var setup = function () {
       return(["return", join(["obj"], x)]);
     }
   }});
-  setenv("undefined?", {_stash: true, macro: function (_var) {
+  setenv("undef?", {_stash: true, macro: function (_var) {
     if (target === "js") {
       return(["=", ["typeof", _var], "\"undefined\""]);
     } else {
       return(["=", _var, "nil"]);
     }
-  }});
-  setenv("set-default", {_stash: true, macro: function (_var, val) {
-    return(["if", ["undefined?", _var], ["set", _var, val]]);
   }});
   setenv("%js", {_stash: true, macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));
@@ -386,13 +383,19 @@ var setup = function () {
       return(join(["do"], forms));
     }
   }});
-  return(setenv("during-compile", {_stash: true, macro: function () {
+  setenv("eval-compile", {_stash: true, macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));
     eval(join(["do"], forms));
     return(undefined);
+  }});
+  return(setenv("eval-once", {_stash: true, macro: function () {
+    var forms = unstash(Array.prototype.slice.call(arguments, 0));
+    var x = unique("x");
+    return(join(["when", ["undef?", x], ["set", x, true]], forms));
   }}));
 };
-if (typeof(environment) === "undefined") {
+if (typeof(_x331) === "undefined") {
+  _x331 = true;
   environment = [{}];
   target = "js";
 }
@@ -627,11 +630,11 @@ find = function (f, t) {
   }
 };
 first = function (f, l) {
-  var _x331 = l;
-  var _n11 = _35(_x331);
+  var _x333 = l;
+  var _n11 = _35(_x333);
   var _i11 = 0;
   while (_i11 < _n11) {
-    var x = _x331[_i11];
+    var x = _x333[_i11];
     var y = f(x);
     if (y) {
       return(y);
@@ -669,11 +672,11 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var t = [];
-  var _x333 = x;
-  var _n12 = _35(_x333);
+  var _x335 = x;
+  var _n12 = _35(_x335);
   var _i12 = 0;
   while (_i12 < _n12) {
-    var v = _x333[_i12];
+    var v = _x335[_i12];
     var y = f(v);
     if (is63(y)) {
       add(t, y);
@@ -1011,8 +1014,8 @@ toplevel63 = function () {
   return(one63(environment));
 };
 setenv = function (k) {
-  var _r145 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _id53 = _r145;
+  var _r143 = unstash(Array.prototype.slice.call(arguments, 1));
+  var _id53 = _r143;
   var _keys = cut(_id53, 0);
   if (string63(k)) {
     var _e27;
@@ -1205,10 +1208,7 @@ var main = function () {
     }
   }
 };
-if (typeof(running42) === "undefined") {
-  running42 = false;
-}
-if (! running42) {
-  running42 = true;
+if (typeof(_x3) === "undefined") {
+  _x3 = true;
   main();
 }

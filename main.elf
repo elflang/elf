@@ -88,8 +88,6 @@
                 (print code)
               ((get system 'write-file) output code)))))))
 
-(set-default running* false)
-
-(unless running*
-  (set running* true)
+(eval-once
   (main))
+

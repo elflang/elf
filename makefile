@@ -10,12 +10,15 @@ all: *.js *.lua
 
 rebuild:
 	@make clean
+	@echo ""
 	@make -B
+	@echo ""
 	@make -B
+	@echo ""
 	@make -B
 
 clean:
-	@git checkout *.js *.lua
+	@sh -c 'for x in *.js *.lua; do git checkout $$x; done'
 
 %.js : %.elf
 	@echo $@

@@ -277,6 +277,12 @@
          (set ,x true)
          ,@forms)))
 
+  (mac assert (cond)
+    `(unless ,cond
+       (error 'assert)))
+
+  nil
+
   ;; Since we're within a wrapper function, the above definitions were
   ;; attached to a local compilation frame.  Normally this frame would
   ;; be dropped at the end of this wrapper function's scope.  Since we

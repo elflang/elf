@@ -390,14 +390,18 @@ var setup = function () {
     eval(join(["do"], forms));
     return(undefined);
   }});
-  return(setenv("eval-once", {_stash: true, macro: function () {
+  setenv("eval-once", {_stash: true, macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));
     var x = unique("x");
     return(join(["when", ["undef?", x], ["set", x, true]], forms));
-  }}));
+  }});
+  setenv("assert", {_stash: true, macro: function (cond) {
+    return(["unless", cond, ["error", ["quote", "assert"]]]);
+  }});
+  return(undefined);
 };
-if (typeof(_x331) === "undefined") {
-  _x331 = true;
+if (typeof(_x337) === "undefined") {
+  _x337 = true;
   environment = [{}];
   target = "js";
 }
@@ -632,11 +636,11 @@ find = function (f, t) {
   }
 };
 first = function (f, l) {
-  var _x333 = l;
-  var _n11 = _35(_x333);
+  var _x339 = l;
+  var _n11 = _35(_x339);
   var _i11 = 0;
   while (_i11 < _n11) {
-    var x = _x333[_i11];
+    var x = _x339[_i11];
     var y = f(x);
     if (y) {
       return(y);
@@ -674,11 +678,11 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var t = [];
-  var _x335 = x;
-  var _n12 = _35(_x335);
+  var _x341 = x;
+  var _n12 = _35(_x341);
   var _i12 = 0;
   while (_i12 < _n12) {
-    var v = _x335[_i12];
+    var v = _x341[_i12];
     var y = f(v);
     if (is63(y)) {
       add(t, y);
@@ -1016,8 +1020,8 @@ toplevel63 = function () {
   return(one63(environment));
 };
 setenv = function (k) {
-  var _r143 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _id53 = _r143;
+  var _r145 = unstash(Array.prototype.slice.call(arguments, 1));
+  var _id53 = _r145;
   var _keys = cut(_id53, 0);
   if (string63(k)) {
     var _e28;
@@ -1076,10 +1080,10 @@ setenv("bang", {_stash: true, tr: true, special: function () {
     return("#!/usr/bin/env luajit\n\n");
   }
 }});
-setenv("elf", {_stash: true, macro: function (_x378) {
+setenv("elf", {_stash: true, macro: function (_x384) {
   var _e30;
-  if (is63(_x378)) {
-    _e30 = _x378;
+  if (is63(_x384)) {
+    _e30 = _x384;
   } else {
     _e30 = ".";
   }

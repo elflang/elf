@@ -369,14 +369,18 @@ local function setup()
     eval(join({"do"}, forms))
     return(nil)
   end})
-  return(setenv("eval-once", {_stash = true, macro = function (...)
+  setenv("eval-once", {_stash = true, macro = function (...)
     local forms = unstash({...})
     local x = unique("x")
     return(join({"when", {"undef?", x}, {"set", x, true}}, forms))
-  end}))
+  end})
+  setenv("assert", {_stash = true, macro = function (cond)
+    return({"unless", cond, {"error", {"quote", "assert"}}})
+  end})
+  return(nil)
 end
-if _x362 == nil then
-  _x362 = true
+if _x368 == nil then
+  _x368 = true
   environment = {{}}
   target = "lua"
 end
@@ -576,11 +580,11 @@ function find(f, t)
   end
 end
 function first(f, l)
-  local _x365 = l
-  local _n11 = _35(_x365)
+  local _x371 = l
+  local _n11 = _35(_x371)
   local _i11 = 0
   while _i11 < _n11 do
-    local x = _x365[_i11 + 1]
+    local x = _x371[_i11 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -609,11 +613,11 @@ function sort(l, f)
 end
 function map(f, x)
   local t = {}
-  local _x367 = x
-  local _n12 = _35(_x367)
+  local _x373 = x
+  local _n12 = _35(_x373)
   local _i12 = 0
   while _i12 < _n12 do
-    local v = _x367[_i12 + 1]
+    local v = _x373[_i12 + 1]
     local y = f(v)
     if is63(y) then
       add(t, y)
@@ -900,8 +904,8 @@ function toplevel63()
   return(one63(environment))
 end
 function setenv(k, ...)
-  local _r140 = unstash({...})
-  local _id53 = _r140
+  local _r142 = unstash({...})
+  local _id53 = _r142
   local _keys = cut(_id53, 0)
   if string63(k) then
     local _e14
@@ -949,10 +953,10 @@ setenv("bang", {_stash = true, tr = true, special = function ()
     return("#!/usr/bin/env luajit\n\n")
   end
 end})
-setenv("elf", {_stash = true, macro = function (_x417)
+setenv("elf", {_stash = true, macro = function (_x423)
   local _e15
-  if is63(_x417) then
-    _e15 = _x417
+  if is63(_x423) then
+    _e15 = _x423
   else
     _e15 = "."
   end

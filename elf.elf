@@ -1,4 +1,5 @@
 ;; -*- mode: lisp -*-
+(bang)
 
 ;; This file defines a small runtime that implements the Elf language.
 ;;
@@ -625,12 +626,13 @@
 
 (setup)
 
-(defspecial bang ()
-  (cat "#!/usr/bin/env " (%js "node") (%lua "luajit")))
+(defspecial bang () :tr
+  (if (= target 'js)
+      "#!/usr/bin/env node\n\n"
+    "#!/usr/bin/env luajit\n\n"))
 
-(mac elf ()
-  `(do (bang)
-       (when (undef? elf*)
+(mac elf ((o path "."))
+  `(do (when (undef? elf*)
          (def elf* true)
          (%js
            (unless (undef? process)
@@ -643,6 +645,19 @@
          (%lua
            ,(let p '(get (debug.getinfo 1 "S") 'source)
               `(cat! package.path
-                 ";" (or ((get ,p 'match) ,p "[@]?(.*/)[^/]+[.]lua") "./") "?.lua"))))
+                 ";" (or ((get ,p 'match) ,p "[@]?(.*/)[^/]+[.]lua") "./") ,(escape path) "/?.lua"))))
        (require 'elf)))
+
+(mac main? ()
+  `(do (%js (= require.main module))
+       (%lua (~pcall getfenv 4))))
+
+(mac main l
+  `(when (main?)
+     (elf)
+     ,@l))
+
+(main
+  (require 'elf-main)
+  (elf-main))
 

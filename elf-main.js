@@ -1,17 +1,3 @@
-#!/usr/bin/env luajit;
-if (typeof(elf42) === "undefined") {
-  elf42 = true;
-  if (!( typeof(process) === "undefined")) {
-    if (process.env.NODE_PATH && process.env.NODE_PATH.length > 0) {
-      process.env.NODE_PATH = process.env.NODE_PATH + ":" + __dirname;
-    } else {
-      process.env.NODE_PATH = __dirname;
-    }
-    var _Module = require("module");
-    _Module._initPaths();
-  }
-}
-require("elf");
 reader = require("reader");
 compiler = require("compiler");
 system = require("system");
@@ -67,7 +53,7 @@ load = function (path) {
 var run_file = function (path) {
   return(compiler.run(system["read-file"](path)));
 };
-var usage = function () {
+elf_usage = function () {
   print("usage: elf [options] <object files>");
   print("options:");
   print("  -c <input>\tCompile input file");
@@ -76,10 +62,10 @@ var usage = function () {
   print("  -e <expr>\tExpression to evaluate");
   return(system.exit());
 };
-var main = function () {
+elf_main = function () {
   var arg = hd(system.argv);
   if (arg === "-h" || arg === "--help") {
-    usage();
+    elf_usage();
   }
   var pre = [];
   var input = undefined;
@@ -120,11 +106,11 @@ var main = function () {
     }
     i = i + 1;
   }
-  var _x6 = pre;
-  var _n = _35(_x6);
+  var _x2 = pre;
+  var _n = _35(_x2);
   var _i = 0;
   while (_i < _n) {
-    var file = _x6[_i];
+    var file = _x2[_i];
     run_file(file);
     _i = _i + 1;
   }
@@ -146,7 +132,3 @@ var main = function () {
     }
   }
 };
-if (typeof(_x7) === "undefined") {
-  _x7 = true;
-  main();
-}

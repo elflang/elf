@@ -1,9 +1,3 @@
-#!/usr/bin/env luajit
-if elf42 == nil then
-  elf42 = true
-  package.path = package.path .. ";" .. (debug.getinfo(1, "S").source.match(debug.getinfo(1, "S").source, "[@]?(.*/)[^/]+[.]lua") or "./") .. "?.lua"
-end
-require("elf")
 reader = require("reader")
 compiler = require("compiler")
 system = require("system")
@@ -73,7 +67,7 @@ end
 local function run_file(path)
   return(compiler.run(system["read-file"](path)))
 end
-local function usage()
+function elf_usage()
   print("usage: elf [options] <object files>")
   print("options:")
   print("  -c <input>\tCompile input file")
@@ -82,10 +76,10 @@ local function usage()
   print("  -e <expr>\tExpression to evaluate")
   return(system.exit())
 end
-local function main()
+function elf_main()
   local arg = hd(system.argv)
   if arg == "-h" or arg == "--help" then
-    usage()
+    elf_usage()
   end
   local pre = {}
   local input = nil
@@ -151,8 +145,4 @@ local function main()
       return(system["write-file"](output, code))
     end
   end
-end
-if _x5 == nil then
-  _x5 = true
-  main()
 end

@@ -1,4 +1,3 @@
-#!/usr/bin/env luajit;
 if (typeof(elf42) === "undefined") {
   elf42 = true;
   if (!( typeof(process) === "undefined")) {

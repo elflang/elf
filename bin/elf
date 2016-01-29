@@ -24,10 +24,10 @@ fi
 
 case $host in
     node*)
-        code=elf-main.js
+        code=elf.js
         export NODE_PATH="$NODE_PATH:${home}";;
     *)
-        code=elf-main.lua
+        code=elf.lua
         export LUA_PATH="$LUA_PATH;${home}/?.lua;;";;
 esac
 

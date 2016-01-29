@@ -1,7 +1,5 @@
 ;; -*- mode: lisp -*-
 
-(elf)
-
 (def reader (require 'reader))
 (def compiler (require 'compiler))
 (def system (require 'system))
@@ -48,7 +46,7 @@
 (var run-file (path)
   (compiler.run (system.read-file path)))
 
-(var usage ()
+(def elf-usage ()
   (print "usage: elf [options] <object files>")
   (print "options:")
   (print "  -c <input>\tCompile input file")
@@ -57,11 +55,11 @@
   (print "  -e <expr>\tExpression to evaluate")
   (system.exit))
 
-(var main ()
+(def elf-main ()
   (let arg (hd system.argv)
     (when (or (= arg "-h")
               (= arg "--help"))
-      (usage)))
+      (elf-usage)))
   (let (pre ()
         input nil
         output nil
@@ -89,7 +87,4 @@
             (if (or (nil? output) (= output "-"))
                 (print code)
               (system.write-file output code)))))))
-
-(eval-once
-  (main))
 

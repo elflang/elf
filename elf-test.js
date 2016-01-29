@@ -1,3 +1,4 @@
+require("elf");
 var passed = 0;
 var failed = 0;
 var tests = [];
@@ -22,7 +23,7 @@ setenv("deftest", {_stash: true, macro: function (name) {
   var body = cut(_id1, 0);
   return(["add", "tests", ["list", ["quote", name], join(["fn", join()], body)]]);
 }});
-run = function () {
+run_tests = function () {
   var _o = tests;
   var _i = undefined;
   for (_i in _o) {
@@ -4868,3 +4869,7 @@ add(tests, ["parameters", function () {
     return(passed);
   }
 }]);
+if (typeof(_x980) === "undefined") {
+  _x980 = true;
+  run_tests();
+}

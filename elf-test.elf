@@ -1,5 +1,7 @@
 ;; -*- mode: lisp -*-
 
+(require 'elf)
+
 (var passed 0)
 (var failed 0)
 (var tests ())
@@ -24,7 +26,7 @@
 (mac deftest (name rest: body)
   `(add tests (list ',name (fn () ,@body))))
 
-(def run ()
+(def run-tests ()
   (each ((name f)) tests
     (let result (f)
       (when (string? result)
@@ -910,3 +912,7 @@ c"
     (test= '(10 20 42) (f 10 bar: 20 (list foo: 42))))
   (let f (fn args args)
     (test= '(1 2 3) (f 1 2 3))))
+
+(eval-once
+  (run-tests))
+

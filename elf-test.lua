@@ -1,3 +1,4 @@
+require("elf")
 local passed = 0
 local failed = 0
 local tests = {}
@@ -22,7 +23,7 @@ setenv("deftest", {_stash = true, macro = function (name, ...)
   local body = cut(_id1, 0)
   return({"add", "tests", {"list", {"quote", name}, join({"fn", join()}, body)}})
 end})
-function run()
+function run_tests()
   local _o = tests
   local _i = nil
   for _i in next, _o do
@@ -4961,3 +4962,7 @@ add(tests, {"parameters", function ()
     return(passed)
   end
 end})
+if _x1026 == nil then
+  _x1026 = true
+  run_tests()
+end

@@ -962,21 +962,21 @@ setenv("elf", {_stash = true, macro = function (_x423)
   end
   local path = _e15
   local p = {"get", {{"get", "debug", {"quote", "getinfo"}}, 1, "\"S\""}, {"quote", "source"}}
-  return({"do", {"when", {"undef?", "elf*"}, {"def", "elf*", true}, {"%js", {"unless", {"undef?", "process"}, {"let-symbol", {"p", {"get", {"get", "process", {"quote", "env"}}, {"quote", "NODE_PATH"}}}, {"if", {"and", "p", {">", {"get", "p", {"quote", "length"}}, 0}}, {"cat!", "p", "\":\"", "__dirname"}, {"set", "p", "__dirname"}}}, {"let", "Module", {"require", {"quote", "module"}}, {{"get", "Module", {"quote", "_initPaths"}}}}}}, {"%lua", {"cat!", {"get", "package", {"quote", "path"}}, "\";\"", {"or", {{"get", p, {"quote", "match"}}, p, "\"[@]?(.*/)[^/]+[.]lua\""}, "\"./\""}, escape(path), "\"/?.lua\""}}}, {"require", {"quote", "elf"}}})
+  return({"do", {"when", {"undef?", "elf*"}, {"def", "elf*", true}, {"%js", {"unless", {"undef?", "process"}, {"let-symbol", {"p", {"get", {"get", "process", {"quote", "env"}}, {"quote", "NODE_PATH"}}}, {"if", {"and", "p", {">", {"get", "p", {"quote", "length"}}, 0}}, {"cat!", "p", "\":\"", "__dirname"}, {"set", "p", "__dirname"}}}, {"let", "Module", {"require", {"quote", "module"}}, {{"get", "Module", {"quote", "_initPaths"}}}}}}, {"%lua", {"cat!", {"get", "package", {"quote", "path"}}, "\";\"", {"or", {{"get", p, {"quote", "match"}}, p, "\"[@]?(.*/)[^/]+[.]lua\""}, "\"./\""}, escape(path), "\"/?.lua\""}}, {"require", {"quote", "elf"}}}})
 end})
 setenv("main?", {_stash = true, macro = function ()
-  return({"do", {"%js", {"=", {"get", "require", {"quote", "main"}}, "module"}}, {"%lua", {"~pcall", "getfenv", 4}}})
+  return({"do", {"%js", {"=", {"get", "require", {"quote", "main"}}, "module"}}, {"%lua", {"pcall", "getfenv", 4}}})
 end})
 setenv("main", {_stash = true, macro = function (...)
   local l = unstash({...})
   return(join({"when", {"main?"}, {"elf"}}, l))
 end})
-if not pcall(getfenv, 4) then
+if pcall(getfenv, 4) then
   if elf42 == nil then
     elf42 = true
     package.path = package.path .. ";" .. (debug.getinfo(1, "S").source.match(debug.getinfo(1, "S").source, "[@]?(.*/)[^/]+[.]lua") or "./") .. "." .. "/?.lua"
+    require("elf")
   end
-  require("elf")
   require("elf-main")
   elf_main()
 end

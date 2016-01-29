@@ -651,12 +651,12 @@
          (%lua
            ,(let p '(get (debug.getinfo 1 "S") 'source)
               `(cat! package.path
-                 ";" (or ((get ,p 'match) ,p "[@]?(.*/)[^/]+[.]lua") "./") ,(escape path) "/?.lua"))))
-       (require 'elf)))
+                 ";" (or ((get ,p 'match) ,p "[@]?(.*/)[^/]+[.]lua") "./") ,(escape path) "/?.lua")))
+         (require 'elf))))
 
 (mac main? ()
   `(do (%js (= require.main module))
-       (%lua (~pcall getfenv 4))))
+       (%lua (pcall getfenv 4))))
 
 (mac main l
   `(when (main?)

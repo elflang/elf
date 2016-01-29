@@ -1089,10 +1089,10 @@ setenv("elf", {_stash: true, macro: function (_x384) {
   }
   var path = _e30;
   var p = ["get", [["get", "debug", ["quote", "getinfo"]], 1, "\"S\""], ["quote", "source"]];
-  return(["do", ["when", ["undef?", "elf*"], ["def", "elf*", true], ["%js", ["unless", ["undef?", "process"], ["let-symbol", ["p", ["get", ["get", "process", ["quote", "env"]], ["quote", "NODE_PATH"]]], ["if", ["and", "p", [">", ["get", "p", ["quote", "length"]], 0]], ["cat!", "p", "\":\"", "__dirname"], ["set", "p", "__dirname"]]], ["let", "Module", ["require", ["quote", "module"]], [["get", "Module", ["quote", "_initPaths"]]]]]], ["%lua", ["cat!", ["get", "package", ["quote", "path"]], "\";\"", ["or", [["get", p, ["quote", "match"]], p, "\"[@]?(.*/)[^/]+[.]lua\""], "\"./\""], escape(path), "\"/?.lua\""]]], ["require", ["quote", "elf"]]]);
+  return(["do", ["when", ["undef?", "elf*"], ["def", "elf*", true], ["%js", ["unless", ["undef?", "process"], ["let-symbol", ["p", ["get", ["get", "process", ["quote", "env"]], ["quote", "NODE_PATH"]]], ["if", ["and", "p", [">", ["get", "p", ["quote", "length"]], 0]], ["cat!", "p", "\":\"", "__dirname"], ["set", "p", "__dirname"]]], ["let", "Module", ["require", ["quote", "module"]], [["get", "Module", ["quote", "_initPaths"]]]]]], ["%lua", ["cat!", ["get", "package", ["quote", "path"]], "\";\"", ["or", [["get", p, ["quote", "match"]], p, "\"[@]?(.*/)[^/]+[.]lua\""], "\"./\""], escape(path), "\"/?.lua\""]], ["require", ["quote", "elf"]]]]);
 }});
 setenv("main?", {_stash: true, macro: function () {
-  return(["do", ["%js", ["=", ["get", "require", ["quote", "main"]], "module"]], ["%lua", ["~pcall", "getfenv", 4]]]);
+  return(["do", ["%js", ["=", ["get", "require", ["quote", "main"]], "module"]], ["%lua", ["pcall", "getfenv", 4]]]);
 }});
 setenv("main", {_stash: true, macro: function () {
   var l = unstash(Array.prototype.slice.call(arguments, 0));
@@ -1110,8 +1110,8 @@ if (require.main === module) {
       var _Module = require("module");
       _Module._initPaths();
     }
+    require("elf");
   }
-  require("elf");
   require("elf-main");
   elf_main();
 }

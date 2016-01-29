@@ -939,8 +939,4 @@ sinh = math.sinh
 sqrt = math.sqrt
 tan = math.tan
 tanh = math.tanh
-function reload(module)
-  package.loaded[module] = nil
-  return(require(module))
-end
 setup()

@@ -45,4 +45,8 @@ else
   _e = {}
 end
 local argv = _e
-return({["write-file"] = write_file, write = write, ["read-file"] = read_file, argv = argv, ["path-join"] = path_join, ["get-environment-variable"] = get_environment_variable, exit = exit, ["file-exists?"] = file_exists63, ["path-separator"] = path_separator})
+local function reload(module)
+  package.loaded[module] = nil
+  return(require(module))
+end
+return({["write-file"] = write_file, write = write, ["read-file"] = read_file, argv = argv, reload = reload, ["path-join"] = path_join, ["file-exists?"] = file_exists63, ["get-environment-variable"] = get_environment_variable, exit = exit, ["path-separator"] = path_separator})

@@ -1066,8 +1066,4 @@ sinh = math.sinh;
 sqrt = math.sqrt;
 tan = math.tan;
 tanh = math.tanh;
-reload = function (module) {
-  delete require.cache[require.resolve(module)];
-  return(require(module));
-};
 setup();

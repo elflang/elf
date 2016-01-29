@@ -74,6 +74,11 @@
   (var argv
     (if (is? arg) arg ())))
 
+(var reload (module)
+  (%lua (wipe (get package.loaded module)))
+  (%js (wipe (get require.cache (require.resolve module))))
+  (require module))
+
 (export read-file
         write-file
         file-exists?
@@ -82,4 +87,5 @@
         get-environment-variable
         write
         exit
-        argv)
+        argv
+        reload)

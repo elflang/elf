@@ -623,10 +623,5 @@
 (def tan math.tan)
 (def tanh math.tanh)
 
-(def reload (module)
-  (%lua (wipe (get package.loaded module)))
-  (%js (wipe (get require.cache (require.resolve module))))
-  (require module))
-
 (setup)
 

@@ -269,11 +269,11 @@
     (when (= target 'lua)
       `(do ,@forms)))
 
-  (define-macro define-js l
-    `(%js (define ,@l)))
+  (define-macro define-js forms
+    `(%js (define ,@forms)))
 
-  (define-macro define-lua l
-    `(%lua (define ,@l)))
+  (define-macro define-lua forms
+    `(%lua (define ,@forms)))
 
   (define-macro during-compile forms
     (eval `(do ,@forms))

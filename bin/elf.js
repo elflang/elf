@@ -387,12 +387,12 @@ var setup = function () {
     }
   }});
   setenv("define-js", {_stash: true, macro: function () {
-    var l = unstash(Array.prototype.slice.call(arguments, 0));
-    return(["%js", join(["define"], l)]);
+    var forms = unstash(Array.prototype.slice.call(arguments, 0));
+    return(["%js", join(["define"], forms)]);
   }});
   setenv("define-lua", {_stash: true, macro: function () {
-    var l = unstash(Array.prototype.slice.call(arguments, 0));
-    return(["%lua", join(["define"], l)]);
+    var forms = unstash(Array.prototype.slice.call(arguments, 0));
+    return(["%lua", join(["define"], forms)]);
   }});
   return(setenv("during-compile", {_stash: true, macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));

@@ -4,32 +4,33 @@
 
   (define fs (require 'fs))
 
+  (define path (require 'path))
+
   (define read-file (path)
-    ((get fs 'readFileSync) path 'utf8))
+    (fs.readFileSync path 'utf8))
 
   (define write-file (path data)
-    ((get fs 'writeFileSync) path data 'utf8))
+    (fs.writeFileSync path data 'utf8))
 
   (define file-exists? (path)
-    ((get fs 'existsSync) path 'utf8))
+    (fs.existsSync path 'utf8))
 
-  (define path-separator (get (require 'path) 'sep))
+  (define path-separator path.sep)
 
   (define path-join parts
     (or (reduce (fn (x y) (cat x path-separator y)) parts) ""))
 
   (define get-environment-variable (name)
-    (get (get process 'env) name))
+    (get process.env name))
 
   (define write (x)
-    (let out (get process 'stdout)
-      ((get out 'write) x)))
+    (process.stdout.write x))
 
   (define exit (code)
-    ((get process 'exit) code))
+    (process.exit code))
 
   (define argv
-    (cut (get process 'argv) 2)))
+    (cut process.argv 2)))
 
 (%lua
 
@@ -38,37 +39,37 @@
       (unless h
         (error e))
       (with x (f h)
-        ((get h 'close) h))))
+        (h.close h))))
 
   (let-macro ((with-file ((var path mode) rest: body)
                `(call-with-file (fn (,var) ,@body)
-                                ((get io 'open) ,path ,mode))))
+                                (io.open ,path ,mode))))
 
     (define read-file (path)
       (with-file (f path)
-        ((get f 'read) f '*a)))
+        (f.read f '*a)))
 
     (define write-file (path data)
       (with-file (f path 'w)
-        ((get f 'write) f data)))
+        (f.write f data)))
 
     (define file-exists? (path)
       (with-file (f path)
         (is? f))))
 
-  (define path-separator (char (get (get _G 'package) 'config) 0))
+  (define path-separator (char _G.package.config 0))
 
   (define path-join parts
     (or (reduce (fn (x y) (cat x path-separator y)) parts) ""))
 
   (define get-environment-variable (name)
-    ((get os 'getenv) name))
+    (os.getenv name))
 
   (define write (x)
-    ((get io 'write) x))
+    (io.write x))
 
   (define exit (code)
-    ((get os 'exit) code))
+    (os.exit code))
 
   (define argv
     (if (is? arg) arg ())))

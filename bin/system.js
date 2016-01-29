@@ -1,4 +1,5 @@
 var fs = require("fs");
+var path = require("path");
 var read_file = function (path) {
   return(fs.readFileSync(path, "utf8"));
 };
@@ -8,7 +9,7 @@ var write_file = function (path, data) {
 var file_exists63 = function (path) {
   return(fs.existsSync(path, "utf8"));
 };
-var path_separator = require("path").sep;
+var path_separator = path.sep;
 var path_join = function () {
   var parts = unstash(Array.prototype.slice.call(arguments, 0));
   return(reduce(function (x, y) {
@@ -19,8 +20,7 @@ var get_environment_variable = function (name) {
   return(process.env[name]);
 };
 var write = function (x) {
-  var out = process.stdout;
-  return(out.write(x));
+  return(process.stdout.write(x));
 };
 var exit = function (code) {
   return(process.exit(code));

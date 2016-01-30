@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 var setup = function () {
   setenv("bag", {_stash: true, macro: function (v, t) {
     var _r2 = unstash(Array.prototype.slice.call(arguments, 2));
@@ -424,10 +422,13 @@ var setup = function () {
   setenv("assert", {_stash: true, macro: function (cond) {
     return(["unless", cond, ["error", ["quote", "assert"]]]);
   }});
+  setenv("elf", {_stash: true, macro: function () {
+    return(["do", ["require", ["quote", "elf"]], ["def", "reader", ["require", ["quote", "reader"]]], ["def", "compiler", ["require", ["quote", "compiler"]]], ["def", "system", ["require", ["quote", "system"]]]]);
+  }});
   return(undefined);
 };
-if (typeof(_x361) === "undefined") {
-  _x361 = true;
+if (typeof(_x385) === "undefined") {
+  _x385 = true;
   environment = [{}];
   target = "js";
 }
@@ -662,11 +663,11 @@ find = function (f, t) {
   }
 };
 first = function (f, l) {
-  var _x363 = l;
-  var _n13 = _35(_x363);
+  var _x387 = l;
+  var _n13 = _35(_x387);
   var _i13 = 0;
   while (_i13 < _n13) {
-    var x = _x363[_i13];
+    var x = _x387[_i13];
     var y = f(x);
     if (y) {
       return(y);
@@ -704,11 +705,11 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var t = [];
-  var _x365 = x;
-  var _n14 = _35(_x365);
+  var _x389 = x;
+  var _n14 = _35(_x389);
   var _i14 = 0;
   while (_i14 < _n14) {
-    var v = _x365[_i14];
+    var v = _x389[_i14];
     var y = f(v);
     if (is63(y)) {
       add(t, y);
@@ -1046,8 +1047,8 @@ toplevel63 = function () {
   return(one63(environment));
 };
 setenv = function (k) {
-  var _r147 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _id57 = _r147;
+  var _r149 = unstash(Array.prototype.slice.call(arguments, 1));
+  var _id57 = _r149;
   var _keys = cut(_id57, 0);
   if (string63(k)) {
     var _e27;
@@ -1099,24 +1100,3 @@ sqrt = math.sqrt;
 tan = math.tan;
 tanh = math.tanh;
 setup();
-setenv("bang", {_stash: true, tr: true, special: function () {
-  if (target === "js") {
-    return("#!/usr/bin/env node\n\n");
-  } else {
-    return("#!/usr/bin/env luajit\n\n");
-  }
-}});
-setenv("elf", {_stash: true, macro: function () {
-  return(["require", ["quote", "elf"]]);
-}});
-setenv("main?", {_stash: true, macro: function () {
-  return(["do", ["%js", ["is", ["get", "require", ["quote", "main"]], "module"]], ["%lua", ["~pcall", "getfenv", 4]]]);
-}});
-setenv("main", {_stash: true, macro: function () {
-  var l = unstash(Array.prototype.slice.call(arguments, 0));
-  return(join(["when", ["main?"], ["elf"]], l));
-}});
-if (require.main === module) {
-  require("elf-main");
-  elf_main();
-}

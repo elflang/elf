@@ -1,4 +1,7 @@
 require("elf");
+reader = require("reader");
+compiler = require("compiler");
+system = require("system");
 var passed = 0;
 var failed = 0;
 var tests = [];

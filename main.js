@@ -1,3 +1,4 @@
+require("elf");
 reader = require("reader");
 compiler = require("compiler");
 system = require("system");
@@ -132,3 +133,4 @@ elf_main = function () {
     }
   }
 };
+elf_main();

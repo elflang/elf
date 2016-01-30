@@ -1,3 +1,4 @@
+require("elf")
 reader = require("reader")
 compiler = require("compiler")
 system = require("system")
@@ -146,3 +147,4 @@ function elf_main()
     end
   end
 end
+elf_main()

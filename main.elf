@@ -1,8 +1,6 @@
 ;; -*- mode: lisp -*-
 
-(def reader (require 'reader))
-(def compiler (require 'compiler))
-(def system (require 'system))
+(elf)
 
 (var eval-print (form)
   (let ((ok x trace) (guard (compiler.eval form)))
@@ -88,4 +86,6 @@
             (if (or (nil? output) (is output "-"))
                 (print code)
               (system.write-file output code)))))))
+
+(elf-main)
 

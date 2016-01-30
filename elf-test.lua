@@ -1,4 +1,7 @@
 require("elf")
+reader = require("reader")
+compiler = require("compiler")
+system = require("system")
 local passed = 0
 local failed = 0
 local tests = {}

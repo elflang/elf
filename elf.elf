@@ -1,5 +1,4 @@
 ;; -*- mode: lisp -*-
-(bang)
 
 ;; This file defines a small runtime that implements the Elf language.
 ;;
@@ -292,6 +291,12 @@
   (mac assert (cond)
     `(unless ,cond
        (error 'assert)))
+
+  (mac elf ()
+    `(do (require 'elf)
+         (def reader (require 'reader))
+         (def compiler (require 'compiler))
+         (def system (require 'system))))
 
   nil
 
@@ -643,42 +648,4 @@
 (def tanh math.tanh)
 
 (setup)
-
-(defspecial bang () :tr
-  (if (is target 'js)
-      "#!/usr/bin/env node\n\n"
-    "#!/usr/bin/env luajit\n\n"))
-
-; (mac elf ((o path "."))
-;   `(do (when (undef? elf*)
-;          (def elf* true)
-;          (%js
-;            (unless (undef? process)
-;              (let-symbol (p process.env.NODE_PATH)
-;                (if (and p (> p.length 0))
-;                    (cat! p ":" __dirname)
-;                  (= p __dirname)))
-;              (let Module (require 'module)
-;                (Module._initPaths))))
-;          (%lua
-;            ,(let p '(get (debug.getinfo 1 "S") 'source)
-;               `(cat! package.path
-;                  ";" (or ((get ,p 'match) ,p "[@]?(.*/)[^/]+[.]lua") "./") ,(escape path) "/?.lua")))
-;          (require 'elf))))
-
-(mac elf ()
-  `(require 'elf))
-
-(mac main? ()
-  `(do (%js (is require.main module))
-       (%lua (~pcall getfenv 4))))
-
-(mac main l
-  `(when (main?)
-     (elf)
-     ,@l))
-
-(when (main?)
-  (require 'elf-main)
-  (elf-main))
 

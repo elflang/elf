@@ -1,5 +1,3 @@
-#!/usr/bin/env luajit
-
 local function setup()
   setenv("bag", {_stash = true, macro = function (v, t, ...)
     local _r2 = unstash({...})
@@ -403,10 +401,13 @@ local function setup()
   setenv("assert", {_stash = true, macro = function (cond)
     return({"unless", cond, {"error", {"quote", "assert"}}})
   end})
+  setenv("elf", {_stash = true, macro = function ()
+    return({"do", {"require", {"quote", "elf"}}, {"def", "reader", {"require", {"quote", "reader"}}}, {"def", "compiler", {"require", {"quote", "compiler"}}}, {"def", "system", {"require", {"quote", "system"}}}})
+  end})
   return(nil)
 end
-if _x394 == nil then
-  _x394 = true
+if _x418 == nil then
+  _x418 = true
   environment = {{}}
   target = "lua"
 end
@@ -606,11 +607,11 @@ function find(f, t)
   end
 end
 function first(f, l)
-  local _x397 = l
-  local _n13 = _35(_x397)
+  local _x421 = l
+  local _n13 = _35(_x421)
   local _i13 = 0
   while _i13 < _n13 do
-    local x = _x397[_i13 + 1]
+    local x = _x421[_i13 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -639,11 +640,11 @@ function sort(l, f)
 end
 function map(f, x)
   local t = {}
-  local _x399 = x
-  local _n14 = _35(_x399)
+  local _x423 = x
+  local _n14 = _35(_x423)
   local _i14 = 0
   while _i14 < _n14 do
-    local v = _x399[_i14 + 1]
+    local v = _x423[_i14 + 1]
     local y = f(v)
     if is63(y) then
       add(t, y)
@@ -930,8 +931,8 @@ function toplevel63()
   return(one63(environment))
 end
 function setenv(k, ...)
-  local _r144 = unstash({...})
-  local _id57 = _r144
+  local _r146 = unstash({...})
+  local _id57 = _r146
   local _keys = cut(_id57, 0)
   if string63(k) then
     local _e13
@@ -972,24 +973,3 @@ sqrt = math.sqrt
 tan = math.tan
 tanh = math.tanh
 setup()
-setenv("bang", {_stash = true, tr = true, special = function ()
-  if target == "js" then
-    return("#!/usr/bin/env node\n\n")
-  else
-    return("#!/usr/bin/env luajit\n\n")
-  end
-end})
-setenv("elf", {_stash = true, macro = function ()
-  return({"require", {"quote", "elf"}})
-end})
-setenv("main?", {_stash = true, macro = function ()
-  return({"do", {"%js", {"is", {"get", "require", {"quote", "main"}}, "module"}}, {"%lua", {"~pcall", "getfenv", 4}}})
-end})
-setenv("main", {_stash = true, macro = function (...)
-  local l = unstash({...})
-  return(join({"when", {"main?"}, {"elf"}}, l))
-end})
-if not pcall(getfenv, 4) then
-  require("elf-main")
-  elf_main()
-end

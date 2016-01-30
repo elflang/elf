@@ -114,7 +114,7 @@ function elf_main()
         end
       end
     else
-      if not _61("-", char(a, 0)) then
+      if not( "-" == char(a, 0)) then
         add(pre, a)
       end
     end

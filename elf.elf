@@ -326,7 +326,7 @@
 (def inf (/ 1 0))
 
 (def nan? (n)
-  (~= n n))
+  (~is n n))
 
 (def inf? (n)
   (or (is n inf) (is n -inf)))

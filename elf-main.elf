@@ -79,7 +79,7 @@
                         (is a "-o") (assign output val)
                         (is a "-t") (assign target1 val)
                         (is a "-e") (assign expr val)))))
-            (~= "-" (char a 0)) (add pre a))))
+            (~is "-" (char a 0)) (add pre a))))
     (step file pre
       (run-file file))
     (if (nil? input) (if expr (rep expr) (repl))

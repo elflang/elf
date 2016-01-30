@@ -24,7 +24,7 @@
       (if (nil? c) (break)
           (get whitespace c) (read-char s)
           (is c ";")
-          (do (while (and c (~= c "\n"))
+          (do (while (and c (~is c "\n"))
                 (assign c (read-char s)))
               (skip-non-code s))
         (break)))))
@@ -80,8 +80,8 @@
 
 (var valid-access? (str)
   (and (> (# str) 2)
-       (~= "." (char str 0))
-       (~= "." (char str (edge str)))
+       (~is "." (char str 0))
+       (~is "." (char str (edge str)))
        (~search str "..")))
 
 (var parse-access (str)

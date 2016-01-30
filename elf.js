@@ -450,7 +450,7 @@ atom63 = function (x) {
 nan = 0 / 0;
 inf = 1 / 0;
 nan63 = function (n) {
-  return(! _61(n, n));
+  return(!( n === n));
 };
 inf63 = function (n) {
   return(n === inf || n === -inf);

@@ -73,7 +73,7 @@
 
 (var bias (k)
   (when (and (number? k)
-             (~= target (language)))
+             (~is target (language)))
     (if (is target 'js)
         (dec k)
       (inc k)))
@@ -179,7 +179,7 @@
     (let pruned
         (keep (fn (x)
                 (or (> (# x) 1)
-                    (~= (hd x) 'list)
+                    (~is (hd x) 'list)
                     (keys? x)))
               xs)
       (if (one? pruned)
@@ -393,7 +393,7 @@
 (var can-return? (form)
   (and (is? form)
        (or (atom? form)
-           (and (~= (hd form) 'return)
+           (and (~is (hd form) 'return)
                 (~statement? (hd form))))))
 
 (def compile (form :stmt)
@@ -427,7 +427,7 @@
   (and (~atom? form)
        (~infix? (hd form))
        (~literal? form)
-       (~= 'get (hd form))))
+       (~is 'get (hd form))))
 
 (var lower-do (args hoist stmt? tail?)
   (step x (almost args)

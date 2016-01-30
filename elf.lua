@@ -426,7 +426,7 @@ end
 nan = 0 / 0
 inf = 1 / 0
 function nan63(n)
-  return(not _61(n, n))
+  return(not( n == n))
 end
 function inf63(n)
   return(n == inf or n == -inf)

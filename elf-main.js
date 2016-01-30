@@ -100,7 +100,7 @@ elf_main = function () {
         }
       }
     } else {
-      if (! _61("-", char(a, 0))) {
+      if (!( "-" === char(a, 0))) {
         add(pre, a);
       }
     }

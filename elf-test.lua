@@ -1,7 +1,3 @@
-if elf42 == nil then
-  elf42 = true
-  package.path = package.path .. ";" .. (debug.getinfo(1, "S").source.match(debug.getinfo(1, "S").source, "[@]?(.*/)[^/]+[.]lua") or "./") .. "." .. "/?.lua"
-end
 require("elf")
 local passed = 0
 local failed = 0

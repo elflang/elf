@@ -250,28 +250,28 @@ local function setup()
     local o = unique("o")
     local n = unique("n")
     local i = unique("i")
-    local _e4
+    local _e3
     if atom63(x) then
-      _e4 = {i, x}
+      _e3 = {i, x}
     else
-      local _e5
+      local _e4
       if _35(x) > 1 then
-        _e5 = x
+        _e4 = x
       else
-        _e5 = {i, hd(x)}
+        _e4 = {i, hd(x)}
       end
-      _e4 = _e5
+      _e3 = _e4
     end
-    local _id43 = _e4
+    local _id43 = _e3
     local k = _id43[1]
     local v = _id43[2]
-    local _e6
+    local _e5
     if target == "lua" then
-      _e6 = body
+      _e5 = body
     else
-      _e6 = {join({"let", k, {"if", {"numeric?", k}, {"parseInt", k}, k}}, body)}
+      _e5 = {join({"let", k, {"if", {"numeric?", k}, {"parseInt", k}, k}}, body)}
     end
-    return({"let", {o, t, k, "nil"}, {"%for", o, k, join({"let", {v, {"get", o, k}}}, _e6)}})
+    return({"let", {o, t, k, "nil"}, {"%for", o, k, join({"let", {v, {"get", o, k}}}, _e5)}})
   end})
   setenv("for", {_stash = true, macro = function (i, to, ...)
     local _r56 = unstash({...})
@@ -437,21 +437,21 @@ end
 function cut(x, from, upto)
   local l = {}
   local j = 0
-  local _e7
+  local _e6
   if nil63(from) or from < 0 then
-    _e7 = 0
+    _e6 = 0
   else
-    _e7 = from
+    _e6 = from
   end
-  local i = _e7
+  local i = _e6
   local n = _35(x)
-  local _e8
+  local _e7
   if nil63(upto) or upto > n then
-    _e8 = n
+    _e7 = n
   else
-    _e8 = upto
+    _e7 = upto
   end
-  local _upto = _e8
+  local _upto = _e7
   while i < _upto do
     l[j + 1] = x[i + 1]
     i = i + 1
@@ -492,11 +492,11 @@ function char(s, n)
   return(clip(s, n, n + 1))
 end
 function code(s, n)
-  local _e9
+  local _e8
   if n then
-    _e9 = n + 1
+    _e8 = n + 1
   end
-  return(string.byte(s, _e9))
+  return(string.byte(s, _e8))
 end
 function string_literal63(x)
   return(string63(x) and char(x, 0) == "\"")
@@ -702,11 +702,11 @@ function unstash(args)
   end
 end
 function search(s, pattern, start)
-  local _e10
+  local _e9
   if start then
-    _e10 = start + 1
+    _e9 = start + 1
   end
-  local _start = _e10
+  local _start = _e9
   local i = string.find(s, pattern, _start, true)
   return(i and i - 1)
 end
@@ -802,25 +802,25 @@ function escape(s)
   local i = 0
   while i < _35(s) do
     local c = char(s, i)
-    local _e11
+    local _e10
     if c == "\n" then
-      _e11 = "\\n"
+      _e10 = "\\n"
     else
-      local _e12
+      local _e11
       if c == "\"" then
-        _e12 = "\\\""
+        _e11 = "\\\""
       else
-        local _e13
+        local _e12
         if c == "\\" then
-          _e13 = "\\\\"
+          _e12 = "\\\\"
         else
-          _e13 = c
+          _e12 = c
         end
-        _e12 = _e13
+        _e11 = _e12
       end
-      _e11 = _e12
+      _e10 = _e11
     end
-    local c1 = _e11
+    local c1 = _e10
     s1 = s1 .. c1
     i = i + 1
   end
@@ -908,13 +908,13 @@ function setenv(k, ...)
   local _id53 = _r142
   local _keys = cut(_id53, 0)
   if string63(k) then
-    local _e14
+    local _e13
     if _keys.toplevel then
-      _e14 = hd(environment)
+      _e13 = hd(environment)
     else
-      _e14 = last(environment)
+      _e13 = last(environment)
     end
-    local frame = _e14
+    local frame = _e13
     local entry = frame[k] or {}
     local _o18 = _keys
     local _k = nil
@@ -953,30 +953,17 @@ setenv("bang", {_stash = true, tr = true, special = function ()
     return("#!/usr/bin/env luajit\n\n")
   end
 end})
-setenv("elf", {_stash = true, macro = function (_x423)
-  local _e15
-  if is63(_x423) then
-    _e15 = _x423
-  else
-    _e15 = "."
-  end
-  local path = _e15
-  local p = {"get", {{"get", "debug", {"quote", "getinfo"}}, 1, "\"S\""}, {"quote", "source"}}
-  return({"do", {"when", {"undef?", "elf*"}, {"def", "elf*", true}, {"%js", {"unless", {"undef?", "process"}, {"let-symbol", {"p", {"get", {"get", "process", {"quote", "env"}}, {"quote", "NODE_PATH"}}}, {"if", {"and", "p", {">", {"get", "p", {"quote", "length"}}, 0}}, {"cat!", "p", "\":\"", "__dirname"}, {"set", "p", "__dirname"}}}, {"let", "Module", {"require", {"quote", "module"}}, {{"get", "Module", {"quote", "_initPaths"}}}}}}, {"%lua", {"cat!", {"get", "package", {"quote", "path"}}, "\";\"", {"or", {{"get", p, {"quote", "match"}}, p, "\"[@]?(.*/)[^/]+[.]lua\""}, "\"./\""}, escape(path), "\"/?.lua\""}}, {"require", {"quote", "elf"}}}})
+setenv("elf", {_stash = true, macro = function ()
+  return({"require", {"quote", "elf"}})
 end})
 setenv("main?", {_stash = true, macro = function ()
-  return({"do", {"%js", {"=", {"get", "require", {"quote", "main"}}, "module"}}, {"%lua", {"pcall", "getfenv", 4}}})
+  return({"do", {"%js", {"=", {"get", "require", {"quote", "main"}}, "module"}}, {"%lua", {"~pcall", "getfenv", 4}}})
 end})
 setenv("main", {_stash = true, macro = function (...)
   local l = unstash({...})
   return(join({"when", {"main?"}, {"elf"}}, l))
 end})
-if pcall(getfenv, 4) then
-  if elf42 == nil then
-    elf42 = true
-    package.path = package.path .. ";" .. (debug.getinfo(1, "S").source.match(debug.getinfo(1, "S").source, "[@]?(.*/)[^/]+[.]lua") or "./") .. "." .. "/?.lua"
-    require("elf")
-  end
+if not pcall(getfenv, 4) then
   require("elf-main")
   elf_main()
 end

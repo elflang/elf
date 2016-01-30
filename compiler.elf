@@ -58,7 +58,7 @@
         (let i (get names x)
           (inc (get names x))
           (unique (cat x i)))
-      (do (set (get names x) 1)
+      (do (assign (get names x) 1)
           (cat "_" x)))))
 
 (var stash* (args)
@@ -168,7 +168,7 @@
                    ;; don't splice, just expand
                    (quasiexpand (at v 1))
                  (quasiexpand v depth))
-          (set (get (last xs) k) v))))
+          (assign (get (last xs) k) v))))
     ;; collect sibling lists
     (step x form
       (if (quasisplice? x depth)
@@ -300,7 +300,7 @@
   (let (s "(" c "")
     (step x args
       (cat! s c (compile x))
-      (set c ", "))
+      (assign c ", "))
     (cat s ")")))
 
 (var escape-newlines (s)
@@ -439,9 +439,9 @@
         `(return ,e)
       e)))
 
-(var lower-set (args hoist stmt? tail?)
+(var lower-assign (args hoist stmt? tail?)
   (let ((lh rh) args)
-    (add hoist `(set ,lh ,(lower rh hoist)))
+    (add hoist `(assign ,lh ,(lower rh hoist)))
     (unless (and stmt? (not tail?))
       lh)))
 
@@ -456,9 +456,9 @@
         (add hoist `(%local ,e))
         (add hoist
              `(%if ,(lower cond hoist)
-                   ,(lower `(set ,e ,then))
+                   ,(lower `(assign ,e ,then))
                    ,@(if else
-                         (list (lower `(set ,e ,else))))))
+                         (list (lower `(assign ,e ,else))))))
         e))))
 
 (var lower-short (x args hoist)
@@ -522,7 +522,7 @@
       (lower-infix? form) (lower-infix form hoist)
     (let ((x rest: args) form)
       (if (is x 'do) (lower-do args hoist stmt? tail?)
-          (is x 'set) (lower-set args hoist stmt? tail?)
+          (is x 'assign) (lower-assign args hoist stmt? tail?)
           (is x '%if) (lower-if args hoist stmt? tail?)
           (is x '%try) (lower-try args hoist tail?)
           (is x 'while) (lower-while args hoist)
@@ -539,7 +539,7 @@
 (var expand (form)
   (lower (macroexpand form)))
 
-(%js (set global.require require))
+(%js (assign global.require require))
 (%js (var run eval))
 
 (%lua (var load1 load))
@@ -552,9 +552,9 @@
 
 (def eval (form)
   (let previous target
-    (set target (language))
-    (let code (compile (expand `(set %result ,form)))
-      (set target previous)
+    (assign target (language))
+    (let code (compile (expand `(assign %result ,form)))
+      (assign target previous)
       (run code)
       %result)))
 
@@ -617,7 +617,7 @@
   (if (is target 'lua)
       (let x (compile-function args body name: name)
         (cat (indentation) x))
-    (compile `(set ,name (%function ,args ,body)) :stmt)))
+    (compile `(assign ,name (%function ,args ,body)) :stmt)))
 
 (defspecial %local-function (name args body) :stmt :tr
   (if (is target 'lua)
@@ -651,7 +651,7 @@
         ind (indentation))
     (cat ind keyword id rh)))
 
-(defspecial set (lh rh) :stmt
+(defspecial assign (lh rh) :stmt
   (let (lh (compile lh)
         rh (compile (if (nil? rh) 'nil rh)))
     (cat (indentation) lh " = " rh)))
@@ -661,7 +661,7 @@
 	k1 (compile k))
     (when (and (is target 'lua)
                (is (char t 0) "{"))
-      (set t (cat "(" t ")")))
+      (assign t (cat "(" t ")")))
     (if (and (string-literal? k)
              (valid-id? (inner k)))
         (cat t "." (inner k))
@@ -674,7 +674,7 @@
     (each (k v) forms
       (when (number? k)
         (cat! s c (compile v))
-        (set c ", ")))
+        (assign c ", ")))
     (cat open s close)))
 
 (defspecial %object forms
@@ -686,7 +686,7 @@
           (unless (string? k)
             (error (cat "Illegal key: " (str k))))
           (cat! s c (key k) sep (compile v))
-          (set c ", "))))
+          (assign c ", "))))
     (cat s "}")))
 
 (export run

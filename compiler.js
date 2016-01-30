@@ -861,11 +861,11 @@ var lower_do = function (args, hoist, stmt63, tail63) {
     return(e);
   }
 };
-var lower_set = function (args, hoist, stmt63, tail63) {
+var lower_assign = function (args, hoist, stmt63, tail63) {
   var _id16 = args;
   var lh = _id16[0];
   var rh = _id16[1];
-  add(hoist, ["set", lh, lower(rh, hoist)]);
+  add(hoist, ["assign", lh, lower(rh, hoist)]);
   if (!( stmt63 && ! tail63)) {
     return(lh);
   }
@@ -886,9 +886,9 @@ var lower_if = function (args, hoist, stmt63, tail63) {
     add(hoist, ["%local", e]);
     var _e32;
     if (_else) {
-      _e32 = [lower(["set", e, _else])];
+      _e32 = [lower(["assign", e, _else])];
     }
-    add(hoist, join(["%if", lower(cond, hoist), lower(["set", e, _then])], _e32));
+    add(hoist, join(["%if", lower(cond, hoist), lower(["assign", e, _then])], _e32));
     return(e);
   }
 };
@@ -984,8 +984,8 @@ lower = function (form, hoist, stmt63, tail63) {
           if (x === "do") {
             return(lower_do(args, hoist, stmt63, tail63));
           } else {
-            if (x === "set") {
-              return(lower_set(args, hoist, stmt63, tail63));
+            if (x === "assign") {
+              return(lower_assign(args, hoist, stmt63, tail63));
             } else {
               if (x === "%if") {
                 return(lower_if(args, hoist, stmt63, tail63));
@@ -1036,7 +1036,7 @@ _37result = undefined;
 eval = function (form) {
   var previous = target;
   target = "js";
-  var code = compile(expand(["set", "%result", form]));
+  var code = compile(expand(["assign", "%result", form]));
   target = previous;
   run(code);
   return(_37result);
@@ -1142,7 +1142,7 @@ setenv("%global-function", {_stash: true, tr: true, special: function (name, arg
     var x = compile_function(args, body, {_stash: true, name: name});
     return(indentation() + x);
   } else {
-    return(compile(["set", name, ["%function", args, body]], {_stash: true, stmt: true}));
+    return(compile(["assign", name, ["%function", args, body]], {_stash: true, stmt: true}));
   }
 }, stmt: true});
 setenv("%local-function", {_stash: true, tr: true, special: function (name, args, body) {
@@ -1199,7 +1199,7 @@ setenv("%local", {_stash: true, special: function (name, value) {
   var ind = indentation();
   return(ind + keyword + _id27 + rh);
 }, stmt: true});
-setenv("set", {_stash: true, special: function (lh, rh) {
+setenv("assign", {_stash: true, special: function (lh, rh) {
   var _lh1 = compile(lh);
   var _e40;
   if (nil63(rh)) {

@@ -45,12 +45,12 @@
     (if (and (is target 'lua) (number? i))
         (inc i)
         (is target 'lua)
-        (set i `(+ ,i 1)))
+        (assign i `(+ ,i 1)))
     `(get ,l ,i))
 
   (mac wipe (place)
     (if (is target 'lua)
-        `(set ,place nil)
+        `(assign ,place nil)
       `(%delete ,place)))
 
   (mac list body
@@ -58,8 +58,8 @@
       (let (l () forms ())
         (each (k v) body
           (if (number? k)
-              (set (get l k) v)
-            (add forms `(set (get ,x ',k) ,v))))
+              (assign (get l k) v)
+            (add forms `(assign (get ,x ',k) ,v))))
         (if (some? forms)
             `(let ,x (%array ,@l) ,@forms ,x)
           `(%array ,@l)))))
@@ -93,8 +93,8 @@
         (let renames ()
           (if (or (bound? id) (toplevel?))
               (let id1 (unique id)
-                (set renames (list id id1))
-                (set id id1))
+                (assign renames (list id id1))
+                (assign id id1))
             (setenv id :variable))
           `(do (%local ,id ,val)
                (let-symbol ,renames
@@ -134,7 +134,7 @@
     (setenv name :toplevel :variable)
     (if (some? body)
         `(%global-function ,name ,@(bind* x body))
-      `(set ,name ,x)))
+      `(assign ,name ,x)))
 
   (mac with-frame body
     (let-unique (x)
@@ -181,10 +181,10 @@
                ,msg nil
                ,trace nil)
            (if (xpcall
-                (fn () (set ,x ,expr))
+                (fn () (assign ,x ,expr))
                 (fn (m)
-                  (set ,msg (clip m (+ (search m ": ") 2)))
-                  (set ,trace (debug.traceback))))
+                  (assign ,msg (clip m (+ (search m ": ") 2)))
+                  (assign ,trace (debug.traceback))))
                (list true ,x)
              (list false ,msg ,trace))))))
 
@@ -218,7 +218,7 @@
   (mac set-of xs
     (let l ()
       (each x xs
-        (set (get l x) true))
+        (assign (get l x) true))
       `(obj ,@l)))
 
   (mac language () `',target)
@@ -227,16 +227,16 @@
     (get clauses target))
 
   (mac join! (a rest: bs)
-    `(set ,a (join ,a ,@bs)))
+    `(assign ,a (join ,a ,@bs)))
 
   (mac cat! (a rest: bs)
-    `(set ,a (cat ,a ,@bs)))
+    `(assign ,a (cat ,a ,@bs)))
 
   (mac inc (n by)
-    `(set ,n (+ ,n ,(or by 1))))
+    `(assign ,n (+ ,n ,(or by 1))))
 
   (mac dec (n by)
-    `(set ,n (- ,n ,(or by 1))))
+    `(assign ,n (- ,n ,(or by 1))))
 
   (mac with-indent (form)
     (let-unique (x)
@@ -247,11 +247,11 @@
   (mac export names
     (if (is target 'js)
         `(do ,@(map (fn (k)
-                      `(set (get exports ',k) ,k))
+                      `(assign (get exports ',k) ,k))
                     names))
       (let x (obj)
         (each k names
-          (set (get x k) k))
+          (assign (get x k) k))
         `(return (obj ,@x)))))
 
   (mac undef? (var)
@@ -274,7 +274,7 @@
   (mac eval-once forms
     (let-unique (x)
       `(when (undef? ,x)
-         (set ,x true)
+         (assign ,x true)
          ,@forms)))
 
   (mac assert (cond)
@@ -342,18 +342,18 @@
           n (# x)
           upto (if (or (nil? upto) (> upto n)) n upto))
       (while (< i upto)
-        (set (at l j) (at x i))
+        (assign (at l j) (at x i))
         (inc i)
         (inc j))
       (each (k v) x
         (unless (number? k)
-          (set (get l k) v))))))
+          (assign (get l k) v))))))
 
 (def keys (x)
   (with t ()
     (each (k v) x
       (unless (number? k)
-        (set (get t k) v)))))
+        (assign (get t k) v)))))
 
 (def edge (x)
   (- (# x) 1))
@@ -409,11 +409,11 @@
         (if (and a b)
             (let (c () o (# a))
               (each (k v) a
-                (set (get c k) v))
+                (assign (get c k) v))
               (each (k v) b
                 (when (number? k)
                   (inc k o))
-                (set (get c k) v))
+                (assign (get c k) v))
               c)
           (or a b ())))
     (or (reduce join ls) ())))
@@ -451,7 +451,7 @@
       (unless (number? k)
         (let y (f v)
           (when (is? y)
-            (set (get t k) y)))))))
+            (assign (get t k) y)))))))
 
 (def keep (f x)
   (map (fn (v) (when (f v) v)) x))
@@ -472,8 +472,8 @@
     (let p ()
       (each (k v) args
         (unless (number? k)
-          (set (get p k) v)))
-      (set p._stash true)
+          (assign (get p k) v)))
+      (assign p._stash true)
       (add args p)))
   args)
 
@@ -484,7 +484,7 @@
           (with args1 (almost args)
             (each (k v) l
               (unless (is k '_stash)
-                (set (get args1 k) v))))
+                (assign (get args1 k) v))))
         args))))
 
 (def search (s pattern start)
@@ -504,7 +504,7 @@
           (let i (search s sep)
             (if (nil? i) (break)
               (do (add l (clip s 0 i))
-                  (set s (clip s (+ i n)))))))
+                  (assign s (clip s (+ i n)))))))
         (add l s)))))
 
 (def cat xs
@@ -576,12 +576,12 @@
           d (+ (or depth 0) 1))
       (each (k v) x
         (if (number? k)
-            (set (get xs k) (str v d))
+            (assign (get xs k) (str v d))
           (do (add ks (cat k ":"))
               (add ks (str v d)))))
       (each v (join xs ks)
         (cat! s sp v)
-        (set sp " "))
+        (assign sp " "))
       (cat s  ")"))))
 
 (%lua (var values (or unpack table.unpack)))
@@ -603,8 +603,8 @@
                   (last environment))
           entry (or (get frame k) (obj)))
       (each (k v) keys
-        (set (get entry k) v))
-      (set (get frame k) entry))))
+        (assign (get entry k) v))
+      (assign (get frame k) entry))))
 
 (%js (def print (x) (console.log x)))
 
@@ -645,7 +645,7 @@
 ;              (let-symbol (p process.env.NODE_PATH)
 ;                (if (and p (> p.length 0))
 ;                    (cat! p ":" __dirname)
-;                  (set p __dirname)))
+;                  (assign p __dirname)))
 ;              (let Module (require 'module)
 ;                (Module._initPaths))))
 ;          (%lua

@@ -19,7 +19,7 @@ local function setup()
   end})
   setenv("wipe", {_stash = true, macro = function (place)
     if target == "lua" then
-      return({"set", place, "nil"})
+      return({"assign", place, "nil"})
     else
       return({"%delete", place})
     end
@@ -36,7 +36,7 @@ local function setup()
       if number63(k) then
         l[k] = v
       else
-        add(forms, {"set", {"get", x, {"quote", k}}, v})
+        add(forms, {"assign", {"get", x, {"quote", k}}, v})
       end
     end
     if some63(forms) then
@@ -172,7 +172,7 @@ local function setup()
     if some63(body) then
       return(join({"%global-function", name}, bind42(x, body)))
     else
-      return({"set", name, x})
+      return({"assign", name, x})
     end
   end})
   setenv("with-frame", {_stash = true, macro = function (...)
@@ -240,7 +240,7 @@ local function setup()
       local x = unique("x")
       local msg = unique("msg")
       local trace = unique("trace")
-      return({"let", {x, "nil", msg, "nil", trace, "nil"}, {"if", {"xpcall", {"fn", join(), {"set", x, expr}}, {"fn", {"m"}, {"set", msg, {"clip", "m", {"+", {"search", "m", "\": \""}, 2}}}, {"set", trace, {{"get", "debug", {"quote", "traceback"}}}}}}, {"list", true, x}, {"list", false, msg, trace}}})
+      return({"let", {x, "nil", msg, "nil", trace, "nil"}, {"if", {"xpcall", {"fn", join(), {"assign", x, expr}}, {"fn", {"m"}, {"assign", msg, {"clip", "m", {"+", {"search", "m", "\": \""}, 2}}}, {"assign", trace, {{"get", "debug", {"quote", "traceback"}}}}}}, {"list", true, x}, {"list", false, msg, trace}}})
     end
   end})
   setenv("each", {_stash = true, macro = function (x, t, ...)
@@ -310,19 +310,19 @@ local function setup()
     local _r62 = unstash({...})
     local _id49 = _r62
     local bs = cut(_id49, 0)
-    return({"set", a, join({"join", a}, bs)})
+    return({"assign", a, join({"join", a}, bs)})
   end})
   setenv("cat!", {_stash = true, macro = function (a, ...)
     local _r64 = unstash({...})
     local _id51 = _r64
     local bs = cut(_id51, 0)
-    return({"set", a, join({"cat", a}, bs)})
+    return({"assign", a, join({"cat", a}, bs)})
   end})
   setenv("inc", {_stash = true, macro = function (n, by)
-    return({"set", n, {"+", n, by or 1}})
+    return({"assign", n, {"+", n, by or 1}})
   end})
   setenv("dec", {_stash = true, macro = function (n, by)
-    return({"set", n, {"-", n, by or 1}})
+    return({"assign", n, {"-", n, by or 1}})
   end})
   setenv("with-indent", {_stash = true, macro = function (form)
     local x = unique("x")
@@ -332,7 +332,7 @@ local function setup()
     local names = unstash({...})
     if target == "js" then
       return(join({"do"}, map(function (k)
-        return({"set", {"get", "exports", {"quote", k}}, k})
+        return({"assign", {"get", "exports", {"quote", k}}, k})
       end, names)))
     else
       local x = {}
@@ -372,7 +372,7 @@ local function setup()
   setenv("eval-once", {_stash = true, macro = function (...)
     local forms = unstash({...})
     local x = unique("x")
-    return(join({"when", {"undef?", x}, {"set", x, true}}, forms))
+    return(join({"when", {"undef?", x}, {"assign", x, true}}, forms))
   end})
   setenv("assert", {_stash = true, macro = function (cond)
     return({"unless", cond, {"error", {"quote", "assert"}}})

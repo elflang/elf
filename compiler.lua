@@ -807,11 +807,11 @@ local function lower_do(args, hoist, stmt63, tail63)
     return(e)
   end
 end
-local function lower_set(args, hoist, stmt63, tail63)
+local function lower_assign(args, hoist, stmt63, tail63)
   local _id16 = args
   local lh = _id16[1]
   local rh = _id16[2]
-  add(hoist, {"set", lh, lower(rh, hoist)})
+  add(hoist, {"assign", lh, lower(rh, hoist)})
   if not( stmt63 and not tail63) then
     return(lh)
   end
@@ -832,9 +832,9 @@ local function lower_if(args, hoist, stmt63, tail63)
     add(hoist, {"%local", e})
     local _e24
     if _else then
-      _e24 = {lower({"set", e, _else})}
+      _e24 = {lower({"assign", e, _else})}
     end
-    add(hoist, join({"%if", lower(cond, hoist), lower({"set", e, _then})}, _e24))
+    add(hoist, join({"%if", lower(cond, hoist), lower({"assign", e, _then})}, _e24))
     return(e)
   end
 end
@@ -930,8 +930,8 @@ function lower(form, hoist, stmt63, tail63)
           if x == "do" then
             return(lower_do(args, hoist, stmt63, tail63))
           else
-            if x == "set" then
-              return(lower_set(args, hoist, stmt63, tail63))
+            if x == "assign" then
+              return(lower_assign(args, hoist, stmt63, tail63))
             else
               if x == "%if" then
                 return(lower_if(args, hoist, stmt63, tail63))
@@ -989,7 +989,7 @@ _37result = nil
 function eval(form)
   local previous = target
   target = "lua"
-  local code = compile(expand({"set", "%result", form}))
+  local code = compile(expand({"assign", "%result", form}))
   target = previous
   run(code)
   return(_37result)
@@ -1095,7 +1095,7 @@ setenv("%global-function", {_stash = true, tr = true, special = function (name, 
     local x = compile_function(args, body, {_stash = true, name = name})
     return(indentation() .. x)
   else
-    return(compile({"set", name, {"%function", args, body}}, {_stash = true, stmt = true}))
+    return(compile({"assign", name, {"%function", args, body}}, {_stash = true, stmt = true}))
   end
 end, stmt = true})
 setenv("%local-function", {_stash = true, tr = true, special = function (name, args, body)
@@ -1152,7 +1152,7 @@ setenv("%local", {_stash = true, special = function (name, value)
   local ind = indentation()
   return(ind .. keyword .. _id27 .. rh)
 end, stmt = true})
-setenv("set", {_stash = true, special = function (lh, rh)
+setenv("assign", {_stash = true, special = function (lh, rh)
   local _lh1 = compile(lh)
   local _e32
   if nil63(rh) then

@@ -5,7 +5,7 @@ local tests = {}
 local reader = require("reader")
 local compiler = require("compiler")
 setenv("test", {_stash = true, macro = function (x, msg)
-  return({"if", {"not", x}, {"do", {"set", "failed", {"+", "failed", 1}}, {"return", msg}}, {"inc", "passed"}})
+  return({"if", {"not", x}, {"do", {"assign", "failed", {"+", "failed", 1}}, {"return", msg}}, {"inc", "passed"}})
 end})
 local function equal63(a, b)
   if atom63(a) then
@@ -1584,7 +1584,7 @@ add(tests, {"names", function ()
     return(passed)
   end
 end})
-add(tests, {"set", function ()
+add(tests, {"assign", function ()
   local a = 42
   a = "bar"
   if not equal63("bar", a) then
@@ -2277,7 +2277,7 @@ add(tests, {"at", function ()
     return(passed)
   end
 end})
-add(tests, {"get-set", function ()
+add(tests, {"get-assign", function ()
   local t = {}
   t.foo = "bar"
   if not equal63("bar", t.foo) then

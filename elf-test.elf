@@ -11,7 +11,7 @@
 
 (mac test (x msg)
   `(if (not ,x)
-       (do (set failed (+ failed 1))
+       (do (assign failed (+ failed 1))
 	   (return ,msg))
      (inc passed)))
 
@@ -95,18 +95,18 @@
   (test= true (or true (error 'bad)))
   (test= false (and false (error 'bad)))
   (let a true
-    (test= true (or true (do (set a false) false)))
+    (test= true (or true (do (assign a false) false)))
     (test= true a)
-    (test= false (and false (do (set a false) true)))
+    (test= false (and false (do (assign a false) true)))
     (test= true a))
   (let b true
-    (test= true (or (do (set b false) false) (do (set b true) b)))
+    (test= true (or (do (assign b false) false) (do (assign b true) b)))
     (test= true b)
-    (test= true (or (do (set b true) b) (do (set b true) b)))
+    (test= true (or (do (assign b true) b) (do (assign b true) b)))
     (test= true b)
-    (test= true (and (do (set b false) true) (do (set b true) b)))
+    (test= true (and (do (assign b false) true) (do (assign b true) b)))
     (test= true b)
-    (test= false (and (do (set b false) b) (do (set b true) b)))
+    (test= false (and (do (assign b false) b) (do (assign b true) b)))
     (test= false b)))
 
 (deftest numeric
@@ -147,7 +147,7 @@
 (deftest standalone
   (test= 10 (do (+ illegal) 10))
   (let x nil
-    (test= 9 (do (list nothing fooey (set x 10)) 9))
+    (test= 9 (do (list nothing fooey (assign x 10)) 9))
     (test= 10 x))
   (test= 12 (do (get but zz) 12)))
 
@@ -302,16 +302,16 @@ c"
     (test= 3 **)
     (test= 4 break)))
 
-(deftest set
+(deftest assign
   (let a 42
-    (set a 'bar)
+    (assign a 'bar)
     (test= 'bar a)
-    (let x (set a 10)
+    (let x (assign a 10)
       (test= 10 x)
       (test= 10 a))
-    (set a false)
+    (assign a false)
     (test= false a)
-    (set a)
+    (assign a)
     (test= nil a)))
 
 (deftest wipe
@@ -328,17 +328,17 @@ c"
 
 (deftest do
   (let a 17
-    (do (set a 10)
+    (do (assign a 10)
 	(test= 10 a))
     (test= 10 (do a))
-    (let b (do (set a 2) (+ a 5))
+    (let b (do (assign a 2) (+ a 5))
       (test= a 2)
       (test= b 7))
-    (do (set a 10)
-        (do (set a 20)
+    (do (assign a 10)
+        (do (assign a 20)
             (test= 20 a)))
-    (test= 20 (do (set a 10)
-                  (do (set a 20) a)))))
+    (test= 20 (do (assign a 10)
+                  (do (assign a 20) a)))))
 
 (deftest if
   (test= 'a (macroexpand '(if a)))
@@ -417,14 +417,14 @@ c"
     (test= 'a (at l 0))
     (test= 'a l.0)
     (test= 'b (at l 1))
-    (set (at l 0) 9)
+    (assign (at l 0) 9)
     (test= 9 (at l 0))
-    (set (at l 3) 10)
+    (assign (at l 3) 10)
     (test= 10 (at l 3))))
 
-(deftest get-set
+(deftest get-assign
   (let t (obj)
-    (set (get t 'foo) 'bar)
+    (assign (get t 'foo) 'bar)
     (test= 'bar (get t 'foo))
     (test= 'bar (get t "foo"))
     (test= 'bar t.foo)
@@ -523,7 +523,7 @@ c"
   (let (a (let (a 10) a))
     (test= 10 a))
   (let (a (+ (let (a 0)
-               (set a 10)
+               (assign a 10)
                (+ a 2))
              3))
     (test= a 15))
@@ -629,7 +629,7 @@ c"
       (test= 20 (b))))
   (let-macro ((a (x)
                 (let (x 10)
-                  (set x 20))
+                  (assign x 20))
                 `(+ ,x 1)))
     (test= 2 (a 1))))
 
@@ -879,7 +879,7 @@ c"
   (test= 4 (apply (fn (a b) (+ a b)) '(2 2)))
   (test= '(2 2) (apply (fn a a) '(2 2)))
   (let t '(1)
-    (set (get t 'foo) 17)
+    (assign (get t 'foo) 17)
     (test= 17 (apply (fn a (get a 'foo)) t)))
   (test= 42 (apply (fn (:foo) foo) (list foo: 42)))
   (test= 42 (apply (fn ((:foo)) foo) (list (list foo: 42)))))

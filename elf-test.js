@@ -5,7 +5,7 @@ var tests = [];
 var reader = require("reader");
 var compiler = require("compiler");
 setenv("test", {_stash: true, macro: function (x, msg) {
-  return(["if", ["not", x], ["do", ["set", "failed", ["+", "failed", 1]], ["return", msg]], ["inc", "passed"]]);
+  return(["if", ["not", x], ["do", ["assign", "failed", ["+", "failed", 1]], ["return", msg]], ["inc", "passed"]]);
 }});
 var equal63 = function (a, b) {
   if (atom63(a)) {
@@ -1582,7 +1582,7 @@ add(tests, ["names", function () {
     return(passed);
   }
 }]);
-add(tests, ["set", function () {
+add(tests, ["assign", function () {
   var a = 42;
   a = "bar";
   if (! equal63("bar", a)) {
@@ -2275,7 +2275,7 @@ add(tests, ["at", function () {
     return(passed);
   }
 }]);
-add(tests, ["get-set", function () {
+add(tests, ["get-assign", function () {
   var t = {};
   t.foo = "bar";
   if (! equal63("bar", t.foo)) {

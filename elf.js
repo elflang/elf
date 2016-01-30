@@ -19,7 +19,7 @@ var setup = function () {
   }});
   setenv("wipe", {_stash: true, macro: function (place) {
     if (target === "lua") {
-      return(["set", place, "nil"]);
+      return(["assign", place, "nil"]);
     } else {
       return(["%delete", place]);
     }
@@ -43,7 +43,7 @@ var setup = function () {
       if (number63(_k)) {
         l[_k] = v;
       } else {
-        add(forms, ["set", ["get", x, ["quote", _k]], v]);
+        add(forms, ["assign", ["get", x, ["quote", _k]], v]);
       }
     }
     if (some63(forms)) {
@@ -179,7 +179,7 @@ var setup = function () {
     if (some63(body)) {
       return(join(["%global-function", name], bind42(x, body)));
     } else {
-      return(["set", name, x]);
+      return(["assign", name, x]);
     }
   }});
   setenv("with-frame", {_stash: true, macro: function () {
@@ -247,7 +247,7 @@ var setup = function () {
       var x = unique("x");
       var msg = unique("msg");
       var trace = unique("trace");
-      return(["let", [x, "nil", msg, "nil", trace, "nil"], ["if", ["xpcall", ["fn", join(), ["set", x, expr]], ["fn", ["m"], ["set", msg, ["clip", "m", ["+", ["search", "m", "\": \""], 2]]], ["set", trace, [["get", "debug", ["quote", "traceback"]]]]]], ["list", true, x], ["list", false, msg, trace]]]);
+      return(["let", [x, "nil", msg, "nil", trace, "nil"], ["if", ["xpcall", ["fn", join(), ["assign", x, expr]], ["fn", ["m"], ["assign", msg, ["clip", "m", ["+", ["search", "m", "\": \""], 2]]], ["assign", trace, [["get", "debug", ["quote", "traceback"]]]]]], ["list", true, x], ["list", false, msg, trace]]]);
     }
   }});
   setenv("each", {_stash: true, macro: function (x, t) {
@@ -324,19 +324,19 @@ var setup = function () {
     var _r62 = unstash(Array.prototype.slice.call(arguments, 1));
     var _id49 = _r62;
     var bs = cut(_id49, 0);
-    return(["set", a, join(["join", a], bs)]);
+    return(["assign", a, join(["join", a], bs)]);
   }});
   setenv("cat!", {_stash: true, macro: function (a) {
     var _r64 = unstash(Array.prototype.slice.call(arguments, 1));
     var _id51 = _r64;
     var bs = cut(_id51, 0);
-    return(["set", a, join(["cat", a], bs)]);
+    return(["assign", a, join(["cat", a], bs)]);
   }});
   setenv("inc", {_stash: true, macro: function (n, by) {
-    return(["set", n, ["+", n, by || 1]]);
+    return(["assign", n, ["+", n, by || 1]]);
   }});
   setenv("dec", {_stash: true, macro: function (n, by) {
-    return(["set", n, ["-", n, by || 1]]);
+    return(["assign", n, ["-", n, by || 1]]);
   }});
   setenv("with-indent", {_stash: true, macro: function (form) {
     var x = unique("x");
@@ -346,7 +346,7 @@ var setup = function () {
     var names = unstash(Array.prototype.slice.call(arguments, 0));
     if (target === "js") {
       return(join(["do"], map(function (k) {
-        return(["set", ["get", "exports", ["quote", k]], k]);
+        return(["assign", ["get", "exports", ["quote", k]], k]);
       }, names)));
     } else {
       var x = {};
@@ -393,7 +393,7 @@ var setup = function () {
   setenv("eval-once", {_stash: true, macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));
     var x = unique("x");
-    return(join(["when", ["undef?", x], ["set", x, true]], forms));
+    return(join(["when", ["undef?", x], ["assign", x, true]], forms));
   }});
   setenv("assert", {_stash: true, macro: function (cond) {
     return(["unless", cond, ["error", ["quote", "assert"]]]);

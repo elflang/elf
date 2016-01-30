@@ -1,7 +1,7 @@
 ;; -*- mode: lisp -*-
 
 (mac defreader ((char s) rest: body)
-  `(set (get read-table ,char) (fn (,s) ,@body)))
+  `(assign (get read-table ,char) (fn (,s) ,@body)))
 
 (var delimiters (set-of "(" ")" ";" "\n"))
 (var whitespace (set-of " " "\t" "\n"))
@@ -25,7 +25,7 @@
           (get whitespace c) (read-char s)
           (is c ";")
           (do (while (and c (~= c "\n"))
-                (set c (read-char s)))
+                (assign c (read-char s)))
               (skip-non-code s))
         (break)))))
 
@@ -98,7 +98,7 @@
       (let c (peek-char s)
 	(if (and c (and (~get whitespace c)
 			(~get delimiters c)))
-	    (do (if (is c ".") (set dot? true))
+	    (do (if (is c ".") (assign dot? true))
                 (cat! str (read-char s)))
 	  (break))))
   (with atom
@@ -114,7 +114,7 @@
             (parse-access str)
           str)))
     (while (is "(" (peek-char s))
-      (set atom `(,atom ,@(read s)))))))
+      (assign atom `(,atom ,@(read s)))))))
 
 (defreader ("(" s)
   (read-char s)
@@ -123,14 +123,14 @@
       (while (nil? r)
         (skip-non-code s)
         (let c (peek-char s)
-          (if (is c ")") (do (read-char s) (set r l))
-              (nil? c) (set r (expected s ")"))
+          (if (is c ")") (do (read-char s) (assign r l))
+              (nil? c) (assign r (expected s ")"))
             (let x (read s)
               (if (key? x)
                   (let (k (clip x 0 (edge x))
                         v (read s))
-                    (set (get l k) v))
-                  (flag? x) (set (get l (clip x 1)) true)
+                    (assign (get l k) v))
+                  (flag? x) (assign (get l (clip x 1)) true)
                 (add l x)))))))))
 
 (defreader (")" s)
@@ -142,8 +142,8 @@
     (let str "\""
       (while (nil? r)
         (let c (peek-char s)
-          (if (is c "\"") (set r (cat str (read-char s)))
-              (nil? c) (set r (expected s "\""))
+          (if (is c "\"") (assign r (cat str (read-char s)))
+              (nil? c) (assign r (expected s "\""))
             (do (when (is c "\\")
                   (cat! str (read-char s)))
                 (cat! str (read-char s)))))))))
@@ -154,8 +154,8 @@
     (let str "|"
       (while (nil? r)
         (let c (peek-char s)
-          (if (is c "|") (set r (cat str (read-char s)))
-              (nil? c) (set r (expected s "|"))
+          (if (is c "|") (assign r (cat str (read-char s)))
+              (nil? c) (assign r (expected s "|"))
             (cat! str (read-char s))))))))
 
 (defreader ("'" s)

@@ -5,7 +5,7 @@ setenv("defreader", {_stash: true, macro: function (_x6) {
   var _r1 = unstash(Array.prototype.slice.call(arguments, 1));
   var _id3 = _r1;
   var body = cut(_id3, 0);
-  return(["set", ["get", "read-table", char], join(["fn", [s]], body)]);
+  return(["assign", ["get", "read-table", char], join(["fn", [s]], body)]);
 }});
 var delimiters = {"(": true, ")": true, "\n": true, ";": true};
 var whitespace = {" ": true, "\n": true, "\t": true};

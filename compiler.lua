@@ -989,7 +989,7 @@ _37result = nil
 function eval(form)
   local previous = target
   target = "lua"
-  local code = compile(expand({"assign", "%result", form}))
+  local code = compile(expand({"=", "%result", form}))
   target = previous
   run(code)
   return(_37result)

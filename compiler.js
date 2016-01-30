@@ -1036,7 +1036,7 @@ _37result = undefined;
 eval = function (form) {
   var previous = target;
   target = "js";
-  var code = compile(expand(["assign", "%result", form]));
+  var code = compile(expand(["=", "%result", form]));
   target = previous;
   run(code);
   return(_37result);

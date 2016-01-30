@@ -129,21 +129,21 @@ It's common to access the values of a list variable where the position or key is
 ```		
 
 #### Assignment
-Variables and list values can be updated using `assign`, which evaluates to the value that it updated:
+Variables and list values can be updated using `=`, which evaluates to the value that it updated:
 ```
 > (let x 10
-    (assign x 15))
+    (= x 15))
 15
 > (let x 10
-    (assign x 20)
+    (= x 20)
     (+ x 5))
 25
 > (let a (list 1 2 3)
-    (assign (at a 1) "b")
+    (= (at a 1) "b")
     a)
 (1 "b" 3)
 > (let a (list foo: 17)
-    (assign (get a "foo") 19)
+    (= (get a "foo") 19)
     a)
 (foo: 19)
 ```

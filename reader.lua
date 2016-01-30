@@ -5,7 +5,7 @@ setenv("defreader", {_stash = true, macro = function (_x6, ...)
   local _r1 = unstash({...})
   local _id3 = _r1
   local body = cut(_id3, 0)
-  return({"assign", {"get", "read-table", char}, join({"fn", {s}}, body)})
+  return({"=", {"get", "read-table", char}, join({"fn", {s}}, body)})
 end})
 local delimiters = {["("] = true, [")"] = true, ["\n"] = true, [";"] = true}
 local whitespace = {[" "] = true, ["\n"] = true, ["\t"] = true}

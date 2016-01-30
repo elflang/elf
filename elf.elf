@@ -35,6 +35,18 @@
   ;; This doesn't recompile `l.elf`, but still needs to load all
   ;; the macros defined in it.
 
+  (mac bag (v t rest: body)
+    `(with %l ()
+       (step ,v ,t
+         (let (x (do ,@body))
+           (add %l x)))))
+
+  (mac = l
+    (if (two? l)
+        `(assign ,@l)
+      `(do ,@(bag (x y) (pair l)
+               `(assign ,x ,y)))))
+
   (mac quote (form)
     (quoted form))
 
@@ -45,12 +57,12 @@
     (if (and (is target 'lua) (number? i))
         (inc i)
         (is target 'lua)
-        (assign i `(+ ,i 1)))
+        (= i `(+ ,i 1)))
     `(get ,l ,i))
 
   (mac wipe (place)
     (if (is target 'lua)
-        `(assign ,place nil)
+        `(= ,place nil)
       `(%delete ,place)))
 
   (mac list body
@@ -58,8 +70,8 @@
       (let (l () forms ())
         (each (k v) body
           (if (number? k)
-              (assign (get l k) v)
-            (add forms `(assign (get ,x ',k) ,v))))
+              (= (get l k) v)
+            (add forms `(= (get ,x ',k) ,v))))
         (if (some? forms)
             `(let ,x (%array ,@l) ,@forms ,x)
           `(%array ,@l)))))
@@ -93,8 +105,8 @@
         (let renames ()
           (if (or (bound? id) (toplevel?))
               (let id1 (unique id)
-                (assign renames (list id id1))
-                (assign id id1))
+                (= renames (list id id1))
+                (= id id1))
             (setenv id :variable))
           `(do (%local ,id ,val)
                (let-symbol ,renames
@@ -134,7 +146,7 @@
     (setenv name :toplevel :variable)
     (if (some? body)
         `(%global-function ,name ,@(bind* x body))
-      `(assign ,name ,x)))
+      `(= ,name ,x)))
 
   (mac with-frame body
     (let-unique (x)
@@ -181,10 +193,10 @@
                ,msg nil
                ,trace nil)
            (if (xpcall
-                (fn () (assign ,x ,expr))
+                (fn () (= ,x ,expr))
                 (fn (m)
-                  (assign ,msg (clip m (+ (search m ": ") 2)))
-                  (assign ,trace (debug.traceback))))
+                  (= ,msg (clip m (+ (search m ": ") 2)))
+                  (= ,trace (debug.traceback))))
                (list true ,x)
              (list false ,msg ,trace))))))
 
@@ -218,7 +230,7 @@
   (mac set-of xs
     (let l ()
       (each x xs
-        (assign (get l x) true))
+        (= (get l x) true))
       `(obj ,@l)))
 
   (mac language () `',target)
@@ -227,16 +239,16 @@
     (get clauses target))
 
   (mac join! (a rest: bs)
-    `(assign ,a (join ,a ,@bs)))
+    `(= ,a (join ,a ,@bs)))
 
   (mac cat! (a rest: bs)
-    `(assign ,a (cat ,a ,@bs)))
+    `(= ,a (cat ,a ,@bs)))
 
   (mac inc (n by)
-    `(assign ,n (+ ,n ,(or by 1))))
+    `(= ,n (+ ,n ,(or by 1))))
 
   (mac dec (n by)
-    `(assign ,n (- ,n ,(or by 1))))
+    `(= ,n (- ,n ,(or by 1))))
 
   (mac with-indent (form)
     (let-unique (x)
@@ -247,11 +259,11 @@
   (mac export names
     (if (is target 'js)
         `(do ,@(map (fn (k)
-                      `(assign (get exports ',k) ,k))
+                      `(= (get exports ',k) ,k))
                     names))
       (let x (obj)
         (each k names
-          (assign (get x k) k))
+          (= (get x k) k))
         `(return (obj ,@x)))))
 
   (mac undef? (var)
@@ -274,7 +286,7 @@
   (mac eval-once forms
     (let-unique (x)
       `(when (undef? ,x)
-         (assign ,x true)
+         (= ,x true)
          ,@forms)))
 
   (mac assert (cond)
@@ -342,18 +354,18 @@
           n (# x)
           upto (if (or (nil? upto) (> upto n)) n upto))
       (while (< i upto)
-        (assign (at l j) (at x i))
+        (= (at l j) (at x i))
         (inc i)
         (inc j))
       (each (k v) x
         (unless (number? k)
-          (assign (get l k) v))))))
+          (= (get l k) v))))))
 
 (def keys (x)
   (with t ()
     (each (k v) x
       (unless (number? k)
-        (assign (get t k) v)))))
+        (= (get t k) v)))))
 
 (def edge (x)
   (- (# x) 1))
@@ -409,11 +421,11 @@
         (if (and a b)
             (let (c () o (# a))
               (each (k v) a
-                (assign (get c k) v))
+                (= (get c k) v))
               (each (k v) b
                 (when (number? k)
                   (inc k o))
-                (assign (get c k) v))
+                (= (get c k) v))
               c)
           (or a b ())))
     (or (reduce join ls) ())))
@@ -451,7 +463,7 @@
       (unless (number? k)
         (let y (f v)
           (when (is? y)
-            (assign (get t k) y)))))))
+            (= (get t k) y)))))))
 
 (def keep (f x)
   (map (fn (v) (when (f v) v)) x))
@@ -472,8 +484,8 @@
     (let p ()
       (each (k v) args
         (unless (number? k)
-          (assign (get p k) v)))
-      (assign p._stash true)
+          (= (get p k) v)))
+      (= p._stash true)
       (add args p)))
   args)
 
@@ -484,7 +496,7 @@
           (with args1 (almost args)
             (each (k v) l
               (unless (is k '_stash)
-                (assign (get args1 k) v))))
+                (= (get args1 k) v))))
         args))))
 
 (def search (s pattern start)
@@ -504,7 +516,7 @@
           (let i (search s sep)
             (if (nil? i) (break)
               (do (add l (clip s 0 i))
-                  (assign s (clip s (+ i n)))))))
+                  (= s (clip s (+ i n)))))))
         (add l s)))))
 
 (def cat xs
@@ -576,12 +588,12 @@
           d (+ (or depth 0) 1))
       (each (k v) x
         (if (number? k)
-            (assign (get xs k) (str v d))
+            (= (get xs k) (str v d))
           (do (add ks (cat k ":"))
               (add ks (str v d)))))
       (each v (join xs ks)
         (cat! s sp v)
-        (assign sp " "))
+        (= sp " "))
       (cat s  ")"))))
 
 (%lua (var values (or unpack table.unpack)))
@@ -603,8 +615,8 @@
                   (last environment))
           entry (or (get frame k) (obj)))
       (each (k v) keys
-        (assign (get entry k) v))
-      (assign (get frame k) entry))))
+        (= (get entry k) v))
+      (= (get frame k) entry))))
 
 (%js (def print (x) (console.log x)))
 
@@ -645,7 +657,7 @@
 ;              (let-symbol (p process.env.NODE_PATH)
 ;                (if (and p (> p.length 0))
 ;                    (cat! p ":" __dirname)
-;                  (assign p __dirname)))
+;                  (= p __dirname)))
 ;              (let Module (require 'module)
 ;                (Module._initPaths))))
 ;          (%lua

@@ -28,8 +28,8 @@ clean:
 	@echo $@
 	@$(ELF) -c $< -o $@ -t lua
 
-test: all elf-test.js elf-test.lua
+test: all test.js test.lua
 	@echo js:
-	@ELF_HOST=$(ELF_NODE) bin/elf elf-test.js -e 'nil'
+	@ELF_HOST=$(ELF_NODE) bin/elf test.js -e 'nil'
 	@echo lua:
-	@ELF_HOST=$(ELF_LUA) bin/elf elf-test.lua -e 'nil'
+	@ELF_HOST=$(ELF_LUA) bin/elf test.lua -e 'nil'

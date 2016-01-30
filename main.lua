@@ -147,4 +147,7 @@ function elf_main()
     end
   end
 end
-elf_main()
+if _x5 == nil then
+  _x5 = true
+  elf_main()
+end

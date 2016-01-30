@@ -133,4 +133,7 @@ elf_main = function () {
     }
   }
 };
-elf_main();
+if (typeof(_x3) === "undefined") {
+  _x3 = true;
+  elf_main();
+}

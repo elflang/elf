@@ -396,12 +396,12 @@ var setup = function () {
       return(join(["do"], forms));
     }
   }});
-  setenv("eval-compile", {_stash: true, macro: function () {
+  setenv("%compiling", {_stash: true, macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));
     eval(join(["do"], forms));
     return(undefined);
   }});
-  setenv("eval-once", {_stash: true, macro: function () {
+  setenv("once", {_stash: true, macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));
     var x = unique("x");
     return(join(["when", ["undef?", x], ["=", x, true]], forms));

@@ -271,11 +271,11 @@
     (when (is target 'lua)
       `(do ,@forms)))
 
-  (mac eval-compile forms
+  (mac %compiling forms
     (eval `(do ,@forms))
     nil)
 
-  (mac eval-once forms
+  (mac once forms
     (let-unique (x)
       `(when (undef? ,x)
          (= ,x true)
@@ -301,10 +301,10 @@
   ;; be dropped at the end of this wrapper function's scope.  Since we
   ;; want the definitions to persist, we insert them into the toplevel
   ;; frame.
-  (eval-compile
+  (%compiling
     (join! (at environment 0) (at environment 1))))
 
-(eval-once
+(once
   (def environment (list (obj)))
   (def target (language)))
 

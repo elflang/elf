@@ -925,6 +925,6 @@ c"
   (let f (fn args args)
     (eq '(1 2 3) (f 1 2 3))))
 
-(eval-once
+(once
   (run-tests))
 

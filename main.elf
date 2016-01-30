@@ -89,6 +89,6 @@
                 (print code)
               (system.write-file output code)))))))
 
-(eval-once
+(once
   (elf-main))
 

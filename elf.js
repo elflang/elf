@@ -68,7 +68,7 @@ var setup = function () {
       if (nil63(b)) {
         return([a]);
       } else {
-        return([["=", a, e], b]);
+        return([["is", a, e], b]);
       }
     }, pair(clauses));
     return(["let", [e, x], join(["if"], apply(join, bs))]);
@@ -368,9 +368,9 @@ var setup = function () {
   }});
   setenv("undef?", {_stash: true, macro: function (_var) {
     if (target === "js") {
-      return(["=", ["typeof", _var], "\"undefined\""]);
+      return(["is", ["typeof", _var], "\"undefined\""]);
     } else {
-      return(["=", _var, "nil"]);
+      return(["is", _var, "nil"]);
     }
   }});
   setenv("%js", {_stash: true, macro: function () {
@@ -450,7 +450,7 @@ atom63 = function (x) {
 nan = 0 / 0;
 inf = 1 / 0;
 nan63 = function (n) {
-  return(!( n === n));
+  return(! _61(n, n));
 };
 inf63 = function (n) {
   return(n === inf || n === -inf);
@@ -1084,7 +1084,7 @@ setenv("elf", {_stash: true, macro: function () {
   return(["require", ["quote", "elf"]]);
 }});
 setenv("main?", {_stash: true, macro: function () {
-  return(["do", ["%js", ["=", ["get", "require", ["quote", "main"]], "module"]], ["%lua", ["~pcall", "getfenv", 4]]]);
+  return(["do", ["%js", ["is", ["get", "require", ["quote", "main"]], "module"]], ["%lua", ["~pcall", "getfenv", 4]]]);
 }});
 setenv("main", {_stash: true, macro: function () {
   var l = unstash(Array.prototype.slice.call(arguments, 0));

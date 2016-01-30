@@ -38,7 +38,7 @@ local function skip_non_code(s)
         read_char(s)
       else
         if c == ";" then
-          while c and not( c == "\n") do
+          while c and not _61(c, "\n") do
             c = read_char(s)
           end
           skip_non_code(s)
@@ -114,7 +114,7 @@ local function real63(x)
   return(number63(x) and not nan63(x) and not inf63(x))
 end
 local function valid_access63(str)
-  return(_35(str) > 2 and not( "." == char(str, 0)) and not( "." == char(str, edge(str))) and not search(str, ".."))
+  return(_35(str) > 2 and not _61(".", char(str, 0)) and not _61(".", char(str, edge(str))) and not search(str, ".."))
 end
 local function parse_access(str)
   return(reduce(function (a, b)

@@ -61,7 +61,7 @@ local function setup()
       if nil63(b) then
         return({a})
       else
-        return({{"=", a, e}, b})
+        return({{"is", a, e}, b})
       end
     end, pair(clauses))
     return({"let", {e, x}, join({"if"}, apply(join, bs))})
@@ -347,9 +347,9 @@ local function setup()
   end})
   setenv("undef?", {_stash = true, macro = function (_var)
     if target == "js" then
-      return({"=", {"typeof", _var}, "\"undefined\""})
+      return({"is", {"typeof", _var}, "\"undefined\""})
     else
-      return({"=", _var, "nil"})
+      return({"is", _var, "nil"})
     end
   end})
   setenv("%js", {_stash = true, macro = function (...)
@@ -426,7 +426,7 @@ end
 nan = 0 / 0
 inf = 1 / 0
 function nan63(n)
-  return(not( n == n))
+  return(not _61(n, n))
 end
 function inf63(n)
   return(n == inf or n == -inf)
@@ -957,7 +957,7 @@ setenv("elf", {_stash = true, macro = function ()
   return({"require", {"quote", "elf"}})
 end})
 setenv("main?", {_stash = true, macro = function ()
-  return({"do", {"%js", {"=", {"get", "require", {"quote", "main"}}, "module"}}, {"%lua", {"~pcall", "getfenv", 4}}})
+  return({"do", {"%js", {"is", {"get", "require", {"quote", "main"}}, "module"}}, {"%lua", {"~pcall", "getfenv", 4}}})
 end})
 setenv("main", {_stash = true, macro = function (...)
   local l = unstash({...})

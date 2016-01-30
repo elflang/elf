@@ -38,7 +38,7 @@ var skip_non_code = function (s) {
         read_char(s);
       } else {
         if (c === ";") {
-          while (c && !( c === "\n")) {
+          while (c && ! _61(c, "\n")) {
             c = read_char(s);
           }
           skip_non_code(s);
@@ -114,7 +114,7 @@ var real63 = function (x) {
   return(number63(x) && ! nan63(x) && ! inf63(x));
 };
 var valid_access63 = function (str) {
-  return(_35(str) > 2 && !( "." === char(str, 0)) && !( "." === char(str, edge(str))) && ! search(str, ".."));
+  return(_35(str) > 2 && ! _61(".", char(str, 0)) && ! _61(".", char(str, edge(str))) && ! search(str, ".."));
 };
 var parse_access = function (str) {
   return(reduce(function (a, b) {

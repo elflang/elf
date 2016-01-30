@@ -95,7 +95,7 @@ local function stash42(args)
   end
 end
 local function bias(k)
-  if number63(k) and not( target == "lua") then
+  if number63(k) and not _61(target, "lua") then
     if target == "js" then
       k = k - 1
     else
@@ -308,7 +308,7 @@ local function quasiquote_list(form, depth)
     _i6 = _i6 + 1
   end
   local pruned = keep(function (x)
-    return(_35(x) > 1 or not( hd(x) == "list") or keys63(x))
+    return(_35(x) > 1 or not _61(hd(x), "list") or keys63(x))
   end, xs)
   if one63(pruned) then
     return(hd(pruned))
@@ -449,7 +449,7 @@ local __x69 = {}
 local _x70 = {}
 _x70.lua = "=="
 _x70.js = "==="
-__x69["="] = _x70
+__x69.is = _x70
 local __x71 = {}
 local _x72 = {}
 _x72.lua = "and"
@@ -722,7 +722,7 @@ function compile_function(args, body, ...)
   end
 end
 local function can_return63(form)
-  return(is63(form) and (atom63(form) or not( hd(form) == "return") and not statement63(hd(form))))
+  return(is63(form) and (atom63(form) or not _61(hd(form), "return") and not statement63(hd(form))))
 end
 function compile(form, ...)
   local _r59 = unstash({...})
@@ -783,7 +783,7 @@ local function literal63(form)
   return(atom63(form) or hd(form) == "%array" or hd(form) == "%object")
 end
 local function standalone63(form)
-  return(not atom63(form) and not infix63(hd(form)) and not literal63(form) and not( "get" == hd(form)))
+  return(not atom63(form) and not infix63(hd(form)) and not literal63(form) and not _61("get", hd(form)))
 end
 local function lower_do(args, hoist, stmt63, tail63)
   local _x87 = almost(args)

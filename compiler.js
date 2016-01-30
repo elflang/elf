@@ -102,7 +102,7 @@ var stash42 = function (args) {
   }
 };
 var bias = function (k) {
-  if (number63(k) && !( target === "js")) {
+  if (number63(k) && ! _61(target, "js")) {
     if (target === "js") {
       k = k - 1;
     } else {
@@ -350,7 +350,7 @@ var quasiquote_list = function (form, depth) {
     _i6 = _i6 + 1;
   }
   var pruned = keep(function (x) {
-    return(_35(x) > 1 || !( hd(x) === "list") || keys63(x));
+    return(_35(x) > 1 || ! _61(hd(x), "list") || keys63(x));
   }, xs);
   if (one63(pruned)) {
     return(hd(pruned));
@@ -498,7 +498,7 @@ var __x69 = [];
 var _x70 = [];
 _x70.lua = "==";
 _x70.js = "===";
-__x69["="] = _x70;
+__x69.is = _x70;
 var __x71 = [];
 var _x72 = [];
 _x72.lua = "and";
@@ -776,7 +776,7 @@ compile_function = function (args, body) {
   }
 };
 var can_return63 = function (form) {
-  return(is63(form) && (atom63(form) || !( hd(form) === "return") && ! statement63(hd(form))));
+  return(is63(form) && (atom63(form) || ! _61(hd(form), "return") && ! statement63(hd(form))));
 };
 compile = function (form) {
   var _r59 = unstash(Array.prototype.slice.call(arguments, 1));
@@ -837,7 +837,7 @@ var literal63 = function (form) {
   return(atom63(form) || hd(form) === "%array" || hd(form) === "%object");
 };
 var standalone63 = function (form) {
-  return(! atom63(form) && ! infix63(hd(form)) && ! literal63(form) && !( "get" === hd(form)));
+  return(! atom63(form) && ! infix63(hd(form)) && ! literal63(form) && ! _61("get", hd(form)));
 };
 var lower_do = function (args, hoist, stmt63, tail63) {
   var _x84 = almost(args);

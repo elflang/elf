@@ -16,8 +16,8 @@
      (inc passed)))
 
 (var equal? (a b)
-  (if (atom? a) (= a b)
-    (= (str a) (str b))))
+  (if (atom? a) (is a b)
+    (is (str a) (str b))))
 
 (mac test= (a b)
   `(test (equal? ,a ,b)
@@ -377,7 +377,7 @@ c"
 (deftest while
   (let i 0
     (while (< i 5)
-      (if (= i 3) (break) (inc i)))
+      (if (is i 3) (break) (inc i)))
     (test= 3 i)
     (while (< i 10)
       (inc i))
@@ -387,7 +387,7 @@ c"
       (test= 15 i))
     (let b
         (while (< i 20)
-          (if (= i 19)
+          (if (is i 19)
               (break)
             (inc i)))
       (test= nil a)
@@ -543,7 +543,7 @@ c"
   (test= 10 (with x 9 (inc x))))
 
 (deftest let-when
-  (test= nil (let-when frips (= 'a 'b) 19))
+  (test= nil (let-when frips (is 'a 'b) 19))
   (test= 19 (let-when frips 20 (- frips 1)))
   (test= 20 (let-when (a b) '(19 20) b))
   (test= nil (let-when (a b) nil b)))
@@ -694,7 +694,7 @@ c"
   (test= false false)
   (test= true (< -inf -1e10))
   (test= false (< inf -1e10))
-  (test= false (= nan nan))
+  (test= false (is nan nan))
   (test= true (nan? nan))
   (test= true (nan? (* nan 20)))
   (test= -inf (- inf))
@@ -759,7 +759,7 @@ c"
   (test= '(:a) (map (fn (x) x) '(:a)))
   (test= '(b: false) (map (fn (x) x) '(b: false)))
   (test= '(:a b: false) (map (fn (x) x) '(:a b: false)))
-  (let evens (fn (x) (when (= (% x 2) 0) x))
+  (let evens (fn (x) (when (is (% x 2) 0) x))
     (test= '(2 4 6) (map evens '(1 2 3 4 5 6)))
     (test= '(2 4 6 b: 8) (map evens '(1 2 3 4 5 6 a: 7 b: 8)))))
 
@@ -819,10 +819,10 @@ c"
 
 (deftest keep
   (test= () (keep (fn (x) x) ()))
-  (let even (fn (x) (= (% x 2) 0))
+  (let even (fn (x) (is (% x 2) 0))
     (test= '(6) (keep even '(5 6 7))))
   (test= '((1) (2 3)) (keep some? '(() (1) () (2 3))))
-  (let even? (fn (x) (= (% x 2) 0))
+  (let even? (fn (x) (is (% x 2) 0))
     (test= '(2 4 6) (keep even? '(1 2 3 4 5 6)))
     (test= '(2 4 6 b: 8) (keep even? '(1 2 3 4 5 6 a: 7 b: 8)))))
 
@@ -834,9 +834,9 @@ c"
 (deftest find
   (test= nil (find (fn (x) x) ()))
   (test= 7 (find (fn (x) x) '(7)))
-  (test= true (find (fn (x) (= x 7)) '(2 4 7)))
-  (test= true (find (fn (x) (= x 7)) '(2 4 foo: 7)))
-  (test= true (find (fn (x) (= x true)) '(2 4 :bar)))
+  (test= true (find (fn (x) (is x 7)) '(2 4 7)))
+  (test= true (find (fn (x) (is x 7)) '(2 4 foo: 7)))
+  (test= true (find (fn (x) (is x true)) '(2 4 :bar)))
   (test= true (in? 7 '(2 4 7)))
   (test= true (in? 7 '(2 4 foo: 7)))
   (test= true (in? true '(2 4 :bar))))
@@ -844,7 +844,7 @@ c"
 (deftest find
   (test= nil (first (fn (x) x) ()))
   (test= 7 (first (fn (x) x) '(7)))
-  (test= true (first (fn (x) (= x 7)) '(2 4 7)))
+  (test= true (first (fn (x) (is x 7)) '(2 4 7)))
   (test= 4 (first (fn (x) (and (> x 3) x)) '(1 2 3 4 5 6))))
 
 (deftest sort

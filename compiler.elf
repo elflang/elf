@@ -74,24 +74,24 @@
 (var bias (k)
   (when (and (number? k)
              (~= target (language)))
-    (if (= target 'js)
+    (if (is target 'js)
         (dec k)
       (inc k)))
   k)
 
 (def bind (lh rh)
   (if (atom? lh) `(,lh ,rh)
-    (= (hd lh) 'o)
+    (is (hd lh) 'o)
      (let ((_ var val) lh)
        (list var `(if (is? ,rh) ,rh ,val)))
     (let-unique (id)
       (with bs (list id rh)
         (each (k v) lh
-          (let x (if (= k 'rest)
+          (let x (if (is k 'rest)
                      `(cut ,id ,(# lh))
                    `(get ,id ',(bias k)))
             (when (is? k)
-              (let k (if (= v true) k v)
+              (let k (if (is v true) k v)
                 (join! bs (bind k x))))))))))
 
 (mac arguments% (from)
@@ -100,7 +100,7 @@
 (def bind* (args body)
   (let args1 ()
     (var rest ()
-      (if (= target 'js)
+      (if (is target 'js)
           `(unstash (arguments% ,(# args1)))
         (do (add args1 '|...|) '(unstash (list |...|)))))
     (if (atom? args)
@@ -125,12 +125,12 @@
   (and (quoting? depth) (> depth 0)))
 
 (var can-unquote? (depth)
-  (and (quoting? depth) (= depth 1)))
+  (and (quoting? depth) (is depth 1)))
 
 (var quasisplice? (x depth)
   (and (can-unquote? depth)
        (~atom? x)
-       (= (hd x) 'unquote-splicing)))
+       (is (hd x) 'unquote-splicing)))
 
 (var expand-local ((x name value))
   `(%local ,name ,(macroexpand value)))
@@ -151,11 +151,11 @@
       (macroexpand (symbol-expansion form))
       (atom? form) form
     (let x (hd form)
-      (if (= x '%local) (expand-local form)
-          (= x '%function) (expand-function form)
-          (= x '%global-function) (expand-definition form)
-          (= x '%local-function) (expand-definition form)
-          (and (string? x) (= (char x 0) "~"))
+      (if (is x '%local) (expand-local form)
+          (is x '%function) (expand-function form)
+          (is x '%global-function) (expand-definition form)
+          (is x '%local-function) (expand-definition form)
+          (and (string? x) (is (char x 0) "~"))
           (macroexpand `(not (,(clip x 1) ,@(tl form))))
 	  (macro? x) (expand-macro form)
         (map macroexpand form)))))
@@ -191,19 +191,19 @@
       (if (atom? form) (list 'quote form)
           ;; unquote
           (and (can-unquote? depth)
-               (= (hd form) 'unquote))
+               (is (hd form) 'unquote))
           (quasiexpand (at form 1))
           ;; decrease quasiquoting depth
-          (or (= (hd form) 'unquote)
-              (= (hd form) 'unquote-splicing))
+          (or (is (hd form) 'unquote)
+              (is (hd form) 'unquote-splicing))
           (quasiquote-list form (- depth 1))
           ;; increase quasiquoting depth
-          (= (hd form) 'quasiquote)
+          (is (hd form) 'quasiquote)
           (quasiquote-list form (+ depth 1))
         (quasiquote-list form depth))
       (atom? form) form
-      (= (hd form) 'quote) form
-      (= (hd form) 'quasiquote)
+      (is (hd form) 'quote) form
+      (is (hd form) 'quasiquote)
       ;; start quasiquoting
       (quasiexpand (at form 1) 1)
     (map (fn (x) (quasiexpand x depth)) form)))
@@ -239,7 +239,7 @@
   (or (number-code? n)         ; 0-9
       (and (> n 64) (< n 91))  ; A-Z
       (and (> n 96) (< n 123)) ; a-z
-      (= n 95)))               ; _
+      (is n 95)))               ; _
 
 (def valid-id? (id)
   (if (or (none? id) (reserved? id))
@@ -252,7 +252,7 @@
 (def key (k)
   (let i (inner k)
     (if (valid-id? i) i
-        (= target 'js) k
+        (is target 'js) k
       (cat "[" k "]"))))
 
 (def mapo (f t)
@@ -269,7 +269,7 @@
     (:+ :-)
     (cat: (js: + lua: ..))
     (:< :> :<= :>=)
-    (=: (js: === lua: ==))
+    (is: (js: === lua: ==))
     (and: (js: && lua: and))
     (or: (js: ,"||" lua: or))))
 
@@ -289,7 +289,7 @@
 (var getop (op)
   (find (fn (level)
           (let x (get level op)
-            (if (= x true) op
+            (if (is x true) op
                 (is? x) (get x target))))
         infix))
 
@@ -307,16 +307,16 @@
   (with s1 ""
     (for i (# s)
       (let c (char s i)
-        (cat! s1 (if (= c "\n") "\\n" c))))))
+        (cat! s1 (if (is c "\n") "\\n" c))))))
 
 (var id (id)
   (let id1 ""
     (for i (# id)
       (let (c (char id i)
             n (code c)
-            c1 (if (= c "-") "_"
+            c1 (if (is c "-") "_"
                    (valid-code? n) c
-                   (= i 0) (cat "_" n)
+                   (is i 0) (cat "_" n)
                  n))
         (cat! id1 c1)))
     (if (reserved? id1)
@@ -324,21 +324,21 @@
         id1)))
 
 (var compile-atom (x)
-  (if (and (= x "nil") (= target 'lua)) x
-      (= x "nil") "undefined"
+  (if (and (is x "nil") (is target 'lua)) x
+      (is x "nil") "undefined"
       (id-literal? x) (inner x)
       (string-literal? x) (escape-newlines x)
       (string? x) (id x)
       (boolean? x) (if x "true" "false")
       (nan? x) "nan"
-      (= x inf) "inf"
-      (= x -inf) "-inf"
+      (is x inf) "inf"
+      (is x -inf) "-inf"
       (number? x) (cat x "")
     (error (cat "Cannot compile atom: " (str x)))))
 
 (var terminator (stmt?)
   (if (not stmt?) ""
-      (= target 'js) ";\n"
+      (is target 'js) ";\n"
     "\n"))
 
 (var compile-special (form stmt?)
@@ -349,7 +349,7 @@
 
 (var parenthesize-call? (x)
   (or (and (~atom? x)
-           (= (hd x) '%function))
+           (is (hd x) '%function))
       (> (precedence x) 0)))
 
 (var compile-call (form)
@@ -384,9 +384,9 @@
         body (with-indent (compile body :stmt))
         ind (indentation)
         p (if prefix (cat prefix " ") "")
-        tr (if (= target 'js) "" "end"))
+        tr (if (is target 'js) "" "end"))
     (if name (cat! tr "\n"))
-    (if (= target 'js)
+    (if (is target 'js)
         (cat "function " id args " {\n" body ind "}" tr)
       (cat p "function " id args "\n" body ind tr))))
 
@@ -420,8 +420,8 @@
 
 (var literal? (form)
   (or (atom? form)
-      (= (hd form) '%array)
-      (= (hd form) '%object)))
+      (is (hd form) '%array)
+      (is (hd form) '%object)))
 
 (var standalone? (form)
   (and (~atom? form)
@@ -468,7 +468,7 @@
     (if (some? hoist1)
         (let-unique (id)
           (lower `(do (%local ,id ,a)
-                      ,(if (= x 'and)
+                      ,(if (is x 'and)
                            `(%if ,id ,b ,id)
                          `(%if ,id ,id ,b)))
                  hoist))
@@ -521,15 +521,15 @@
       (nil? hoist) (lower-statement form)
       (lower-infix? form) (lower-infix form hoist)
     (let ((x rest: args) form)
-      (if (= x 'do) (lower-do args hoist stmt? tail?)
-          (= x 'set) (lower-set args hoist stmt? tail?)
-          (= x '%if) (lower-if args hoist stmt? tail?)
-          (= x '%try) (lower-try args hoist tail?)
-          (= x 'while) (lower-while args hoist)
-          (= x '%for) (lower-for args hoist)
-          (= x '%function) (lower-function args)
-          (or (= x '%local-function)
-              (= x '%global-function))
+      (if (is x 'do) (lower-do args hoist stmt? tail?)
+          (is x 'set) (lower-set args hoist stmt? tail?)
+          (is x '%if) (lower-if args hoist stmt? tail?)
+          (is x '%try) (lower-try args hoist tail?)
+          (is x 'while) (lower-while args hoist)
+          (is x '%for) (lower-for args hoist)
+          (is x '%function) (lower-function args)
+          (or (is x '%local-function)
+              (is x '%global-function))
           (lower-definition x args hoist)
           (in? x '(and or))
           (lower-short x args hoist)
@@ -569,13 +569,13 @@
         alt (if alt (with-indent (compile alt :stmt)))
         ind (indentation)
         s "")
-    (if (= target 'js)
+    (if (is target 'js)
         (cat! s ind "if (" cond ") {\n" cons ind "}")
       (cat! s ind "if " cond " then\n" cons))
-    (if (and alt (= target 'js))
+    (if (and alt (is target 'js))
         (cat! s " else {\n" alt ind "}")
         alt (cat! s ind "else\n" alt))
-    (if (= target 'lua)
+    (if (is target 'lua)
         (cat s ind "end\n")
       (cat s "\n"))))
 
@@ -583,7 +583,7 @@
   (let (cond (compile cond)
         body (with-indent (compile form :stmt))
         ind (indentation))
-    (if (= target 'js)
+    (if (is target 'js)
 	(cat ind "while (" cond ") {\n" body ind "}\n")
       (cat ind "while " cond " do\n" body ind "end\n"))))
 
@@ -591,7 +591,7 @@
   (let (t (compile t)
         ind (indentation)
         body (with-indent (compile form :stmt)))
-    (if (= target 'lua)
+    (if (is target 'lua)
 	(cat ind "for " k " in next, " t " do\n" body ind "end\n")
       (cat ind "for (" k " in " t ") {\n" body ind "}\n"))))
 
@@ -614,13 +614,13 @@
   (compile-function args body))
 
 (defspecial %global-function (name args body) :stmt :tr
-  (if (= target 'lua)
+  (if (is target 'lua)
       (let x (compile-function args body name: name)
         (cat (indentation) x))
     (compile `(set ,name (%function ,args ,body)) :stmt)))
 
 (defspecial %local-function (name args body) :stmt :tr
-  (if (= target 'lua)
+  (if (is target 'lua)
       (let x (compile-function args body name: name prefix: 'local)
         (cat (indentation) x))
     (compile `(%local ,name (%function ,args ,body)) :stmt)))
@@ -638,7 +638,7 @@
   (cat "typeof(" (compile x) ")"))
 
 (defspecial error (x) :stmt
-  (let e (if (= target 'js)
+  (let e (if (is target 'js)
              (cat "throw " (compile `(new (Error ,x))))
            (cat "error(" (compile x) ")"))
     (cat (indentation) e)))
@@ -647,7 +647,7 @@
   (let (id (compile name)
         value1 (compile value)
         rh (if (is? value) (cat " = " value1) "")
-	keyword (if (= target 'js) "var " "local ")
+	keyword (if (is target 'js) "var " "local ")
         ind (indentation))
     (cat ind keyword id rh)))
 
@@ -659,8 +659,8 @@
 (defspecial get (t k)
   (let (t (compile t)
 	k1 (compile k))
-    (when (and (= target 'lua)
-               (= (char t 0) "{"))
+    (when (and (is target 'lua)
+               (is (char t 0) "{"))
       (set t (cat "(" t ")")))
     (if (and (string-literal? k)
              (valid-id? (inner k)))
@@ -668,8 +668,8 @@
       (cat t "[" k1 "]"))))
 
 (defspecial %array forms
-  (let (open (if (= target 'lua) "{" "[")
-	close (if (= target 'lua) "}" "]")
+  (let (open (if (is target 'lua) "{" "[")
+	close (if (is target 'lua) "}" "]")
 	s "" c "")
     (each (k v) forms
       (when (number? k)
@@ -679,7 +679,7 @@
 
 (defspecial %object forms
   (let (s "{" c ""
-        sep (if (= target 'lua) " = " ": "))
+        sep (if (is target 'lua) " = " ": "))
     (each (k v) (pair forms)
       (when (number? k)
         (let ((k v) v)

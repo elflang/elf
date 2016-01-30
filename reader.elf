@@ -23,7 +23,7 @@
     (let c (peek-char s)
       (if (nil? c) (break)
           (get whitespace c) (read-char s)
-          (= c ";")
+          (is c ";")
           (do (while (and c (~= c "\n"))
                 (set c (read-char s)))
               (skip-non-code s))
@@ -45,22 +45,22 @@
   (with l ()
     (while true
       (let form (read s)
-        (if (= form eof) (break))
+        (if (is form eof) (break))
         (add l form)))))
 
 (var read-string (str more)
   (let x (read (stream str more))
-    (unless (= x eof) x)))
+    (unless (is x eof) x)))
 
 (var key? (atom)
   (and (string? atom)
        (> (# atom) 1)
-       (= (char atom (edge atom)) ":")))
+       (is (char atom (edge atom)) ":")))
 
 (var flag? (atom)
   (and (string? atom)
        (> (# atom) 1)
-       (= (char atom 0) ":")))
+       (is (char atom 0) ":")))
 
 (var expected (s c)
   (let ((:more :pos) s)
@@ -68,7 +68,7 @@
 
 (var wrap (s x)
   (let y (read s)
-    (if (= y s.more) y
+    (if (is y s.more) y
       (list x y))))
 
 (var maybe-number (str)
@@ -98,22 +98,22 @@
       (let c (peek-char s)
 	(if (and c (and (~get whitespace c)
 			(~get delimiters c)))
-	    (do (if (= c ".") (set dot? true))
+	    (do (if (is c ".") (set dot? true))
                 (cat! str (read-char s)))
 	  (break))))
   (with atom
-    (if (= str "true") true
-        (= str "false") false
-        (= str "nan") nan
-        (= str "-nan") nan
-        (= str "inf") inf
-        (= str "-inf") -inf
+    (if (is str "true") true
+        (is str "false") false
+        (is str "nan") nan
+        (is str "-nan") nan
+        (is str "inf") inf
+        (is str "-inf") -inf
       (let n (maybe-number str)
         (if (real? n) n
             (and dot? (valid-access? str))
             (parse-access str)
           str)))
-    (while (= "(" (peek-char s))
+    (while (is "(" (peek-char s))
       (set atom `(,atom ,@(read s)))))))
 
 (defreader ("(" s)
@@ -123,7 +123,7 @@
       (while (nil? r)
         (skip-non-code s)
         (let c (peek-char s)
-          (if (= c ")") (do (read-char s) (set r l))
+          (if (is c ")") (do (read-char s) (set r l))
               (nil? c) (set r (expected s ")"))
             (let x (read s)
               (if (key? x)
@@ -142,9 +142,9 @@
     (let str "\""
       (while (nil? r)
         (let c (peek-char s)
-          (if (= c "\"") (set r (cat str (read-char s)))
+          (if (is c "\"") (set r (cat str (read-char s)))
               (nil? c) (set r (expected s "\""))
-            (do (when (= c "\\")
+            (do (when (is c "\\")
                   (cat! str (read-char s)))
                 (cat! str (read-char s)))))))))
 
@@ -154,7 +154,7 @@
     (let str "|"
       (while (nil? r)
         (let c (peek-char s)
-          (if (= c "|") (set r (cat str (read-char s)))
+          (if (is c "|") (set r (cat str (read-char s)))
               (nil? c) (set r (expected s "|"))
             (cat! str (read-char s))))))))
 
@@ -168,7 +168,7 @@
 
 (defreader ("," s)
   (read-char s)
-  (if (= (peek-char s) "@")
+  (if (is (peek-char s) "@")
       (do (read-char s)
 	  (wrap s 'unquote-splicing))
     (wrap s 'unquote)))

@@ -42,14 +42,14 @@
     (quasiexpand form 1))
 
   (mac at (l i)
-    (if (and (= target 'lua) (number? i))
+    (if (and (is target 'lua) (number? i))
         (inc i)
-        (= target 'lua)
+        (is target 'lua)
         (set i `(+ ,i 1)))
     `(get ,l ,i))
 
   (mac wipe (place)
-    (if (= target 'lua)
+    (if (is target 'lua)
         `(set ,place nil)
       `(%delete ,place)))
 
@@ -72,7 +72,7 @@
       (let bs (map (fn ((a b))
                      (if (nil? b)
                          (list a)
-                       `((= ,a ,e) ,b)))
+                       `((is ,a ,e) ,b)))
                    (pair clauses))
         `(let (,e ,x) (if ,@(apply join bs))))))
 
@@ -174,7 +174,7 @@
     `(%function ,@(bind* args body)))
 
   (mac guard (expr)
-    (if (= target 'js)
+    (if (is target 'js)
         `((fn () (%try (list true ,expr))))
       (let-unique (x msg trace)
         `(let (,x nil
@@ -196,7 +196,7 @@
         `(let (,o ,t ,k nil)
            (%for ,o ,k
              (let (,v (get ,o ,k))
-               ,@(if (= target 'lua) body
+               ,@(if (is target 'lua) body
                      `((let ,k (if (numeric? ,k)
                                    (parseInt ,k)
                                  ,k)
@@ -245,7 +245,7 @@
              (dec indent-level)))))
 
   (mac export names
-    (if (= target 'js)
+    (if (is target 'js)
         `(do ,@(map (fn (k)
                       `(set (get exports ',k) ,k))
                     names))
@@ -255,16 +255,16 @@
         `(return (obj ,@x)))))
 
   (mac undef? (var)
-    (if (= target 'js)
-       `(= (typeof ,var) "undefined")
-     `(= ,var nil)))
+    (if (is target 'js)
+       `(is (typeof ,var) "undefined")
+     `(is ,var nil)))
 
   (mac %js forms
-    (when (= target 'js)
+    (when (is target 'js)
       `(do ,@forms)))
 
   (mac %lua forms
-    (when (= target 'lua)
+    (when (is target 'lua)
       `(do ,@forms)))
 
   (mac eval-compile forms
@@ -296,8 +296,8 @@
   (def target (language)))
 
 (def nil? (x)
-  (%js (or (= x nil) (= x null)))
-  (%lua (= x nil)))
+  (%js (or (is x nil) (is x null)))
+  (%lua (is x nil)))
 
 (def is? (x) (~nil? x))
 
@@ -305,19 +305,19 @@
   (%js (or x.length 0))
   (%lua |#x|))
 
-(def none? (x) (= (# x) 0))
+(def none? (x) (is (# x) 0))
 (def some? (x) (> (# x) 0))
-(def one? (x) (= (# x) 1))
-(def two? (x) (= (# x) 2))
+(def one? (x) (is (# x) 1))
+(def two? (x) (is (# x) 2))
 
 (def hd (l) (at l 0))
 
 (%js (def type (x) (typeof x)))
 
-(def string? (x) (= (type x) 'string))
-(def number? (x) (= (type x) 'number))
-(def boolean? (x) (= (type x) 'boolean))
-(def function? (x) (= (type x) 'function))
+(def string? (x) (is (type x) 'string))
+(def number? (x) (is (type x) 'number))
+(def boolean? (x) (is (type x) 'boolean))
+(def function? (x) (is (type x) 'function))
 
 (def atom? (x)
   (or (nil? x) (string? x) (number? x) (boolean? x)))
@@ -329,7 +329,7 @@
   (~= n n))
 
 (def inf? (n)
-  (or (= n inf) (= n -inf)))
+  (or (is n inf) (is n -inf)))
 
 (def clip (s from upto)
   (%js (s.substring from upto))
@@ -372,10 +372,10 @@
   (%lua (string.byte s (if n (+ n 1)))))
 
 (def string-literal? (x)
-  (and (string? x) (= (char x 0) "\"")))
+  (and (string? x) (is (char x 0) "\"")))
 
 (def id-literal? (x)
-  (and (string? x) (= (char x 0) "|")))
+  (and (string? x) (is (char x 0) "|")))
 
 (def add (l x)
   (%js (do (l.push x) nil))
@@ -429,7 +429,7 @@
       (if y (return y)))))
 
 (def in? (x t)
-  (find (fn (y) (= x y)) t))
+  (find (fn (y) (is x y)) t))
 
 (def pair (l)
   (with l1 ()
@@ -483,7 +483,7 @@
       (if (and (~atom? l) (~function? l) l._stash)
           (with args1 (almost args)
             (each (k v) l
-              (unless (= k '_stash)
+              (unless (is k '_stash)
                 (set (get args1 k) v))))
         args))))
 
@@ -497,7 +497,7 @@
       (and i (- i 1)))))
 
 (def split (s sep)
-  (if (or (= s "") (= sep "")) ()
+  (if (or (is s "") (is sep "")) ()
     (with l ()
       (let n (# sep)
         (while true
@@ -527,7 +527,7 @@
 
 (def > (a b) (> a b))
 (def < (a b) (< a b))
-(def = (a b) (= a b))
+(def = (a b) (is a b))
 (def >= (a b) (>= a b))
 (def <= (a b) (<= a b))
 
@@ -554,9 +554,9 @@
   (let s1 "\""
     (for i (# s)
       (let (c (char s i)
-            c1 (if (= c "\n") "\\n"
-                   (= c "\"") "\\\""
-                   (= c "\\") "\\\\"
+            c1 (if (is c "\n") "\\n"
+                   (is c "\"") "\\\""
+                   (is c "\\") "\\\\"
                  c))
         (cat! s1 c1)))
     (cat s1 "\"")))
@@ -565,8 +565,8 @@
   (if (and depth (> depth 40)) "circular"
       (nil? x) "nil"
       (nan? x) "nan"
-      (= x inf) "inf"
-      (= x -inf) "-inf"
+      (is x inf) "inf"
+      (is x -inf) "-inf"
       (boolean? x) (if x "true" "false")
       (string? x) (escape x)
       (atom? x) (tostring x)
@@ -633,7 +633,7 @@
 (setup)
 
 (defspecial bang () :tr
-  (if (= target 'js)
+  (if (is target 'js)
       "#!/usr/bin/env node\n\n"
     "#!/usr/bin/env luajit\n\n"))
 
@@ -658,7 +658,7 @@
   `(require 'elf))
 
 (mac main? ()
-  `(do (%js (= require.main module))
+  `(do (%js (is require.main module))
        (%lua (~pcall getfenv 4))))
 
 (mac main l

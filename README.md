@@ -176,19 +176,19 @@ Conditional evaluation is done using an `if` expression. The value of an `if` ex
 11
 ```
 
-Comparing values is done using the `=` operator:
+Comparing values is done using the `is` operator:
 ```
-> (= 10 10)
+> (is 10 10)
 true
-> (if (= 10 10) "yes")
+> (if (is 10 10) "yes")
 "yes"
-> (if (= 10 "no") "yes")
+> (if (is 10 "no") "yes")
 >
 ```
 
 Lists are values that have unique identity, so two separate lists that happen to contain the same values are not the same:
 ```
-> (= (list 1 2 3) (list 1 2 3))
+> (is (list 1 2 3) (list 1 2 3))
 false
 ```
 
@@ -258,7 +258,7 @@ Parameters in Elf are always optional, and those without a supplied argument hav
 > (let f (fn (a) a)
     (f))
 >
-> (let f (fn (:b) (if (= b nil) 10 20))
+> (let f (fn (:b) (if (is b nil) 10 20))
     (f a: 99))
 10
 ```

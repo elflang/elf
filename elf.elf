@@ -35,8 +35,9 @@
   ;; the macros defined in it.
 
   (mac = l
-    `(do ,@(map (fn ((x y)) `(assign ,x ,y))
-                (pair l))))
+    (if (two? l) `(assign ,@l)
+      `(do ,@(map (fn ((x y)) `(assign ,x ,y))
+                  (pair l)))))
 
   (mac quote (form)
     (quoted form))

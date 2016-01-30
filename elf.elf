@@ -34,17 +34,9 @@
   ;; This doesn't recompile `elf.elf`, but still needs to load all
   ;; the macros defined in it.
 
-  (mac bag (v t rest: body)
-    `(with %l ()
-       (step ,v ,t
-         (let (x (do ,@body))
-           (add %l x)))))
-
   (mac = l
-    (if (two? l)
-        `(assign ,@l)
-      `(do ,@(bag (x y) (pair l)
-               `(assign ,x ,y)))))
+    `(do ,@(map (fn ((x y)) `(assign ,x ,y))
+                (pair l))))
 
   (mac quote (form)
     (quoted form))

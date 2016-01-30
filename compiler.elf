@@ -1,6 +1,6 @@
 ;; -*- mode: lisp -*-
 
-(var reader (require 'reader))
+(use reader)
 
 (var getenv (k p)
   (when (string? k)

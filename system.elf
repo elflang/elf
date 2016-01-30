@@ -2,9 +2,7 @@
 
 (%js
 
-  (var fs (require 'fs))
-
-  (var path (require 'path))
+  (use fs path child_process)
 
   (var read-file (path)
     (fs.readFileSync path 'utf8))
@@ -33,8 +31,7 @@
     (cut process.argv 2))
 
   (var shell (cmd)
-    (var childproc (require 'child_process))
-    (let x (childproc.execSync cmd)
+    (let x (child_process.execSync cmd)
       (x.toString))))
 
 (%lua

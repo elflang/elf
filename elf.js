@@ -423,12 +423,24 @@ var setup = function () {
     return(["unless", cond, ["error", ["quote", "assert"]]]);
   }});
   setenv("elf", {_stash: true, macro: function () {
-    return(["do", ["require", ["quote", "elf"]], ["def", "reader", ["require", ["quote", "reader"]]], ["def", "compiler", ["require", ["quote", "compiler"]]], ["def", "system", ["require", ["quote", "system"]]]]);
+    return(["require", ["quote", "elf"]]);
+  }});
+  setenv("lib", {_stash: true, macro: function () {
+    var modules = unstash(Array.prototype.slice.call(arguments, 0));
+    return(join(["do"], map(function (x) {
+      return(["def", x, ["require", ["quote", x]]]);
+    }, modules)));
+  }});
+  setenv("use", {_stash: true, macro: function () {
+    var modules = unstash(Array.prototype.slice.call(arguments, 0));
+    return(join(["do"], map(function (x) {
+      return(["var", x, ["require", ["quote", x]]]);
+    }, modules)));
   }});
   return(undefined);
 };
-if (typeof(_x385) === "undefined") {
-  _x385 = true;
+if (typeof(_x383) === "undefined") {
+  _x383 = true;
   environment = [{}];
   target = "js";
 }
@@ -663,11 +675,11 @@ find = function (f, t) {
   }
 };
 first = function (f, l) {
-  var _x387 = l;
-  var _n13 = _35(_x387);
+  var _x385 = l;
+  var _n13 = _35(_x385);
   var _i13 = 0;
   while (_i13 < _n13) {
-    var x = _x387[_i13];
+    var x = _x385[_i13];
     var y = f(x);
     if (y) {
       return(y);
@@ -705,11 +717,11 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var t = [];
-  var _x389 = x;
-  var _n14 = _35(_x389);
+  var _x387 = x;
+  var _n14 = _35(_x387);
   var _i14 = 0;
   while (_i14 < _n14) {
-    var v = _x389[_i14];
+    var v = _x387[_i14];
     var y = f(v);
     if (is63(y)) {
       add(t, y);
@@ -1047,8 +1059,8 @@ toplevel63 = function () {
   return(one63(environment));
 };
 setenv = function (k) {
-  var _r149 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _id57 = _r149;
+  var _r153 = unstash(Array.prototype.slice.call(arguments, 1));
+  var _id57 = _r153;
   var _keys = cut(_id57, 0);
   if (string63(k)) {
     var _e27;

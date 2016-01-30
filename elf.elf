@@ -29,9 +29,9 @@
   ;; In that case, why call this wrapper function at all?  Consider
   ;; the following Javascript:
   ;;
-  ;;   require("l.js");
+  ;;   require("elf.js");
   ;;
-  ;; This doesn't recompile `l.elf`, but still needs to load all
+  ;; This doesn't recompile `elf.elf`, but still needs to load all
   ;; the macros defined in it.
 
   (mac bag (v t rest: body)
@@ -293,10 +293,13 @@
        (error 'assert)))
 
   (mac elf ()
-    `(do (require 'elf)
-         (def reader (require 'reader))
-         (def compiler (require 'compiler))
-         (def system (require 'system))))
+    `(require 'elf))
+
+  (mac lib modules
+    `(do ,@(map (fn (x) `(def ,x (require ',x))) modules)))
+
+  (mac use modules
+    `(do ,@(map (fn (x) `(var ,x (require ',x))) modules)))
 
   nil
 

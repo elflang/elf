@@ -1,5 +1,6 @@
 var fs = require("fs");
 var path = require("path");
+var child_process = require("child_process");
 var read_file = function (path) {
   return(fs.readFileSync(path, "utf8"));
 };
@@ -27,8 +28,7 @@ var exit = function (code) {
 };
 var argv = cut(process.argv, 2);
 var shell = function (cmd) {
-  var childproc = require("child_process");
-  var x = childproc.execSync(cmd);
+  var x = child_process.execSync(cmd);
   return(x.toString());
 };
 var reload = function (module) {

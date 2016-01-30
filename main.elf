@@ -2,6 +2,8 @@
 
 (elf)
 
+(lib reader compiler system)
+
 (var eval-print (form)
   (let ((ok x trace) (guard (compiler.eval form)))
     (if (not ok)

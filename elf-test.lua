@@ -1,12 +1,9 @@
 require("elf")
-reader = require("reader")
-compiler = require("compiler")
-system = require("system")
+local reader = require("reader")
+local compiler = require("compiler")
 local passed = 0
 local failed = 0
 local tests = {}
-local reader = require("reader")
-local compiler = require("compiler")
 setenv("test", {_stash = true, macro = function (x, msg)
   return({"if", {"not", x}, {"do", {"=", "failed", {"+", "failed", 1}}, {"return", msg}}, {"inc", "passed"}})
 end})

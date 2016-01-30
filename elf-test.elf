@@ -2,12 +2,11 @@
 
 (elf)
 
+(use reader compiler)
+
 (var passed 0)
 (var failed 0)
 (var tests ())
-
-(var reader (require 'reader))
-(var compiler (require 'compiler))
 
 (mac test (x msg)
   `(if (not ,x)

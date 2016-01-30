@@ -402,7 +402,19 @@ local function setup()
     return({"unless", cond, {"error", {"quote", "assert"}}})
   end})
   setenv("elf", {_stash = true, macro = function ()
-    return({"do", {"require", {"quote", "elf"}}, {"def", "reader", {"require", {"quote", "reader"}}}, {"def", "compiler", {"require", {"quote", "compiler"}}}, {"def", "system", {"require", {"quote", "system"}}}})
+    return({"require", {"quote", "elf"}})
+  end})
+  setenv("lib", {_stash = true, macro = function (...)
+    local modules = unstash({...})
+    return(join({"do"}, map(function (x)
+      return({"def", x, {"require", {"quote", x}}})
+    end, modules)))
+  end})
+  setenv("use", {_stash = true, macro = function (...)
+    local modules = unstash({...})
+    return(join({"do"}, map(function (x)
+      return({"var", x, {"require", {"quote", x}}})
+    end, modules)))
   end})
   return(nil)
 end
@@ -931,8 +943,8 @@ function toplevel63()
   return(one63(environment))
 end
 function setenv(k, ...)
-  local _r146 = unstash({...})
-  local _id57 = _r146
+  local _r150 = unstash({...})
+  local _id57 = _r150
   local _keys = cut(_id57, 0)
   if string63(k) then
     local _e13

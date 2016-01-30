@@ -1,12 +1,9 @@
 require("elf");
-reader = require("reader");
-compiler = require("compiler");
-system = require("system");
+var reader = require("reader");
+var compiler = require("compiler");
 var passed = 0;
 var failed = 0;
 var tests = [];
-var reader = require("reader");
-var compiler = require("compiler");
 setenv("test", {_stash: true, macro: function (x, msg) {
   return(["if", ["not", x], ["do", ["=", "failed", ["+", "failed", 1]], ["return", msg]], ["inc", "passed"]]);
 }});

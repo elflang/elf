@@ -7,9 +7,8 @@
 (var eval-print (form)
   (let ((ok x trace) (guard (compiler.eval form)))
     (if (not ok)
-        (target
-          js: (print trace)
-          lua: (print (cat "error: " x "\n" trace)))
+        (do (%js (print trace))
+            (%lua (print (cat "error: " x "\n" trace))))
         (is? x) (print (str x)))))
 
 (var rep (s)
@@ -26,13 +25,15 @@
             (set buf "")
             (system.write "> ")))))
   (system.write "> ")
-  (target
-    js: (let in process.stdin
-          (in.setEncoding 'utf8)
-          (in.on 'data rep1))
-    lua: (while true
-           (let s (io.read)
-             (if s (rep1 (cat s "\n")) (break))))))
+  (%js
+    (let in process.stdin
+      (in.setEncoding 'utf8)
+      (in.on 'data rep1)))
+  (%lua
+    (while true
+      (let s (io.read)
+        (if s (rep1 (cat s "\n"))
+          (break))))))
 
 (def compile-file (path)
   (let (s (reader.stream (system.read-file path))

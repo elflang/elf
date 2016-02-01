@@ -63,6 +63,9 @@
             `(let ,x (%array ,@l) ,@forms ,x)
           `(%array ,@l)))))
 
+  (mac xform (l body)
+    `(map [do ,body] ,l))
+
   (mac if branches
     (hd (expand-if branches)))
 
@@ -108,12 +111,12 @@
               `(assign ,lh ,rh)
               (let (vars ()
                     forms (bind lh rh vars))
-                `(do ,@(map [do `(var ,_)]
-                            vars)
+                `(do ,@(xform vars
+                         `(var ,_))
                      ,@(map (fn ((id val)) `(= ,id ,val))
                             (pair forms))))))
-      `(do ,@(map [do `(= ,@_)]
-                  (pair l)))))
+      `(do ,@(xform (pair l)
+               `(= ,@_)))))
 
   (mac with (x v rest: body)
     `(let (,x ,v) ,@body ,x))
@@ -166,8 +169,8 @@
 
   (mac let-macro (definitions rest: body)
     (with-frame
-      (map [macroexpand `(mac ,@_)]
-           definitions)
+      (xform definitions
+        (macroexpand `(mac ,@_)))
       `(do ,@(macroexpand body))))
 
   (mac let-symbol (expansions rest: body)
@@ -178,8 +181,8 @@
       `(do ,@(macroexpand body))))
 
   (mac let-unique (names rest: body)
-    (let bs (map [list _ `(unique ',_)]
-                 names)
+    (let bs (xform names
+              `(,_ (unique ',_)))
       `(let ,(apply join bs)
          ,@body)))
 
@@ -264,8 +267,8 @@
 
   (mac export names
     (if (is target 'js)
-        `(do ,@(map [do `(= (get exports ',_) ,_)]
-                    names))
+        `(do ,@(xform names
+                 `(= (get exports ',_) ,_)))
       (let x (obj)
         (each k names
           (= (get x k) k))
@@ -302,10 +305,12 @@
     `(require 'elf))
 
   (mac lib modules
-    `(do ,@(map [do `(def ,_ (require ',_))] modules)))
+    `(do ,@(xform modules
+             `(def ,_ (require ',_)))))
 
   (mac use modules
-    `(do ,@(map [do `(var ,_ (require ',_))] modules)))
+    `(do ,@(xform modules
+             `(var ,_ (require ',_)))))
 
   nil
 

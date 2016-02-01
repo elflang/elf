@@ -34,11 +34,6 @@
   ;; This doesn't recompile `elf.elf`, but still needs to load all
   ;; the macros defined in it.
 
-  (mac = l
-    (if (two? l) `(assign ,@l)
-      `(do ,@(map (fn ((x y)) `(assign ,x ,y))
-                  (pair l)))))
-
   (mac quote (form)
     (quoted form))
 
@@ -49,12 +44,12 @@
     (if (and (is target 'lua) (number? i))
         (inc i)
         (is target 'lua)
-        (= i `(+ ,i 1)))
+        (assign i `(+ ,i 1)))
     `(get ,l ,i))
 
   (mac wipe (place)
     (if (is target 'lua)
-        `(= ,place nil)
+        `(assign ,place nil)
       `(%delete ,place)))
 
   (mac list body
@@ -62,8 +57,8 @@
       (let (l () forms ())
         (each (k v) body
           (if (number? k)
-              (= (get l k) v)
-            (add forms `(= (get ,x ',k) ,v))))
+              (assign (get l k) v)
+            (add forms `(assign (get ,x ',k) ,v))))
         (if (some? forms)
             `(let ,x (%array ,@l) ,@forms ,x)
           `(%array ,@l)))))
@@ -97,12 +92,28 @@
         (let renames ()
           (if (or (bound? id) (toplevel?))
               (let id1 (unique id)
-                (= renames (list id id1))
-                (= id id1))
+                (assign renames (list id id1))
+                (assign id id1))
             (setenv id :variable))
           `(do (%local ,id ,val)
                (let-symbol ,renames
                  (let ,(join bs1 bs2) ,@body)))))))
+
+  (mac = l
+    (case (# l)
+      0 nil
+      1 `(= ,@l nil)
+      2 (let ((lh rh) l)
+          (if (or (atom? lh) (case (hd lh) 'at true 'get true))
+              `(assign ,lh ,rh)
+              (let (vars ()
+                    forms (bind lh rh vars))
+                `(do ,@(map (fn (id) `(var ,id))
+                            vars)
+                     ,@(map (fn ((id val)) `(= ,id ,val))
+                            (pair forms))))))
+      `(do ,@(map (fn (l) `(= ,@l))
+                  (pair l)))))
 
   (mac with (x v rest: body)
     `(let (,x ,v) ,@body ,x))

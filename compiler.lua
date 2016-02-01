@@ -104,7 +104,7 @@ local function bias(k)
   end
   return(k)
 end
-function bind(lh, rh)
+function bind(lh, rh, acc)
   if atom63(lh) then
     return({lh, rh})
   else
@@ -117,6 +117,9 @@ function bind(lh, rh)
     else
       local id = unique("id")
       local bs = {id, rh}
+      if acc then
+        add(acc, id)
+      end
       local _o1 = lh
       local k = nil
       for k in next, _o1 do
@@ -136,7 +139,7 @@ function bind(lh, rh)
             _e11 = v
           end
           local _k = _e11
-          bs = join(bs, bind(_k, x))
+          bs = join(bs, bind(_k, x, acc))
         end
       end
       return(bs)

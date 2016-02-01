@@ -79,20 +79,21 @@
       (inc k)))
   k)
 
-(def bind (lh rh)
+(def bind (lh rh acc)
   (if (atom? lh) `(,lh ,rh)
     (is (hd lh) 'o)
      (let ((_ var val) lh)
        (list var `(if (is? ,rh) ,rh ,val)))
     (let-unique (id)
       (with bs (list id rh)
+        (when acc (add acc id))
         (each (k v) lh
           (let x (if (is k 'rest)
                      `(cut ,id ,(# lh))
                    `(get ,id ',(bias k)))
             (when (is? k)
               (let k (if (is v true) k v)
-                (join! bs (bind k x))))))))))
+                (join! bs (bind k x acc))))))))))
 
 (mac arguments% (from)
   `(Array.prototype.slice.call arguments ,from))

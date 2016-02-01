@@ -111,7 +111,7 @@ var bias = function (k) {
   }
   return(k);
 };
-bind = function (lh, rh) {
+bind = function (lh, rh, acc) {
   if (atom63(lh)) {
     return([lh, rh]);
   } else {
@@ -124,6 +124,9 @@ bind = function (lh, rh) {
     } else {
       var id = unique("id");
       var bs = [id, rh];
+      if (acc) {
+        add(acc, id);
+      }
       var _o1 = lh;
       var k = undefined;
       for (k in _o1) {
@@ -150,7 +153,7 @@ bind = function (lh, rh) {
             _e13 = v;
           }
           var _k2 = _e13;
-          bs = join(bs, bind(_k2, x));
+          bs = join(bs, bind(_k2, x, acc));
         }
       }
       return(bs);

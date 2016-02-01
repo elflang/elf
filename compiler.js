@@ -40,8 +40,8 @@ var symbol63 = function (k) {
   return(is63(symbol_expansion(k)));
 };
 var variable63 = function (k) {
-  var b = first(function (frame) {
-    return(frame[k]);
+  var b = first(function (_) {
+    return(_[k]);
   }, reverse(environment));
   return(! atom63(b) && is63(b.variable));
 };
@@ -352,8 +352,8 @@ var quasiquote_list = function (form, depth) {
     }
     _i6 = _i6 + 1;
   }
-  var pruned = keep(function (x) {
-    return(_35(x) > 1 || !( hd(x) === "list") || keys63(x));
+  var pruned = keep(function (_) {
+    return(_35(_) > 1 || !( hd(_) === "list") || keys63(_));
   }, xs);
   if (one63(pruned)) {
     return(hd(pruned));
@@ -390,8 +390,8 @@ quasiexpand = function (form, depth) {
         if (hd(form) === "quasiquote") {
           return(quasiexpand(form[1], 1));
         } else {
-          return(map(function (x) {
-            return(quasiexpand(x, depth));
+          return(map(function (_) {
+            return(quasiexpand(_, depth));
           }, form));
         }
       }
@@ -540,8 +540,8 @@ var precedence = function (form) {
   return(0);
 };
 var getop = function (op) {
-  return(find(function (level) {
-    var x = level[op];
+  return(find(function (_) {
+    var x = _[op];
     if (x === true) {
       return(op);
     } else {
@@ -944,8 +944,8 @@ var lower_definition = function (kind, args, hoist) {
   return(add(hoist, [kind, name, _args1, lower_body(body, true)]));
 };
 var lower_call = function (form, hoist) {
-  var _form1 = map(function (x) {
-    return(lower(x, hoist));
+  var _form1 = map(function (_) {
+    return(lower(_, hoist));
   }, form);
   if (some63(_form1)) {
     return(_form1);
@@ -958,8 +958,8 @@ var lower_infix = function (form, hoist) {
   var _id24 = form;
   var x = _id24[0];
   var args = cut(_id24, 1);
-  return(lower(reduce(function (a, b) {
-    return([x, b, a]);
+  return(lower(reduce(function (_0, _1) {
+    return([x, _1, _0]);
   }, reverse(args)), hoist));
 };
 var lower_special = function (form, hoist) {

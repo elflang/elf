@@ -33,9 +33,8 @@
   (is? (symbol-expansion k)))
 
 (var variable? (k)
-  (let b (first (fn (frame)
-                  (get frame k))
-                (reverse environment))
+  (let b (first [get _ k]
+           (reverse environment))
     (and (~atom? b) (is? b.variable))))
 
 (def bound? (x)
@@ -178,10 +177,9 @@
             (add xs '(list)))
         (add (last xs) (quasiexpand x depth))))
     (let pruned
-        (keep (fn (x)
-                (or (> (# x) 1)
-                    (~is (hd x) 'list)
-                    (keys? x)))
+        (keep [or (> (# _) 1)
+                  (~is (hd _) 'list)
+                  (keys? _)]
               xs)
       (if (one? pruned)
           (hd pruned)
@@ -207,7 +205,7 @@
       (is (hd form) 'quasiquote)
       ;; start quasiquoting
       (quasiexpand (at form 1) 1)
-    (map (fn (x) (quasiexpand x depth)) form)))
+    (xform form (quasiexpand _ depth))))
 
 (def expand-if ((a b rest: c))
   (if (is? b) `((%if ,a ,b ,@(expand-if c)))
@@ -288,10 +286,9 @@
   0)
 
 (var getop (op)
-  (find (fn (level)
-          (let x (get level op)
-            (if (is x true) op
-                (is? x) (get x target))))
+  (find [let x (get _ op)
+          (if (is x true) op
+            (is? x) (get x target))]
         infix))
 
 (var infix? (x)
@@ -499,7 +496,7 @@
     (add hoist `(,kind ,name ,args ,(lower-body body true)))))
 
 (var lower-call (form hoist)
-  (let form (map (fn (x) (lower x hoist)) form)
+  (let form (xform form (lower _ hoist))
     (if (some? form) form)))
 
 (var lower-infix? (form)
@@ -507,8 +504,7 @@
 
 (var lower-infix (form hoist)
   (let ((x rest: args) form)
-    (lower (reduce (fn (a b)
-                     (list x b a))
+    (lower (reduce [list x _1 _0]
                    (reverse args))
            hoist)))
 

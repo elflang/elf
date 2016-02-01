@@ -40,8 +40,8 @@ local function symbol63(k)
   return(is63(symbol_expansion(k)))
 end
 local function variable63(k)
-  local b = first(function (frame)
-    return(frame[k])
+  local b = first(function (_)
+    return(_[k])
   end, reverse(environment))
   return(not atom63(b) and is63(b.variable))
 end
@@ -310,8 +310,8 @@ local function quasiquote_list(form, depth)
     end
     _i6 = _i6 + 1
   end
-  local pruned = keep(function (x)
-    return(_35(x) > 1 or not( hd(x) == "list") or keys63(x))
+  local pruned = keep(function (_)
+    return(_35(_) > 1 or not( hd(_) == "list") or keys63(_))
   end, xs)
   if one63(pruned) then
     return(hd(pruned))
@@ -348,8 +348,8 @@ function quasiexpand(form, depth)
         if hd(form) == "quasiquote" then
           return(quasiexpand(form[2], 1))
         else
-          return(map(function (x)
-            return(quasiexpand(x, depth))
+          return(map(function (_)
+            return(quasiexpand(_, depth))
           end, form))
         end
       end
@@ -486,8 +486,8 @@ local function precedence(form)
   return(0)
 end
 local function getop(op)
-  return(find(function (level)
-    local x = level[op]
+  return(find(function (_)
+    local x = _[op]
     if x == true then
       return(op)
     else
@@ -890,8 +890,8 @@ local function lower_definition(kind, args, hoist)
   return(add(hoist, {kind, name, _args1, lower_body(body, true)}))
 end
 local function lower_call(form, hoist)
-  local _form1 = map(function (x)
-    return(lower(x, hoist))
+  local _form1 = map(function (_)
+    return(lower(_, hoist))
   end, form)
   if some63(_form1) then
     return(_form1)
@@ -904,8 +904,8 @@ local function lower_infix(form, hoist)
   local _id24 = form
   local x = _id24[1]
   local args = cut(_id24, 1)
-  return(lower(reduce(function (a, b)
-    return({x, b, a})
+  return(lower(reduce(function (_0, _1)
+    return({x, _1, _0})
   end, reverse(args)), hoist))
 end
 local function lower_special(form, hoist)

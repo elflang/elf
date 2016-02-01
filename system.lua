@@ -23,12 +23,6 @@ local function file_exists63(path)
   end, io.open(path)))
 end
 local path_separator = char(_G.package.config, 0)
-local function path_join(...)
-  local parts = unstash({...})
-  return(reduce(function (x, y)
-    return(x .. path_separator .. y)
-  end, parts) or "")
-end
 local function get_environment_variable(name)
   return(os.getenv(name))
 end
@@ -54,6 +48,12 @@ local argv = _e
 local function shell(cmd)
   local x = io.popen(cmd)
   return(x.read(x, "*a"))
+end
+local function path_join(...)
+  local parts = unstash({...})
+  return(reduce(function (_0, _1)
+    return(_0 .. path_separator .. _1)
+  end, parts) or "")
 end
 local function reload(module)
   package.loaded[module] = nil

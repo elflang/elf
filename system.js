@@ -11,12 +11,6 @@ var file_exists63 = function (path) {
   return(fs.existsSync(path, "utf8"));
 };
 var path_separator = path.sep;
-var path_join = function () {
-  var parts = unstash(Array.prototype.slice.call(arguments, 0));
-  return(reduce(function (x, y) {
-    return(x + path_separator + y);
-  }, parts) || "");
-};
 var get_environment_variable = function (name) {
   return(process.env[name]);
 };
@@ -30,6 +24,12 @@ var argv = cut(process.argv, 2);
 var shell = function (cmd) {
   var x = child_process.execSync(cmd);
   return(x.toString());
+};
+var path_join = function () {
+  var parts = unstash(Array.prototype.slice.call(arguments, 0));
+  return(reduce(function (_0, _1) {
+    return(_0 + path_separator + _1);
+  }, parts) || "");
 };
 var reload = function (module) {
   delete require.cache[require.resolve(module)];

@@ -23,7 +23,7 @@
 	 (cat "failed: expected " (str ,a) ", was " (str ,b))))
 
 (mac deftest (name rest: body)
-  `(add tests (list ',name (fn () ,@body))))
+  `(add tests (list ',name [do ,@body])))
 
 (def run-tests ()
   (each ((name f)) tests
@@ -246,7 +246,7 @@ c"
   (let-macro ((a keys `(obj ,@keys)))
     (eq true (get (a :foo) 'foo))
     (eq 17 (get (a bar: 17) 'bar)))
-  (let-macro ((a () `(obj baz: (fn () 17))))
+  (let-macro ((a () `(obj baz: [do 17])))
     (eq 17 ((get (a) 'baz)))))
 
 (deftest quasiexpand
@@ -271,19 +271,19 @@ c"
          (macroexpand '``(,x))))
 
 (deftest calls
-  (let (f (fn () 42)
-	l (list f)
-	t (obj f: f))
+  (let (f [do 42]
+        l (list f)
+        t (obj f: f))
     (eq 42 (f))
     (eq 42 ((at l 0)))
     (eq 42 ((get t 'f)))
-    (eq nil ((fn () (return))))
-    (eq 10 ((fn (x) (- x 2)) 12))))
+    (eq nil ([return]))
+    (eq 10 ([- _ 2] 12))))
 
 (deftest id
   (let (a 10
         b (obj x: 20)
-        f (fn () 30))
+        f [do 30])
     (eq 10 a)
     (eq 10 |a|)
     (eq 20 |b.x|)
@@ -465,31 +465,31 @@ c"
       (eq true (number? x)))))
 
 (deftest fn
-  (let f (fn (n) (+ n 10))
+  (let f [+ _ 10])
     (eq 20 (f 10))
     (eq 30 (f 20))
-    (eq 40 ((fn (n) (+ n 10)) 30))
-    (eq '(2 3 4) (map (fn (x) (+ x 1)) '(1 2 3)))))
+    (eq 40 ([+ _ 10] 30))
+    (eq '(2 3 4) (xform '(1 2 3) (+ _ 1))))
 
 (deftest define
   (var x 20)
   (var f () 42)
   (eq 20 x)
   (eq 42 (f))
-  ((fn ()
+  ([do
      (var f () 38)
-     (eq 38 (f))))
+     (eq 38 (f))])
   (eq 42 (f)))
 
 (deftest return
-  (let a ((fn () 17))
+  (let a ([do 17])
     (eq 17 a))
-  (let a ((fn () (if true 10 20)))
+  (let a ([if true 10 20])
     (eq 10 a))
-  (let a ((fn () (while false (blah))))
+  (let a ([while false (blah)])
     (eq nil a))
   (let a 11
-    (let b ((fn () (inc a)))
+    (let b ([inc a])
       (eq 12 b)
       (eq 12 a))))
 
@@ -539,17 +539,15 @@ c"
                (+ a 2))
              3))
     (eq a 15))
-  ((fn (zz)
-     (eq 20 zz)
-     (let (zz 21)
-       (eq 21 zz))
-     (eq 20 zz))
+  ([do (eq 20 _)
+       (let (_ 21)
+         (eq 21 _))
+       (eq 20 _)]
    20)
   (let q 9
-    ((fn ()
-       (let q 10
-         (eq 10 q))
-       (eq 9 q)))))
+    ([do (let q 10
+           (eq 10 q))
+         (eq 9 q)])))
 
 (deftest with
   (eq 10 (with x 9 (inc x))))
@@ -636,7 +634,7 @@ c"
       (eq 1 (a)))
     (eq 17 (a)))
   (let-macro ((a () 18))
-    (let (b (fn () 20))
+    (let (b [do 20])
       (eq 18 (a))
       (eq 20 (b))))
   (let-macro ((a (x)
@@ -764,14 +762,14 @@ c"
   (eq '(3 2 1 :a) (reverse '(1 2 3 :a))))
 
 (deftest map
-  (eq () (map (fn (x) x) ()))
-  (eq '(1) (map (fn (x) x) '(1)))
-  (eq '(2 3 4) (map (fn (x) (+ x 1)) '(1 2 3)))
-  (eq '(2 3 4 a: 5) (map (fn (x) (+ x 1)) (list 1 2 3 a: 4)))
-  (eq '(:a) (map (fn (x) x) '(:a)))
-  (eq '(b: false) (map (fn (x) x) '(b: false)))
-  (eq '(:a b: false) (map (fn (x) x) '(:a b: false)))
-  (let evens (fn (x) (when (is (% x 2) 0) x))
+  (eq () (xform () _))
+  (eq '(1) (xform '(1) _))
+  (eq '(2 3 4) (xform '(1 2 3) (+ _ 1)))
+  (eq '(2 3 4 a: 5) (xform (list 1 2 3 a: 4) (+ _ 1)))
+  (eq '(:a) (xform '(:a) _))
+  (eq '(b: false) (xform '(b: false) _))
+  (eq '(:a b: false) (xform '(:a b: false) _))
+  (let evens [when (is (% _ 2) 0) _]
     (eq '(2 4 6) (map evens '(1 2 3 4 5 6)))
     (eq '(2 4 6 b: 8) (map evens '(1 2 3 4 5 6 a: 7 b: 8)))))
 
@@ -818,23 +816,17 @@ c"
   (eq (list "a" "b" "") (split "azzbzz" "zz")))
 
 (deftest reduce
-  (eq 'a (reduce (fn (a b) (+ a b)) '(a)))
-  (eq 6 (reduce (fn (a b) (+ a b)) '(1 2 3)))
-  (eq '(1 (2 3))
-         (reduce
-          (fn (a b) (list a b))
-          '(1 2 3)))
-  (eq '(1 2 3 4 5)
-         (reduce
-          (fn (a b) (join a b))
-          '((1) (2 3) (4 5)))))
+  (eq 'a (reduce [+ _0 _1] '(a)))
+  (eq 6 (reduce [+ _0 _1] '(1 2 3)))
+  (eq '(1 (2 3)) (reduce [list _0 _1] '(1 2 3)))
+  (eq '(1 2 3 4 5) (reduce [join _0 _1] '((1) (2 3) (4 5)))))
 
 (deftest keep
-  (eq () (keep (fn (x) x) ()))
-  (let even (fn (x) (is (% x 2) 0))
+  (eq () (keep [do _] ()))
+  (let even [is (% _ 2) 0]
     (eq '(6) (keep even '(5 6 7))))
   (eq '((1) (2 3)) (keep some? '(() (1) () (2 3))))
-  (let even? (fn (x) (is (% x 2) 0))
+  (let even? [is (% _ 2) 0]
     (eq '(2 4 6) (keep even? '(1 2 3 4 5 6)))
     (eq '(2 4 6 b: 8) (keep even? '(1 2 3 4 5 6 a: 7 b: 8)))))
 
@@ -844,20 +836,20 @@ c"
   (eq nil (in? 'baz '(no can do))))
 
 (deftest find
-  (eq nil (find (fn (x) x) ()))
-  (eq 7 (find (fn (x) x) '(7)))
-  (eq true (find (fn (x) (is x 7)) '(2 4 7)))
-  (eq true (find (fn (x) (is x 7)) '(2 4 foo: 7)))
-  (eq true (find (fn (x) (is x true)) '(2 4 :bar)))
+  (eq nil (find [do _] ()))
+  (eq 7 (find [do _] '(7)))
+  (eq true (find [is _ 7] '(2 4 7)))
+  (eq true (find [is _ 7] '(2 4 foo: 7)))
+  (eq true (find [is _ true] '(2 4 :bar)))
   (eq true (in? 7 '(2 4 7)))
   (eq true (in? 7 '(2 4 foo: 7)))
   (eq true (in? true '(2 4 :bar))))
 
-(deftest find
-  (eq nil (first (fn (x) x) ()))
-  (eq 7 (first (fn (x) x) '(7)))
-  (eq true (first (fn (x) (is x 7)) '(2 4 7)))
-  (eq 4 (first (fn (x) (and (> x 3) x)) '(1 2 3 4 5 6))))
+(deftest first
+  (eq nil (first [do _] ()))
+  (eq 7 (first [do _] '(7)))
+  (eq true (first [is _ 7] '(2 4 7)))
+  (eq 4 (first [and (> _ 3) _] '(1 2 3 4 5 6))))
 
 (deftest sort
   (eq '(a b c) (sort '(c a b)))
@@ -883,12 +875,12 @@ c"
   (eq true (atom? "abc"))
   (eq true (atom? 42))
   (eq true (atom? true))
-  (eq false (atom? (fn ())))
+  (eq false (atom? []))
   (eq false (atom? '(1)))
   (eq false (atom? (obj))))
 
 (deftest apply
-  (eq 4 (apply (fn (a b) (+ a b)) '(2 2)))
+  (eq 4 (apply [+ _0 _1] '(2 2)))
   (eq '(2 2) (apply (fn a a) '(2 2)))
   (let t '(1)
     (= (get t 'foo) 17)
@@ -904,9 +896,9 @@ c"
     (eq 6 (eval '(apply + '(1 2 3))))))
 
 (deftest call
-  (let f (fn () 42)
+  (let f [do 42]
     (eq 42 (call f)))
-  (let fs (list (fn () 1) (fn () 10))
+  (let fs (list [do 1] [do 10])
     (eq '(1 10) (map call fs))))
 
 (deftest parameters

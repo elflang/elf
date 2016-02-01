@@ -3,7 +3,7 @@
 (mac defreader ((char s) rest: body)
   `(= (get read-table ,char) (fn (,s) ,@body)))
 
-(var delimiters (set-of "(" ")" ";" "\n"))
+(var delimiters (set-of "[" "]" "(" ")" ";" "\n"))
 (var whitespace (set-of " " "\t" "\n"))
 
 (var stream (str more)
@@ -19,15 +19,17 @@
     (if c (do (inc s.pos) c))))
 
 (var skip-non-code (s)
-  (while true
-    (let c (peek-char s)
-      (if (nil? c) (break)
-          (get whitespace c) (read-char s)
-          (is c ";")
-          (do (while (and c (~is c "\n"))
-                (= c (read-char s)))
-              (skip-non-code s))
-        (break)))))
+  (with any? nil
+    (while true
+      (let c (peek-char s)
+        (if (nil? c) (break)
+            (get whitespace c) (read-char s)
+            (is c ";")
+            (do (while (and c (~is c "\n"))
+                  (= c (read-char s)))
+                (skip-non-code s))
+          (break)))
+      (= any? true))))
 
 (var read-table (obj))
 (var eof (obj))
@@ -97,11 +99,10 @@
   (let (str "" dot? false)
     (while true
       (let c (peek-char s)
-      (if (and c (and (~get whitespace c)
-                      (~get delimiters c)))
-        (do (if (is c ".") (= dot? true))
-            (cat! str (read-char s)))
-        (break))))
+        (when (or (not c) (get whitespace c) (get delimiters c))
+          (break))
+        (if (is c ".") (= dot? true))
+        (cat! str (read-char s))))
     (if (is str "true") true
         (is str "false") false
         (is str "nan") nan
@@ -114,24 +115,15 @@
             (parse-access str)
           str)))))
 
-(defreader ("" s) ; atom
-  (with atom (read-atom s)
-    (while true
-      (case (peek-char s)
-        "(" (= atom `(,atom ,@(read s)))
-        "." (do (read-char s)
-                (= atom (parse-index (read-atom s) atom)))
-        (break)))))
-
-(defreader ("(" s)
+(var read-list (s ending) 
   (read-char s)
   (with r nil
     (let l ()
       (while (nil? r)
         (skip-non-code s)
         (let c (peek-char s)
-          (if (is c ")") (do (read-char s) (= r l))
-              (nil? c) (= r (expected s ")"))
+          (if (is c ending) (do (read-char s) (= r l))
+              (nil? c) (= r (expected s ending))
             (let x (read s)
               (if (key? x)
                   (let (k (clip x 0 (edge x))
@@ -140,8 +132,38 @@
                   (flag? x) (= (get l (clip x 1)) true)
                 (add l x)))))))))
 
+(var read-next (s prev ws?)
+  (case (peek-char s)
+    "." (do (read-char s) (read-next s (parse-index (read-atom s) prev)))
+    "(" (if ws? prev
+          (let x `(,prev ,@(read-list s ")"))
+            (read-next s x (skip-non-code s))))
+    prev))
+
+(defreader ("" s) ; atom
+  (read-next s (read-atom s)))
+
+(defreader ("(" s)
+  (read-next s (read-list s ")") (skip-non-code s)))
+
 (defreader (")" s)
   (error (cat "Unexpected ) at " s.pos)))
+
+(mac %fn (body)
+  (let (n -1 l ())
+    (step x body
+      (when (and (string? x) (two? x) (is (code x 0) 95)) ; "_"
+        (when (number-code? (code x 1))
+          (= n (max n (- (code x 1) 48)))))) ; "0"
+    (for i (+ n 1)
+      (add l (cat "_" (str i))))
+    `(fn ,(if (none? l) '(_) l) ,body)))
+
+(defreader ("[" s)
+  (read-next s `(%fn ,(read-list s "]")) (skip-non-code s)))
+
+(defreader ("]" s)
+  (error (cat "Unexpected ] at " s.pos)))
 
 (defreader ("\"" s)
   (read-char s)

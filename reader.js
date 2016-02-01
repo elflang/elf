@@ -7,7 +7,7 @@ setenv("defreader", {_stash: true, macro: function (_x6) {
   var body = cut(_id3, 0);
   return(["=", ["get", "read-table", char], join(["fn", [s]], body)]);
 }});
-var delimiters = {"(": true, ")": true, "\n": true, ";": true};
+var delimiters = {"(": true, ")": true, ";": true, "]": true, "\n": true, "[": true};
 var whitespace = {" ": true, "\n": true, "\t": true};
 var stream = function (str, more) {
   return({more: more, pos: 0, len: _35(str), string: str});
@@ -29,6 +29,7 @@ var read_char = function (s) {
   }
 };
 var skip_non_code = function (s) {
+  var any63 = undefined;
   while (true) {
     var c = peek_char(s);
     if (nil63(c)) {
@@ -47,7 +48,9 @@ var skip_non_code = function (s) {
         }
       }
     }
+    any63 = true;
   }
+  return(any63);
 };
 var read_table = {};
 var eof = {};
@@ -88,14 +91,14 @@ var expected = function (s, c) {
   var more = _id5.more;
   var pos = _id5.pos;
   var _id6 = more;
-  var _e1;
+  var _e2;
   if (_id6) {
-    _e1 = _id6;
+    _e2 = _id6;
   } else {
     throw new Error("Expected " + c + " at " + pos);
-    _e1 = undefined;
+    _e2 = undefined;
   }
-  return(_e1);
+  return(_e2);
 };
 var wrap = function (s, x) {
   var y = read(s);
@@ -132,14 +135,13 @@ var read_atom = function (s) {
   var dot63 = false;
   while (true) {
     var c = peek_char(s);
-    if (c && (! whitespace[c] && ! delimiters[c])) {
-      if (c === ".") {
-        dot63 = true;
-      }
-      str = str + read_char(s);
-    } else {
+    if (! c || whitespace[c] || delimiters[c]) {
       break;
     }
+    if (c === ".") {
+      dot63 = true;
+    }
+    str = str + read_char(s);
   }
   if (str === "true") {
     return(true);
@@ -176,36 +178,19 @@ var read_atom = function (s) {
     }
   }
 };
-read_table[""] = function (s) {
-  var atom = read_atom(s);
-  while (true) {
-    var _e = peek_char(s);
-    if ("(" === _e) {
-      atom = join([atom], read(s));
-    } else {
-      if ("." === _e) {
-        read_char(s);
-        atom = parse_index(read_atom(s), atom);
-      } else {
-        break;
-      }
-    }
-  }
-  return(atom);
-};
-read_table["("] = function (s) {
+var read_list = function (s, ending) {
   read_char(s);
   var r = undefined;
   var l = [];
   while (nil63(r)) {
     skip_non_code(s);
     var c = peek_char(s);
-    if (c === ")") {
+    if (c === ending) {
       read_char(s);
       r = l;
     } else {
       if (nil63(c)) {
-        r = expected(s, ")");
+        r = expected(s, ending);
       } else {
         var x = read(s);
         if (key63(x)) {
@@ -224,8 +209,66 @@ read_table["("] = function (s) {
   }
   return(r);
 };
+var read_next = function (s, prev, ws63) {
+  var _e = peek_char(s);
+  if ("." === _e) {
+    read_char(s);
+    return(read_next(s, parse_index(read_atom(s), prev)));
+  } else {
+    if ("(" === _e) {
+      if (ws63) {
+        return(prev);
+      } else {
+        var x = join([prev], read_list(s, ")"));
+        return(read_next(s, x, skip_non_code(s)));
+      }
+    } else {
+      return(prev);
+    }
+  }
+};
+read_table[""] = function (s) {
+  return(read_next(s, read_atom(s)));
+};
+read_table["("] = function (s) {
+  return(read_next(s, read_list(s, ")"), skip_non_code(s)));
+};
 read_table[")"] = function (s) {
   throw new Error("Unexpected ) at " + s.pos);
+};
+setenv("%fn", {_stash: true, macro: function (body) {
+  var n = -1;
+  var l = [];
+  var _x19 = body;
+  var _n1 = _35(_x19);
+  var _i1 = 0;
+  while (_i1 < _n1) {
+    var x = _x19[_i1];
+    if (string63(x) && two63(x) && code(x, 0) === 95) {
+      if (number_code63(code(x, 1))) {
+        n = max(n, code(x, 1) - 48);
+      }
+    }
+    _i1 = _i1 + 1;
+  }
+  var i = 0;
+  while (i < n + 1) {
+    add(l, "_" + str(i));
+    i = i + 1;
+  }
+  var _e3;
+  if (none63(l)) {
+    _e3 = ["_"];
+  } else {
+    _e3 = l;
+  }
+  return(["fn", _e3, body]);
+}});
+read_table["["] = function (s) {
+  return(read_next(s, ["%fn", read_list(s, "]")], skip_non_code(s)));
+};
+read_table["]"] = function (s) {
+  throw new Error("Unexpected ] at " + s.pos);
 };
 read_table["\""] = function (s) {
   read_char(s);

@@ -7,7 +7,7 @@ setenv("defreader", {_stash = true, macro = function (_x6, ...)
   local body = cut(_id3, 0)
   return({"=", {"get", "read-table", char}, join({"fn", {s}}, body)})
 end})
-local delimiters = {["("] = true, [")"] = true, ["\n"] = true, [";"] = true}
+local delimiters = {["("] = true, [")"] = true, [";"] = true, ["]"] = true, ["\n"] = true, ["["] = true}
 local whitespace = {[" "] = true, ["\n"] = true, ["\t"] = true}
 local function stream(str, more)
   return({more = more, pos = 0, len = _35(str), string = str})
@@ -29,6 +29,7 @@ local function read_char(s)
   end
 end
 local function skip_non_code(s)
+  local any63 = nil
   while true do
     local c = peek_char(s)
     if nil63(c) then
@@ -47,7 +48,9 @@ local function skip_non_code(s)
         end
       end
     end
+    any63 = true
   end
+  return(any63)
 end
 local read_table = {}
 local eof = {}
@@ -88,14 +91,14 @@ local function expected(s, c)
   local more = _id5.more
   local pos = _id5.pos
   local _id6 = more
-  local _e1
+  local _e2
   if _id6 then
-    _e1 = _id6
+    _e2 = _id6
   else
     error("Expected " .. c .. " at " .. pos)
-    _e1 = nil
+    _e2 = nil
   end
-  return(_e1)
+  return(_e2)
 end
 local function wrap(s, x)
   local y = read(s)
@@ -132,14 +135,13 @@ local function read_atom(s)
   local dot63 = false
   while true do
     local c = peek_char(s)
-    if c and (not whitespace[c] and not delimiters[c]) then
-      if c == "." then
-        dot63 = true
-      end
-      str = str .. read_char(s)
-    else
+    if not c or whitespace[c] or delimiters[c] then
       break
     end
+    if c == "." then
+      dot63 = true
+    end
+    str = str .. read_char(s)
   end
   if str == "true" then
     return(true)
@@ -176,36 +178,19 @@ local function read_atom(s)
     end
   end
 end
-read_table[""] = function (s)
-  local atom = read_atom(s)
-  while true do
-    local _e = peek_char(s)
-    if "(" == _e then
-      atom = join({atom}, read(s))
-    else
-      if "." == _e then
-        read_char(s)
-        atom = parse_index(read_atom(s), atom)
-      else
-        break
-      end
-    end
-  end
-  return(atom)
-end
-read_table["("] = function (s)
+local function read_list(s, ending)
   read_char(s)
   local r = nil
   local l = {}
   while nil63(r) do
     skip_non_code(s)
     local c = peek_char(s)
-    if c == ")" then
+    if c == ending then
       read_char(s)
       r = l
     else
       if nil63(c) then
-        r = expected(s, ")")
+        r = expected(s, ending)
       else
         local x = read(s)
         if key63(x) then
@@ -224,8 +209,66 @@ read_table["("] = function (s)
   end
   return(r)
 end
+local function read_next(s, prev, ws63)
+  local _e = peek_char(s)
+  if "." == _e then
+    read_char(s)
+    return(read_next(s, parse_index(read_atom(s), prev)))
+  else
+    if "(" == _e then
+      if ws63 then
+        return(prev)
+      else
+        local x = join({prev}, read_list(s, ")"))
+        return(read_next(s, x, skip_non_code(s)))
+      end
+    else
+      return(prev)
+    end
+  end
+end
+read_table[""] = function (s)
+  return(read_next(s, read_atom(s)))
+end
+read_table["("] = function (s)
+  return(read_next(s, read_list(s, ")"), skip_non_code(s)))
+end
 read_table[")"] = function (s)
   error("Unexpected ) at " .. s.pos)
+end
+setenv("%fn", {_stash = true, macro = function (body)
+  local n = -1
+  local l = {}
+  local _x20 = body
+  local _n1 = _35(_x20)
+  local _i1 = 0
+  while _i1 < _n1 do
+    local x = _x20[_i1 + 1]
+    if string63(x) and two63(x) and code(x, 0) == 95 then
+      if number_code63(code(x, 1)) then
+        n = max(n, code(x, 1) - 48)
+      end
+    end
+    _i1 = _i1 + 1
+  end
+  local i = 0
+  while i < n + 1 do
+    add(l, "_" .. str(i))
+    i = i + 1
+  end
+  local _e3
+  if none63(l) then
+    _e3 = {"_"}
+  else
+    _e3 = l
+  end
+  return({"fn", _e3, body})
+end})
+read_table["["] = function (s)
+  return(read_next(s, {"%fn", read_list(s, "]")}, skip_non_code(s)))
+end
+read_table["]"] = function (s)
+  error("Unexpected ] at " .. s.pos)
 end
 read_table["\""] = function (s)
   read_char(s)

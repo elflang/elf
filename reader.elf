@@ -149,15 +149,24 @@
 (defreader (")" s)
   (error (cat "Unexpected ) at " s.pos)))
 
+(mac %loading forms
+  (with e `(do ,@forms)
+    (eval e)))
+
 (mac %fn (body)
-  (let (n -1 l ())
-    (step x body
-      (when (and (string? x) (two? x) (is (code x 0) 95)) ; "_"
-        (when (number-code? (code x 1))
-          (= n (max n (- (code x 1) 48)))))) ; "0"
-    (for i (+ n 1)
-      (add l (cat "_" (str i))))
-    `(fn ,(if (none? l) '(_) l) ,body)))
+  (let (n -1 l () any? nil)
+    (treewise cons
+              [when (and (string? _) (<= (# _) 2) (is (code _ 0) 95)) ; "_"
+                (= any? true)
+                (var c (code _ 1))
+                (when (and c (>= c 48) (<= c 57)) ; "0" through "9"
+                  (= n (max n (- c 48))))]
+              body)
+    (when any?
+      (for i (+ n 1)
+        (add l (cat "_" (chr (+ 48 i)))))
+      (if (none? l) (add l "_")))
+  `(fn ,l ,body)))
 
 (defreader ("[" s)
   (read-next s `(%fn ,(read-list s "]")) (skip-non-code s)))

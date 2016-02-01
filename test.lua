@@ -261,8 +261,8 @@ add(tests, {"read-more", function ()
   if xpcall(function ()
     _x54 = read("(open")
     return(_x54)
-  end, function (m)
-    _msg = clip(m, search(m, ": ") + 2)
+  end, function (_)
+    _msg = clip(_, search(_, ": ") + 2)
     _trace = debug.traceback()
     return(_trace)
   end) then
@@ -2576,8 +2576,8 @@ add(tests, {"guard", function ()
   if xpcall(function ()
     _x577 = 42
     return(_x577)
-  end, function (m)
-    _msg1 = clip(m, search(m, ": ") + 2)
+  end, function (_)
+    _msg1 = clip(_, search(_, ": ") + 2)
     _trace1 = debug.traceback()
     return(_trace1)
   end) then
@@ -2594,8 +2594,8 @@ add(tests, {"guard", function ()
     if xpcall(function ()
       _x581 = 42
       return(_x581)
-    end, function (m)
-      _msg2 = clip(m, search(m, ": ") + 2)
+    end, function (_)
+      _msg2 = clip(_, search(_, ": ") + 2)
       _trace2 = debug.traceback()
       return(_trace2)
     end) then
@@ -2615,8 +2615,8 @@ add(tests, {"guard", function ()
     error("foo")
     _x585 = nil
     return(_x585)
-  end, function (m)
-    _msg3 = clip(m, search(m, ": ") + 2)
+  end, function (_)
+    _msg3 = clip(_, search(_, ": ") + 2)
     _trace3 = debug.traceback()
     return(_trace3)
   end) then
@@ -2634,8 +2634,8 @@ add(tests, {"guard", function ()
       error("foo")
       _x589 = nil
       return(_x589)
-    end, function (m)
-      _msg4 = clip(m, search(m, ": ") + 2)
+    end, function (_)
+      _msg4 = clip(_, search(_, ": ") + 2)
       _trace4 = debug.traceback()
       return(_trace4)
     end) then
@@ -2656,8 +2656,8 @@ add(tests, {"guard", function ()
     error("baz")
     _x593 = nil
     return(_x593)
-  end, function (m)
-    _msg5 = clip(m, search(m, ": ") + 2)
+  end, function (_)
+    _msg5 = clip(_, search(_, ": ") + 2)
     _trace5 = debug.traceback()
     return(_trace5)
   end) then
@@ -2676,8 +2676,8 @@ add(tests, {"guard", function ()
       error("baz")
       _x597 = nil
       return(_x597)
-    end, function (m)
-      _msg6 = clip(m, search(m, ": ") + 2)
+    end, function (_)
+      _msg6 = clip(_, search(_, ": ") + 2)
       _trace6 = debug.traceback()
       return(_trace6)
     end) then
@@ -2702,8 +2702,8 @@ add(tests, {"guard", function ()
       error("foo")
       _x602 = nil
       return(_x602)
-    end, function (m)
-      _msg8 = clip(m, search(m, ": ") + 2)
+    end, function (_)
+      _msg8 = clip(_, search(_, ": ") + 2)
       _trace8 = debug.traceback()
       return(_trace8)
     end) then
@@ -2715,8 +2715,8 @@ add(tests, {"guard", function ()
     error("baz")
     _x601 = nil
     return(_x601)
-  end, function (m)
-    _msg7 = clip(m, search(m, ": ") + 2)
+  end, function (_)
+    _msg7 = clip(_, search(_, ": ") + 2)
     _trace7 = debug.traceback()
     return(_trace7)
   end) then
@@ -2739,8 +2739,8 @@ add(tests, {"guard", function ()
         error("foo")
         _x609 = nil
         return(_x609)
-      end, function (m)
-        _msg10 = clip(m, search(m, ": ") + 2)
+      end, function (_)
+        _msg10 = clip(_, search(_, ": ") + 2)
         _trace10 = debug.traceback()
         return(_trace10)
       end) then
@@ -2752,8 +2752,8 @@ add(tests, {"guard", function ()
       error("baz")
       _x608 = nil
       return(_x608)
-    end, function (m)
-      _msg9 = clip(m, search(m, ": ") + 2)
+    end, function (_)
+      _msg9 = clip(_, search(_, ": ") + 2)
       _trace9 = debug.traceback()
       return(_trace9)
     end) then
@@ -2779,8 +2779,8 @@ add(tests, {"guard", function ()
     end
     _x615 = _e60
     return(_x615)
-  end, function (m)
-    _msg11 = clip(m, search(m, ": ") + 2)
+  end, function (_)
+    _msg11 = clip(_, search(_, ": ") + 2)
     _trace11 = debug.traceback()
     return(_trace11)
   end) then
@@ -2804,8 +2804,8 @@ add(tests, {"guard", function ()
       end
       _x619 = _e62
       return(_x619)
-    end, function (m)
-      _msg12 = clip(m, search(m, ": ") + 2)
+    end, function (_)
+      _msg12 = clip(_, search(_, ": ") + 2)
       _trace12 = debug.traceback()
       return(_trace12)
     end) then
@@ -2831,8 +2831,8 @@ add(tests, {"guard", function ()
     end
     _x623 = _e64
     return(_x623)
-  end, function (m)
-    _msg13 = clip(m, search(m, ": ") + 2)
+  end, function (_)
+    _msg13 = clip(_, search(_, ": ") + 2)
     _trace13 = debug.traceback()
     return(_trace13)
   end) then
@@ -2856,8 +2856,8 @@ add(tests, {"guard", function ()
       end
       _x627 = _e66
       return(_x627)
-    end, function (m)
-      _msg14 = clip(m, search(m, ": ") + 2)
+    end, function (_)
+      _msg14 = clip(_, search(_, ": ") + 2)
       _trace14 = debug.traceback()
       return(_trace14)
     end) then

@@ -91,14 +91,14 @@ local function expected(s, c)
   local more = _id5.more
   local pos = _id5.pos
   local _id6 = more
-  local _e2
+  local _e1
   if _id6 then
-    _e2 = _id6
+    _e1 = _id6
   else
     error("Expected " .. c .. " at " .. pos)
-    _e2 = nil
+    _e1 = nil
   end
-  return(_e2)
+  return(_e1)
 end
 local function wrap(s, x)
   local y = read(s)
@@ -236,33 +236,37 @@ end
 read_table[")"] = function (s)
   error("Unexpected ) at " .. s.pos)
 end
+setenv("%loading", {_stash = true, macro = function (...)
+  local forms = unstash({...})
+  local e = join({"do"}, forms)
+  eval(e)
+  return(e)
+end})
 setenv("%fn", {_stash = true, macro = function (body)
   local n = -1
   local l = {}
-  local _x20 = body
-  local _n1 = _35(_x20)
-  local _i1 = 0
-  while _i1 < _n1 do
-    local x = _x20[_i1 + 1]
-    if string63(x) and two63(x) and code(x, 0) == 95 then
-      if number_code63(code(x, 1)) then
-        n = max(n, code(x, 1) - 48)
+  local any63 = nil
+  treewise(cons, function (_)
+    if string63(_) and _35(_) <= 2 and code(_, 0) == 95 then
+      any63 = true
+      local c = code(_, 1)
+      if c and c >= 48 and c <= 57 then
+        n = max(n, c - 48)
+        return(n)
       end
     end
-    _i1 = _i1 + 1
+  end, body)
+  if any63 then
+    local i = 0
+    while i < n + 1 do
+      add(l, "_" .. chr(48 + i))
+      i = i + 1
+    end
+    if none63(l) then
+      add(l, "_")
+    end
   end
-  local i = 0
-  while i < n + 1 do
-    add(l, "_" .. str(i))
-    i = i + 1
-  end
-  local _e3
-  if none63(l) then
-    _e3 = {"_"}
-  else
-    _e3 = l
-  end
-  return({"fn", _e3, body})
+  return({"fn", l, body})
 end})
 read_table["["] = function (s)
   return(read_next(s, {"%fn", read_list(s, "]")}, skip_non_code(s)))

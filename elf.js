@@ -85,8 +85,8 @@ var setup = function () {
   }});
   setenv("obj", {_stash: true, macro: function () {
     var body = unstash(Array.prototype.slice.call(arguments, 0));
-    return(join(["%object"], mapo(function (x) {
-      return(x);
+    return(join(["%object"], mapo(function (_) {
+      return(_);
     }, body)));
   }});
   setenv("let", {_stash: true, macro: function (bs) {
@@ -155,8 +155,8 @@ var setup = function () {
           } else {
             var vars = [];
             var forms = bind(lh, rh, vars);
-            return(join(["do"], map(function (id) {
-              return(["var", id]);
+            return(join(["do"], map(function (_) {
+              return(["var", _]);
             }, vars), map(function (_x86) {
               var _id18 = _x86;
               var id = _id18[0];
@@ -165,8 +165,8 @@ var setup = function () {
             }, pair(forms))));
           }
         } else {
-          return(join(["do"], map(function (l) {
-            return(join(["="], l));
+          return(join(["do"], map(function (_) {
+            return(join(["="], _));
           }, pair(l))));
         }
       }
@@ -254,8 +254,8 @@ var setup = function () {
     var _id36 = _r45;
     var body = cut(_id36, 0);
     add(environment, {});
-    map(function (m) {
-      return(macroexpand(join(["mac"], m)));
+    map(function (_) {
+      return(macroexpand(join(["mac"], _)));
     }, definitions);
     var _x162 = join(["do"], macroexpand(body));
     drop(environment);
@@ -280,8 +280,8 @@ var setup = function () {
     var _r53 = unstash(Array.prototype.slice.call(arguments, 1));
     var _id42 = _r53;
     var body = cut(_id42, 0);
-    var bs = map(function (n) {
-      return([n, ["unique", ["quote", n]]]);
+    var bs = map(function (_) {
+      return([_, ["unique", ["quote", _]]]);
     }, names);
     return(join(["let", apply(join, bs)], body));
   }});
@@ -293,12 +293,12 @@ var setup = function () {
   }});
   setenv("guard", {_stash: true, macro: function (expr) {
     if (target === "js") {
-      return([["fn", join(), ["%try", ["list", true, expr]]]]);
+      return([["%fn", ["%try", ["list", true, expr]]]]);
     } else {
       var x = unique("x");
       var msg = unique("msg");
       var trace = unique("trace");
-      return(["let", [x, "nil", msg, "nil", trace, "nil"], ["if", ["xpcall", ["fn", join(), ["=", x, expr]], ["fn", ["m"], ["=", msg, ["clip", "m", ["+", ["search", "m", "\": \""], 2]]], ["=", trace, [["get", "debug", ["quote", "traceback"]]]]]], ["list", true, x], ["list", false, msg, trace]]]);
+      return(["let", [x, "nil", msg, "nil", trace, "nil"], ["if", ["xpcall", ["%fn", ["=", x, expr]], ["%fn", ["do", ["=", msg, ["clip", "_", ["+", ["search", "_", "\": \""], 2]]], ["=", trace, [["get", "debug", ["quote", "traceback"]]]]]]], ["list", true, x], ["list", false, msg, trace]]]);
     }
   }});
   setenv("each", {_stash: true, macro: function (x, t) {
@@ -417,8 +417,8 @@ var setup = function () {
   setenv("export", {_stash: true, macro: function () {
     var names = unstash(Array.prototype.slice.call(arguments, 0));
     if (target === "js") {
-      return(join(["do"], map(function (k) {
-        return(["=", ["get", "exports", ["quote", k]], k]);
+      return(join(["do"], map(function (_) {
+        return(["=", ["get", "exports", ["quote", _]], _]);
       }, names)));
     } else {
       var x = {};
@@ -475,14 +475,14 @@ var setup = function () {
   }});
   setenv("lib", {_stash: true, macro: function () {
     var modules = unstash(Array.prototype.slice.call(arguments, 0));
-    return(join(["do"], map(function (x) {
-      return(["def", x, ["require", ["quote", x]]]);
+    return(join(["do"], map(function (_) {
+      return(["def", _, ["require", ["quote", _]]]);
     }, modules)));
   }});
   setenv("use", {_stash: true, macro: function () {
     var modules = unstash(Array.prototype.slice.call(arguments, 0));
-    return(join(["do"], map(function (x) {
-      return(["var", x, ["require", ["quote", x]]]);
+    return(join(["do"], map(function (_) {
+      return(["var", _, ["require", ["quote", _]]]);
     }, modules)));
   }});
   return(undefined);
@@ -619,6 +619,9 @@ char = function (s, n) {
 code = function (s, n) {
   return(s.charCodeAt(n));
 };
+chr = function (c) {
+  return(String.fromCharCode(c));
+};
 string_literal63 = function (x) {
   return(string63(x) && char(x, 0) === "\"");
 };
@@ -736,8 +739,8 @@ first = function (f, l) {
   }
 };
 in63 = function (x, t) {
-  return(find(function (y) {
-    return(x === y);
+  return(find(function (_) {
+    return(x === _);
   }, t));
 };
 pair = function (l) {
@@ -753,8 +756,8 @@ pair = function (l) {
 sort = function (l, f) {
   var _e32;
   if (f) {
-    _e32 = function (a, b) {
-      if (f(a, b)) {
+    _e32 = function (_0, _1) {
+      if (f(_0, _1)) {
         return(-1);
       } else {
         return(1);
@@ -796,10 +799,24 @@ map = function (f, x) {
   }
   return(t);
 };
+cons = function (x, y) {
+  return(join([x], y));
+};
+treewise = function (f, base, tree) {
+  if (atom63(tree)) {
+    return(base(tree));
+  } else {
+    if (none63(tree)) {
+      return([]);
+    } else {
+      return(f(treewise(f, base, hd(tree)), treewise(f, base, tl(tree))));
+    }
+  }
+};
 keep = function (f, x) {
-  return(map(function (v) {
-    if (f(v)) {
-      return(v);
+  return(map(function (_) {
+    if (f(_)) {
+      return(_);
     }
   }, x));
 };
@@ -915,39 +932,39 @@ split = function (s, sep) {
 };
 cat = function () {
   var xs = unstash(Array.prototype.slice.call(arguments, 0));
-  return(reduce(function (a, b) {
-    return(a + b);
+  return(reduce(function (_0, _1) {
+    return(_0 + _1);
   }, xs) || "");
 };
 _43 = function () {
   var xs = unstash(Array.prototype.slice.call(arguments, 0));
-  return(reduce(function (a, b) {
-    return(a + b);
+  return(reduce(function (_0, _1) {
+    return(_0 + _1);
   }, xs) || 0);
 };
 _ = function () {
   var xs = unstash(Array.prototype.slice.call(arguments, 0));
-  return(reduce(function (b, a) {
-    return(a - b);
+  return(reduce(function (_0, _1) {
+    return(_1 - _0);
   }, reverse(xs)) || 0);
 };
 _42 = function () {
   var xs = unstash(Array.prototype.slice.call(arguments, 0));
-  return(reduce(function (a, b) {
-    return(a * b);
+  return(reduce(function (_0, _1) {
+    return(_0 * _1);
   }, xs) || 1);
 };
 _47 = function () {
   var xs = unstash(Array.prototype.slice.call(arguments, 0));
-  return(reduce(function (b, a) {
-    return(a / b);
+  return(reduce(function (_0, _1) {
+    return(_1 / _0);
   }, reverse(xs)) || 1);
 };
 _37 = function () {
   var xs = unstash(Array.prototype.slice.call(arguments, 0));
-  return(reduce(function (b, a) {
-    return(a % b);
-  }, reverse(xs)) || 0);
+  return(reduce(function (_0, _1) {
+    return(_1 % _0);
+  }, reverse(xs)) || 1);
 };
 _62 = function (a, b) {
   return(a > b);
@@ -1107,8 +1124,8 @@ toplevel63 = function () {
   return(one63(environment));
 };
 setenv = function (k) {
-  var _r159 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _id62 = _r159;
+  var _r162 = unstash(Array.prototype.slice.call(arguments, 1));
+  var _id62 = _r162;
   var _keys = cut(_id62, 0);
   if (string63(k)) {
     var _e43;

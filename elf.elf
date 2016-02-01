@@ -82,7 +82,7 @@
     `(if (not ,cond) (do ,@body)))
 
   (mac obj body
-    `(%object ,@(mapo (fn (x) x) body)))
+    `(%object ,@(mapo [do _] body)))
 
   (mac let (bs rest: body)
     (if (atom? bs) `(let (,bs ,(hd body)) ,@(tl body))
@@ -108,11 +108,11 @@
               `(assign ,lh ,rh)
               (let (vars ()
                     forms (bind lh rh vars))
-                `(do ,@(map (fn (id) `(var ,id))
+                `(do ,@(map [do `(var ,_)]
                             vars)
                      ,@(map (fn ((id val)) `(= ,id ,val))
                             (pair forms))))))
-      `(do ,@(map (fn (l) `(= ,@l))
+      `(do ,@(map [do `(= ,@_)]
                   (pair l)))))
 
   (mac with (x v rest: body)
@@ -166,8 +166,7 @@
 
   (mac let-macro (definitions rest: body)
     (with-frame
-      (map (fn (m)
-             (macroexpand `(mac ,@m)))
+      (map [macroexpand `(mac ,@_)]
            definitions)
       `(do ,@(macroexpand body))))
 
@@ -179,8 +178,7 @@
       `(do ,@(macroexpand body))))
 
   (mac let-unique (names rest: body)
-    (let bs (map (fn (n)
-                   (list n `(unique ',n)))
+    (let bs (map [list _ `(unique ',_)]
                  names)
       `(let ,(apply join bs)
          ,@body)))
@@ -190,16 +188,16 @@
 
   (mac guard (expr)
     (if (is target 'js)
-        `((fn () (%try (list true ,expr))))
+        `([%try (list true ,expr)])
       (let-unique (x msg trace)
         `(let (,x nil
                ,msg nil
                ,trace nil)
            (if (xpcall
-                (fn () (= ,x ,expr))
-                (fn (m)
-                  (= ,msg (clip m (+ (search m ": ") 2)))
-                  (= ,trace (debug.traceback))))
+                [= ,x ,expr]
+                [do
+                  (= ,msg (clip _ (+ (search _ ": ") 2)))
+                  (= ,trace (debug.traceback))])
                (list true ,x)
              (list false ,msg ,trace))))))
 
@@ -266,8 +264,7 @@
 
   (mac export names
     (if (is target 'js)
-        `(do ,@(map (fn (k)
-                      `(= (get exports ',k) ,k))
+        `(do ,@(map [do `(= (get exports ',_) ,_)]
                     names))
       (let x (obj)
         (each k names
@@ -305,10 +302,10 @@
     `(require 'elf))
 
   (mac lib modules
-    `(do ,@(map (fn (x) `(def ,x (require ',x))) modules)))
+    `(do ,@(map [do `(def ,_ (require ',_))] modules)))
 
   (mac use modules
-    `(do ,@(map (fn (x) `(var ,x (require ',x))) modules)))
+    `(do ,@(map [do `(var ,_ (require ',_))] modules)))
 
   nil
 
@@ -400,6 +397,10 @@
   (%js (s.charCodeAt n))
   (%lua (string.byte s (if n (+ n 1)))))
 
+(def chr (c)
+  (%js (String.fromCharCode c))
+  (%lua (string.char c)))
+
 (def string-literal? (x)
   (and (string? x) (is (char x 0) "\"")))
 
@@ -458,7 +459,7 @@
       (if y (return y)))))
 
 (def in? (x t)
-  (find (fn (y) (is x y)) t))
+  (find [is x _] t))
 
 (def pair (l)
   (with l1 ()
@@ -468,7 +469,7 @@
 
 (def sort (l f)
   (%lua (do (table.sort l f) l))
-  (%js (l.sort (when f (fn (a b) (if (f a b) -1 1))))))
+  (%js (l.sort (when f [if (f _0 _1) -1 1]))))
 
 (def map (f x)
   (with t ()
@@ -482,8 +483,17 @@
           (when (is? y)
             (= (get t k) y)))))))
 
+(def cons (x y)
+  `(,x ,@y))
+
+(def treewise (f base tree)
+  (if (atom? tree) (base tree)
+      (none? tree) ()
+    (f (treewise f base (hd tree))
+       (treewise f base (tl tree)))))
+
 (def keep (f x)
-  (map (fn (v) (when (f v) v)) x))
+  (map [when (f _) _] x))
 
 (def keys? (t)
   (each (k v) t
@@ -537,22 +547,22 @@
         (add l s)))))
 
 (def cat xs
-  (or (reduce (fn (a b) (cat a b)) xs) ""))
+  (or (reduce [cat _0 _1] xs) ""))
 
 (def + xs
-  (or (reduce (fn (a b) (+ a b)) xs) 0))
+  (or (reduce [+ _0 _1] xs) 0))
 
 (def - xs
-  (or (reduce (fn (b a) (- a b)) (reverse xs)) 0))
+  (or (reduce [- _1 _0] (reverse xs)) 0))
 
 (def * xs
-  (or (reduce (fn (a b) (* a b)) xs) 1))
+  (or (reduce [* _0 _1] xs) 1))
 
 (def / xs
-  (or (reduce (fn (b a) (/ a b)) (reverse xs)) 1))
+  (or (reduce [/ _1 _0] (reverse xs)) 1))
 
 (def % xs
-  (or (reduce (fn (b a) (% a b)) (reverse xs)) 0))
+  (or (reduce [% _1 _0] (reverse xs)) 1))
 
 (def > (a b) (> a b))
 (def < (a b) (< a b))

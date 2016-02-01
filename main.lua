@@ -7,11 +7,11 @@ local function eval_print(form)
   local _msg = nil
   local _trace = nil
   local _e
-  if xpcall(function ()
+  if xpcall(function (_)
     _x = compiler.eval(form)
     return(_x)
-  end, function (m)
-    _msg = clip(m, search(m, ": ") + 2)
+  end, function (_)
+    _msg = clip(_, search(_, ": ") + 2)
     _trace = debug.traceback()
     return(_trace)
   end) then

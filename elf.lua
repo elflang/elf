@@ -78,8 +78,8 @@ local function setup()
   end})
   setenv("obj", {_stash = true, macro = function (...)
     local body = unstash({...})
-    return(join({"%object"}, mapo(function (x)
-      return(x)
+    return(join({"%object"}, mapo(function (_)
+      return(_)
     end, body)))
   end})
   setenv("let", {_stash = true, macro = function (bs, ...)
@@ -148,8 +148,8 @@ local function setup()
           else
             local vars = {}
             local forms = bind(lh, rh, vars)
-            return(join({"do"}, map(function (id)
-              return({"var", id})
+            return(join({"do"}, map(function (_)
+              return({"var", _})
             end, vars), map(function (_x94)
               local _id18 = _x94
               local id = _id18[1]
@@ -158,8 +158,8 @@ local function setup()
             end, pair(forms))))
           end
         else
-          return(join({"do"}, map(function (l)
-            return(join({"="}, l))
+          return(join({"do"}, map(function (_)
+            return(join({"="}, _))
           end, pair(l))))
         end
       end
@@ -247,8 +247,8 @@ local function setup()
     local _id36 = _r45
     local body = cut(_id36, 0)
     add(environment, {})
-    map(function (m)
-      return(macroexpand(join({"mac"}, m)))
+    map(function (_)
+      return(macroexpand(join({"mac"}, _)))
     end, definitions)
     local _x179 = join({"do"}, macroexpand(body))
     drop(environment)
@@ -273,8 +273,8 @@ local function setup()
     local _r53 = unstash({...})
     local _id42 = _r53
     local body = cut(_id42, 0)
-    local bs = map(function (n)
-      return({n, {"unique", {"quote", n}}})
+    local bs = map(function (_)
+      return({_, {"unique", {"quote", _}}})
     end, names)
     return(join({"let", apply(join, bs)}, body))
   end})
@@ -286,12 +286,12 @@ local function setup()
   end})
   setenv("guard", {_stash = true, macro = function (expr)
     if target == "js" then
-      return({{"fn", join(), {"%try", {"list", true, expr}}}})
+      return({{"%fn", {"%try", {"list", true, expr}}}})
     else
       local x = unique("x")
       local msg = unique("msg")
       local trace = unique("trace")
-      return({"let", {x, "nil", msg, "nil", trace, "nil"}, {"if", {"xpcall", {"fn", join(), {"=", x, expr}}, {"fn", {"m"}, {"=", msg, {"clip", "m", {"+", {"search", "m", "\": \""}, 2}}}, {"=", trace, {{"get", "debug", {"quote", "traceback"}}}}}}, {"list", true, x}, {"list", false, msg, trace}}})
+      return({"let", {x, "nil", msg, "nil", trace, "nil"}, {"if", {"xpcall", {"%fn", {"=", x, expr}}, {"%fn", {"do", {"=", msg, {"clip", "_", {"+", {"search", "_", "\": \""}, 2}}}, {"=", trace, {{"get", "debug", {"quote", "traceback"}}}}}}}, {"list", true, x}, {"list", false, msg, trace}}})
     end
   end})
   setenv("each", {_stash = true, macro = function (x, t, ...)
@@ -403,8 +403,8 @@ local function setup()
   setenv("export", {_stash = true, macro = function (...)
     local names = unstash({...})
     if target == "js" then
-      return(join({"do"}, map(function (k)
-        return({"=", {"get", "exports", {"quote", k}}, k})
+      return(join({"do"}, map(function (_)
+        return({"=", {"get", "exports", {"quote", _}}, _})
       end, names)))
     else
       local x = {}
@@ -454,14 +454,14 @@ local function setup()
   end})
   setenv("lib", {_stash = true, macro = function (...)
     local modules = unstash({...})
-    return(join({"do"}, map(function (x)
-      return({"def", x, {"require", {"quote", x}}})
+    return(join({"do"}, map(function (_)
+      return({"def", _, {"require", {"quote", _}}})
     end, modules)))
   end})
   setenv("use", {_stash = true, macro = function (...)
     local modules = unstash({...})
-    return(join({"do"}, map(function (x)
-      return({"var", x, {"require", {"quote", x}}})
+    return(join({"do"}, map(function (_)
+      return({"var", _, {"require", {"quote", _}}})
     end, modules)))
   end})
   return(nil)
@@ -585,6 +585,9 @@ function code(s, n)
   end
   return(string.byte(s, _e24))
 end
+function chr(c)
+  return(string.char(c))
+end
 function string_literal63(x)
   return(string63(x) and char(x, 0) == "\"")
 end
@@ -680,8 +683,8 @@ function first(f, l)
   end
 end
 function in63(x, t)
-  return(find(function (y)
-    return(x == y)
+  return(find(function (_)
+    return(x == _)
   end, t))
 end
 function pair(l)
@@ -724,10 +727,24 @@ function map(f, x)
   end
   return(t)
 end
+function cons(x, y)
+  return(join({x}, y))
+end
+function treewise(f, base, tree)
+  if atom63(tree) then
+    return(base(tree))
+  else
+    if none63(tree) then
+      return({})
+    else
+      return(f(treewise(f, base, hd(tree)), treewise(f, base, tl(tree))))
+    end
+  end
+end
 function keep(f, x)
-  return(map(function (v)
-    if f(v) then
-      return(v)
+  return(map(function (_)
+    if f(_) then
+      return(_)
     end
   end, x))
 end
@@ -818,39 +835,39 @@ function split(s, sep)
 end
 function cat(...)
   local xs = unstash({...})
-  return(reduce(function (a, b)
-    return(a .. b)
+  return(reduce(function (_0, _1)
+    return(_0 .. _1)
   end, xs) or "")
 end
 function _43(...)
   local xs = unstash({...})
-  return(reduce(function (a, b)
-    return(a + b)
+  return(reduce(function (_0, _1)
+    return(_0 + _1)
   end, xs) or 0)
 end
 function _(...)
   local xs = unstash({...})
-  return(reduce(function (b, a)
-    return(a - b)
+  return(reduce(function (_0, _1)
+    return(_1 - _0)
   end, reverse(xs)) or 0)
 end
 function _42(...)
   local xs = unstash({...})
-  return(reduce(function (a, b)
-    return(a * b)
+  return(reduce(function (_0, _1)
+    return(_0 * _1)
   end, xs) or 1)
 end
 function _47(...)
   local xs = unstash({...})
-  return(reduce(function (b, a)
-    return(a / b)
+  return(reduce(function (_0, _1)
+    return(_1 / _0)
   end, reverse(xs)) or 1)
 end
 function _37(...)
   local xs = unstash({...})
-  return(reduce(function (b, a)
-    return(a % b)
-  end, reverse(xs)) or 0)
+  return(reduce(function (_0, _1)
+    return(_1 % _0)
+  end, reverse(xs)) or 1)
 end
 function _62(a, b)
   return(a > b)
@@ -991,8 +1008,8 @@ function toplevel63()
   return(one63(environment))
 end
 function setenv(k, ...)
-  local _r156 = unstash({...})
-  local _id62 = _r156
+  local _r159 = unstash({...})
+  local _id62 = _r159
   local _keys = cut(_id62, 0)
   if string63(k) then
     local _e29

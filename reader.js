@@ -91,14 +91,14 @@ var expected = function (s, c) {
   var more = _id5.more;
   var pos = _id5.pos;
   var _id6 = more;
-  var _e2;
+  var _e1;
   if (_id6) {
-    _e2 = _id6;
+    _e1 = _id6;
   } else {
     throw new Error("Expected " + c + " at " + pos);
-    _e2 = undefined;
+    _e1 = undefined;
   }
-  return(_e2);
+  return(_e1);
 };
 var wrap = function (s, x) {
   var y = read(s);
@@ -236,33 +236,37 @@ read_table["("] = function (s) {
 read_table[")"] = function (s) {
   throw new Error("Unexpected ) at " + s.pos);
 };
+setenv("%loading", {_stash: true, macro: function () {
+  var forms = unstash(Array.prototype.slice.call(arguments, 0));
+  var e = join(["do"], forms);
+  eval(e);
+  return(e);
+}});
 setenv("%fn", {_stash: true, macro: function (body) {
   var n = -1;
   var l = [];
-  var _x19 = body;
-  var _n1 = _35(_x19);
-  var _i1 = 0;
-  while (_i1 < _n1) {
-    var x = _x19[_i1];
-    if (string63(x) && two63(x) && code(x, 0) === 95) {
-      if (number_code63(code(x, 1))) {
-        n = max(n, code(x, 1) - 48);
+  var any63 = undefined;
+  treewise(cons, function (_) {
+    if (string63(_) && _35(_) <= 2 && code(_, 0) === 95) {
+      any63 = true;
+      var c = code(_, 1);
+      if (c && c >= 48 && c <= 57) {
+        n = max(n, c - 48);
+        return(n);
       }
     }
-    _i1 = _i1 + 1;
+  }, body);
+  if (any63) {
+    var i = 0;
+    while (i < n + 1) {
+      add(l, "_" + chr(48 + i));
+      i = i + 1;
+    }
+    if (none63(l)) {
+      add(l, "_");
+    }
   }
-  var i = 0;
-  while (i < n + 1) {
-    add(l, "_" + str(i));
-    i = i + 1;
-  }
-  var _e3;
-  if (none63(l)) {
-    _e3 = ["_"];
-  } else {
-    _e3 = l;
-  }
-  return(["fn", _e3, body]);
+  return(["fn", l, body]);
 }});
 read_table["["] = function (s) {
   return(read_next(s, ["%fn", read_list(s, "]")], skip_non_code(s)));

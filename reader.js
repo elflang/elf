@@ -88,14 +88,14 @@ var expected = function (s, c) {
   var more = _id5.more;
   var pos = _id5.pos;
   var _id6 = more;
-  var _e;
+  var _e1;
   if (_id6) {
-    _e = _id6;
+    _e1 = _id6;
   } else {
     throw new Error("Expected " + c + " at " + pos);
-    _e = undefined;
+    _e1 = undefined;
   }
-  return(_e);
+  return(_e1);
 };
 var wrap = function (s, x) {
   var y = read(s);
@@ -116,17 +116,18 @@ var real63 = function (x) {
 var valid_access63 = function (str) {
   return(_35(str) > 2 && !( "." === char(str, 0)) && !( "." === char(str, edge(str))) && ! search(str, ".."));
 };
-var parse_access = function (str) {
-  return(reduce(function (a, b) {
-    var n = number(a);
-    if (is63(n)) {
-      return(["at", b, n]);
-    } else {
-      return(["get", b, ["quote", a]]);
-    }
-  }, reverse(split(str, "."))));
+var parse_index = function (a, b) {
+  var n = number(a);
+  if (is63(n)) {
+    return(["at", b, n]);
+  } else {
+    return(["get", b, ["quote", a]]);
+  }
 };
-read_table[""] = function (s) {
+var parse_access = function (str) {
+  return(reduce(parse_index, reverse(split(str, "."))));
+};
+var read_atom = function (s) {
   var str = "";
   var dot63 = false;
   while (true) {
@@ -140,58 +141,55 @@ read_table[""] = function (s) {
       break;
     }
   }
-  var _e1;
   if (str === "true") {
-    _e1 = true;
+    return(true);
   } else {
-    var _e2;
     if (str === "false") {
-      _e2 = false;
+      return(false);
     } else {
-      var _e3;
       if (str === "nan") {
-        _e3 = nan;
+        return(nan);
       } else {
-        var _e4;
         if (str === "-nan") {
-          _e4 = nan;
+          return(nan);
         } else {
-          var _e5;
           if (str === "inf") {
-            _e5 = inf;
+            return(inf);
           } else {
-            var _e6;
             if (str === "-inf") {
-              _e6 = -inf;
+              return(-inf);
             } else {
               var n = maybe_number(str);
-              var _e7;
               if (real63(n)) {
-                _e7 = n;
+                return(n);
               } else {
-                var _e8;
                 if (dot63 && valid_access63(str)) {
-                  _e8 = parse_access(str);
+                  return(parse_access(str));
                 } else {
-                  _e8 = str;
+                  return(str);
                 }
-                _e7 = _e8;
               }
-              _e6 = _e7;
             }
-            _e5 = _e6;
           }
-          _e4 = _e5;
         }
-        _e3 = _e4;
       }
-      _e2 = _e3;
     }
-    _e1 = _e2;
   }
-  var atom = _e1;
-  while ("(" === peek_char(s)) {
-    atom = join([atom], read(s));
+};
+read_table[""] = function (s) {
+  var atom = read_atom(s);
+  while (true) {
+    var _e = peek_char(s);
+    if ("(" === _e) {
+      atom = join([atom], read(s));
+    } else {
+      if ("." === _e) {
+        read_char(s);
+        atom = parse_index(read_atom(s), atom);
+      } else {
+        break;
+      }
+    }
   }
   return(atom);
 };

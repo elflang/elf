@@ -84,24 +84,24 @@
        (~is "." (char str (edge str)))
        (~search str "..")))
 
-(var parse-access (str)
-  (reduce (fn (a b)
-            (let n (number a)
-              (if (is? n)
-                  `(at ,b ,n)
-                `(get ,b (quote ,a)))))
-          (reverse (split str "."))))
+(var parse-index (a b)
+  (let n (number a)
+    (if (is? n)
+        `(at ,b ,n)
+      `(get ,b (quote ,a)))))
 
-(defreader ("" s) ; atom
+(var parse-access (str)
+  (reduce parse-index (reverse (split str "."))))
+
+(var read-atom (s)
   (let (str "" dot? false)
     (while true
       (let c (peek-char s)
-	(if (and c (and (~get whitespace c)
-			(~get delimiters c)))
-	    (do (if (is c ".") (= dot? true))
-                (cat! str (read-char s)))
-	  (break))))
-  (with atom
+      (if (and c (and (~get whitespace c)
+                      (~get delimiters c)))
+        (do (if (is c ".") (= dot? true))
+            (cat! str (read-char s)))
+        (break))))
     (if (is str "true") true
         (is str "false") false
         (is str "nan") nan
@@ -112,9 +112,16 @@
         (if (real? n) n
             (and dot? (valid-access? str))
             (parse-access str)
-          str)))
-    (while (is "(" (peek-char s))
-      (= atom `(,atom ,@(read s)))))))
+          str)))))
+
+(defreader ("" s) ; atom
+  (with atom (read-atom s)
+    (while true
+      (case (peek-char s)
+        "(" (= atom `(,atom ,@(read s)))
+        "." (do (read-char s)
+                (= atom (parse-index (read-atom s) atom)))
+        (break)))))
 
 (defreader ("(" s)
   (read-char s)

@@ -88,14 +88,14 @@ local function expected(s, c)
   local more = _id5.more
   local pos = _id5.pos
   local _id6 = more
-  local _e
+  local _e1
   if _id6 then
-    _e = _id6
+    _e1 = _id6
   else
     error("Expected " .. c .. " at " .. pos)
-    _e = nil
+    _e1 = nil
   end
-  return(_e)
+  return(_e1)
 end
 local function wrap(s, x)
   local y = read(s)
@@ -116,17 +116,18 @@ end
 local function valid_access63(str)
   return(_35(str) > 2 and not( "." == char(str, 0)) and not( "." == char(str, edge(str))) and not search(str, ".."))
 end
-local function parse_access(str)
-  return(reduce(function (a, b)
-    local n = number(a)
-    if is63(n) then
-      return({"at", b, n})
-    else
-      return({"get", b, {"quote", a}})
-    end
-  end, reverse(split(str, "."))))
+local function parse_index(a, b)
+  local n = number(a)
+  if is63(n) then
+    return({"at", b, n})
+  else
+    return({"get", b, {"quote", a}})
+  end
 end
-read_table[""] = function (s)
+local function parse_access(str)
+  return(reduce(parse_index, reverse(split(str, "."))))
+end
+local function read_atom(s)
   local str = ""
   local dot63 = false
   while true do
@@ -140,58 +141,55 @@ read_table[""] = function (s)
       break
     end
   end
-  local _e1
   if str == "true" then
-    _e1 = true
+    return(true)
   else
-    local _e2
     if str == "false" then
-      _e2 = false
+      return(false)
     else
-      local _e3
       if str == "nan" then
-        _e3 = nan
+        return(nan)
       else
-        local _e4
         if str == "-nan" then
-          _e4 = nan
+          return(nan)
         else
-          local _e5
           if str == "inf" then
-            _e5 = inf
+            return(inf)
           else
-            local _e6
             if str == "-inf" then
-              _e6 = -inf
+              return(-inf)
             else
               local n = maybe_number(str)
-              local _e7
               if real63(n) then
-                _e7 = n
+                return(n)
               else
-                local _e8
                 if dot63 and valid_access63(str) then
-                  _e8 = parse_access(str)
+                  return(parse_access(str))
                 else
-                  _e8 = str
+                  return(str)
                 end
-                _e7 = _e8
               end
-              _e6 = _e7
             end
-            _e5 = _e6
           end
-          _e4 = _e5
         end
-        _e3 = _e4
       end
-      _e2 = _e3
     end
-    _e1 = _e2
   end
-  local atom = _e1
-  while "(" == peek_char(s) do
-    atom = join({atom}, read(s))
+end
+read_table[""] = function (s)
+  local atom = read_atom(s)
+  while true do
+    local _e = peek_char(s)
+    if "(" == _e then
+      atom = join({atom}, read(s))
+    else
+      if "." == _e then
+        read_char(s)
+        atom = parse_index(read_atom(s), atom)
+      else
+        break
+      end
+    end
   end
   return(atom)
 end

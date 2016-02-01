@@ -261,39 +261,60 @@ local function setup()
     local o = unique("o")
     local n = unique("n")
     local i = unique("i")
-    local _e3
+    local _e4
     if atom63(x) then
-      _e3 = {i, x}
+      _e4 = {i, x}
     else
-      local _e4
+      local _e5
       if _35(x) > 1 then
-        _e4 = x
+        _e5 = x
       else
-        _e4 = {i, hd(x)}
+        _e5 = {i, hd(x)}
       end
-      _e3 = _e4
+      _e4 = _e5
     end
-    local _id45 = _e3
+    local _id45 = _e4
     local k = _id45[1]
     local v = _id45[2]
-    local _e5
+    local _e6
     if target == "lua" then
-      _e5 = body
+      _e6 = body
     else
-      _e5 = {join({"let", k, {"if", {"numeric?", k}, {"parseInt", k}, k}}, body)}
+      _e6 = {join({"let", k, {"if", {"numeric?", k}, {"parseInt", k}, k}}, body)}
     end
-    return({"let", {o, t, k, "nil"}, {"%for", o, k, join({"let", {v, {"get", o, k}}}, _e5)}})
+    return({"let", {o, t, k, "nil"}, {"%for", o, k, join({"let", {v, {"get", o, k}}}, _e6)}})
   end})
-  setenv("for", {_stash = true, macro = function (i, to, ...)
+  setenv("for-1", {_stash = true, macro = function (_x275, ...)
+    local _id48 = _x275
+    local i = _id48[1]
+    local from = _id48[2]
+    local to = _id48[3]
+    local _e7
+    if is63(_id48[4]) then
+      _e7 = _id48[4]
+    else
+      _e7 = 1
+    end
+    local by = _e7
     local _r58 = unstash({...})
-    local _id47 = _r58
-    local body = cut(_id47, 0)
-    return({"let", i, 0, join({"while", {"<", i, to}}, body, {{"inc", i}})})
+    local _id49 = _r58
+    local body = cut(_id49, 0)
+    return({"let", i, from, join({"while", {"<", i, to}}, body, {{"inc", i, by}})})
+  end})
+  setenv("for", {_stash = true, macro = function (i, ...)
+    local _r60 = unstash({...})
+    local _id51 = _r60
+    local body = cut(_id51, 0)
+    if atom63(i) then
+      return(join({"for-1", {i, 0, hd(body)}}, tl(body)))
+    else
+      return(join({"for-1", i}, body))
+    end
   end})
   setenv("step", {_stash = true, macro = function (v, t, ...)
-    local _r60 = unstash({...})
-    local _id49 = _r60
-    local body = cut(_id49, 0)
+    local _r62 = unstash({...})
+    local _id53 = _r62
+    local body = cut(_id53, 0)
     local x = unique("x")
     local n = unique("n")
     local i = unique("i")
@@ -318,15 +339,15 @@ local function setup()
     return(clauses[target])
   end})
   setenv("join!", {_stash = true, macro = function (a, ...)
-    local _r64 = unstash({...})
-    local _id51 = _r64
-    local bs = cut(_id51, 0)
+    local _r66 = unstash({...})
+    local _id55 = _r66
+    local bs = cut(_id55, 0)
     return({"=", a, join({"join", a}, bs)})
   end})
   setenv("cat!", {_stash = true, macro = function (a, ...)
-    local _r66 = unstash({...})
-    local _id53 = _r66
-    local bs = cut(_id53, 0)
+    local _r68 = unstash({...})
+    local _id57 = _r68
+    local bs = cut(_id57, 0)
     return({"=", a, join({"cat", a}, bs)})
   end})
   setenv("inc", {_stash = true, macro = function (n, by)
@@ -405,8 +426,8 @@ local function setup()
   end})
   return(nil)
 end
-if _x402 == nil then
-  _x402 = true
+if _x412 == nil then
+  _x412 = true
   environment = {{}}
   target = "lua"
 end
@@ -463,21 +484,21 @@ end
 function cut(x, from, upto)
   local l = {}
   local j = 0
-  local _e6
+  local _e8
   if nil63(from) or from < 0 then
-    _e6 = 0
+    _e8 = 0
   else
-    _e6 = from
+    _e8 = from
   end
-  local i = _e6
+  local i = _e8
   local n = _35(x)
-  local _e7
+  local _e9
   if nil63(upto) or upto > n then
-    _e7 = n
+    _e9 = n
   else
-    _e7 = upto
+    _e9 = upto
   end
-  local _upto = _e7
+  local _upto = _e9
   while i < _upto do
     l[j + 1] = x[i + 1]
     i = i + 1
@@ -518,11 +539,11 @@ function char(s, n)
   return(clip(s, n, n + 1))
 end
 function code(s, n)
-  local _e8
+  local _e10
   if n then
-    _e8 = n + 1
+    _e10 = n + 1
   end
-  return(string.byte(s, _e8))
+  return(string.byte(s, _e10))
 end
 function string_literal63(x)
   return(string63(x) and char(x, 0) == "\"")
@@ -565,9 +586,9 @@ end
 function join(...)
   local ls = unstash({...})
   if two63(ls) then
-    local _id54 = ls
-    local a = _id54[1]
-    local b = _id54[2]
+    local _id58 = ls
+    local a = _id58[1]
+    local b = _id58[2]
     if a and b then
       local c = {}
       local o = _35(a)
@@ -606,11 +627,11 @@ function find(f, t)
   end
 end
 function first(f, l)
-  local _x405 = l
-  local _n11 = _35(_x405)
+  local _x415 = l
+  local _n11 = _35(_x415)
   local _i11 = 0
   while _i11 < _n11 do
-    local x = _x405[_i11 + 1]
+    local x = _x415[_i11 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -639,11 +660,11 @@ function sort(l, f)
 end
 function map(f, x)
   local t = {}
-  local _x407 = x
-  local _n12 = _35(_x407)
+  local _x417 = x
+  local _n12 = _35(_x417)
   local _i12 = 0
   while _i12 < _n12 do
-    local v = _x407[_i12 + 1]
+    local v = _x417[_i12 + 1]
     local y = f(v)
     if is63(y) then
       add(t, y)
@@ -728,11 +749,11 @@ function unstash(args)
   end
 end
 function search(s, pattern, start)
-  local _e9
+  local _e11
   if start then
-    _e9 = start + 1
+    _e11 = start + 1
   end
-  local _start = _e9
+  local _start = _e11
   local i = string.find(s, pattern, _start, true)
   return(i and i - 1)
 end
@@ -828,25 +849,25 @@ function escape(s)
   local i = 0
   while i < _35(s) do
     local c = char(s, i)
-    local _e10
+    local _e12
     if c == "\n" then
-      _e10 = "\\n"
+      _e12 = "\\n"
     else
-      local _e11
+      local _e13
       if c == "\"" then
-        _e11 = "\\\""
+        _e13 = "\\\""
       else
-        local _e12
+        local _e14
         if c == "\\" then
-          _e12 = "\\\\"
+          _e14 = "\\\\"
         else
-          _e12 = c
+          _e14 = c
         end
-        _e11 = _e12
+        _e13 = _e14
       end
-      _e10 = _e11
+      _e12 = _e13
     end
-    local c1 = _e10
+    local c1 = _e12
     s1 = s1 .. c1
     i = i + 1
   end
@@ -930,17 +951,17 @@ function toplevel63()
   return(one63(environment))
 end
 function setenv(k, ...)
-  local _r150 = unstash({...})
-  local _id55 = _r150
-  local _keys = cut(_id55, 0)
+  local _r152 = unstash({...})
+  local _id59 = _r152
+  local _keys = cut(_id59, 0)
   if string63(k) then
-    local _e13
+    local _e15
     if _keys.toplevel then
-      _e13 = hd(environment)
+      _e15 = hd(environment)
     else
-      _e13 = last(environment)
+      _e15 = last(environment)
     end
-    local frame = _e13
+    local frame = _e15
     local entry = frame[k] or {}
     local _o18 = _keys
     local _k = nil

@@ -206,11 +206,16 @@
                                  ,k)
                          ,@body)))))))))
 
-  (mac for (i to rest: body)
-    `(let ,i 0
+  (mac for-1 ((i from to (o by 1)) rest: body)
+    `(let ,i ,from
        (while (< ,i ,to)
          ,@body
-         (inc ,i))))
+         (inc ,i ,by))))
+
+  (mac for (i rest: body)
+    (if (atom? i)
+        `(for-1 (,i 0 ,(hd body)) ,@(tl body))
+      `(for-1 ,i ,@body)))
 
   (mac step (v t rest: body)
     (let-unique (x n i)

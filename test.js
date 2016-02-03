@@ -4310,9 +4310,13 @@ add(tests, ["keep", function (_) {
   } else {
     passed = passed + 1;
   }
-  if (! equal63([[1], [2, 3]], keep(some63, [[], [1], [], [2, 3]]))) {
+  if (! equal63([[1], [2, 3]], keep(function (_) {
+    return((_.length || 0) > 0);
+  }, [[], [1], [], [2, 3]]))) {
     failed = failed + 1;
-    return("failed: expected " + str([[1], [2, 3]]) + ", was " + str(keep(some63, [[], [1], [], [2, 3]])));
+    return("failed: expected " + str([[1], [2, 3]]) + ", was " + str(keep(function (_) {
+      return((_.length || 0) > 0);
+    }, [[], [1], [], [2, 3]])));
   } else {
     passed = passed + 1;
   }
@@ -4686,16 +4690,16 @@ add(tests, ["apply", function (_0, _1) {
   var _x924 = [];
   _x924.foo = 42;
   if (! equal63(42, apply(function () {
-    var _r184 = unstash(Array.prototype.slice.call(arguments, 0));
-    var foo = _r184.foo;
+    var _r186 = unstash(Array.prototype.slice.call(arguments, 0));
+    var foo = _r186.foo;
     return(foo);
   }, _x924))) {
     failed = failed + 1;
     var _x925 = [];
     _x925.foo = 42;
     return("failed: expected " + str(42) + ", was " + str(apply(function () {
-      var _r185 = unstash(Array.prototype.slice.call(arguments, 0));
-      var foo = _r185.foo;
+      var _r187 = unstash(Array.prototype.slice.call(arguments, 0));
+      var foo = _r187.foo;
       return(foo);
     }, _x925)));
   } else {
@@ -4797,8 +4801,8 @@ add(tests, ["parameters", function () {
   var _f = function (a, _x966) {
     var b = _x966[0];
     var c = cut(_x966, 1);
-    var _r197 = unstash(Array.prototype.slice.call(arguments, 2));
-    var d = cut(_r197, 0);
+    var _r199 = unstash(Array.prototype.slice.call(arguments, 2));
+    var d = cut(_r199, 0);
     return([a, b, c, d]);
   };
   if (! equal63([1, 2, [3, 4], [5, 6, 7]], _f(1, [2, 3, 4], 5, 6, 7))) {
@@ -4808,14 +4812,14 @@ add(tests, ["parameters", function () {
     passed = passed + 1;
   }
   if (! equal63([3, 4], (function (a, b) {
-    var _r198 = unstash(Array.prototype.slice.call(arguments, 2));
-    var c = cut(_r198, 0);
+    var _r200 = unstash(Array.prototype.slice.call(arguments, 2));
+    var c = cut(_r200, 0);
     return(c);
   })(1, 2, 3, 4))) {
     failed = failed + 1;
     return("failed: expected " + str([3, 4]) + ", was " + str((function (a, b) {
-      var _r199 = unstash(Array.prototype.slice.call(arguments, 2));
-      var c = cut(_r199, 0);
+      var _r201 = unstash(Array.prototype.slice.call(arguments, 2));
+      var c = cut(_r201, 0);
       return(c);
     })(1, 2, 3, 4)));
   } else {
@@ -4824,8 +4828,8 @@ add(tests, ["parameters", function () {
   var _f1 = function (w, _x978) {
     var x = _x978[0];
     var y = cut(_x978, 1);
-    var _r200 = unstash(Array.prototype.slice.call(arguments, 2));
-    var z = cut(_r200, 0);
+    var _r202 = unstash(Array.prototype.slice.call(arguments, 2));
+    var z = cut(_r202, 0);
     return([y, z]);
   };
   if (! equal63([[3, 4], [5, 6, 7]], _f1(1, [2, 3, 4], 5, 6, 7))) {
@@ -4835,14 +4839,14 @@ add(tests, ["parameters", function () {
     passed = passed + 1;
   }
   if (! equal63(42, (function () {
-    var _r201 = unstash(Array.prototype.slice.call(arguments, 0));
-    var foo = _r201.foo;
+    var _r203 = unstash(Array.prototype.slice.call(arguments, 0));
+    var foo = _r203.foo;
     return(foo);
   })({_stash: true, foo: 42}))) {
     failed = failed + 1;
     return("failed: expected " + str(42) + ", was " + str((function () {
-      var _r202 = unstash(Array.prototype.slice.call(arguments, 0));
-      var foo = _r202.foo;
+      var _r204 = unstash(Array.prototype.slice.call(arguments, 0));
+      var foo = _r204.foo;
       return(foo);
     })({_stash: true, foo: 42})));
   } else {
@@ -4866,8 +4870,8 @@ add(tests, ["parameters", function () {
   }
   var _f2 = function (a, _x992) {
     var foo = _x992.foo;
-    var _r205 = unstash(Array.prototype.slice.call(arguments, 2));
-    var b = _r205.bar;
+    var _r207 = unstash(Array.prototype.slice.call(arguments, 2));
+    var b = _r207.bar;
     return([a, b, foo]);
   };
   var _x995 = [];

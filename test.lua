@@ -4403,9 +4403,13 @@ add(tests, {"keep", function (_)
   else
     passed = passed + 1
   end
-  if not equal63({{1}, {2, 3}}, keep(some63, {{}, {1}, {}, {2, 3}})) then
+  if not equal63({{1}, {2, 3}}, keep(function (_)
+    return(#(_) > 0)
+  end, {{}, {1}, {}, {2, 3}})) then
     failed = failed + 1
-    return("failed: expected " .. str({{1}, {2, 3}}) .. ", was " .. str(keep(some63, {{}, {1}, {}, {2, 3}})))
+    return("failed: expected " .. str({{1}, {2, 3}}) .. ", was " .. str(keep(function (_)
+      return(#(_) > 0)
+    end, {{}, {1}, {}, {2, 3}})))
   else
     passed = passed + 1
   end
@@ -4779,16 +4783,16 @@ add(tests, {"apply", function (_0, _1)
   local _x963 = {}
   _x963.foo = 42
   if not equal63(42, apply(function (...)
-    local _r200 = unstash({...})
-    local foo = _r200.foo
+    local _r202 = unstash({...})
+    local foo = _r202.foo
     return(foo)
   end, _x963)) then
     failed = failed + 1
     local _x965 = {}
     _x965.foo = 42
     return("failed: expected " .. str(42) .. ", was " .. str(apply(function (...)
-      local _r201 = unstash({...})
-      local foo = _r201.foo
+      local _r203 = unstash({...})
+      local foo = _r203.foo
       return(foo)
     end, _x965)))
   else
@@ -4890,8 +4894,8 @@ add(tests, {"parameters", function ()
   local _f = function (a, _x1006, ...)
     local b = _x1006[1]
     local c = cut(_x1006, 1)
-    local _r213 = unstash({...})
-    local d = cut(_r213, 0)
+    local _r215 = unstash({...})
+    local d = cut(_r215, 0)
     return({a, b, c, d})
   end
   if not equal63({1, 2, {3, 4}, {5, 6, 7}}, _f(1, {2, 3, 4}, 5, 6, 7)) then
@@ -4901,14 +4905,14 @@ add(tests, {"parameters", function ()
     passed = passed + 1
   end
   if not equal63({3, 4}, (function (a, b, ...)
-    local _r214 = unstash({...})
-    local c = cut(_r214, 0)
+    local _r216 = unstash({...})
+    local c = cut(_r216, 0)
     return(c)
   end)(1, 2, 3, 4)) then
     failed = failed + 1
     return("failed: expected " .. str({3, 4}) .. ", was " .. str((function (a, b, ...)
-      local _r215 = unstash({...})
-      local c = cut(_r215, 0)
+      local _r217 = unstash({...})
+      local c = cut(_r217, 0)
       return(c)
     end)(1, 2, 3, 4)))
   else
@@ -4917,8 +4921,8 @@ add(tests, {"parameters", function ()
   local _f1 = function (w, _x1021, ...)
     local x = _x1021[1]
     local y = cut(_x1021, 1)
-    local _r216 = unstash({...})
-    local z = cut(_r216, 0)
+    local _r218 = unstash({...})
+    local z = cut(_r218, 0)
     return({y, z})
   end
   if not equal63({{3, 4}, {5, 6, 7}}, _f1(1, {2, 3, 4}, 5, 6, 7)) then
@@ -4928,14 +4932,14 @@ add(tests, {"parameters", function ()
     passed = passed + 1
   end
   if not equal63(42, (function (...)
-    local _r217 = unstash({...})
-    local foo = _r217.foo
+    local _r219 = unstash({...})
+    local foo = _r219.foo
     return(foo)
   end)({_stash = true, foo = 42})) then
     failed = failed + 1
     return("failed: expected " .. str(42) .. ", was " .. str((function (...)
-      local _r218 = unstash({...})
-      local foo = _r218.foo
+      local _r220 = unstash({...})
+      local foo = _r220.foo
       return(foo)
     end)({_stash = true, foo = 42})))
   else
@@ -4959,8 +4963,8 @@ add(tests, {"parameters", function ()
   end
   local _f2 = function (a, _x1038, ...)
     local foo = _x1038.foo
-    local _r221 = unstash({...})
-    local b = _r221.bar
+    local _r223 = unstash({...})
+    local b = _r223.bar
     return({a, b, foo})
   end
   local _x1042 = {}

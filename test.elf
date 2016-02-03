@@ -825,7 +825,7 @@ c"
   (eq () (keep [do _] ()))
   (let even [is (% _ 2) 0]
     (eq '(6) (keep even '(5 6 7))))
-  (eq '((1) (2 3)) (keep some? '(() (1) () (2 3))))
+  (eq '((1) (2 3)) (keep [some? _] '(() (1) () (2 3))))
   (let even? [is (% _ 2) 0]
     (eq '(2 4 6) (keep even? '(1 2 3 4 5 6)))
     (eq '(2 4 6 b: 8) (keep even? '(1 2 3 4 5 6 a: 7 b: 8)))))

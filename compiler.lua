@@ -1,7 +1,7 @@
 local reader = require("reader")
 function getenv(k, p)
   if string63(k) then
-    local i = edge(environment)
+    local i = _35(environment) - 1
     while i >= 0 do
       local b = environment[i + 1][k]
       if is63(b) then
@@ -12,9 +12,8 @@ function getenv(k, p)
           _e9 = b
         end
         return(_e9)
-      else
-        i = i - 1
       end
+      i = i - 1
     end
   end
 end
@@ -80,10 +79,10 @@ end
 local function stash42(args)
   if keys63(args) then
     local l = {"%object", "\"_stash\"", true}
-    local _o = args
+    local _l = args
     local k = nil
-    for k in next, _o do
-      local v = _o[k]
+    for k in next, _l do
+      local v = _l[k]
       if not number63(k) then
         add(l, literal(k))
         add(l, v)
@@ -113,17 +112,17 @@ function bind(lh, rh, acc)
       local _ = _id[1]
       local _var = _id[2]
       local val = _id[3]
-      return({_var, {"if", {"is?", rh}, rh, val}})
+      return({_var, {"if", {"nil?", rh}, val, rh}})
     else
       local id = unique("id")
       local bs = {id, rh}
       if acc then
         add(acc, id)
       end
-      local _o1 = lh
+      local _l1 = lh
       local k = nil
-      for k in next, _o1 do
-        local v = _o1[k]
+      for k in next, _l1 do
+        local v = _l1[k]
         local _e10
         if k == "rest" then
           _e10 = {"cut", id, _35(lh)}
@@ -164,10 +163,10 @@ function bind42(args, body)
   else
     local bs = {}
     local r = unique("r")
-    local _o2 = args
+    local _l2 = args
     local k = nil
-    for k in next, _o2 do
-      local v = _o2[k]
+    for k in next, _l2 do
+      local v = _l2[k]
       if number63(k) then
         if atom63(v) then
           add(args1, v)
@@ -210,10 +209,10 @@ local function expand_function(_x39)
   local args = _id2[2]
   local body = cut(_id2, 2)
   add(environment, {})
-  local _o3 = args
+  local _l3 = args
   local _i3 = nil
-  for _i3 in next, _o3 do
-    local _x40 = _o3[_i3]
+  for _i3 in next, _l3 do
+    local _x40 = _l3[_i3]
     setenv(_x40, {_stash = true, variable = true})
   end
   local _x41 = join({"%function", args}, macroexpand(body))
@@ -227,10 +226,10 @@ local function expand_definition(_x43)
   local args = _id3[3]
   local body = cut(_id3, 3)
   add(environment, {})
-  local _o4 = args
+  local _l4 = args
   local _i4 = nil
-  for _i4 in next, _o4 do
-    local _x44 = _o4[_i4]
+  for _i4 in next, _l4 do
+    local _x44 = _l4[_i4]
     setenv(_x44, {_stash = true, variable = true})
   end
   local _x45 = join({x, name, args}, macroexpand(body))
@@ -281,10 +280,10 @@ function macroexpand(form)
 end
 local function quasiquote_list(form, depth)
   local xs = {{"list"}}
-  local _o5 = form
+  local _l5 = form
   local k = nil
-  for k in next, _o5 do
-    local v = _o5[k]
+  for k in next, _l5 do
+    local v = _l5[k]
     if not number63(k) then
       local _e12
       if quasisplice63(v, depth) then
@@ -414,10 +413,10 @@ function key(k)
 end
 function mapo(f, t)
   local o = {}
-  local _o6 = t
+  local _l6 = t
   local k = nil
-  for k in next, _o6 do
-    local v = _o6[k]
+  for k in next, _l6 do
+    local v = _l6[k]
     local x = f(v)
     if is63(x) then
       add(o, literal(k))
@@ -474,10 +473,10 @@ local function index(k)
 end
 local function precedence(form)
   if not( atom63(form) or unary63(form)) then
-    local _o7 = infix
+    local _l7 = infix
     local k = nil
-    for k in next, _o7 do
-      local v = _o7[k]
+    for k in next, _l7 do
+      local v = _l7[k]
       if v[hd(form)] then
         return(index(k))
       end
@@ -1196,10 +1195,10 @@ setenv("%array", {_stash = true, special = function (...)
   local close = _e34
   local s = ""
   local c = ""
-  local _o9 = forms
+  local _l9 = forms
   local k = nil
-  for k in next, _o9 do
-    local v = _o9[k]
+  for k in next, _l9 do
+    local v = _l9[k]
     if number63(k) then
       s = s .. c .. compile(v)
       c = ", "
@@ -1218,10 +1217,10 @@ setenv("%object", {_stash = true, special = function (...)
     _e35 = ": "
   end
   local sep = _e35
-  local _o11 = pair(forms)
+  local _l11 = pair(forms)
   local k = nil
-  for k in next, _o11 do
-    local v = _o11[k]
+  for k in next, _l11 do
+    local v = _l11[k]
     if number63(k) then
       local _id29 = v
       local _k2 = _id29[1]

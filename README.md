@@ -318,6 +318,32 @@ The shorthand for iterating from 0 to N is `for`:
 1
 2
 ```
+You can specify where to `start`, where to `end`, and (optionally) how much to increment by:
+```
+> (for (i 1 3)
+    (print i))
+1
+2
+> (for (i 0 10 3)
+    (print i))
+0
+3
+6
+9
+```
+To iterate in reverse (i.e. from the `end` to the `start`), use a negative increment:
+```
+> (for (i 1 3 -1)
+    (print i))
+2
+1
+> (for (i 0 10 -3)
+    (print i))
+9
+6
+3
+0
+```
 You can enumerate the keys and values of a list with `each`:
 ```
 > (each (k v) (list 1 2 a: 10 b: 20)

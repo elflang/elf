@@ -1,7 +1,7 @@
 var reader = require("reader");
 getenv = function (k, p) {
   if (string63(k)) {
-    var i = edge(environment);
+    var i = _35(environment) - 1;
     while (i >= 0) {
       var b = environment[i][k];
       if (is63(b)) {
@@ -12,9 +12,8 @@ getenv = function (k, p) {
           _e9 = b;
         }
         return(_e9);
-      } else {
-        i = i - 1;
       }
+      i = i - 1;
     }
   }
 };
@@ -80,10 +79,10 @@ unique = function (x) {
 var stash42 = function (args) {
   if (keys63(args)) {
     var l = ["%object", "\"_stash\"", true];
-    var _o = args;
+    var _l = args;
     var k = undefined;
-    for (k in _o) {
-      var v = _o[k];
+    for (k in _l) {
+      var v = _l[k];
       var _e10;
       if (numeric63(k)) {
         _e10 = parseInt(k);
@@ -120,17 +119,17 @@ bind = function (lh, rh, acc) {
       var _ = _id[0];
       var _var = _id[1];
       var val = _id[2];
-      return([_var, ["if", ["is?", rh], rh, val]]);
+      return([_var, ["if", ["nil?", rh], val, rh]]);
     } else {
       var id = unique("id");
       var bs = [id, rh];
       if (acc) {
         add(acc, id);
       }
-      var _o1 = lh;
+      var _l1 = lh;
       var k = undefined;
-      for (k in _o1) {
-        var v = _o1[k];
+      for (k in _l1) {
+        var v = _l1[k];
         var _e11;
         if (numeric63(k)) {
           _e11 = parseInt(k);
@@ -178,10 +177,10 @@ bind42 = function (args, body) {
   } else {
     var bs = [];
     var r = unique("r");
-    var _o2 = args;
+    var _l2 = args;
     var k = undefined;
-    for (k in _o2) {
-      var v = _o2[k];
+    for (k in _l2) {
+      var v = _l2[k];
       var _e14;
       if (numeric63(k)) {
         _e14 = parseInt(k);
@@ -231,10 +230,10 @@ var expand_function = function (_x39) {
   var args = _id2[1];
   var body = cut(_id2, 2);
   add(environment, {});
-  var _o3 = args;
+  var _l3 = args;
   var _i3 = undefined;
-  for (_i3 in _o3) {
-    var _x40 = _o3[_i3];
+  for (_i3 in _l3) {
+    var _x40 = _l3[_i3];
     var _e15;
     if (numeric63(_i3)) {
       _e15 = parseInt(_i3);
@@ -255,10 +254,10 @@ var expand_definition = function (_x43) {
   var args = _id3[2];
   var body = cut(_id3, 3);
   add(environment, {});
-  var _o4 = args;
+  var _l4 = args;
   var _i4 = undefined;
-  for (_i4 in _o4) {
-    var _x44 = _o4[_i4];
+  for (_i4 in _l4) {
+    var _x44 = _l4[_i4];
     var _e16;
     if (numeric63(_i4)) {
       _e16 = parseInt(_i4);
@@ -316,10 +315,10 @@ macroexpand = function (form) {
 };
 var quasiquote_list = function (form, depth) {
   var xs = [["list"]];
-  var _o5 = form;
+  var _l5 = form;
   var k = undefined;
-  for (k in _o5) {
-    var v = _o5[k];
+  for (k in _l5) {
+    var v = _l5[k];
     var _e17;
     if (numeric63(k)) {
       _e17 = parseInt(k);
@@ -456,10 +455,10 @@ key = function (k) {
 };
 mapo = function (f, t) {
   var o = [];
-  var _o6 = t;
+  var _l6 = t;
   var k = undefined;
-  for (k in _o6) {
-    var v = _o6[k];
+  for (k in _l6) {
+    var v = _l6[k];
     var _e19;
     if (numeric63(k)) {
       _e19 = parseInt(k);
@@ -521,10 +520,10 @@ var index = function (k) {
 };
 var precedence = function (form) {
   if (!( atom63(form) || unary63(form))) {
-    var _o7 = infix;
+    var _l7 = infix;
     var k = undefined;
-    for (k in _o7) {
-      var v = _o7[k];
+    for (k in _l7) {
+      var v = _l7[k];
       var _e20;
       if (numeric63(k)) {
         _e20 = parseInt(k);
@@ -1243,10 +1242,10 @@ setenv("%array", {_stash: true, special: function () {
   var close = _e42;
   var s = "";
   var c = "";
-  var _o9 = forms;
+  var _l9 = forms;
   var k = undefined;
-  for (k in _o9) {
-    var v = _o9[k];
+  for (k in _l9) {
+    var v = _l9[k];
     var _e43;
     if (numeric63(k)) {
       _e43 = parseInt(k);
@@ -1272,10 +1271,10 @@ setenv("%object", {_stash: true, special: function () {
     _e44 = ": ";
   }
   var sep = _e44;
-  var _o11 = pair(forms);
+  var _l11 = pair(forms);
   var k = undefined;
-  for (k in _o11) {
-    var v = _o11[k];
+  for (k in _l11) {
+    var v = _l11[k];
     var _e45;
     if (numeric63(k)) {
       _e45 = parseInt(k);

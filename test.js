@@ -24,10 +24,10 @@ setenv("deftest", {_stash: true, macro: function (name) {
   return(["add", "tests", ["list", ["quote", name], ["%fn", join(["do"], body)]]]);
 }});
 run_tests = function () {
-  var _o = tests;
+  var _l = tests;
   var _i = undefined;
-  for (_i in _o) {
-    var _id2 = _o[_i];
+  for (_i in _l) {
+    var _id2 = _l[_i];
     var name = _id2[0];
     var f = _id2[1];
     var _e6;
@@ -2204,21 +2204,21 @@ add(tests, ["for", function () {
   } else {
     passed = passed + 1;
   }
-  var _l = [];
+  var _l1 = [];
   var i = 0;
   while (i < 2) {
-    add(_l, i);
+    add(_l1, i);
     i = i + 1;
   }
-  if (! equal63([0, 1], _l)) {
+  if (! equal63([0, 1], _l1)) {
     failed = failed + 1;
-    var _l1 = [];
+    var _l2 = [];
     var i = 0;
     while (i < 2) {
-      add(_l1, i);
+      add(_l2, i);
       i = i + 1;
     }
-    return("failed: expected " + str([0, 1]) + ", was " + str(_l1));
+    return("failed: expected " + str([0, 1]) + ", was " + str(_l2));
   } else {
     passed = passed + 1;
     return(passed);
@@ -2365,10 +2365,10 @@ add(tests, ["each", function () {
   var t = _x559;
   var a = 0;
   var b = 0;
-  var _o1 = t;
+  var _l3 = t;
   var k = undefined;
-  for (k in _o1) {
-    var v = _o1[k];
+  for (k in _l3) {
+    var v = _l3[k];
     var _e49;
     if (numeric63(k)) {
       _e49 = parseInt(k);
@@ -2395,10 +2395,10 @@ add(tests, ["each", function () {
     passed = passed + 1;
   }
   var _a11 = 0;
-  var _o2 = t;
+  var _l4 = t;
   var _i2 = undefined;
-  for (_i2 in _o2) {
-    var x = _o2[_i2];
+  for (_i2 in _l4) {
+    var x = _l4[_i2];
     var _e50;
     if (numeric63(_i2)) {
       _e50 = parseInt(_i2);
@@ -2417,10 +2417,10 @@ add(tests, ["each", function () {
   var _x560 = [[1], [2]];
   _x560.b = [3];
   var _t = _x560;
-  var _o3 = _t;
+  var _l5 = _t;
   var _i3 = undefined;
-  for (_i3 in _o3) {
-    var x = _o3[_i3];
+  for (_i3 in _l5) {
+    var x = _l5[_i3];
     var _e51;
     if (numeric63(_i3)) {
       _e51 = parseInt(_i3);
@@ -2435,10 +2435,10 @@ add(tests, ["each", function () {
       passed = passed + 1;
     }
   }
-  var _o4 = _t;
+  var _l6 = _t;
   var _i4 = undefined;
-  for (_i4 in _o4) {
-    var x = _o4[_i4];
+  for (_i4 in _l6) {
+    var x = _l6[_i4];
     var _e52;
     if (numeric63(_i4)) {
       _e52 = parseInt(_i4);
@@ -2453,10 +2453,10 @@ add(tests, ["each", function () {
       passed = passed + 1;
     }
   }
-  var _o5 = _t;
+  var _l7 = _t;
   var _i5 = undefined;
-  for (_i5 in _o5) {
-    var _id4 = _o5[_i5];
+  for (_i5 in _l7) {
+    var _id4 = _l7[_i5];
     var x = _id4[0];
     var _e53;
     if (numeric63(_i5)) {

@@ -52,6 +52,11 @@
   (mac unless (cond rest: body)
     `(if (not ,cond) (do ,@body)))
 
+  (mac assert (cond)
+    `(unless ,cond
+       ,(let x (cat "assert: " (str cond))
+         `(error ',x))))
+
   (mac obj body
     `(%object ,@(mapo [do _] body)))
 
@@ -173,29 +178,30 @@
              (list false ,msg ,trace))))))
 
   (mac each (x t rest: body)
-    (let-unique (o n i)
+    (let-unique (l n i)
       (let ((k v) (if (atom? x) (list i x)
                     (if (> (# x) 1) x
                         (list i (hd x)))))
-        `(let (,o ,t ,k nil)
-           (%for ,o ,k
-             (let (,v (get ,o ,k))
+        `(let (,l ,t ,k nil)
+           (%for ,l ,k
+             (let (,v (get ,l ,k))
                ,@(if (is target 'lua) body
                      `((let ,k (if (numeric? ,k)
                                    (parseInt ,k)
                                  ,k)
                          ,@body)))))))))
 
-  (mac for-1 ((i from to (o by 1)) rest: body)
-    `(let ,i ,from
-       (while (< ,i ,to)
-         ,@body
-         (inc ,i ,by))))
-
   (mac for (i rest: body)
-    (if (atom? i)
-        `(for-1 (,i 0 ,(hd body)) ,@(tl body))
-      `(for-1 ,i ,@body)))
+    (let (from 0 to 0 increment 1)
+      (if (atom? i)
+          (= to (hd body) body (tl body))
+        (= (i from to (o increment 1)) i))
+      (assert (number? increment))
+      (if (> increment 0)
+        `(let (,i ,from)
+           (while (< ,i ,to) ,@body (inc ,i ,increment)))
+        `(let (,i (- ,to 1))
+           (while (>= ,i ,from) ,@body (dec ,i ,(- increment)))))))
 
   (mac step (v t rest: body)
     (let-unique (x n i)
@@ -265,20 +271,14 @@
          (= ,x true)
          ,@forms)))
 
-  (mac assert (cond)
-    `(unless ,cond
-       (error 'assert)))
-
   (mac elf ()
     `(require 'elf))
 
   (mac lib modules
-    `(do ,@(xform modules
-             `(def ,_ (require ',_)))))
+    `(do ,@(xform modules `(def ,_ (require ',_)))))
 
   (mac use modules
-    `(do ,@(xform modules
-             `(var ,_ (require ',_)))))
+    `(do ,@(xform modules `(var ,_ (require ',_)))))
 
   nil
 
@@ -334,19 +334,16 @@
   (%js (s.substring from upto))
   (%lua (string.sub s (+ from 1) upto)))
 
-(def cut (x from upto)
+(def cut (x (o from 0) (o upto (# x)))
   (with l ()
-    (let (j 0
-          i (if (or (nil? from) (< from 0)) 0 from)
-          n (# x)
-          upto (if (or (nil? upto) (> upto n)) n upto))
-      (while (< i upto)
-        (= (at l j) (at x i))
-        (inc i)
-        (inc j))
-      (each (k v) x
-        (unless (number? k)
-          (= (get l k) v))))))
+    (var j 0)
+    (var to (min (# x) upto))
+    (for (i (max 0 from) to)
+      (= (at l j) (at x i))
+      (inc j))
+    (each (k v) x
+      (unless (number? k)
+        (= (get l k) v)))))
 
 (def keys (x)
   (with t ()
@@ -396,10 +393,8 @@
 
 (def reverse (l)
   (with l1 (keys l)
-    (let i (edge l)
-      (while (>= i 0)
-        (add l1 (at l i))
-        (dec i)))))
+    (for (i 0 (# l) -1)
+      (add l1 (at l i)))))
 
 (def reduce (f x)
   (if (none? x) nil

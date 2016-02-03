@@ -24,10 +24,10 @@ setenv("deftest", {_stash = true, macro = function (name, ...)
   return({"add", "tests", {"list", {"quote", name}, {"%fn", join({"do"}, body)}}})
 end})
 function run_tests()
-  local _o = tests
+  local _l = tests
   local _i = nil
-  for _i in next, _o do
-    local _id2 = _o[_i]
+  for _i in next, _l do
+    local _id2 = _l[_i]
     local name = _id2[1]
     local f = _id2[2]
     local result = f()
@@ -2206,21 +2206,21 @@ add(tests, {"for", function ()
   else
     passed = passed + 1
   end
-  local _l = {}
+  local _l1 = {}
   local i = 0
   while i < 2 do
-    add(_l, i)
+    add(_l1, i)
     i = i + 1
   end
-  if not equal63({0, 1}, _l) then
+  if not equal63({0, 1}, _l1) then
     failed = failed + 1
-    local _l1 = {}
+    local _l2 = {}
     local i = 0
     while i < 2 do
-      add(_l1, i)
+      add(_l2, i)
       i = i + 1
     end
-    return("failed: expected " .. str({0, 1}) .. ", was " .. str(_l1))
+    return("failed: expected " .. str({0, 1}) .. ", was " .. str(_l2))
   else
     passed = passed + 1
     return(passed)
@@ -2367,10 +2367,10 @@ add(tests, {"each", function ()
   local t = _x563
   local a = 0
   local b = 0
-  local _o1 = t
+  local _l3 = t
   local k = nil
-  for k in next, _o1 do
-    local v = _o1[k]
+  for k in next, _l3 do
+    local v = _l3[k]
     if number63(k) then
       a = a + 1
     else
@@ -2390,10 +2390,10 @@ add(tests, {"each", function ()
     passed = passed + 1
   end
   local _a11 = 0
-  local _o2 = t
+  local _l4 = t
   local _i2 = nil
-  for _i2 in next, _o2 do
-    local x = _o2[_i2]
+  for _i2 in next, _l4 do
+    local x = _l4[_i2]
     _a11 = _a11 + 1
   end
   if not equal63(5, _a11) then
@@ -2405,10 +2405,10 @@ add(tests, {"each", function ()
   local _x564 = {{1}, {2}}
   _x564.b = {3}
   local _t = _x564
-  local _o3 = _t
+  local _l5 = _t
   local _i3 = nil
-  for _i3 in next, _o3 do
-    local x = _o3[_i3]
+  for _i3 in next, _l5 do
+    local x = _l5[_i3]
     if not equal63(false, atom63(x)) then
       failed = failed + 1
       return("failed: expected " .. str(false) .. ", was " .. str(atom63(x)))
@@ -2416,10 +2416,10 @@ add(tests, {"each", function ()
       passed = passed + 1
     end
   end
-  local _o4 = _t
+  local _l6 = _t
   local _i4 = nil
-  for _i4 in next, _o4 do
-    local x = _o4[_i4]
+  for _i4 in next, _l6 do
+    local x = _l6[_i4]
     if not equal63(false, atom63(x)) then
       failed = failed + 1
       return("failed: expected " .. str(false) .. ", was " .. str(atom63(x)))
@@ -2427,10 +2427,10 @@ add(tests, {"each", function ()
       passed = passed + 1
     end
   end
-  local _o5 = _t
+  local _l7 = _t
   local _i5 = nil
-  for _i5 in next, _o5 do
-    local _id4 = _o5[_i5]
+  for _i5 in next, _l7 do
+    local _id4 = _l7[_i5]
     local x = _id4[1]
     if not equal63(true, number63(x)) then
       failed = failed + 1

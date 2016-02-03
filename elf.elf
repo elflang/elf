@@ -1,38 +1,6 @@
 ;; -*- mode: lisp -*-
 
-;; This file defines a small runtime that implements the Elf language.
-;;
-;; Whenever this file is modified and recompiled, the compiler --
-;; which is using an older version of the Elf runtime when it begins
-;; compiling this file -- steps through each expression, generates
-;; equivalent JS or Lua code, then overwrites the old .js and .lua
-;; files with the new code.
-;;
-;; This enables us to implement the Elf language in Elf.  No external
-;; Javascript or Lua code files are used.
-
 (var setup ()
-
-  ;; We begin by defining the core language constructs as macros.
-  ;; 
-  ;; Each `mac` expression compiles to a call to `setenv`,
-  ;; but `setenv` hasn't been defined yet.  Therefore we put them
-  ;; inside this wrapper function, which is called at the bottom of
-  ;; the file.
-  ;;
-  ;; Note that whenever the compiler encounters a `(mac ...)`
-  ;; form, the compiler passes it to `eval` immediately.  In other
-  ;; words, it has an immediate effect on the compile-time
-  ;; environment.  This enables us to start using each macro right
-  ;; away, without even calling this wrapper function.
-  ;;
-  ;; In that case, why call this wrapper function at all?  Consider
-  ;; the following Javascript:
-  ;;
-  ;;   require("elf.js");
-  ;;
-  ;; This doesn't recompile `elf.elf`, but still needs to load all
-  ;; the macros defined in it.
 
   (mac quote (form)
     (quoted form))
@@ -317,8 +285,8 @@
   ;; Since we're within a wrapper function, the above definitions were
   ;; attached to a local compilation frame.  Normally this frame would
   ;; be dropped at the end of this wrapper function's scope.  Since we
-  ;; want the definitions to persist, we insert them into the toplevel
-  ;; frame.
+  ;; want the definitions to persist, we merge the defs into the
+  ;; toplevel frame.
   (%compiling
     (join! (at environment 0) (at environment 1))))
 

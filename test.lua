@@ -129,9 +129,9 @@ add(tests, {"reader", function ()
   else
     passed = passed + 1
   end
-  if not equal63(2, _35(read("(1 2 a: 7)"))) then
+  if not equal63(2, #(read("(1 2 a: 7)"))) then
     failed = failed + 1
-    return("failed: expected " .. str(2) .. ", was " .. str(_35(read("(1 2 a: 7)"))))
+    return("failed: expected " .. str(2) .. ", was " .. str(#(read("(1 2 a: 7)"))))
   else
     passed = passed + 1
   end
@@ -790,15 +790,15 @@ add(tests, {"standalone", function ()
   end
 end})
 add(tests, {"string", function ()
-  if not equal63(3, _35("foo")) then
+  if not equal63(3, #("foo")) then
     failed = failed + 1
-    return("failed: expected " .. str(3) .. ", was " .. str(_35("foo")))
+    return("failed: expected " .. str(3) .. ", was " .. str(#("foo")))
   else
     passed = passed + 1
   end
-  if not equal63(3, _35("\"a\"")) then
+  if not equal63(3, #("\"a\"")) then
     failed = failed + 1
-    return("failed: expected " .. str(3) .. ", was " .. str(_35("\"a\"")))
+    return("failed: expected " .. str(3) .. ", was " .. str(#("\"a\"")))
   else
     passed = passed + 1
   end
@@ -815,28 +815,28 @@ add(tests, {"string", function ()
     passed = passed + 1
   end
   local s = "a\nb"
-  if not equal63(3, _35(s)) then
+  if not equal63(3, #(s)) then
     failed = failed + 1
-    return("failed: expected " .. str(3) .. ", was " .. str(_35(s)))
+    return("failed: expected " .. str(3) .. ", was " .. str(#(s)))
   else
     passed = passed + 1
   end
   local _s = "a\nb\nc"
-  if not equal63(5, _35(_s)) then
+  if not equal63(5, #(_s)) then
     failed = failed + 1
-    return("failed: expected " .. str(5) .. ", was " .. str(_35(_s)))
+    return("failed: expected " .. str(5) .. ", was " .. str(#(_s)))
   else
     passed = passed + 1
   end
-  if not equal63(3, _35("a\nb")) then
+  if not equal63(3, #("a\nb")) then
     failed = failed + 1
-    return("failed: expected " .. str(3) .. ", was " .. str(_35("a\nb")))
+    return("failed: expected " .. str(3) .. ", was " .. str(#("a\nb")))
   else
     passed = passed + 1
   end
-  if not equal63(3, _35("a\\b")) then
+  if not equal63(3, #("a\\b")) then
     failed = failed + 1
-    return("failed: expected " .. str(3) .. ", was " .. str(_35("a\\b")))
+    return("failed: expected " .. str(3) .. ", was " .. str(#("a\\b")))
   else
     passed = passed + 1
     return(passed)
@@ -954,15 +954,15 @@ add(tests, {"list", function ()
   else
     passed = passed + 1
   end
-  if not equal63(0, _35({})) then
+  if not equal63(0, #({})) then
     failed = failed + 1
-    return("failed: expected " .. str(0) .. ", was " .. str(_35({})))
+    return("failed: expected " .. str(0) .. ", was " .. str(#({})))
   else
     passed = passed + 1
   end
-  if not equal63(2, _35({1, 2})) then
+  if not equal63(2, #({1, 2})) then
     failed = failed + 1
-    return("failed: expected " .. str(2) .. ", was " .. str(_35({1, 2})))
+    return("failed: expected " .. str(2) .. ", was " .. str(#({1, 2})))
   else
     passed = passed + 1
   end
@@ -1255,11 +1255,11 @@ add(tests, {"quasiquote", function ()
   end
   local _x324 = {}
   _x324.foo = _a1
-  if not equal63(2, _35(join(_x324, b))) then
+  if not equal63(2, #(join(_x324, b))) then
     failed = failed + 1
     local _x325 = {}
     _x325.foo = _a1
-    return("failed: expected " .. str(2) .. ", was " .. str(_35(join(_x325, b))))
+    return("failed: expected " .. str(2) .. ", was " .. str(#(join(_x325, b))))
   else
     passed = passed + 1
   end
@@ -4189,9 +4189,9 @@ add(tests, {"cut", function ()
     passed = passed + 1
   end
   local t = {1, 2, 3}
-  if not equal63({}, cut(t, _35(t))) then
+  if not equal63({}, cut(t, #(t))) then
     failed = failed + 1
-    return("failed: expected " .. str({}) .. ", was " .. str(cut(t, _35(t))))
+    return("failed: expected " .. str({}) .. ", was " .. str(cut(t, #(t))))
   else
     passed = passed + 1
   end
@@ -4200,11 +4200,11 @@ add(tests, {"cut", function ()
   local _t1 = _x816
   local _x817 = {}
   _x817.a = true
-  if not equal63(_x817, cut(_t1, _35(_t1))) then
+  if not equal63(_x817, cut(_t1, #(_t1))) then
     failed = failed + 1
     local _x818 = {}
     _x818.a = true
-    return("failed: expected " .. str(_x818) .. ", was " .. str(cut(_t1, _35(_t1))))
+    return("failed: expected " .. str(_x818) .. ", was " .. str(cut(_t1, #(_t1))))
   else
     passed = passed + 1
     return(passed)

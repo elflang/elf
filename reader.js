@@ -10,7 +10,7 @@ setenv("defreader", {_stash: true, macro: function (_x6) {
 var delimiters = {"(": true, ")": true, ";": true, "]": true, "\n": true, "[": true};
 var whitespace = {" ": true, "\n": true, "\t": true};
 var stream = function (str, more) {
-  return({more: more, pos: 0, len: _35(str), string: str});
+  return({more: more, pos: 0, len: str.length || 0, string: str});
 };
 var peek_char = function (s) {
   var _id4 = s;
@@ -32,7 +32,7 @@ var skip_non_code = function (s) {
   var any63 = undefined;
   while (true) {
     var c = peek_char(s);
-    if (nil63(c)) {
+    if (typeof(c) === "undefined" || c === null) {
       break;
     } else {
       if (whitespace[c]) {
@@ -57,10 +57,10 @@ var eof = {};
 var read = function (s) {
   skip_non_code(s);
   var c = peek_char(s);
-  if (is63(c)) {
-    return((read_table[c] || read_table[""])(s));
-  } else {
+  if (typeof(c) === "undefined" || c === null) {
     return(eof);
+  } else {
+    return((read_table[c] || read_table[""])(s));
   }
 };
 var read_all = function (s) {
@@ -81,10 +81,10 @@ var read_string = function (str, more) {
   }
 };
 var key63 = function (atom) {
-  return(string63(atom) && _35(atom) > 1 && char(atom, edge(atom)) === ":");
+  return(string63(atom) && (atom.length || 0) > 1 && char(atom, edge(atom)) === ":");
 };
 var flag63 = function (atom) {
-  return(string63(atom) && _35(atom) > 1 && char(atom, 0) === ":");
+  return(string63(atom) && (atom.length || 0) > 1 && char(atom, 0) === ":");
 };
 var expected = function (s, c) {
   var _id5 = s;
@@ -117,14 +117,14 @@ var real63 = function (x) {
   return(number63(x) && ! nan63(x) && ! inf63(x));
 };
 var valid_access63 = function (str) {
-  return(_35(str) > 2 && !( "." === char(str, 0)) && !( "." === char(str, edge(str))) && ! search(str, ".."));
+  return((str.length || 0) > 2 && !( "." === char(str, 0)) && !( "." === char(str, edge(str))) && ! search(str, ".."));
 };
 var parse_index = function (a, b) {
   var n = number(a);
-  if (is63(n)) {
-    return(["at", b, n]);
-  } else {
+  if (typeof(n) === "undefined" || n === null) {
     return(["get", b, ["quote", a]]);
+  } else {
+    return(["at", b, n]);
   }
 };
 var parse_access = function (str) {
@@ -182,14 +182,14 @@ var read_list = function (s, ending) {
   read_char(s);
   var r = undefined;
   var l = [];
-  while (nil63(r)) {
+  while (typeof(r) === "undefined" || r === null) {
     skip_non_code(s);
     var c = peek_char(s);
     if (c === ending) {
       read_char(s);
       r = l;
     } else {
-      if (nil63(c)) {
+      if (typeof(c) === "undefined" || c === null) {
         r = expected(s, ending);
       } else {
         var x = read(s);
@@ -247,7 +247,7 @@ setenv("%fn", {_stash: true, macro: function (body) {
   var l = [];
   var any63 = undefined;
   treewise(cons, function (_) {
-    if (string63(_) && _35(_) <= 2 && code(_, 0) === 95) {
+    if (string63(_) && (_.length || 0) <= 2 && code(_, 0) === 95) {
       any63 = true;
       var c = code(_, 1);
       if (c && c >= 48 && c <= 57) {
@@ -278,12 +278,12 @@ read_table["\""] = function (s) {
   read_char(s);
   var r = undefined;
   var str = "\"";
-  while (nil63(r)) {
+  while (typeof(r) === "undefined" || r === null) {
     var c = peek_char(s);
     if (c === "\"") {
       r = str + read_char(s);
     } else {
-      if (nil63(c)) {
+      if (typeof(c) === "undefined" || c === null) {
         r = expected(s, "\"");
       } else {
         if (c === "\\") {
@@ -299,12 +299,12 @@ read_table["|"] = function (s) {
   read_char(s);
   var r = undefined;
   var str = "|";
-  while (nil63(r)) {
+  while (typeof(r) === "undefined" || r === null) {
     var c = peek_char(s);
     if (c === "|") {
       r = str + read_char(s);
     } else {
-      if (nil63(c)) {
+      if (typeof(c) === "undefined" || c === null) {
         r = expected(s, "|");
       } else {
         str = str + read_char(s);

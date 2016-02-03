@@ -10,7 +10,7 @@ end})
 local delimiters = {["("] = true, [")"] = true, [";"] = true, ["]"] = true, ["\n"] = true, ["["] = true}
 local whitespace = {[" "] = true, ["\n"] = true, ["\t"] = true}
 local function stream(str, more)
-  return({more = more, pos = 0, len = _35(str), string = str})
+  return({more = more, pos = 0, len = #(str), string = str})
 end
 local function peek_char(s)
   local _id4 = s
@@ -32,7 +32,7 @@ local function skip_non_code(s)
   local any63 = nil
   while true do
     local c = peek_char(s)
-    if nil63(c) then
+    if c == nil then
       break
     else
       if whitespace[c] then
@@ -57,10 +57,10 @@ local eof = {}
 local function read(s)
   skip_non_code(s)
   local c = peek_char(s)
-  if is63(c) then
-    return((read_table[c] or read_table[""])(s))
-  else
+  if c == nil then
     return(eof)
+  else
+    return((read_table[c] or read_table[""])(s))
   end
 end
 local function read_all(s)
@@ -81,10 +81,10 @@ local function read_string(str, more)
   end
 end
 local function key63(atom)
-  return(string63(atom) and _35(atom) > 1 and char(atom, edge(atom)) == ":")
+  return(string63(atom) and #(atom) > 1 and char(atom, edge(atom)) == ":")
 end
 local function flag63(atom)
-  return(string63(atom) and _35(atom) > 1 and char(atom, 0) == ":")
+  return(string63(atom) and #(atom) > 1 and char(atom, 0) == ":")
 end
 local function expected(s, c)
   local _id5 = s
@@ -117,14 +117,14 @@ local function real63(x)
   return(number63(x) and not nan63(x) and not inf63(x))
 end
 local function valid_access63(str)
-  return(_35(str) > 2 and not( "." == char(str, 0)) and not( "." == char(str, edge(str))) and not search(str, ".."))
+  return(#(str) > 2 and not( "." == char(str, 0)) and not( "." == char(str, edge(str))) and not search(str, ".."))
 end
 local function parse_index(a, b)
   local n = number(a)
-  if is63(n) then
-    return({"at", b, n})
-  else
+  if n == nil then
     return({"get", b, {"quote", a}})
+  else
+    return({"at", b, n})
   end
 end
 local function parse_access(str)
@@ -182,14 +182,14 @@ local function read_list(s, ending)
   read_char(s)
   local r = nil
   local l = {}
-  while nil63(r) do
+  while r == nil do
     skip_non_code(s)
     local c = peek_char(s)
     if c == ending then
       read_char(s)
       r = l
     else
-      if nil63(c) then
+      if c == nil then
         r = expected(s, ending)
       else
         local x = read(s)
@@ -247,7 +247,7 @@ setenv("%fn", {_stash = true, macro = function (body)
   local l = {}
   local any63 = nil
   treewise(cons, function (_)
-    if string63(_) and _35(_) <= 2 and code(_, 0) == 95 then
+    if string63(_) and #(_) <= 2 and code(_, 0) == 95 then
       any63 = true
       local c = code(_, 1)
       if c and c >= 48 and c <= 57 then
@@ -278,12 +278,12 @@ read_table["\""] = function (s)
   read_char(s)
   local r = nil
   local str = "\""
-  while nil63(r) do
+  while r == nil do
     local c = peek_char(s)
     if c == "\"" then
       r = str .. read_char(s)
     else
-      if nil63(c) then
+      if c == nil then
         r = expected(s, "\"")
       else
         if c == "\\" then
@@ -299,12 +299,12 @@ read_table["|"] = function (s)
   read_char(s)
   local r = nil
   local str = "|"
-  while nil63(r) do
+  while r == nil do
     local c = peek_char(s)
     if c == "|" then
       r = str .. read_char(s)
     else
-      if nil63(c) then
+      if c == nil then
         r = expected(s, "|")
       else
         str = str .. read_char(s)

@@ -19,7 +19,7 @@ local function write_file(path, data)
 end
 local function file_exists63(path)
   return(call_with_file(function (f)
-    return(is63(f))
+    return(not( f == nil))
   end, io.open(path)))
 end
 local path_separator = char(_G.package.config, 0)
@@ -33,12 +33,12 @@ local function exit(code)
   return(os.exit(code))
 end
 local _e
-if nil63(arg) then
+if arg == nil then
   _e = {}
 else
   local _l = {}
   local i = 0
-  while i < _35(arg) do
+  while i < #(arg) do
     add(_l, arg[i + 1])
     i = i + 1
   end

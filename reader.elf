@@ -37,11 +37,11 @@
 (var read (s)
   (skip-non-code s)
   (let c (peek-char s)
-    (if (is? c)
-	((or (get read-table c)
-	     (get read-table ""))
-	 s)
-      eof)))
+    (if (nil? c)
+        eof
+      ((or (get read-table c)
+           (get read-table ""))
+       s))))
 
 (var read-all (s)
   (with l ()
@@ -88,9 +88,9 @@
 
 (var parse-index (a b)
   (let n (number a)
-    (if (is? n)
-        `(at ,b ,n)
-      `(get ,b (quote ,a)))))
+    (if (nil? n)
+        `(get ,b (quote ,a))
+      `(at ,b ,n))))
 
 (var parse-access (str)
   (reduce parse-index (reverse (split str "."))))

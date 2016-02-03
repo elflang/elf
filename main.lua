@@ -26,7 +26,7 @@ local function eval_print(form)
   if not ok then
     return(print("error: " .. x .. "\n" .. trace))
   else
-    if is63(x) then
+    if not( x == nil) then
       return(print(str(x)))
     end
   end
@@ -88,7 +88,7 @@ function elf_main()
   local target1 = nil
   local expr = nil
   local argv = system.argv
-  local n = _35(argv)
+  local n = #(argv)
   local i = 0
   while i < n do
     local a = argv[i + 1]
@@ -122,14 +122,14 @@ function elf_main()
     i = i + 1
   end
   local _x4 = pre
-  local _n = _35(_x4)
+  local _n = #(_x4)
   local _i = 0
   while _i < _n do
     local file = _x4[_i + 1]
     run_file(file)
     _i = _i + 1
   end
-  if nil63(input) then
+  if input == nil then
     if expr then
       return(rep(expr))
     else
@@ -140,7 +140,7 @@ function elf_main()
       target = target1
     end
     local code = compile_file(input)
-    if nil63(output) or output == "-" then
+    if output == nil or output == "-" then
       return(print(code))
     else
       return(system["write-file"](output, code))

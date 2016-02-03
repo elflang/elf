@@ -9,7 +9,7 @@
     (if (not ok)
         (do (%js (print trace))
             (%lua (print (cat "error: " x "\n" trace))))
-        (is? x) (print (str x)))))
+        (~nil? x) (print (str x)))))
 
 (var rep (s)
   (eval-print (reader.read-string s)))

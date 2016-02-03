@@ -54,7 +54,7 @@
 
     (var file-exists? (path)
       (with-file (f path)
-        (is? f))))
+        (~nil? f))))
 
   (var path-separator (char _G.package.config 0))
 

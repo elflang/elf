@@ -1,10 +1,10 @@
 local reader = require("reader")
 function getenv(k, p)
   if string63(k) then
-    local i = _35(environment) - 1
+    local i = #(environment) - 1
     while i >= 0 do
       local b = environment[i + 1][k]
-      if is63(b) then
+      if not( b == nil) then
         local _e9
         if p then
           _e9 = b[p]
@@ -21,10 +21,10 @@ local function macro_function(k)
   return(getenv(k, "macro"))
 end
 local function macro63(k)
-  return(is63(macro_function(k)))
+  return(not( macro_function(k) == nil))
 end
 local function special63(k)
-  return(is63(getenv(k, "special")))
+  return(not( getenv(k, "special") == nil))
 end
 local function special_form63(form)
   return(not atom63(form) and special63(hd(form)))
@@ -36,13 +36,13 @@ local function symbol_expansion(k)
   return(getenv(k, "symbol"))
 end
 local function symbol63(k)
-  return(is63(symbol_expansion(k)))
+  return(not( symbol_expansion(k) == nil))
 end
 local function variable63(k)
   local b = first(function (_)
     return(_[k])
   end, reverse(environment))
-  return(not atom63(b) and is63(b.variable))
+  return(not atom63(b) and not( b.variable == nil))
 end
 function bound63(x)
   return(macro63(x) or special63(x) or symbol63(x) or variable63(x))
@@ -125,12 +125,12 @@ function bind(lh, rh, acc)
         local v = _l1[k]
         local _e10
         if k == "rest" then
-          _e10 = {"cut", id, _35(lh)}
+          _e10 = {"cut", id, #(lh)}
         else
           _e10 = {"get", id, {"quote", bias(k)}}
         end
         local x = _e10
-        if is63(k) then
+        if not( k == nil) then
           local _e11
           if v == true then
             _e11 = k
@@ -152,7 +152,7 @@ function bind42(args, body)
   local args1 = {}
   local function rest()
     if target == "js" then
-      return({"unstash", {"arguments%", _35(args1)}})
+      return({"unstash", {"arguments%", #(args1)}})
     else
       add(args1, "|...|")
       return({"unstash", {"list", "|...|"}})
@@ -296,7 +296,7 @@ local function quasiquote_list(form, depth)
     end
   end
   local _x52 = form
-  local _n6 = _35(_x52)
+  local _n6 = #(_x52)
   local _i6 = 0
   while _i6 < _n6 do
     local x = _x52[_i6 + 1]
@@ -310,7 +310,7 @@ local function quasiquote_list(form, depth)
     _i6 = _i6 + 1
   end
   local pruned = keep(function (_)
-    return(_35(_) > 1 or not( hd(_) == "list") or keys63(_))
+    return(#(_) > 1 or not( hd(_) == "list") or keys63(_))
   end, xs)
   if one63(pruned) then
     return(hd(pruned))
@@ -360,10 +360,10 @@ function expand_if(_x57)
   local a = _id5[1]
   local b = _id5[2]
   local c = cut(_id5, 2)
-  if is63(b) then
+  if not( b == nil) then
     return({join({"%if", a, b}, expand_if(c))})
   else
-    if is63(a) then
+    if not( a == nil) then
       return({a})
     end
   end
@@ -390,7 +390,7 @@ function valid_id63(id)
     return(false)
   else
     local i = 0
-    while i < _35(id) do
+    while i < #(id) do
       if not valid_code63(code(id, i)) then
         return(false)
       end
@@ -418,7 +418,7 @@ function mapo(f, t)
   for k in next, _l6 do
     local v = _l6[k]
     local x = f(v)
-    if is63(x) then
+    if not( x == nil) then
       add(o, literal(k))
       add(o, x)
     end
@@ -490,20 +490,20 @@ local function getop(op)
     if x == true then
       return(op)
     else
-      if is63(x) then
+      if not( x == nil) then
         return(x[target])
       end
     end
   end, infix))
 end
 local function infix63(x)
-  return(is63(getop(x)))
+  return(not( getop(x) == nil))
 end
 local function compile_args(args)
   local s = "("
   local c = ""
   local _x76 = args
-  local _n9 = _35(_x76)
+  local _n9 = #(_x76)
   local _i9 = 0
   while _i9 < _n9 do
     local x = _x76[_i9 + 1]
@@ -516,7 +516,7 @@ end
 local function escape_newlines(s)
   local s1 = ""
   local i = 0
-  while i < _35(s) do
+  while i < #(s) do
     local c = char(s, i)
     local _e13
     if c == "\n" then
@@ -532,7 +532,7 @@ end
 local function id(id)
   local id1 = ""
   local i = 0
-  while i < _35(id) do
+  while i < #(id) do
     local c = char(id, i)
     local n = code(c)
     local _e14
@@ -724,13 +724,13 @@ function compile_function(args, body, ...)
   end
 end
 local function can_return63(form)
-  return(is63(form) and (atom63(form) or not( hd(form) == "return") and not statement63(hd(form))))
+  return(not( form == nil) and (atom63(form) or not( hd(form) == "return") and not statement63(hd(form))))
 end
 function compile(form, ...)
   local _r59 = unstash({...})
   local _id15 = _r59
   local stmt = _id15.stmt
-  if nil63(form) then
+  if form == nil then
     return("")
   else
     if special_form63(form) then
@@ -764,13 +764,13 @@ end
 local function lower_statement(form, tail63)
   local hoist = {}
   local e = lower(form, hoist, true, tail63)
-  if some63(hoist) and is63(e) then
+  if some63(hoist) and not( e == nil) then
     return(join({"do"}, hoist, {e}))
   else
-    if is63(e) then
+    if not( e == nil) then
       return(e)
     else
-      if _35(hoist) > 1 then
+      if #(hoist) > 1 then
         return(join({"do"}, hoist))
       else
         return(hd(hoist))
@@ -789,7 +789,7 @@ local function standalone63(form)
 end
 local function lower_do(args, hoist, stmt63, tail63)
   local _x87 = almost(args)
-  local _n10 = _35(_x87)
+  local _n10 = #(_x87)
   local _i10 = 0
   while _i10 < _n10 do
     local x = _x87[_i10 + 1]
@@ -897,7 +897,7 @@ local function lower_call(form, hoist)
   end
 end
 local function lower_infix63(form)
-  return(infix63(hd(form)) and _35(form) > 3)
+  return(infix63(hd(form)) and #(form) > 3)
 end
 local function lower_infix(form, hoist)
   local _id24 = form
@@ -920,7 +920,7 @@ function lower(form, hoist, stmt63, tail63)
     if empty63(form) then
       return({"%array"})
     else
-      if nil63(hoist) then
+      if hoist == nil then
         return(lower_statement(form))
       else
         if lower_infix63(form) then
@@ -1000,7 +1000,7 @@ setenv("do", {_stash = true, tr = true, special = function (...)
   local forms = unstash({...})
   local s = ""
   local _x116 = forms
-  local _n12 = _35(_x116)
+  local _n12 = #(_x116)
   local _i12 = 0
   while _i12 < _n12 do
     local x = _x116[_i12 + 1]
@@ -1110,7 +1110,7 @@ setenv("%local-function", {_stash = true, tr = true, special = function (name, a
 end, stmt = true})
 setenv("return", {_stash = true, special = function (x)
   local _e28
-  if nil63(x) then
+  if x == nil then
     _e28 = "return"
   else
     _e28 = "return(" .. compile(x) .. ")"
@@ -1138,7 +1138,7 @@ setenv("%local", {_stash = true, special = function (name, value)
   local _id27 = compile(name)
   local value1 = compile(value)
   local _e30
-  if is63(value) then
+  if not( value == nil) then
     _e30 = " = " .. value1
   else
     _e30 = ""
@@ -1157,7 +1157,7 @@ end, stmt = true})
 setenv("assign", {_stash = true, special = function (lh, rh)
   local _lh1 = compile(lh)
   local _e32
-  if nil63(rh) then
+  if rh == nil then
     _e32 = "nil"
   else
     _e32 = rh

@@ -6,17 +6,17 @@
   (when (string? k)
     (for (i 0 (# environment) -1)
       (let b (get (at environment i) k)
-        (if (is? b)
+        (if (~nil? b)
             (return (if p (get b p) b)))))))
 
 (var macro-function (k)
   (getenv k 'macro))
 
 (var macro? (k)
-  (is? (macro-function k)))
+  (~nil? (macro-function k)))
 
 (var special? (k)
-  (is? (getenv k 'special)))
+  (~nil? (getenv k 'special)))
 
 (var special-form? (form)
   (and (~atom? form) (special? (hd form))))
@@ -28,12 +28,12 @@
   (getenv k 'symbol))
 
 (var symbol? (k)
-  (is? (symbol-expansion k)))
+  (~nil? (symbol-expansion k)))
 
 (var variable? (k)
   (let b (first [get _ k]
            (reverse environment))
-    (and (~atom? b) (is? b.variable))))
+    (and (~atom? b) (~nil? b.variable))))
 
 (def bound? (x)
   (or (macro? x)
@@ -88,7 +88,7 @@
           (let x (if (is k 'rest)
                      `(cut ,id ,(# lh))
                    `(get ,id ',(bias k)))
-            (when (is? k)
+            (when (~nil? k)
               (let k (if (is v true) k v)
                 (join! bs (bind k x acc))))))))))
 
@@ -206,8 +206,8 @@
     (xform form (quasiexpand _ depth))))
 
 (def expand-if ((a b rest: c))
-  (if (is? b) `((%if ,a ,b ,@(expand-if c)))
-      (is? a) (list a)))
+  (if (~nil? b) `((%if ,a ,b ,@(expand-if c)))
+      (~nil? a) (list a)))
 
 (def indent-level 0)
 
@@ -256,7 +256,7 @@
   (with o ()
     (each (k v) t
       (let x (f v)
-        (when (is? x)
+        (when (~nil? x)
           (add o (literal k))
           (add o x))))))
 
@@ -286,11 +286,11 @@
 (var getop (op)
   (find [let x (get _ op)
           (if (is x true) op
-            (is? x) (get x target))]
+            (~nil? x) (get x target))]
         infix))
 
 (var infix? (x)
-  (is? (getop x)))
+  (~nil? (getop x)))
 
 (var compile-args (args)
   (let (s "(" c "")
@@ -387,7 +387,7 @@
       (cat p "function " id args "\n" body ind tr))))
 
 (var can-return? (form)
-  (and (is? form)
+  (and (~nil? form)
        (or (atom? form)
            (and (~is (hd form) 'return)
                 (~statement? (hd form))))))
@@ -405,9 +405,9 @@
 
 (var lower-statement (form tail?)
   (let (hoist () e (lower form hoist true tail?))
-    (if (and (some? hoist) (is? e))
+    (if (and (some? hoist) (~nil? e))
         `(do ,@hoist ,e)
-        (is? e) e
+        (~nil? e) e
         (> (# hoist) 1) `(do ,@hoist)
       (hd hoist))))
 
@@ -641,7 +641,7 @@
 (defspecial %local (name value) :stmt
   (let (id (compile name)
         value1 (compile value)
-        rh (if (is? value) (cat " = " value1) "")
+        rh (if (~nil? value) (cat " = " value1) "")
 	keyword (if (is target 'js) "var " "local ")
         ind (indentation))
     (cat ind keyword id rh)))

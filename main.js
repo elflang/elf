@@ -17,7 +17,7 @@ var eval_print = function (form) {
   if (! ok) {
     return(print(trace));
   } else {
-    if (is63(x)) {
+    if (!( typeof(x) === "undefined" || x === null)) {
       return(print(str(x)));
     }
   }
@@ -74,7 +74,7 @@ elf_main = function () {
   var target1 = undefined;
   var expr = undefined;
   var argv = system.argv;
-  var n = _35(argv);
+  var n = argv.length || 0;
   var i = 0;
   while (i < n) {
     var a = argv[i];
@@ -108,14 +108,14 @@ elf_main = function () {
     i = i + 1;
   }
   var _x2 = pre;
-  var _n = _35(_x2);
+  var _n = _x2.length || 0;
   var _i = 0;
   while (_i < _n) {
     var file = _x2[_i];
     run_file(file);
     _i = _i + 1;
   }
-  if (nil63(input)) {
+  if (typeof(input) === "undefined" || input === null) {
     if (expr) {
       return(rep(expr));
     } else {
@@ -126,7 +126,7 @@ elf_main = function () {
       target = target1;
     }
     var code = compile_file(input);
-    if (nil63(output) || output === "-") {
+    if (typeof(output) === "undefined" || output === null || output === "-") {
       return(print(code));
     } else {
       return(system["write-file"](output, code));

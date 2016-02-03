@@ -280,6 +280,21 @@
   (mac use modules
     `(do ,@(xform modules `(var ,_ (require ',_)))))
 
+  (mac nil? (x)
+    `(target
+       lua: (is ,x nil)
+       js: ,(if (atom? x)
+                `(let () (or (is (typeof ,x) "undefined") (is ,x null)))
+              `(let (x ,x) (nil? x)))))
+
+  (defspecial %len (x)
+    (cat "#(" (compile x) ")"))
+
+  (mac # (x)
+    `(target
+       lua: (%len ,x)
+       js: (or (get ,x 'length) 0)))
+
   nil
 
   ;; Since we're within a wrapper function, the above definitions were
@@ -293,16 +308,6 @@
 (once
   (def environment (list (obj)))
   (def target (language)))
-
-(def nil? (x)
-  (%js (or (is x nil) (is x null)))
-  (%lua (is x nil)))
-
-(def is? (x) (~nil? x))
-
-(def # (x)
-  (%js (or x.length 0))
-  (%lua |#x|))
 
 (def none? (x) (is (# x) 0))
 (def some? (x) (> (# x) 0))
@@ -443,12 +448,12 @@
   (with t ()
     (step v x
       (let y (f v)
-        (if (is? y)
+        (unless (nil? y)
           (add t y))))
     (each (k v) x
       (unless (number? k)
         (let y (f v)
-          (when (is? y)
+          (unless (nil? y)
             (= (get t k) y)))))))
 
 (def cons (x y)

@@ -315,6 +315,7 @@
 (def two? (x) (is (# x) 2))
 
 (def hd (l) (at l 0))
+(def tl (l) (cut l 1))
 
 (%js (def type (x) (typeof x)))
 
@@ -323,8 +324,11 @@
 (def boolean? (x) (is (type x) 'boolean))
 (def function? (x) (is (type x) 'function))
 
+(def table? (x)
+  (is (type x) (target js: 'object lua: 'table)))
+
 (def atom? (x)
-  (or (nil? x) (string? x) (number? x) (boolean? x)))
+  (~table? x))
 
 (def nan (/ 0 0))
 (def inf (/ 1 0))
@@ -361,8 +365,6 @@
 
 (def inner (x)
   (clip x 1 (edge x)))
-
-(def tl (l) (cut l 1))
 
 (def char (s n)
   (%js (s.charAt n))
@@ -581,8 +583,8 @@
       (is x -inf) "-inf"
       (boolean? x) (if x "true" "false")
       (string? x) (escape x)
-      (atom? x) (tostring x)
       (function? x) "fn"
+      (atom? x) (tostring x)
     (let (s "(" sp ""
           xs () ks ()
           d (+ (or depth 0) 1))

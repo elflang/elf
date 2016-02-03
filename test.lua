@@ -4722,12 +4722,10 @@ add(tests, {"type", function ()
   else
     passed = passed + 1
   end
-  if not equal63(false, atom63(function ()
-    return({})
+  if not equal63(true, atom63(function ()
   end)) then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(atom63(function ()
-      return({})
+    return("failed: expected " .. str(true) .. ", was " .. str(atom63(function ()
     end)))
   else
     passed = passed + 1

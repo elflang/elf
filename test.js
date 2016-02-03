@@ -4629,12 +4629,10 @@ add(tests, ["type", function () {
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, atom63(function () {
-    return([]);
+  if (! equal63(true, atom63(function () {
   }))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(atom63(function () {
-      return([]);
+    return("failed: expected " + str(true) + ", was " + str(atom63(function () {
     })));
   } else {
     passed = passed + 1;

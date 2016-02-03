@@ -539,6 +539,9 @@ two63 = function (x) {
 hd = function (l) {
   return(l[0]);
 };
+tl = function (l) {
+  return(cut(l, 1));
+};
 type = function (x) {
   return(typeof(x));
 };
@@ -554,8 +557,11 @@ boolean63 = function (x) {
 function63 = function (x) {
   return(type(x) === "function");
 };
+table63 = function (x) {
+  return(type(x) === "object");
+};
 atom63 = function (x) {
-  return(typeof(x) === "undefined" || x === null || string63(x) || number63(x) || boolean63(x));
+  return(! table63(x));
 };
 nan = 0 / 0;
 inf = 1 / 0;
@@ -633,9 +639,6 @@ edge = function (x) {
 };
 inner = function (x) {
   return(clip(x, 1, edge(x)));
-};
-tl = function (l) {
-  return(cut(l, 1));
 };
 char = function (s, n) {
   return(s.charAt(n));
@@ -1083,11 +1086,11 @@ str = function (x, depth) {
               if (string63(x)) {
                 return(escape(x));
               } else {
-                if (atom63(x)) {
-                  return(tostring(x));
+                if (function63(x)) {
+                  return("fn");
                 } else {
-                  if (function63(x)) {
-                    return("fn");
+                  if (atom63(x)) {
+                    return(tostring(x));
                   } else {
                     var s = "(";
                     var sp = "";
@@ -1148,8 +1151,8 @@ toplevel63 = function () {
   return(one63(environment));
 };
 setenv = function (k) {
-  var _r165 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _id60 = _r165;
+  var _r166 = unstash(Array.prototype.slice.call(arguments, 1));
+  var _id60 = _r166;
   var _keys = cut(_id60, 0);
   if (string63(k)) {
     var _e45;

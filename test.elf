@@ -875,7 +875,7 @@ c"
   (eq true (atom? "abc"))
   (eq true (atom? 42))
   (eq true (atom? true))
-  (eq false (atom? []))
+  (eq true (atom? (fn ())))
   (eq false (atom? '(1)))
   (eq false (atom? (obj))))
 

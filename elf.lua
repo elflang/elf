@@ -517,6 +517,9 @@ end
 function hd(l)
   return(l[1])
 end
+function tl(l)
+  return(cut(l, 1))
+end
 function string63(x)
   return(type(x) == "string")
 end
@@ -529,8 +532,11 @@ end
 function function63(x)
   return(type(x) == "function")
 end
+function table63(x)
+  return(type(x) == "table")
+end
 function atom63(x)
-  return(x == nil or string63(x) or number63(x) or boolean63(x))
+  return(not table63(x))
 end
 nan = 0 / 0
 inf = 1 / 0
@@ -594,9 +600,6 @@ function edge(x)
 end
 function inner(x)
   return(clip(x, 1, edge(x)))
-end
-function tl(l)
-  return(cut(l, 1))
 end
 function char(s, n)
   return(clip(s, n, n + 1))
@@ -979,11 +982,11 @@ function str(x, depth)
               if string63(x) then
                 return(escape(x))
               else
-                if atom63(x) then
-                  return(tostring(x))
+                if function63(x) then
+                  return("fn")
                 else
-                  if function63(x) then
-                    return("fn")
+                  if atom63(x) then
+                    return(tostring(x))
                   else
                     local s = "("
                     local sp = ""
@@ -1031,8 +1034,8 @@ function toplevel63()
   return(one63(environment))
 end
 function setenv(k, ...)
-  local _r162 = unstash({...})
-  local _id60 = _r162
+  local _r163 = unstash({...})
+  local _id60 = _r163
   local _keys = cut(_id60, 0)
   if string63(k) then
     local _e31

@@ -529,21 +529,13 @@ end
 function clip(s, from, upto)
   return(string.sub(s, from + 1, upto))
 end
-function cut(x, _x538, _x539)
-  local _e24
-  if _x538 == nil then
-    _e24 = 0
-  else
-    _e24 = _x538
+function cut(x, from, upto)
+  if from == nil then
+    from = 0
   end
-  local from = _e24
-  local _e25
-  if _x539 == nil then
-    _e25 = #(x)
-  else
-    _e25 = _x539
+  if upto == nil then
+    upto = #(x)
   end
-  local upto = _e25
   local l = {}
   local j = 0
   local to = min(#(x), upto)
@@ -585,11 +577,11 @@ function char(s, n)
   return(clip(s, n, n + 1))
 end
 function code(s, n)
-  local _e26
+  local _e24
   if n then
-    _e26 = n + 1
+    _e24 = n + 1
   end
-  return(string.byte(s, _e26))
+  return(string.byte(s, _e24))
 end
 function chr(c)
   return(string.char(c))
@@ -686,11 +678,11 @@ function find(f, t)
   end
 end
 function first(f, l)
-  local _x541 = l
-  local _n12 = #(_x541)
+  local _x539 = l
+  local _n12 = #(_x539)
   local _i12 = 0
   while _i12 < _n12 do
-    local x = _x541[_i12 + 1]
+    local x = _x539[_i12 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -719,11 +711,11 @@ function sort(l, f)
 end
 function map(f, x)
   local t = {}
-  local _x543 = x
-  local _n13 = #(_x543)
+  local _x541 = x
+  local _n13 = #(_x541)
   local _i13 = 0
   while _i13 < _n13 do
-    local v = _x543[_i13 + 1]
+    local v = _x541[_i13 + 1]
     local y = f(v)
     if not( y == nil) then
       add(t, y)
@@ -824,11 +816,11 @@ function unstash(args)
   end
 end
 function search(s, pattern, start)
-  local _e27
+  local _e25
   if start then
-    _e27 = start + 1
+    _e25 = start + 1
   end
-  local _start = _e27
+  local _start = _e25
   local i = string.find(s, pattern, _start, true)
   return(i and i - 1)
 end
@@ -924,25 +916,25 @@ function escape(s)
   local i = 0
   while i < #(s) do
     local c = char(s, i)
-    local _e28
+    local _e26
     if c == "\n" then
-      _e28 = "\\n"
+      _e26 = "\\n"
     else
-      local _e29
+      local _e27
       if c == "\"" then
-        _e29 = "\\\""
+        _e27 = "\\\""
       else
-        local _e30
+        local _e28
         if c == "\\" then
-          _e30 = "\\\\"
+          _e28 = "\\\\"
         else
-          _e30 = c
+          _e28 = c
         end
-        _e29 = _e30
+        _e27 = _e28
       end
-      _e28 = _e29
+      _e26 = _e27
     end
-    local c1 = _e28
+    local c1 = _e26
     s1 = s1 .. c1
     i = i + 1
   end
@@ -1029,13 +1021,13 @@ function setenv(k, ...)
   local _r177 = unstash({...})
   local _keys = cut(_r177, 0)
   if type(k) == "string" then
-    local _e31
+    local _e29
     if _keys.toplevel then
-      _e31 = environment[1]
+      _e29 = environment[1]
     else
-      _e31 = last(environment)
+      _e29 = last(environment)
     end
-    local frame = _e31
+    local frame = _e29
     local entry = frame[k] or {}
     local _l20 = _keys
     local _k = nil

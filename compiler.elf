@@ -112,7 +112,7 @@
                 (is (hd v) 'o)
                 (let ((_ var val) v)
                   (add args1 var)
-                  (add inits `(when (nil? ,var) (= ,var ,val))))
+                  (add inits `(if (nil? ,var) (= ,var ,val))))
               (let-unique (x)
                 (add args1 x)
                 (join! bs (list v x)))))

@@ -208,7 +208,7 @@ bind42 = function (args, body) {
           var _var1 = v[1];
           var val = v[2];
           add(args1, _var1);
-          add(inits, ["when", ["nil?", _var1], ["=", _var1, val]]);
+          add(inits, ["if", ["nil?", _var1], ["=", _var1, val]]);
         } else {
           var x = unique("x");
           add(args1, x);

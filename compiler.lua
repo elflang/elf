@@ -183,7 +183,7 @@ function bind42(args, body)
           local _var1 = v[2]
           local val = v[3]
           add(args1, _var1)
-          add(inits, {"when", {"nil?", _var1}, {"=", _var1, val}})
+          add(inits, {"if", {"nil?", _var1}, {"=", _var1, val}})
         else
           local x = unique("x")
           add(args1, x)

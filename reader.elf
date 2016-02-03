@@ -149,23 +149,19 @@
 (defreader (")" s)
   (error (cat "Unexpected ) at " s.pos)))
 
-(mac %loading forms
-  (with e `(do ,@forms)
-    (eval e)))
-
 (mac %fn (body)
   (let (n -1 l () any? nil)
-    (contains? [when (and (string? _) (<= (# _) 2) (is (code _ 0) 95)) ; "_"
-                 (= any? true)
-                 (var c (code _ 1))
-                 (when (and c (>= c 48) (<= c 57)) ; "0" through "9"
-                   (= n (max n (- c 48))))
-                 nil]
-              body)
-    (when any?
-      (for i (+ n 1)
-        (add l (cat "_" (chr (+ 48 i)))))
-      (if (none? l) (add l "_")))
+    (ontree skip: [unless (atom? _) (is (hd _) '%fn)]
+       [when (and (string? _) (<= (# _) 2) (is (code _ 0) 95)) ; "_"
+         (= any? true)
+         (var c (code _ 1))
+         (when (and c (>= c 48) (<= c 57)) ; "0" through "9"
+           (while (< n (- c 48))
+             (add l (cat "_" (chr (+ 48 (inc n)))))))
+         nil]
+       body)
+    (when (and any? (none? l))
+      (add l "_"))
   `(fn ,l ,body)))
 
 (defreader ("[" s)

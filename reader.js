@@ -232,35 +232,29 @@ read_table["("] = function (s) {
 read_table[")"] = function (s) {
   throw new Error("Unexpected ) at " + s.pos);
 };
-setenv("%loading", {_stash: true, macro: function () {
-  var forms = unstash(Array.prototype.slice.call(arguments, 0));
-  var e = join(["do"], forms);
-  eval(e);
-  return(e);
-}});
 setenv("%fn", {_stash: true, macro: function (body) {
   var n = -1;
   var l = [];
   var any63 = undefined;
-  contains63(function (_) {
+  ontree(function (_) {
     if (typeof(_) === "string" && (_.length || 0) <= 2 && code(_, 0) === 95) {
       any63 = true;
       var c = code(_, 1);
       if (c && c >= 48 && c <= 57) {
-        n = max(n, c - 48);
+        while (n < c - 48) {
+          n = n + 1;
+          add(l, "_" + chr(48 + n));
+        }
       }
       return(undefined);
     }
-  }, body);
-  if (any63) {
-    var i = 0;
-    while (i < n + 1) {
-      add(l, "_" + chr(48 + i));
-      i = i + 1;
+  }, body, {_stash: true, skip: function (_) {
+    if (! !( typeof(_) === "object")) {
+      return(_[0] === "%fn");
     }
-    if ((l.length || 0) === 0) {
-      add(l, "_");
-    }
+  }});
+  if (any63 && (l.length || 0) === 0) {
+    add(l, "_");
   }
   return(["fn", l, body]);
 }});

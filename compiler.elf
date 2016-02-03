@@ -83,7 +83,7 @@
        (list var `(if (nil? ,rh) ,val ,rh)))
     (let-unique (id)
       (with bs (list id rh)
-        (if (and (atom? (macroexpand rh)) (~contains? [is _ rh] lh))
+        (if (and (atom? (macroexpand rh)) (~ontree [is _ rh] lh))
           (= bs () id rh)
           (when vars (add vars id)))
         (each (k v) lh
@@ -362,9 +362,9 @@
       (cat f1 args))))
 
 (var op-delims (parent child :right)
-  (if ((if right >= >)
-       (precedence child)
-       (precedence parent))
+  (if (if right
+        (>= (precedence child) (precedence parent))
+        (> (precedence child) (precedence parent)))
       (list "(" ")")
     (list "" "")))
 

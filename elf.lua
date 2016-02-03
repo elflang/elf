@@ -125,10 +125,10 @@ local function setup()
         if 2 == _e7 then
           local lh = l[1]
           local rh = l[2]
-          local _id61 = not( type(lh) == "table")
+          local _id62 = not( type(lh) == "table")
           local _e16
-          if _id61 then
-            _e16 = _id61
+          if _id62 then
+            _e16 = _id62
           else
             local _e8 = lh[1]
             local _e17
@@ -666,23 +666,33 @@ function find(f, t)
     end
   end
 end
-function find(f, t)
+function ontree(f, t, ...)
+  local _r142 = unstash({...})
+  local skip = _r142.skip
   local _l11 = t
   local _i11 = nil
   for _i11 in next, _l11 do
     local x = _l11[_i11]
-    local y = f(x)
-    if y then
-      return(y)
+    if not( skip and skip(x)) then
+      local _e25
+      if not( type(x) == "table") then
+        _e25 = f(x)
+      else
+        _e25 = ontree(f, x, {_stash = true, skip = skip})
+      end
+      local y = _e25
+      if y then
+        return(y)
+      end
     end
   end
 end
 function first(f, l)
-  local _x539 = l
-  local _n12 = #(_x539)
+  local _x540 = l
+  local _n12 = #(_x540)
   local _i12 = 0
   while _i12 < _n12 do
-    local x = _x539[_i12 + 1]
+    local x = _x540[_i12 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -711,11 +721,11 @@ function sort(l, f)
 end
 function map(f, x)
   local t = {}
-  local _x541 = x
-  local _n13 = #(_x541)
+  local _x542 = x
+  local _n13 = #(_x542)
   local _i13 = 0
   while _i13 < _n13 do
-    local v = _x541[_i13 + 1]
+    local v = _x542[_i13 + 1]
     local y = f(v)
     if not( y == nil) then
       add(t, y)
@@ -735,22 +745,6 @@ function map(f, x)
   end
   return(t)
 end
-function contains63(f, x)
-  if not( type(x) == "table") then
-    return(f(x))
-  else
-    local _l13 = x
-    local k = nil
-    for k in next, _l13 do
-      local v = _l13[k]
-      local _y = contains63(f, v)
-      if _y then
-        local a = _y
-        return(a)
-      end
-    end
-  end
-end
 function keep(f, x)
   return(map(function (_)
     if f(_) then
@@ -759,10 +753,10 @@ function keep(f, x)
   end, x))
 end
 function keys63(t)
-  local _l14 = t
+  local _l13 = t
   local k = nil
-  for k in next, _l14 do
-    local v = _l14[k]
+  for k in next, _l13 do
+    local v = _l13[k]
     if not( type(k) == "number") then
       return(true)
     end
@@ -770,10 +764,10 @@ function keys63(t)
   return(false)
 end
 function empty63(t)
-  local _l15 = t
-  local _i17 = nil
-  for _i17 in next, _l15 do
-    local x = _l15[_i17]
+  local _l14 = t
+  local _i16 = nil
+  for _i16 in next, _l14 do
+    local x = _l14[_i16]
     return(false)
   end
   return(true)
@@ -781,10 +775,10 @@ end
 function stash(args)
   if keys63(args) then
     local p = {}
-    local _l16 = args
+    local _l15 = args
     local k = nil
-    for k in next, _l16 do
-      local v = _l16[k]
+    for k in next, _l15 do
+      local v = _l15[k]
       if not( type(k) == "number") then
         p[k] = v
       end
@@ -801,10 +795,10 @@ function unstash(args)
     local l = last(args)
     if not not( type(l) == "table") and l._stash then
       local args1 = almost(args)
-      local _l17 = l
+      local _l16 = l
       local k = nil
-      for k in next, _l17 do
-        local v = _l17[k]
+      for k in next, _l16 do
+        local v = _l16[k]
         if not( k == "_stash") then
           args1[k] = v
         end
@@ -816,11 +810,11 @@ function unstash(args)
   end
 end
 function search(s, pattern, start)
-  local _e25
+  local _e26
   if start then
-    _e25 = start + 1
+    _e26 = start + 1
   end
-  local _start = _e25
+  local _start = _e26
   local i = string.find(s, pattern, _start, true)
   return(i and i - 1)
 end
@@ -916,25 +910,25 @@ function escape(s)
   local i = 0
   while i < #(s) do
     local c = char(s, i)
-    local _e26
+    local _e27
     if c == "\n" then
-      _e26 = "\\n"
+      _e27 = "\\n"
     else
-      local _e27
+      local _e28
       if c == "\"" then
-        _e27 = "\\\""
+        _e28 = "\\\""
       else
-        local _e28
+        local _e29
         if c == "\\" then
-          _e28 = "\\\\"
+          _e29 = "\\\\"
         else
-          _e28 = c
+          _e29 = c
         end
-        _e27 = _e28
+        _e28 = _e29
       end
-      _e26 = _e27
+      _e27 = _e28
     end
-    local c1 = _e26
+    local c1 = _e27
     s1 = s1 .. c1
     i = i + 1
   end
@@ -977,10 +971,10 @@ function str(x, depth)
                     local xs = {}
                     local ks = {}
                     local d = (depth or 0) + 1
-                    local _l18 = x
+                    local _l17 = x
                     local k = nil
-                    for k in next, _l18 do
-                      local v = _l18[k]
+                    for k in next, _l17 do
+                      local v = _l17[k]
                       if type(k) == "number" then
                         xs[k] = str(v, d)
                       else
@@ -988,10 +982,10 @@ function str(x, depth)
                         add(ks, str(v, d))
                       end
                     end
-                    local _l19 = join(xs, ks)
-                    local _i21 = nil
-                    for _i21 in next, _l19 do
-                      local v = _l19[_i21]
+                    local _l18 = join(xs, ks)
+                    local _i20 = nil
+                    for _i20 in next, _l18 do
+                      local v = _l18[_i20]
                       s = s .. sp .. v
                       sp = " "
                     end
@@ -1018,21 +1012,21 @@ function toplevel63()
   return(#(environment) == 1)
 end
 function setenv(k, ...)
-  local _r177 = unstash({...})
-  local _keys = cut(_r177, 0)
+  local _r176 = unstash({...})
+  local _keys = cut(_r176, 0)
   if type(k) == "string" then
-    local _e29
+    local _e30
     if _keys.toplevel then
-      _e29 = environment[1]
+      _e30 = environment[1]
     else
-      _e29 = last(environment)
+      _e30 = last(environment)
     end
-    local frame = _e29
+    local frame = _e30
     local entry = frame[k] or {}
-    local _l20 = _keys
+    local _l19 = _keys
     local _k = nil
-    for _k in next, _l20 do
-      local v = _l20[_k]
+    for _k in next, _l19 do
+      local v = _l19[_k]
       entry[_k] = v
     end
     frame[k] = entry

@@ -115,7 +115,7 @@ function bind(lh, rh, vars)
     else
       local id = unique("id")
       local bs = {id, rh}
-      if not( type(macroexpand(rh)) == "table") and not contains63(function (_)
+      if not( type(macroexpand(rh)) == "table") and not ontree(function (_)
         return(_ == rh)
       end, lh) then
         bs = {}
@@ -659,11 +659,11 @@ local function op_delims(parent, child, ...)
   local right = _r56.right
   local _e17
   if right then
-    _e17 = _6261
+    _e17 = precedence(child) >= precedence(parent)
   else
-    _e17 = _62
+    _e17 = precedence(child) > precedence(parent)
   end
-  if _e17(precedence(child), precedence(parent)) then
+  if _e17 then
     return({"(", ")"})
   else
     return({"", ""})

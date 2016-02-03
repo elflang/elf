@@ -1465,7 +1465,7 @@ add(tests, ["quasiexpand", function () {
     return(passed);
   }
 }]);
-add(tests, ["calls", function (_) {
+add(tests, ["calls", function () {
   var f = function () {
     return(42);
   };
@@ -2777,7 +2777,7 @@ add(tests, ["guard", function () {
     return(passed);
   }
 }]);
-add(tests, ["let", function (_) {
+add(tests, ["let", function () {
   var a = 10;
   if (! equal63(10, a)) {
     failed = failed + 1;
@@ -4247,7 +4247,7 @@ add(tests, ["split", function () {
     return(passed);
   }
 }]);
-add(tests, ["reduce", function (_0, _1) {
+add(tests, ["reduce", function () {
   if (! equal63("a", reduce(function (_0, _1) {
     return(_0 + _1);
   }, ["a"]))) {
@@ -4290,7 +4290,7 @@ add(tests, ["reduce", function (_0, _1) {
     return(passed);
   }
 }]);
-add(tests, ["keep", function (_) {
+add(tests, ["keep", function () {
   if (! equal63([], keep(function (_) {
     return(_);
   }, []))) {
@@ -4368,7 +4368,7 @@ add(tests, ["in?", function () {
     return(passed);
   }
 }]);
-add(tests, ["find", function (_) {
+add(tests, ["find", function () {
   if (! equal63(undefined, find(function (_) {
     return(_);
   }, []))) {
@@ -4455,7 +4455,7 @@ add(tests, ["find", function (_) {
     return(passed);
   }
 }]);
-add(tests, ["first", function (_) {
+add(tests, ["first", function () {
   if (! equal63(undefined, first(function (_) {
     return(_);
   }, []))) {
@@ -4650,7 +4650,7 @@ add(tests, ["type", function () {
     return(passed);
   }
 }]);
-add(tests, ["apply", function (_0, _1) {
+add(tests, ["apply", function () {
   if (! equal63(4, apply(function (_0, _1) {
     return(_0 + _1);
   }, [2, 2]))) {

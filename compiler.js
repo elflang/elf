@@ -133,7 +133,7 @@ bind = function (lh, rh, vars) {
     } else {
       var id = unique("id");
       var bs = [id, rh];
-      if (!( typeof(macroexpand(rh)) === "object") && ! contains63(function (_) {
+      if (!( typeof(macroexpand(rh)) === "object") && ! ontree(function (_) {
         return(_ === rh);
       }, lh)) {
         bs = [];
@@ -718,11 +718,11 @@ var op_delims = function (parent, child) {
   var right = _r56.right;
   var _e25;
   if (right) {
-    _e25 = _6261;
+    _e25 = precedence(child) >= precedence(parent);
   } else {
-    _e25 = _62;
+    _e25 = precedence(child) > precedence(parent);
   }
-  if (_e25(precedence(child), precedence(parent))) {
+  if (_e25) {
     return(["(", ")"]);
   } else {
     return(["", ""]);

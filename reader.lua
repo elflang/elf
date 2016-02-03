@@ -232,35 +232,29 @@ end
 read_table[")"] = function (s)
   error("Unexpected ) at " .. s.pos)
 end
-setenv("%loading", {_stash = true, macro = function (...)
-  local forms = unstash({...})
-  local e = join({"do"}, forms)
-  eval(e)
-  return(e)
-end})
 setenv("%fn", {_stash = true, macro = function (body)
   local n = -1
   local l = {}
   local any63 = nil
-  contains63(function (_)
+  ontree(function (_)
     if type(_) == "string" and #(_) <= 2 and code(_, 0) == 95 then
       any63 = true
       local c = code(_, 1)
       if c and c >= 48 and c <= 57 then
-        n = max(n, c - 48)
+        while n < c - 48 do
+          n = n + 1
+          add(l, "_" .. chr(48 + n))
+        end
       end
       return(nil)
     end
-  end, body)
-  if any63 then
-    local i = 0
-    while i < n + 1 do
-      add(l, "_" .. chr(48 + i))
-      i = i + 1
+  end, body, {_stash = true, skip = function (_)
+    if not not( type(_) == "table") then
+      return(_[1] == "%fn")
     end
-    if #(l) == 0 then
-      add(l, "_")
-    end
+  end})
+  if any63 and #(l) == 0 then
+    add(l, "_")
   end
   return({"fn", l, body})
 end})

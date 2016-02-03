@@ -1467,7 +1467,7 @@ add(tests, {"quasiexpand", function ()
     return(passed)
   end
 end})
-add(tests, {"calls", function (_)
+add(tests, {"calls", function ()
   local f = function ()
     return(42)
   end
@@ -2870,7 +2870,7 @@ add(tests, {"guard", function ()
     return(passed)
   end
 end})
-add(tests, {"let", function (_)
+add(tests, {"let", function ()
   local a = 10
   if not equal63(10, a) then
     failed = failed + 1
@@ -4340,7 +4340,7 @@ add(tests, {"split", function ()
     return(passed)
   end
 end})
-add(tests, {"reduce", function (_0, _1)
+add(tests, {"reduce", function ()
   if not equal63("a", reduce(function (_0, _1)
     return(_0 + _1)
   end, {"a"})) then
@@ -4383,7 +4383,7 @@ add(tests, {"reduce", function (_0, _1)
     return(passed)
   end
 end})
-add(tests, {"keep", function (_)
+add(tests, {"keep", function ()
   if not equal63({}, keep(function (_)
     return(_)
   end, {})) then
@@ -4461,7 +4461,7 @@ add(tests, {"in?", function ()
     return(passed)
   end
 end})
-add(tests, {"find", function (_)
+add(tests, {"find", function ()
   if not equal63(nil, find(function (_)
     return(_)
   end, {})) then
@@ -4548,7 +4548,7 @@ add(tests, {"find", function (_)
     return(passed)
   end
 end})
-add(tests, {"first", function (_)
+add(tests, {"first", function ()
   if not equal63(nil, first(function (_)
     return(_)
   end, {})) then
@@ -4743,7 +4743,7 @@ add(tests, {"type", function ()
     return(passed)
   end
 end})
-add(tests, {"apply", function (_0, _1)
+add(tests, {"apply", function ()
   if not equal63(4, apply(function (_0, _1)
     return(_0 + _1)
   end, {2, 2})) then

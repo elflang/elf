@@ -426,10 +426,12 @@
     (let y (f x)
       (if y (return y)))))
 
-(def find (f t)
+(def ontree (f t :skip)
   (each x t
-    (let y (f x)
-      (if y (return y)))))
+    (unless (and skip (skip x))
+      (let y (if (atom? x) (f x)
+               (ontree f x skip: skip))
+        (if y (return y))))))
 
 (def first (f l)
   (step x l
@@ -460,12 +462,6 @@
         (let y (f v)
           (unless (nil? y)
             (= (get t k) y)))))))
-
-(def contains? (f x)
-  (if (atom? x) (f x)
-    (each (k v) x
-      (let-when a (contains? f v)
-        (return a)))))
 
 (def keep (f x)
   (map [when (f _) _] x))

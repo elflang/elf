@@ -107,12 +107,11 @@
         (list args1 `(let ,(list args (rest)) ,@body))
       (let bs ()
         (let-unique (r)
-          (each (k v) args
-            (when (number? k)
-              (if (atom? v) (add args1 v)
-                (let-unique (x)
-                  (add args1 x)
-                  (join! bs (list v x))))))
+          (step v args
+            (if (atom? v) (add args1 v)
+              (let-unique (x)
+                (add args1 x)
+                (join! bs (list v x)))))
           (when (keys? args)
             (join! bs (list r (rest)))
             (join! bs (list (keys args) r))))

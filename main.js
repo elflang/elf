@@ -64,7 +64,7 @@ elf_usage = function () {
   return(system.exit());
 };
 elf_main = function () {
-  var arg = hd(system.argv);
+  var arg = system.argv[0];
   if (arg === "-h" || arg === "--help") {
     elf_usage();
   }

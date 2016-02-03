@@ -1,6 +1,6 @@
 var reader = require("reader");
 getenv = function (k, p) {
-  if (string63(k)) {
+  if (type(k) === "string") {
     var i = (environment.length || 0) - 1;
     while (i >= 0) {
       var b = environment[i][k];
@@ -29,7 +29,7 @@ var special63 = function (k) {
   return(!( typeof(x) === "undefined" || x === null));
 };
 var special_form63 = function (form) {
-  return(! atom63(form) && special63(hd(form)));
+  return(! !( type(form) === "object") && special63(form[0]));
 };
 var statement63 = function (k) {
   return(special63(k) && getenv(k, "stmt"));
@@ -45,7 +45,7 @@ var variable63 = function (k) {
   var b = first(function (_) {
     return(_[k]);
   }, reverse(environment));
-  var _id30 = ! atom63(b);
+  var _id30 = ! !( type(b) === "object");
   var _e10;
   if (_id30) {
     var x = b.variable;
@@ -59,10 +59,10 @@ bound63 = function (x) {
   return(macro63(x) || special63(x) || symbol63(x) || variable63(x));
 };
 quoted = function (form) {
-  if (string63(form)) {
+  if (type(form) === "string") {
     return(escape(form));
   } else {
-    if (atom63(form)) {
+    if (!( type(form) === "object")) {
       return(form);
     } else {
       return(join(["list"], map(quoted, form)));
@@ -101,7 +101,7 @@ var stash42 = function (args) {
         _e11 = k;
       }
       var _k = _e11;
-      if (! number63(_k)) {
+      if (!( type(_k) === "number")) {
         add(l, literal(_k));
         add(l, v);
       }
@@ -112,7 +112,7 @@ var stash42 = function (args) {
   }
 };
 var bias = function (k) {
-  if (number63(k) && !( target === "js")) {
+  if (type(k) === "number" && !( target === "js")) {
     if (target === "js") {
       k = k - 1;
     } else {
@@ -122,10 +122,10 @@ var bias = function (k) {
   return(k);
 };
 bind = function (lh, rh, acc) {
-  if (atom63(lh)) {
+  if (!( type(lh) === "object")) {
     return([lh, rh]);
   } else {
-    if (hd(lh) === "o") {
+    if (lh[0] === "o") {
       var _id = lh;
       var _ = _id[0];
       var _var = _id[1];
@@ -183,7 +183,7 @@ bind42 = function (args, body) {
       return(["unstash", ["list", "|...|"]]);
     }
   };
-  if (atom63(args)) {
+  if (!( type(args) === "object")) {
     return([args1, join(["let", [args, rest()]], body)]);
   } else {
     var bs = [];
@@ -199,8 +199,8 @@ bind42 = function (args, body) {
         _e15 = k;
       }
       var _k3 = _e15;
-      if (number63(_k3)) {
-        if (atom63(v)) {
+      if (type(_k3) === "number") {
+        if (!( type(v) === "object")) {
           add(args1, v);
         } else {
           var x = unique("x");
@@ -217,7 +217,7 @@ bind42 = function (args, body) {
   }
 };
 var quoting63 = function (depth) {
-  return(number63(depth));
+  return(type(depth) === "number");
 };
 var quasiquoting63 = function (depth) {
   return(quoting63(depth) && depth > 0);
@@ -226,7 +226,7 @@ var can_unquote63 = function (depth) {
   return(quoting63(depth) && depth === 1);
 };
 var quasisplice63 = function (x, depth) {
-  return(can_unquote63(depth) && ! atom63(x) && hd(x) === "unquote-splicing");
+  return(can_unquote63(depth) && ! !( type(x) === "object") && x[0] === "unquote-splicing");
 };
 var expand_local = function (_x37) {
   var _id1 = _x37;
@@ -292,10 +292,10 @@ macroexpand = function (form) {
   if (symbol63(form)) {
     return(macroexpand(symbol_expansion(form)));
   } else {
-    if (atom63(form)) {
+    if (!( type(form) === "object")) {
       return(form);
     } else {
-      var x = hd(form);
+      var x = form[0];
       if (x === "%local") {
         return(expand_local(form));
       } else {
@@ -308,8 +308,8 @@ macroexpand = function (form) {
             if (x === "%local-function") {
               return(expand_definition(form));
             } else {
-              if (string63(x) && char(x, 0) === "~") {
-                return(macroexpand(["not", join([clip(x, 1)], tl(form))]));
+              if (type(x) === "string" && char(x, 0) === "~") {
+                return(macroexpand(["not", join([clip(x, 1)], cut(form, 1))]));
               } else {
                 if (macro63(x)) {
                   return(expand_macro(form));
@@ -337,7 +337,7 @@ var quasiquote_list = function (form, depth) {
       _e18 = k;
     }
     var _k4 = _e18;
-    if (! number63(_k4)) {
+    if (!( type(_k4) === "number")) {
       var _e19;
       if (quasisplice63(v, depth)) {
         _e19 = quasiexpand(v[1]);
@@ -363,26 +363,26 @@ var quasiquote_list = function (form, depth) {
     _i6 = _i6 + 1;
   }
   var pruned = keep(function (_) {
-    return((_.length || 0) > 1 || !( hd(_) === "list") || keys63(_));
+    return((_.length || 0) > 1 || !( _[0] === "list") || keys63(_));
   }, xs);
-  if (one63(pruned)) {
-    return(hd(pruned));
+  if ((pruned.length || 0) === 1) {
+    return(pruned[0]);
   } else {
     return(join(["join"], pruned));
   }
 };
 quasiexpand = function (form, depth) {
   if (quasiquoting63(depth)) {
-    if (atom63(form)) {
+    if (!( type(form) === "object")) {
       return(["quote", form]);
     } else {
-      if (can_unquote63(depth) && hd(form) === "unquote") {
+      if (can_unquote63(depth) && form[0] === "unquote") {
         return(quasiexpand(form[1]));
       } else {
-        if (hd(form) === "unquote" || hd(form) === "unquote-splicing") {
+        if (form[0] === "unquote" || form[0] === "unquote-splicing") {
           return(quasiquote_list(form, depth - 1));
         } else {
-          if (hd(form) === "quasiquote") {
+          if (form[0] === "quasiquote") {
             return(quasiquote_list(form, depth + 1));
           } else {
             return(quasiquote_list(form, depth));
@@ -391,13 +391,13 @@ quasiexpand = function (form, depth) {
       }
     }
   } else {
-    if (atom63(form)) {
+    if (!( type(form) === "object")) {
       return(form);
     } else {
-      if (hd(form) === "quote") {
+      if (form[0] === "quote") {
         return(form);
       } else {
-        if (hd(form) === "quasiquote") {
+        if (form[0] === "quasiquote") {
           return(quasiexpand(form[1], 1));
         } else {
           return(map(function (_) {
@@ -439,7 +439,7 @@ var valid_code63 = function (n) {
   return(number_code63(n) || n > 64 && n < 91 || n > 96 && n < 123 || n === 95);
 };
 valid_id63 = function (id) {
-  if (none63(id) || reserved63(id)) {
+  if ((id.length || 0) === 0 || reserved63(id)) {
     return(false);
   } else {
     var i = 0;
@@ -524,13 +524,13 @@ _x74.js = "||";
 __x73["or"] = _x74;
 var infix = [__x62, __x64, __x65, __x66, __x68, __x69, __x71, __x73];
 var unary63 = function (form) {
-  return(two63(form) && in63(hd(form), ["not", "-"]));
+  return((form.length || 0) === 2 && in63(form[0], ["not", "-"]));
 };
 var index = function (k) {
   return(k);
 };
 var precedence = function (form) {
-  if (!( atom63(form) || unary63(form))) {
+  if (!( !( type(form) === "object") || unary63(form))) {
     var _l7 = infix;
     var k = undefined;
     for (k in _l7) {
@@ -542,7 +542,7 @@ var precedence = function (form) {
         _e21 = k;
       }
       var _k6 = _e21;
-      if (v[hd(form)]) {
+      if (v[form[0]]) {
         return(index(_k6));
       }
     }
@@ -642,10 +642,10 @@ var compile_atom = function (x) {
         if (string_literal63(x)) {
           return(escape_newlines(x));
         } else {
-          if (string63(x)) {
+          if (type(x) === "string") {
             return(id(x));
           } else {
-            if (boolean63(x)) {
+            if (type(x) === "boolean") {
               if (x) {
                 return("true");
               } else {
@@ -661,7 +661,7 @@ var compile_atom = function (x) {
                   if (x === -inf) {
                     return("-inf");
                   } else {
-                    if (number63(x)) {
+                    if (type(x) === "number") {
                       return(x + "");
                     } else {
                       throw new Error("Cannot compile atom: " + str(x));
@@ -699,12 +699,12 @@ var compile_special = function (form, stmt63) {
   return(apply(special, args) + tr);
 };
 var parenthesize_call63 = function (x) {
-  return(! atom63(x) && hd(x) === "%function" || precedence(x) > 0);
+  return(! !( type(x) === "object") && x[0] === "%function" || precedence(x) > 0);
 };
 var compile_call = function (form) {
-  var f = hd(form);
+  var f = form[0];
   var f1 = compile(f);
-  var args = compile_args(stash42(tl(form)));
+  var args = compile_args(stash42(cut(form, 1)));
   if (parenthesize_call63(f)) {
     return("(" + f1 + ")" + args);
   } else {
@@ -790,7 +790,7 @@ compile_function = function (args, body) {
   }
 };
 var can_return63 = function (form) {
-  return(!( typeof(form) === "undefined" || form === null) && (atom63(form) || !( hd(form) === "return") && ! statement63(hd(form))));
+  return(!( typeof(form) === "undefined" || form === null) && (!( type(form) === "object") || !( form[0] === "return") && ! statement63(form[0])));
 };
 compile = function (form) {
   var _r59 = unstash(Array.prototype.slice.call(arguments, 1));
@@ -811,11 +811,11 @@ compile = function (form) {
       }
       var ind = _e30;
       var _e31;
-      if (atom63(form)) {
+      if (!( type(form) === "object")) {
         _e31 = compile_atom(form);
       } else {
         var _e32;
-        if (infix63(hd(form))) {
+        if (infix63(form[0])) {
           _e32 = compile_infix(form);
         } else {
           _e32 = compile_call(form);
@@ -830,7 +830,7 @@ compile = function (form) {
 var lower_statement = function (form, tail63) {
   var hoist = [];
   var e = lower(form, hoist, true, tail63);
-  if (some63(hoist) && !( typeof(e) === "undefined" || e === null)) {
+  if ((hoist.length || 0) > 0 && !( typeof(e) === "undefined" || e === null)) {
     return(join(["do"], hoist, [e]));
   } else {
     if (!( typeof(e) === "undefined" || e === null)) {
@@ -839,7 +839,7 @@ var lower_statement = function (form, tail63) {
       if ((hoist.length || 0) > 1) {
         return(join(["do"], hoist));
       } else {
-        return(hd(hoist));
+        return(hoist[0]);
       }
     }
   }
@@ -848,10 +848,10 @@ var lower_body = function (body, tail63) {
   return(lower_statement(join(["do"], body), tail63));
 };
 var literal63 = function (form) {
-  return(atom63(form) || hd(form) === "%array" || hd(form) === "%object");
+  return(!( type(form) === "object") || form[0] === "%array" || form[0] === "%object");
 };
 var standalone63 = function (form) {
-  return(! atom63(form) && ! infix63(hd(form)) && ! literal63(form) && !( "get" === hd(form)));
+  return(! !( type(form) === "object") && ! infix63(form[0]) && ! literal63(form) && !( "get" === form[0]));
 };
 var lower_do = function (args, hoist, stmt63, tail63) {
   var _x85 = almost(args);
@@ -909,7 +909,7 @@ var lower_short = function (x, args, hoist) {
   var b = _id18[1];
   var hoist1 = [];
   var b1 = lower(b, hoist1);
-  if (some63(hoist1)) {
+  if ((hoist1.length || 0) > 0) {
     var _id19 = unique("id");
     var _e35;
     if (x === "and") {
@@ -955,12 +955,12 @@ var lower_call = function (form, hoist) {
   var _form1 = map(function (_) {
     return(lower(_, hoist));
   }, form);
-  if (some63(_form1)) {
+  if ((_form1.length || 0) > 0) {
     return(_form1);
   }
 };
 var lower_infix63 = function (form) {
-  return(infix63(hd(form)) && (form.length || 0) > 3);
+  return(infix63(form[0]) && (form.length || 0) > 3);
 };
 var lower_infix = function (form, hoist) {
   var _id24 = form;
@@ -977,7 +977,7 @@ var lower_special = function (form, hoist) {
   }
 };
 lower = function (form, hoist, stmt63, tail63) {
-  if (atom63(form)) {
+  if (!( type(form) === "object")) {
     return(form);
   } else {
     if (empty63(form)) {
@@ -1262,7 +1262,7 @@ setenv("%array", {_stash: true, special: function () {
       _e44 = k;
     }
     var _k7 = _e44;
-    if (number63(_k7)) {
+    if (type(_k7) === "number") {
       s = s + c + compile(v);
       c = ", ";
     }
@@ -1291,11 +1291,11 @@ setenv("%object", {_stash: true, special: function () {
       _e46 = k;
     }
     var _k9 = _e46;
-    if (number63(_k9)) {
+    if (type(_k9) === "number") {
       var _id29 = v;
       var _k10 = _id29[0];
       var _v2 = _id29[1];
-      if (! string63(_k10)) {
+      if (!( type(_k10) === "string")) {
         throw new Error("Illegal key: " + str(_k10));
       }
       s = s + c + key(_k10) + sep + compile(_v2);

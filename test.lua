@@ -8,7 +8,7 @@ setenv("test", {_stash = true, macro = function (x, msg)
   return({"if", {"not", x}, {"do", {"=", "failed", {"+", "failed", 1}}, {"return", msg}}, {"inc", "passed"}})
 end})
 local function equal63(a, b)
-  if atom63(a) then
+  if not( type(a) == "table") then
     return(a == b)
   else
     return(str(a) == str(b))
@@ -31,7 +31,7 @@ function run_tests()
     local name = _id2[1]
     local f = _id2[2]
     local result = f()
-    if string63(result) then
+    if type(result) == "string" then
       print(" " .. name .. " " .. result)
     end
   end
@@ -1014,11 +1014,11 @@ add(tests, {"list", function ()
   end
   local _x133 = {}
   _x133.foo = true
-  if not equal63(true, hd({_x133}).foo) then
+  if not equal63(true, ({_x133})[1].foo) then
     failed = failed + 1
     local _x135 = {}
     _x135.foo = true
-    return("failed: expected " .. str(true) .. ", was " .. str(hd({_x135}).foo))
+    return("failed: expected " .. str(true) .. ", was " .. str(({_x135})[1].foo))
   else
     passed = passed + 1
   end
@@ -1295,21 +1295,21 @@ add(tests, {"quasiquote", function ()
   end
   local _x337 = {}
   _x337.foo = true
-  if not equal63(true, hd({_x337}).foo) then
+  if not equal63(true, ({_x337})[1].foo) then
     failed = failed + 1
     local _x339 = {}
     _x339.foo = true
-    return("failed: expected " .. str(true) .. ", was " .. str(hd({_x339}).foo))
+    return("failed: expected " .. str(true) .. ", was " .. str(({_x339})[1].foo))
   else
     passed = passed + 1
   end
   local _x341 = {}
   _x341.foo = true
-  if not equal63(true, hd({_x341}).foo) then
+  if not equal63(true, ({_x341})[1].foo) then
     failed = failed + 1
     local _x343 = {}
     _x343.foo = true
-    return("failed: expected " .. str(true) .. ", was " .. str(hd({_x343}).foo))
+    return("failed: expected " .. str(true) .. ", was " .. str(({_x343})[1].foo))
   else
     passed = passed + 1
   end
@@ -2371,7 +2371,7 @@ add(tests, {"each", function ()
   local k = nil
   for k in next, _l3 do
     local v = _l3[k]
-    if number63(k) then
+    if type(k) == "number" then
       a = a + 1
     else
       b = b + 1
@@ -2409,9 +2409,9 @@ add(tests, {"each", function ()
   local _i3 = nil
   for _i3 in next, _l5 do
     local x = _l5[_i3]
-    if not equal63(false, atom63(x)) then
+    if not equal63(false, not( type(x) == "table")) then
       failed = failed + 1
-      return("failed: expected " .. str(false) .. ", was " .. str(atom63(x)))
+      return("failed: expected " .. str(false) .. ", was " .. str(not( type(x) == "table")))
     else
       passed = passed + 1
     end
@@ -2420,9 +2420,9 @@ add(tests, {"each", function ()
   local _i4 = nil
   for _i4 in next, _l6 do
     local x = _l6[_i4]
-    if not equal63(false, atom63(x)) then
+    if not equal63(false, not( type(x) == "table")) then
       failed = failed + 1
-      return("failed: expected " .. str(false) .. ", was " .. str(atom63(x)))
+      return("failed: expected " .. str(false) .. ", was " .. str(not( type(x) == "table")))
     else
       passed = passed + 1
     end
@@ -2432,9 +2432,9 @@ add(tests, {"each", function ()
   for _i5 in next, _l7 do
     local _id4 = _l7[_i5]
     local x = _id4[1]
-    if not equal63(true, number63(x)) then
+    if not equal63(true, type(x) == "number") then
       failed = failed + 1
-      return("failed: expected " .. str(true) .. ", was " .. str(number63(x)))
+      return("failed: expected " .. str(true) .. ", was " .. str(type(x) == "number"))
     else
       passed = passed + 1
     end
@@ -4608,137 +4608,137 @@ add(tests, {"sort", function ()
   end
 end})
 add(tests, {"type", function ()
-  if not equal63(true, string63("abc")) then
+  if not equal63(true, type("abc") == "string") then
     failed = failed + 1
-    return("failed: expected " .. str(true) .. ", was " .. str(string63("abc")))
+    return("failed: expected " .. str(true) .. ", was " .. str(type("abc") == "string"))
   else
     passed = passed + 1
   end
-  if not equal63(false, string63(17)) then
+  if not equal63(false, type(17) == "string") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(string63(17)))
+    return("failed: expected " .. str(false) .. ", was " .. str(type(17) == "string"))
   else
     passed = passed + 1
   end
-  if not equal63(false, string63({"a"})) then
+  if not equal63(false, type({"a"}) == "string") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(string63({"a"})))
+    return("failed: expected " .. str(false) .. ", was " .. str(type({"a"}) == "string"))
   else
     passed = passed + 1
   end
-  if not equal63(false, string63(true)) then
+  if not equal63(false, type(true) == "string") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(string63(true)))
+    return("failed: expected " .. str(false) .. ", was " .. str(type(true) == "string"))
   else
     passed = passed + 1
   end
-  if not equal63(false, string63({})) then
+  if not equal63(false, type({}) == "string") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(string63({})))
+    return("failed: expected " .. str(false) .. ", was " .. str(type({}) == "string"))
   else
     passed = passed + 1
   end
-  if not equal63(false, number63("abc")) then
+  if not equal63(false, type("abc") == "number") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(number63("abc")))
+    return("failed: expected " .. str(false) .. ", was " .. str(type("abc") == "number"))
   else
     passed = passed + 1
   end
-  if not equal63(true, number63(17)) then
+  if not equal63(true, type(17) == "number") then
     failed = failed + 1
-    return("failed: expected " .. str(true) .. ", was " .. str(number63(17)))
+    return("failed: expected " .. str(true) .. ", was " .. str(type(17) == "number"))
   else
     passed = passed + 1
   end
-  if not equal63(false, number63({"a"})) then
+  if not equal63(false, type({"a"}) == "number") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(number63({"a"})))
+    return("failed: expected " .. str(false) .. ", was " .. str(type({"a"}) == "number"))
   else
     passed = passed + 1
   end
-  if not equal63(false, number63(true)) then
+  if not equal63(false, type(true) == "number") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(number63(true)))
+    return("failed: expected " .. str(false) .. ", was " .. str(type(true) == "number"))
   else
     passed = passed + 1
   end
-  if not equal63(false, number63({})) then
+  if not equal63(false, type({}) == "number") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(number63({})))
+    return("failed: expected " .. str(false) .. ", was " .. str(type({}) == "number"))
   else
     passed = passed + 1
   end
-  if not equal63(false, boolean63("abc")) then
+  if not equal63(false, type("abc") == "boolean") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(boolean63("abc")))
+    return("failed: expected " .. str(false) .. ", was " .. str(type("abc") == "boolean"))
   else
     passed = passed + 1
   end
-  if not equal63(false, boolean63(17)) then
+  if not equal63(false, type(17) == "boolean") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(boolean63(17)))
+    return("failed: expected " .. str(false) .. ", was " .. str(type(17) == "boolean"))
   else
     passed = passed + 1
   end
-  if not equal63(false, boolean63({"a"})) then
+  if not equal63(false, type({"a"}) == "boolean") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(boolean63({"a"})))
+    return("failed: expected " .. str(false) .. ", was " .. str(type({"a"}) == "boolean"))
   else
     passed = passed + 1
   end
-  if not equal63(true, boolean63(true)) then
+  if not equal63(true, type(true) == "boolean") then
     failed = failed + 1
-    return("failed: expected " .. str(true) .. ", was " .. str(boolean63(true)))
+    return("failed: expected " .. str(true) .. ", was " .. str(type(true) == "boolean"))
   else
     passed = passed + 1
   end
-  if not equal63(false, boolean63({})) then
+  if not equal63(false, type({}) == "boolean") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(boolean63({})))
+    return("failed: expected " .. str(false) .. ", was " .. str(type({}) == "boolean"))
   else
     passed = passed + 1
   end
-  if not equal63(true, atom63(nil)) then
+  if not equal63(true, not( type(nil) == "table")) then
     failed = failed + 1
-    return("failed: expected " .. str(true) .. ", was " .. str(atom63(nil)))
+    return("failed: expected " .. str(true) .. ", was " .. str(not( type(nil) == "table")))
   else
     passed = passed + 1
   end
-  if not equal63(true, atom63("abc")) then
+  if not equal63(true, not( type("abc") == "table")) then
     failed = failed + 1
-    return("failed: expected " .. str(true) .. ", was " .. str(atom63("abc")))
+    return("failed: expected " .. str(true) .. ", was " .. str(not( type("abc") == "table")))
   else
     passed = passed + 1
   end
-  if not equal63(true, atom63(42)) then
+  if not equal63(true, not( type(42) == "table")) then
     failed = failed + 1
-    return("failed: expected " .. str(true) .. ", was " .. str(atom63(42)))
+    return("failed: expected " .. str(true) .. ", was " .. str(not( type(42) == "table")))
   else
     passed = passed + 1
   end
-  if not equal63(true, atom63(true)) then
+  if not equal63(true, not( type(true) == "table")) then
     failed = failed + 1
-    return("failed: expected " .. str(true) .. ", was " .. str(atom63(true)))
+    return("failed: expected " .. str(true) .. ", was " .. str(not( type(true) == "table")))
   else
     passed = passed + 1
   end
-  if not equal63(true, atom63(function ()
-  end)) then
+  if not equal63(true, not( type(function ()
+  end) == "table")) then
     failed = failed + 1
-    return("failed: expected " .. str(true) .. ", was " .. str(atom63(function ()
-    end)))
+    return("failed: expected " .. str(true) .. ", was " .. str(not( type(function ()
+    end) == "table")))
   else
     passed = passed + 1
   end
-  if not equal63(false, atom63({1})) then
+  if not equal63(false, not( type({1}) == "table")) then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(atom63({1})))
+    return("failed: expected " .. str(false) .. ", was " .. str(not( type({1}) == "table")))
   else
     passed = passed + 1
   end
-  if not equal63(false, atom63({})) then
+  if not equal63(false, not( type({}) == "table")) then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(atom63({})))
+    return("failed: expected " .. str(false) .. ", was " .. str(not( type({}) == "table")))
   else
     passed = passed + 1
     return(passed)

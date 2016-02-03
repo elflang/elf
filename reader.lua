@@ -81,10 +81,10 @@ local function read_string(str, more)
   end
 end
 local function key63(atom)
-  return(string63(atom) and #(atom) > 1 and char(atom, edge(atom)) == ":")
+  return(type(atom) == "string" and #(atom) > 1 and char(atom, edge(atom)) == ":")
 end
 local function flag63(atom)
-  return(string63(atom) and #(atom) > 1 and char(atom, 0) == ":")
+  return(type(atom) == "string" and #(atom) > 1 and char(atom, 0) == ":")
 end
 local function expected(s, c)
   local _id5 = s
@@ -114,7 +114,7 @@ local function maybe_number(str)
   end
 end
 local function real63(x)
-  return(number63(x) and not nan63(x) and not inf63(x))
+  return(type(x) == "number" and not nan63(x) and not inf63(x))
 end
 local function valid_access63(str)
   return(#(str) > 2 and not( "." == char(str, 0)) and not( "." == char(str, edge(str))) and not search(str, ".."))
@@ -247,7 +247,7 @@ setenv("%fn", {_stash = true, macro = function (body)
   local l = {}
   local any63 = nil
   treewise(cons, function (_)
-    if string63(_) and #(_) <= 2 and code(_, 0) == 95 then
+    if type(_) == "string" and #(_) <= 2 and code(_, 0) == 95 then
       any63 = true
       local c = code(_, 1)
       if c and c >= 48 and c <= 57 then
@@ -262,7 +262,7 @@ setenv("%fn", {_stash = true, macro = function (body)
       add(l, "_" .. chr(48 + i))
       i = i + 1
     end
-    if none63(l) then
+    if #(l) == 0 then
       add(l, "_")
     end
   end

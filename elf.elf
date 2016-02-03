@@ -295,6 +295,22 @@
        lua: (%len ,x)
        js: (or (get ,x 'length) 0)))
 
+  (mac none? (x) `(is (# ,x) 0))
+  (mac some? (x) `(> (# ,x) 0))
+  (mac one? (x) `(is (# ,x) 1))
+  (mac two? (x) `(is (# ,x) 2))
+
+  (mac hd (l) `(at ,l 0))
+  (mac tl (l) `(cut ,l 1))
+
+  (%js (mac type (x) `(typeof ,x)))
+  (mac string? (x) `(is (type ,x) 'string))
+  (mac number? (x) `(is (type ,x) 'number))
+  (mac boolean? (x) `(is (type ,x) 'boolean))
+  (mac function? (x) `(is (type ,x) 'function))
+  (mac table? (x) `(is (type ,x) (target js: 'object lua: 'table)))
+  (mac atom? (x) `(~table? ,x))
+
   nil
 
   ;; Since we're within a wrapper function, the above definitions were
@@ -308,27 +324,6 @@
 (once
   (def environment (list (obj)))
   (def target (language)))
-
-(def none? (x) (is (# x) 0))
-(def some? (x) (> (# x) 0))
-(def one? (x) (is (# x) 1))
-(def two? (x) (is (# x) 2))
-
-(def hd (l) (at l 0))
-(def tl (l) (cut l 1))
-
-(%js (def type (x) (typeof x)))
-
-(def string? (x) (is (type x) 'string))
-(def number? (x) (is (type x) 'number))
-(def boolean? (x) (is (type x) 'boolean))
-(def function? (x) (is (type x) 'function))
-
-(def table? (x)
-  (is (type x) (target js: 'object lua: 'table)))
-
-(def atom? (x)
-  (~table? x))
 
 (def nan (/ 0 0))
 (def inf (/ 1 0))

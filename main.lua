@@ -78,7 +78,7 @@ function elf_usage()
   return(system.exit())
 end
 function elf_main()
-  local arg = hd(system.argv)
+  local arg = system.argv[1]
   if arg == "-h" or arg == "--help" then
     elf_usage()
   end

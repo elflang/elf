@@ -909,7 +909,7 @@ unstash = function (args) {
     return([]);
   } else {
     var l = last(args);
-    if (! atom63(l) && ! function63(l) && l._stash) {
+    if (! atom63(l) && l._stash) {
       var args1 = almost(args);
       var _l15 = l;
       var k = undefined;

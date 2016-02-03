@@ -815,7 +815,7 @@ function unstash(args)
     return({})
   else
     local l = last(args)
-    if not atom63(l) and not function63(l) and l._stash then
+    if not atom63(l) and l._stash then
       local args1 = almost(args)
       local _l15 = l
       local k = nil

@@ -494,7 +494,7 @@
 (def unstash (args)
   (if (none? args) ()
     (let l (last args)
-      (if (and (~atom? l) (~function? l) l._stash)
+      (if (and (~atom? l) l._stash)
           (with args1 (almost args)
             (each (k v) l
               (unless (is k '_stash)

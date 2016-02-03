@@ -6,7 +6,7 @@ var setup = function () {
     return(quasiexpand(form, 1));
   }});
   setenv("at", {_stash: true, macro: function (l, i) {
-    if (target === "lua" && type(i) === "number") {
+    if (target === "lua" && typeof(i) === "number") {
       i = i + 1;
     } else {
       if (target === "lua") {
@@ -38,7 +38,7 @@ var setup = function () {
         _e14 = k;
       }
       var _k = _e14;
-      if (type(_k) === "number") {
+      if (typeof(_k) === "number") {
         l[_k] = v;
       } else {
         add(forms, ["assign", ["get", x, ["quote", _k]], v]);
@@ -95,7 +95,7 @@ var setup = function () {
   setenv("let", {_stash: true, macro: function (bs) {
     var _r24 = unstash(Array.prototype.slice.call(arguments, 1));
     var body = cut(_r24, 0);
-    if (!( type(bs) === "object")) {
+    if (!( typeof(bs) === "object")) {
       return(join(["let", [bs, body[0]]], cut(body, 1)));
     } else {
       if ((bs.length || 0) === 0) {
@@ -132,7 +132,7 @@ var setup = function () {
         if (2 === _e7) {
           var lh = l[0];
           var rh = l[1];
-          var _id61 = !( type(lh) === "object");
+          var _id61 = !( typeof(lh) === "object");
           var _e17;
           if (_id61) {
             _e17 = _id61;
@@ -294,7 +294,7 @@ var setup = function () {
     var n = unique("n");
     var i = unique("i");
     var _e20;
-    if (!( type(x) === "object")) {
+    if (!( typeof(x) === "object")) {
       _e20 = [i, x];
     } else {
       var _e21;
@@ -322,7 +322,7 @@ var setup = function () {
     var from = 0;
     var to = 0;
     var increment = 1;
-    if (!( type(i) === "object")) {
+    if (!( typeof(i) === "object")) {
       to = body[0];
       body = cut(body, 1);
     } else {
@@ -340,7 +340,7 @@ var setup = function () {
       }
       increment = _e23;
     }
-    if (!( type(increment) === "number")) {
+    if (!( typeof(increment) === "number")) {
       throw new Error("assert: (\"number?\" \"increment\")");
     }
     if (increment > 0) {
@@ -474,7 +474,7 @@ var setup = function () {
     var _x414 = ["target"];
     _x414.lua = ["is", x, "nil"];
     var _e26;
-    if (!( type(x) === "object")) {
+    if (!( typeof(x) === "object")) {
       _e26 = ["let", join(), ["or", ["is", ["typeof", x], "\"undefined\""], ["is", x, "null"]]];
     } else {
       _e26 = ["let", ["x", x], ["nil?", "x"]];
@@ -510,7 +510,7 @@ var setup = function () {
     return(["cut", l, 1]);
   }});
   setenv("type", {_stash: true, macro: function (x) {
-    return(["typeof", x]);
+    return(["do", ["%lua", [["do", "type"], x]], ["%js", ["typeof", x]]]);
   }});
   setenv("string?", {_stash: true, macro: function (x) {
     return(["is", ["type", x], ["quote", "string"]]);
@@ -525,18 +525,18 @@ var setup = function () {
     return(["is", ["type", x], ["quote", "function"]]);
   }});
   setenv("table?", {_stash: true, macro: function (x) {
-    var _x487 = ["target"];
-    _x487.lua = ["quote", "table"];
-    _x487.js = ["quote", "object"];
-    return(["is", ["type", x], _x487]);
+    var _x497 = ["target"];
+    _x497.lua = ["quote", "table"];
+    _x497.js = ["quote", "object"];
+    return(["is", ["type", x], _x497]);
   }});
   setenv("atom?", {_stash: true, macro: function (x) {
     return(["~table?", x]);
   }});
   return(undefined);
 };
-if (typeof(_x492) === "undefined") {
-  _x492 = true;
+if (typeof(_x502) === "undefined") {
+  _x502 = true;
   environment = [{}];
   target = "js";
 }
@@ -551,19 +551,19 @@ inf63 = function (n) {
 clip = function (s, from, upto) {
   return(s.substring(from, upto));
 };
-cut = function (x, _x494, _x495) {
+cut = function (x, _x504, _x505) {
   var _e27;
-  if (typeof(_x494) === "undefined" || _x494 === null) {
+  if (typeof(_x504) === "undefined" || _x504 === null) {
     _e27 = 0;
   } else {
-    _e27 = _x494;
+    _e27 = _x504;
   }
   var from = _e27;
   var _e28;
-  if (typeof(_x495) === "undefined" || _x495 === null) {
+  if (typeof(_x505) === "undefined" || _x505 === null) {
     _e28 = x.length || 0;
   } else {
-    _e28 = _x495;
+    _e28 = _x505;
   }
   var upto = _e28;
   var l = [];
@@ -747,11 +747,11 @@ find = function (f, t) {
   }
 };
 first = function (f, l) {
-  var _x496 = l;
-  var _n12 = _x496.length || 0;
+  var _x506 = l;
+  var _n12 = _x506.length || 0;
   var _i12 = 0;
   while (_i12 < _n12) {
-    var x = _x496[_i12];
+    var x = _x506[_i12];
     var y = f(x);
     if (y) {
       return(y);
@@ -789,11 +789,11 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var t = [];
-  var _x498 = x;
-  var _n13 = _x498.length || 0;
+  var _x508 = x;
+  var _n13 = _x508.length || 0;
   var _i13 = 0;
   while (_i13 < _n13) {
-    var v = _x498[_i13];
+    var v = _x508[_i13];
     var y = f(v);
     if (!( typeof(y) === "undefined" || y === null)) {
       add(t, y);

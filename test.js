@@ -8,7 +8,7 @@ setenv("test", {_stash: true, macro: function (x, msg) {
   return(["if", ["not", x], ["do", ["=", "failed", ["+", "failed", 1]], ["return", msg]], ["inc", "passed"]]);
 }});
 var equal63 = function (a, b) {
-  if (!( type(a) === "object")) {
+  if (!( typeof(a) === "object")) {
     return(a === b);
   } else {
     return(str(a) === str(b));
@@ -37,7 +37,7 @@ run_tests = function () {
     }
     var __i = _e6;
     var result = f();
-    if (type(result) === "string") {
+    if (typeof(result) === "string") {
       print(" " + name + " " + result);
     }
   }
@@ -2375,7 +2375,7 @@ add(tests, ["each", function () {
       _e49 = k;
     }
     var _k = _e49;
-    if (type(_k) === "number") {
+    if (typeof(_k) === "number") {
       a = a + 1;
     } else {
       b = b + 1;
@@ -2427,9 +2427,9 @@ add(tests, ["each", function () {
       _e51 = _i3;
     }
     var __i3 = _e51;
-    if (! equal63(false, !( type(x) === "object"))) {
+    if (! equal63(false, !( typeof(x) === "object"))) {
       failed = failed + 1;
-      return("failed: expected " + str(false) + ", was " + str(!( type(x) === "object")));
+      return("failed: expected " + str(false) + ", was " + str(!( typeof(x) === "object")));
     } else {
       passed = passed + 1;
     }
@@ -2445,9 +2445,9 @@ add(tests, ["each", function () {
       _e52 = _i4;
     }
     var __i4 = _e52;
-    if (! equal63(false, !( type(x) === "object"))) {
+    if (! equal63(false, !( typeof(x) === "object"))) {
       failed = failed + 1;
-      return("failed: expected " + str(false) + ", was " + str(!( type(x) === "object")));
+      return("failed: expected " + str(false) + ", was " + str(!( typeof(x) === "object")));
     } else {
       passed = passed + 1;
     }
@@ -2464,9 +2464,9 @@ add(tests, ["each", function () {
       _e53 = _i5;
     }
     var __i5 = _e53;
-    if (! equal63(true, type(x) === "number")) {
+    if (! equal63(true, typeof(x) === "number")) {
       failed = failed + 1;
-      return("failed: expected " + str(true) + ", was " + str(type(x) === "number"));
+      return("failed: expected " + str(true) + ", was " + str(typeof(x) === "number"));
     } else {
       passed = passed + 1;
     }
@@ -4510,137 +4510,137 @@ add(tests, ["sort", function () {
   }
 }]);
 add(tests, ["type", function () {
-  if (! equal63(true, type("abc") === "string")) {
+  if (! equal63(true, typeof("abc") === "string")) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(type("abc") === "string"));
+    return("failed: expected " + str(true) + ", was " + str(typeof("abc") === "string"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, type(17) === "string")) {
+  if (! equal63(false, typeof(17) === "string")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(type(17) === "string"));
+    return("failed: expected " + str(false) + ", was " + str(typeof(17) === "string"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, type(["a"]) === "string")) {
+  if (! equal63(false, typeof(["a"]) === "string")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(type(["a"]) === "string"));
+    return("failed: expected " + str(false) + ", was " + str(typeof(["a"]) === "string"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, type(true) === "string")) {
+  if (! equal63(false, typeof(true) === "string")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(type(true) === "string"));
+    return("failed: expected " + str(false) + ", was " + str(typeof(true) === "string"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, type({}) === "string")) {
+  if (! equal63(false, typeof({}) === "string")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(type({}) === "string"));
+    return("failed: expected " + str(false) + ", was " + str(typeof({}) === "string"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, type("abc") === "number")) {
+  if (! equal63(false, typeof("abc") === "number")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(type("abc") === "number"));
+    return("failed: expected " + str(false) + ", was " + str(typeof("abc") === "number"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(true, type(17) === "number")) {
+  if (! equal63(true, typeof(17) === "number")) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(type(17) === "number"));
+    return("failed: expected " + str(true) + ", was " + str(typeof(17) === "number"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, type(["a"]) === "number")) {
+  if (! equal63(false, typeof(["a"]) === "number")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(type(["a"]) === "number"));
+    return("failed: expected " + str(false) + ", was " + str(typeof(["a"]) === "number"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, type(true) === "number")) {
+  if (! equal63(false, typeof(true) === "number")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(type(true) === "number"));
+    return("failed: expected " + str(false) + ", was " + str(typeof(true) === "number"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, type({}) === "number")) {
+  if (! equal63(false, typeof({}) === "number")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(type({}) === "number"));
+    return("failed: expected " + str(false) + ", was " + str(typeof({}) === "number"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, type("abc") === "boolean")) {
+  if (! equal63(false, typeof("abc") === "boolean")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(type("abc") === "boolean"));
+    return("failed: expected " + str(false) + ", was " + str(typeof("abc") === "boolean"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, type(17) === "boolean")) {
+  if (! equal63(false, typeof(17) === "boolean")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(type(17) === "boolean"));
+    return("failed: expected " + str(false) + ", was " + str(typeof(17) === "boolean"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, type(["a"]) === "boolean")) {
+  if (! equal63(false, typeof(["a"]) === "boolean")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(type(["a"]) === "boolean"));
+    return("failed: expected " + str(false) + ", was " + str(typeof(["a"]) === "boolean"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(true, type(true) === "boolean")) {
+  if (! equal63(true, typeof(true) === "boolean")) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(type(true) === "boolean"));
+    return("failed: expected " + str(true) + ", was " + str(typeof(true) === "boolean"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, type({}) === "boolean")) {
+  if (! equal63(false, typeof({}) === "boolean")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(type({}) === "boolean"));
+    return("failed: expected " + str(false) + ", was " + str(typeof({}) === "boolean"));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(true, !( type(undefined) === "object"))) {
+  if (! equal63(true, !( typeof(undefined) === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(!( type(undefined) === "object")));
+    return("failed: expected " + str(true) + ", was " + str(!( typeof(undefined) === "object")));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(true, !( type("abc") === "object"))) {
+  if (! equal63(true, !( typeof("abc") === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(!( type("abc") === "object")));
+    return("failed: expected " + str(true) + ", was " + str(!( typeof("abc") === "object")));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(true, !( type(42) === "object"))) {
+  if (! equal63(true, !( typeof(42) === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(!( type(42) === "object")));
+    return("failed: expected " + str(true) + ", was " + str(!( typeof(42) === "object")));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(true, !( type(true) === "object"))) {
+  if (! equal63(true, !( typeof(true) === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(!( type(true) === "object")));
+    return("failed: expected " + str(true) + ", was " + str(!( typeof(true) === "object")));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(true, !( type(function () {
+  if (! equal63(true, !( typeof(function () {
   }) === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(!( type(function () {
+    return("failed: expected " + str(true) + ", was " + str(!( typeof(function () {
     }) === "object")));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, !( type([1]) === "object"))) {
+  if (! equal63(false, !( typeof([1]) === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(!( type([1]) === "object")));
+    return("failed: expected " + str(false) + ", was " + str(!( typeof([1]) === "object")));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, !( type({}) === "object"))) {
+  if (! equal63(false, !( typeof({}) === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(!( type({}) === "object")));
+    return("failed: expected " + str(false) + ", was " + str(!( typeof({}) === "object")));
   } else {
     passed = passed + 1;
     return(passed);

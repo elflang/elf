@@ -487,6 +487,9 @@ local function setup()
   setenv("tl", {_stash = true, macro = function (l)
     return({"cut", l, 1})
   end})
+  setenv("type", {_stash = true, macro = function (x)
+    return({"do", {"%lua", {{"do", "type"}, x}}, {"%js", {"typeof", x}}})
+  end})
   setenv("string?", {_stash = true, macro = function (x)
     return({"is", {"type", x}, {"quote", "string"}})
   end})
@@ -500,18 +503,18 @@ local function setup()
     return({"is", {"type", x}, {"quote", "function"}})
   end})
   setenv("table?", {_stash = true, macro = function (x)
-    local _x519 = {"target"}
-    _x519.lua = {"quote", "table"}
-    _x519.js = {"quote", "object"}
-    return({"is", {"type", x}, _x519})
+    local _x531 = {"target"}
+    _x531.lua = {"quote", "table"}
+    _x531.js = {"quote", "object"}
+    return({"is", {"type", x}, _x531})
   end})
   setenv("atom?", {_stash = true, macro = function (x)
     return({"~table?", x})
   end})
   return(nil)
 end
-if _x524 == nil then
-  _x524 = true
+if _x536 == nil then
+  _x536 = true
   environment = {{}}
   target = "lua"
 end
@@ -526,19 +529,19 @@ end
 function clip(s, from, upto)
   return(string.sub(s, from + 1, upto))
 end
-function cut(x, _x526, _x527)
+function cut(x, _x538, _x539)
   local _e24
-  if _x526 == nil then
+  if _x538 == nil then
     _e24 = 0
   else
-    _e24 = _x526
+    _e24 = _x538
   end
   local from = _e24
   local _e25
-  if _x527 == nil then
+  if _x539 == nil then
     _e25 = #(x)
   else
-    _e25 = _x527
+    _e25 = _x539
   end
   local upto = _e25
   local l = {}
@@ -683,11 +686,11 @@ function find(f, t)
   end
 end
 function first(f, l)
-  local _x529 = l
-  local _n12 = #(_x529)
+  local _x541 = l
+  local _n12 = #(_x541)
   local _i12 = 0
   while _i12 < _n12 do
-    local x = _x529[_i12 + 1]
+    local x = _x541[_i12 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -716,11 +719,11 @@ function sort(l, f)
 end
 function map(f, x)
   local t = {}
-  local _x531 = x
-  local _n13 = #(_x531)
+  local _x543 = x
+  local _n13 = #(_x543)
   local _i13 = 0
   while _i13 < _n13 do
-    local v = _x531[_i13 + 1]
+    local v = _x543[_i13 + 1]
     local y = f(v)
     if not( y == nil) then
       add(t, y)
@@ -1023,8 +1026,8 @@ function toplevel63()
   return(#(environment) == 1)
 end
 function setenv(k, ...)
-  local _r175 = unstash({...})
-  local _keys = cut(_r175, 0)
+  local _r177 = unstash({...})
+  local _keys = cut(_r177, 0)
   if type(k) == "string" then
     local _e31
     if _keys.toplevel then

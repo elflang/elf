@@ -78,10 +78,10 @@ var read_string = function (str, more) {
   }
 };
 var key63 = function (atom) {
-  return(type(atom) === "string" && (atom.length || 0) > 1 && char(atom, edge(atom)) === ":");
+  return(typeof(atom) === "string" && (atom.length || 0) > 1 && char(atom, edge(atom)) === ":");
 };
 var flag63 = function (atom) {
-  return(type(atom) === "string" && (atom.length || 0) > 1 && char(atom, 0) === ":");
+  return(typeof(atom) === "string" && (atom.length || 0) > 1 && char(atom, 0) === ":");
 };
 var expected = function (s, c) {
   var more = s.more;
@@ -110,7 +110,7 @@ var maybe_number = function (str) {
   }
 };
 var real63 = function (x) {
-  return(type(x) === "number" && ! nan63(x) && ! inf63(x));
+  return(typeof(x) === "number" && ! nan63(x) && ! inf63(x));
 };
 var valid_access63 = function (str) {
   return((str.length || 0) > 2 && !( "." === char(str, 0)) && !( "." === char(str, edge(str))) && ! search(str, ".."));
@@ -243,7 +243,7 @@ setenv("%fn", {_stash: true, macro: function (body) {
   var l = [];
   var any63 = undefined;
   contains63(function (_) {
-    if (type(_) === "string" && (_.length || 0) <= 2 && code(_, 0) === 95) {
+    if (typeof(_) === "string" && (_.length || 0) <= 2 && code(_, 0) === 95) {
       any63 = true;
       var c = code(_, 1);
       if (c && c >= 48 && c <= 57) {

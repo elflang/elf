@@ -303,7 +303,9 @@
   (mac hd (l) `(at ,l 0))
   (mac tl (l) `(cut ,l 1))
 
-  (%js (mac type (x) `(typeof ,x)))
+  (mac type (x)
+    `(do (%lua ((do type) ,x))
+         (%js (typeof ,x))))
 
   (mac string? (x) `(is (type ,x) 'string))
   (mac number? (x) `(is (type ,x) 'number))

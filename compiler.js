@@ -1,5 +1,5 @@
 var reader = require("reader");
-var getenv = function (k, p) {
+getenv = function (k, p) {
   if (string63(k)) {
     var i = edge(environment);
     while (i >= 0) {

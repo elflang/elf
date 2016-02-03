@@ -1,5 +1,5 @@
 local reader = require("reader")
-local function getenv(k, p)
+function getenv(k, p)
   if string63(k) then
     local i = edge(environment)
     while i >= 0 do

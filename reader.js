@@ -1,10 +1,8 @@
 setenv("defreader", {_stash: true, macro: function (_x6) {
-  var _id2 = _x6;
-  var char = _id2[0];
-  var s = _id2[1];
+  var char = _x6[0];
+  var s = _x6[1];
   var _r1 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _id3 = _r1;
-  var body = cut(_id3, 0);
+  var body = cut(_r1, 0);
   return(["=", ["get", "read-table", char], join(["fn", [s]], body)]);
 }});
 var delimiters = {"(": true, ")": true, ";": true, "]": true, "\n": true, "[": true};
@@ -13,10 +11,9 @@ var stream = function (str, more) {
   return({more: more, pos: 0, len: str.length || 0, string: str});
 };
 var peek_char = function (s) {
-  var _id4 = s;
-  var pos = _id4.pos;
-  var len = _id4.len;
-  var string = _id4.string;
+  var pos = s.pos;
+  var len = s.len;
+  var string = s.string;
   if (pos < len) {
     return(char(string, pos));
   }
@@ -87,9 +84,8 @@ var flag63 = function (atom) {
   return(type(atom) === "string" && (atom.length || 0) > 1 && char(atom, 0) === ":");
 };
 var expected = function (s, c) {
-  var _id5 = s;
-  var more = _id5.more;
-  var pos = _id5.pos;
+  var more = s.more;
+  var pos = s.pos;
   var _id6 = more;
   var _e1;
   if (_id6) {
@@ -246,14 +242,14 @@ setenv("%fn", {_stash: true, macro: function (body) {
   var n = -1;
   var l = [];
   var any63 = undefined;
-  treewise(cons, function (_) {
+  contains63(function (_) {
     if (type(_) === "string" && (_.length || 0) <= 2 && code(_, 0) === 95) {
       any63 = true;
       var c = code(_, 1);
       if (c && c >= 48 && c <= 57) {
         n = max(n, c - 48);
-        return(n);
       }
+      return(undefined);
     }
   }, body);
   if (any63) {

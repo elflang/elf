@@ -103,21 +103,27 @@ local function bias(k)
   end
   return(k)
 end
-function bind(lh, rh, acc)
+function bind(lh, rh, vars)
   if not( type(lh) == "table") then
     return({lh, rh})
   else
     if lh[1] == "o" then
-      local _id = lh
-      local _ = _id[1]
-      local _var = _id[2]
-      local val = _id[3]
+      local _ = lh[1]
+      local _var = lh[2]
+      local val = lh[3]
       return({_var, {"if", {"nil?", rh}, val, rh}})
     else
       local id = unique("id")
       local bs = {id, rh}
-      if acc then
-        add(acc, id)
+      if not( type(macroexpand(rh)) == "table") and not contains63(function (_)
+        return(_ == rh)
+      end, lh) then
+        bs = {}
+        id = rh
+      else
+        if vars then
+          add(vars, id)
+        end
       end
       local _l1 = lh
       local k = nil
@@ -138,7 +144,7 @@ function bind(lh, rh, acc)
             _e11 = v
           end
           local _k = _e11
-          bs = join(bs, bind(_k, x, acc))
+          bs = join(bs, bind(_k, x, vars))
         end
       end
       return(bs)
@@ -197,17 +203,15 @@ local function quasisplice63(x, depth)
   return(can_unquote63(depth) and not not( type(x) == "table") and x[1] == "unquote-splicing")
 end
 local function expand_local(_x37)
-  local _id1 = _x37
-  local x = _id1[1]
-  local name = _id1[2]
-  local value = _id1[3]
+  local x = _x37[1]
+  local name = _x37[2]
+  local value = _x37[3]
   return({"%local", name, macroexpand(value)})
 end
 local function expand_function(_x39)
-  local _id2 = _x39
-  local x = _id2[1]
-  local args = _id2[2]
-  local body = cut(_id2, 2)
+  local x = _x39[1]
+  local args = _x39[2]
+  local body = cut(_x39, 2)
   add(environment, {})
   local _l3 = args
   local _i3 = nil
@@ -220,11 +224,10 @@ local function expand_function(_x39)
   return(_x41)
 end
 local function expand_definition(_x43)
-  local _id3 = _x43
-  local x = _id3[1]
-  local name = _id3[2]
-  local args = _id3[3]
-  local body = cut(_id3, 3)
+  local x = _x43[1]
+  local name = _x43[2]
+  local args = _x43[3]
+  local body = cut(_x43, 3)
   add(environment, {})
   local _l4 = args
   local _i4 = nil
@@ -237,9 +240,8 @@ local function expand_definition(_x43)
   return(_x45)
 end
 local function expand_macro(_x47)
-  local _id4 = _x47
-  local name = _id4[1]
-  local body = cut(_id4, 1)
+  local name = _x47[1]
+  local body = cut(_x47, 1)
   return(macroexpand(apply(macro_function(name), body)))
 end
 function macroexpand(form)
@@ -356,10 +358,9 @@ function quasiexpand(form, depth)
   end
 end
 function expand_if(_x57)
-  local _id5 = _x57
-  local a = _id5[1]
-  local b = _id5[2]
-  local c = cut(_id5, 2)
+  local a = _x57[1]
+  local b = _x57[2]
+  local c = cut(_x57, 2)
   if not( b == nil) then
     return({join({"%if", a, b}, expand_if(c))})
   else
@@ -622,9 +623,8 @@ local function terminator(stmt63)
   end
 end
 local function compile_special(form, stmt63)
-  local _id6 = form
-  local x = _id6[1]
-  local args = cut(_id6, 1)
+  local x = form[1]
+  local args = cut(form, 1)
   local _id7 = getenv(x)
   local self_tr63 = _id7.tr
   local stmt = _id7.stmt
@@ -646,9 +646,8 @@ local function compile_call(form)
   end
 end
 local function op_delims(parent, child, ...)
-  local _r55 = unstash({...})
-  local _id8 = _r55
-  local right = _id8.right
+  local _r56 = unstash({...})
+  local right = _r56.right
   local _e17
   if right then
     _e17 = _6261
@@ -662,9 +661,8 @@ local function op_delims(parent, child, ...)
   end
 end
 local function compile_infix(form)
-  local _id9 = form
-  local op = _id9[1]
-  local _id10 = cut(_id9, 1)
+  local op = form[1]
+  local _id10 = cut(form, 1)
   local a = _id10[1]
   local b = _id10[2]
   local _id11 = op_delims(form, a)
@@ -683,10 +681,9 @@ local function compile_infix(form)
   end
 end
 function compile_function(args, body, ...)
-  local _r57 = unstash({...})
-  local _id13 = _r57
-  local name = _id13.name
-  local prefix = _id13.prefix
+  local _r58 = unstash({...})
+  local name = _r58.name
+  local prefix = _r58.prefix
   local _e18
   if name then
     _e18 = compile(name)
@@ -727,9 +724,8 @@ local function can_return63(form)
   return(not( form == nil) and (not( type(form) == "table") or not( form[1] == "return") and not statement63(form[1])))
 end
 function compile(form, ...)
-  local _r59 = unstash({...})
-  local _id15 = _r59
-  local stmt = _id15.stmt
+  local _r60 = unstash({...})
+  local stmt = _r60.stmt
   if form == nil then
     return("")
   else
@@ -807,19 +803,17 @@ local function lower_do(args, hoist, stmt63, tail63)
   end
 end
 local function lower_assign(args, hoist, stmt63, tail63)
-  local _id16 = args
-  local lh = _id16[1]
-  local rh = _id16[2]
+  local lh = args[1]
+  local rh = args[2]
   add(hoist, {"assign", lh, lower(rh, hoist)})
   if not( stmt63 and not tail63) then
     return(lh)
   end
 end
 local function lower_if(args, hoist, stmt63, tail63)
-  local _id17 = args
-  local cond = _id17[1]
-  local _then = _id17[2]
-  local _else = _id17[3]
+  local cond = args[1]
+  local _then = args[2]
+  local _else = args[3]
   if stmt63 or tail63 then
     local _e25
     if _else then
@@ -838,9 +832,8 @@ local function lower_if(args, hoist, stmt63, tail63)
   end
 end
 local function lower_short(x, args, hoist)
-  local _id18 = args
-  local a = _id18[1]
-  local b = _id18[2]
+  local a = args[1]
+  local b = args[2]
   local hoist1 = {}
   local b1 = lower(b, hoist1)
   if #(hoist1) > 0 then
@@ -860,22 +853,19 @@ local function lower_try(args, hoist, tail63)
   return(add(hoist, {"%try", lower_body(args, tail63)}))
 end
 local function lower_while(args, hoist)
-  local _id20 = args
-  local c = _id20[1]
-  local body = cut(_id20, 1)
+  local c = args[1]
+  local body = cut(args, 1)
   return(add(hoist, {"while", lower(c, hoist), lower_body(body)}))
 end
 local function lower_for(args, hoist)
-  local _id21 = args
-  local t = _id21[1]
-  local k = _id21[2]
-  local body = cut(_id21, 2)
+  local t = args[1]
+  local k = args[2]
+  local body = cut(args, 2)
   return(add(hoist, {"%for", lower(t, hoist), k, lower_body(body)}))
 end
 local function lower_function(args)
-  local _id22 = args
-  local a = _id22[1]
-  local body = cut(_id22, 1)
+  local a = args[1]
+  local body = cut(args, 1)
   return({"%function", a, lower_body(body, true)})
 end
 local function lower_definition(kind, args, hoist)
@@ -897,9 +887,8 @@ local function lower_infix63(form)
   return(infix63(form[1]) and #(form) > 3)
 end
 local function lower_infix(form, hoist)
-  local _id24 = form
-  local x = _id24[1]
-  local args = cut(_id24, 1)
+  local x = form[1]
+  local args = cut(form, 1)
   return(lower(reduce(function (_0, _1)
     return({x, _1, _0})
   end, reverse(args)), hoist))
@@ -923,9 +912,8 @@ function lower(form, hoist, stmt63, tail63)
         if lower_infix63(form) then
           return(lower_infix(form, hoist))
         else
-          local _id25 = form
-          local x = _id25[1]
-          local args = cut(_id25, 1)
+          local x = form[1]
+          local args = cut(form, 1)
           if x == "do" then
             return(lower_do(args, hoist, stmt63, tail63))
           else

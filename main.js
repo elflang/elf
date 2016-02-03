@@ -107,11 +107,11 @@ elf_main = function () {
     }
     i = i + 1;
   }
-  var _x2 = pre;
-  var _n = _x2.length || 0;
+  var _x3 = pre;
+  var _n = _x3.length || 0;
   var _i = 0;
   while (_i < _n) {
-    var file = _x2[_i];
+    var file = _x3[_i];
     run_file(file);
     _i = _i + 1;
   }
@@ -133,7 +133,7 @@ elf_main = function () {
     }
   }
 };
-if (typeof(_x3) === "undefined") {
-  _x3 = true;
+if (typeof(_x4) === "undefined") {
+  _x4 = true;
   elf_main();
 }

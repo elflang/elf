@@ -3,21 +3,21 @@ reader = require("reader")
 compiler = require("compiler")
 system = require("system")
 local function eval_print(form)
-  local _x = nil
-  local _msg = nil
-  local _trace = nil
+  local _x3 = nil
+  local _msg1 = nil
+  local _trace1 = nil
   local _e
-  if xpcall(function (_)
-    _x = compiler.eval(form)
-    return(_x)
+  if xpcall(function ()
+    _x3 = compiler.eval(form)
+    return(_x3)
   end, function (_)
-    _msg = clip(_, search(_, ": ") + 2)
-    _trace = debug.traceback()
-    return(_trace)
+    _msg1 = clip(_, search(_, ": ") + 2)
+    _trace1 = debug.traceback()
+    return(_trace1)
   end) then
-    _e = {true, _x}
+    _e = {true, _x3}
   else
-    _e = {false, _msg, _trace}
+    _e = {false, _msg1, _trace1}
   end
   local _id = _e
   local ok = _id[1]
@@ -121,11 +121,11 @@ function elf_main()
     end
     i = i + 1
   end
-  local _x4 = pre
-  local _n = #(_x4)
+  local _x7 = pre
+  local _n = #(_x7)
   local _i = 0
   while _i < _n do
-    local file = _x4[_i + 1]
+    local file = _x7[_i + 1]
     run_file(file)
     _i = _i + 1
   end
@@ -147,7 +147,7 @@ function elf_main()
     end
   end
 end
-if _x5 == nil then
-  _x5 = true
+if _x8 == nil then
+  _x8 = true
   elf_main()
 end

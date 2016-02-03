@@ -1,10 +1,8 @@
 setenv("defreader", {_stash = true, macro = function (_x6, ...)
-  local _id2 = _x6
-  local char = _id2[1]
-  local s = _id2[2]
+  local char = _x6[1]
+  local s = _x6[2]
   local _r1 = unstash({...})
-  local _id3 = _r1
-  local body = cut(_id3, 0)
+  local body = cut(_r1, 0)
   return({"=", {"get", "read-table", char}, join({"fn", {s}}, body)})
 end})
 local delimiters = {["("] = true, [")"] = true, [";"] = true, ["]"] = true, ["\n"] = true, ["["] = true}
@@ -13,10 +11,9 @@ local function stream(str, more)
   return({more = more, pos = 0, len = #(str), string = str})
 end
 local function peek_char(s)
-  local _id4 = s
-  local pos = _id4.pos
-  local len = _id4.len
-  local string = _id4.string
+  local pos = s.pos
+  local len = s.len
+  local string = s.string
   if pos < len then
     return(char(string, pos))
   end
@@ -87,9 +84,8 @@ local function flag63(atom)
   return(type(atom) == "string" and #(atom) > 1 and char(atom, 0) == ":")
 end
 local function expected(s, c)
-  local _id5 = s
-  local more = _id5.more
-  local pos = _id5.pos
+  local more = s.more
+  local pos = s.pos
   local _id6 = more
   local _e1
   if _id6 then
@@ -246,14 +242,14 @@ setenv("%fn", {_stash = true, macro = function (body)
   local n = -1
   local l = {}
   local any63 = nil
-  treewise(cons, function (_)
+  contains63(function (_)
     if type(_) == "string" and #(_) <= 2 and code(_, 0) == 95 then
       any63 = true
       local c = code(_, 1)
       if c and c >= 48 and c <= 57 then
         n = max(n, c - 48)
-        return(n)
       end
+      return(nil)
     end
   end, body)
   if any63 then

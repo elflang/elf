@@ -155,12 +155,12 @@
 
 (mac %fn (body)
   (let (n -1 l () any? nil)
-    (treewise cons
-              [when (and (string? _) (<= (# _) 2) (is (code _ 0) 95)) ; "_"
-                (= any? true)
-                (var c (code _ 1))
-                (when (and c (>= c 48) (<= c 57)) ; "0" through "9"
-                  (= n (max n (- c 48))))]
+    (contains? [when (and (string? _) (<= (# _) 2) (is (code _ 0) 95)) ; "_"
+                 (= any? true)
+                 (var c (code _ 1))
+                 (when (and c (>= c 48) (<= c 57)) ; "0" through "9"
+                   (= n (max n (- c 48))))
+                 nil]
               body)
     (when any?
       (for i (+ n 1)

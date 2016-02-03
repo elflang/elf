@@ -19,8 +19,7 @@ setenv("eq", {_stash = true, macro = function (a, b)
 end})
 setenv("deftest", {_stash = true, macro = function (name, ...)
   local _r6 = unstash({...})
-  local _id1 = _r6
-  local body = cut(_id1, 0)
+  local body = cut(_r6, 0)
   return({"add", "tests", {"list", {"quote", name}, {"%fn", join({"do"}, body)}}})
 end})
 function run_tests()
@@ -254,21 +253,21 @@ add(tests, {"read-more", function ()
   else
     passed = passed + 1
   end
-  local _x56 = nil
-  local _msg = nil
-  local _trace = nil
+  local _x59 = nil
+  local _msg1 = nil
+  local _trace1 = nil
   local _e6
   if xpcall(function ()
-    _x56 = read("(open")
-    return(_x56)
+    _x59 = read("(open")
+    return(_x59)
   end, function (_)
-    _msg = clip(_, search(_, ": ") + 2)
-    _trace = debug.traceback()
-    return(_trace)
+    _msg1 = clip(_, search(_, ": ") + 2)
+    _trace1 = debug.traceback()
+    return(_trace1)
   end) then
-    _e6 = {true, _x56}
+    _e6 = {true, _x59}
   else
-    _e6 = {false, _msg, _trace}
+    _e6 = {false, _msg1, _trace1}
   end
   local _id3 = _e6
   local ok = _id3[1]
@@ -972,95 +971,95 @@ add(tests, {"list", function ()
   else
     passed = passed + 1
   end
-  local _x124 = {}
-  _x124.foo = 17
-  if not equal63(17, _x124.foo) then
+  local _x127 = {}
+  _x127.foo = 17
+  if not equal63(17, _x127.foo) then
     failed = failed + 1
-    local _x125 = {}
-    _x125.foo = 17
-    return("failed: expected " .. str(17) .. ", was " .. str(_x125.foo))
+    local _x128 = {}
+    _x128.foo = 17
+    return("failed: expected " .. str(17) .. ", was " .. str(_x128.foo))
   else
     passed = passed + 1
   end
-  local _x126 = {1}
-  _x126.foo = 17
-  if not equal63(17, _x126.foo) then
+  local _x129 = {1}
+  _x129.foo = 17
+  if not equal63(17, _x129.foo) then
     failed = failed + 1
-    local _x127 = {1}
-    _x127.foo = 17
-    return("failed: expected " .. str(17) .. ", was " .. str(_x127.foo))
+    local _x130 = {1}
+    _x130.foo = 17
+    return("failed: expected " .. str(17) .. ", was " .. str(_x130.foo))
   else
     passed = passed + 1
   end
-  local _x128 = {}
-  _x128.foo = true
-  if not equal63(true, _x128.foo) then
+  local _x131 = {}
+  _x131.foo = true
+  if not equal63(true, _x131.foo) then
     failed = failed + 1
-    local _x129 = {}
-    _x129.foo = true
-    return("failed: expected " .. str(true) .. ", was " .. str(_x129.foo))
-  else
-    passed = passed + 1
-  end
-  local _x130 = {}
-  _x130.foo = true
-  if not equal63(true, _x130.foo) then
-    failed = failed + 1
-    local _x131 = {}
-    _x131.foo = true
-    return("failed: expected " .. str(true) .. ", was " .. str(_x131.foo))
+    local _x132 = {}
+    _x132.foo = true
+    return("failed: expected " .. str(true) .. ", was " .. str(_x132.foo))
   else
     passed = passed + 1
   end
   local _x133 = {}
   _x133.foo = true
-  if not equal63(true, ({_x133})[1].foo) then
+  if not equal63(true, _x133.foo) then
     failed = failed + 1
-    local _x135 = {}
-    _x135.foo = true
-    return("failed: expected " .. str(true) .. ", was " .. str(({_x135})[1].foo))
+    local _x134 = {}
+    _x134.foo = true
+    return("failed: expected " .. str(true) .. ", was " .. str(_x134.foo))
   else
     passed = passed + 1
   end
   local _x136 = {}
-  _x136.a = true
-  local _x137 = {}
-  _x137.a = true
-  if not equal63(_x136, _x137) then
+  _x136.foo = true
+  if not equal63(true, ({_x136})[1].foo) then
     failed = failed + 1
     local _x138 = {}
-    _x138.a = true
-    local _x139 = {}
-    _x139.a = true
-    return("failed: expected " .. str(_x138) .. ", was " .. str(_x139))
+    _x138.foo = true
+    return("failed: expected " .. str(true) .. ", was " .. str(({_x138})[1].foo))
   else
     passed = passed + 1
   end
+  local _x139 = {}
+  _x139.a = true
   local _x140 = {}
-  _x140.b = false
-  local _x141 = {}
-  _x141.b = false
-  if not equal63(_x140, _x141) then
+  _x140.a = true
+  if not equal63(_x139, _x140) then
     failed = failed + 1
+    local _x141 = {}
+    _x141.a = true
     local _x142 = {}
-    _x142.b = false
-    local _x143 = {}
-    _x143.b = false
-    return("failed: expected " .. str(_x142) .. ", was " .. str(_x143))
+    _x142.a = true
+    return("failed: expected " .. str(_x141) .. ", was " .. str(_x142))
   else
     passed = passed + 1
   end
+  local _x143 = {}
+  _x143.b = false
   local _x144 = {}
-  _x144.c = 0
-  local _x145 = {}
-  _x145.c = 0
-  if not equal63(_x144, _x145) then
+  _x144.b = false
+  if not equal63(_x143, _x144) then
     failed = failed + 1
+    local _x145 = {}
+    _x145.b = false
     local _x146 = {}
-    _x146.c = 0
-    local _x147 = {}
-    _x147.c = 0
-    return("failed: expected " .. str(_x146) .. ", was " .. str(_x147))
+    _x146.b = false
+    return("failed: expected " .. str(_x145) .. ", was " .. str(_x146))
+  else
+    passed = passed + 1
+  end
+  local _x147 = {}
+  _x147.c = 0
+  local _x148 = {}
+  _x148.c = 0
+  if not equal63(_x147, _x148) then
+    failed = failed + 1
+    local _x149 = {}
+    _x149.c = 0
+    local _x150 = {}
+    _x150.c = 0
+    return("failed: expected " .. str(_x149) .. ", was " .. str(_x150))
   else
     passed = passed + 1
     return(passed)
@@ -1227,109 +1226,109 @@ add(tests, {"quasiquote", function ()
   else
     passed = passed + 1
   end
-  local _x318 = {}
-  _x318.foo = true
-  if not equal63(true, _x318.foo) then
+  local _x321 = {}
+  _x321.foo = true
+  if not equal63(true, _x321.foo) then
     failed = failed + 1
-    local _x319 = {}
-    _x319.foo = true
-    return("failed: expected " .. str(true) .. ", was " .. str(_x319.foo))
+    local _x322 = {}
+    _x322.foo = true
+    return("failed: expected " .. str(true) .. ", was " .. str(_x322.foo))
   else
     passed = passed + 1
   end
   local _a1 = 17
   local b = {1, 2}
   local _c = {a = 10}
-  local _x321 = {}
-  _x321.a = 10
-  local d = _x321
-  local _x322 = {}
-  _x322.foo = _a1
-  if not equal63(17, _x322.foo) then
-    failed = failed + 1
-    local _x323 = {}
-    _x323.foo = _a1
-    return("failed: expected " .. str(17) .. ", was " .. str(_x323.foo))
-  else
-    passed = passed + 1
-  end
   local _x324 = {}
-  _x324.foo = _a1
-  if not equal63(2, #(join(_x324, b))) then
+  _x324.a = 10
+  local d = _x324
+  local _x325 = {}
+  _x325.foo = _a1
+  if not equal63(17, _x325.foo) then
     failed = failed + 1
-    local _x325 = {}
-    _x325.foo = _a1
-    return("failed: expected " .. str(2) .. ", was " .. str(#(join(_x325, b))))
+    local _x326 = {}
+    _x326.foo = _a1
+    return("failed: expected " .. str(17) .. ", was " .. str(_x326.foo))
   else
     passed = passed + 1
   end
-  local _x326 = {}
-  _x326.foo = _a1
-  if not equal63(17, _x326.foo) then
+  local _x327 = {}
+  _x327.foo = _a1
+  if not equal63(2, #(join(_x327, b))) then
     failed = failed + 1
-    local _x327 = {}
-    _x327.foo = _a1
-    return("failed: expected " .. str(17) .. ", was " .. str(_x327.foo))
+    local _x328 = {}
+    _x328.foo = _a1
+    return("failed: expected " .. str(2) .. ", was " .. str(#(join(_x328, b))))
   else
     passed = passed + 1
   end
-  local _x328 = {1}
-  _x328.a = 10
-  if not equal63(_x328, join({1}, _c)) then
+  local _x329 = {}
+  _x329.foo = _a1
+  if not equal63(17, _x329.foo) then
     failed = failed + 1
-    local _x330 = {1}
-    _x330.a = 10
-    return("failed: expected " .. str(_x330) .. ", was " .. str(join({1}, _c)))
+    local _x330 = {}
+    _x330.foo = _a1
+    return("failed: expected " .. str(17) .. ", was " .. str(_x330.foo))
   else
     passed = passed + 1
   end
-  local _x332 = {1}
-  _x332.a = 10
-  if not equal63(_x332, join({1}, d)) then
+  local _x331 = {1}
+  _x331.a = 10
+  if not equal63(_x331, join({1}, _c)) then
     failed = failed + 1
-    local _x334 = {1}
-    _x334.a = 10
-    return("failed: expected " .. str(_x334) .. ", was " .. str(join({1}, d)))
+    local _x333 = {1}
+    _x333.a = 10
+    return("failed: expected " .. str(_x333) .. ", was " .. str(join({1}, _c)))
   else
     passed = passed + 1
   end
-  local _x337 = {}
-  _x337.foo = true
-  if not equal63(true, ({_x337})[1].foo) then
+  local _x335 = {1}
+  _x335.a = 10
+  if not equal63(_x335, join({1}, d)) then
     failed = failed + 1
-    local _x339 = {}
-    _x339.foo = true
-    return("failed: expected " .. str(true) .. ", was " .. str(({_x339})[1].foo))
+    local _x337 = {1}
+    _x337.a = 10
+    return("failed: expected " .. str(_x337) .. ", was " .. str(join({1}, d)))
   else
     passed = passed + 1
   end
-  local _x341 = {}
-  _x341.foo = true
-  if not equal63(true, ({_x341})[1].foo) then
+  local _x340 = {}
+  _x340.foo = true
+  if not equal63(true, ({_x340})[1].foo) then
     failed = failed + 1
-    local _x343 = {}
-    _x343.foo = true
-    return("failed: expected " .. str(true) .. ", was " .. str(({_x343})[1].foo))
+    local _x342 = {}
+    _x342.foo = true
+    return("failed: expected " .. str(true) .. ", was " .. str(({_x342})[1].foo))
   else
     passed = passed + 1
   end
   local _x344 = {}
   _x344.foo = true
-  if not equal63(true, _x344.foo) then
+  if not equal63(true, ({_x344})[1].foo) then
     failed = failed + 1
-    local _x345 = {}
-    _x345.foo = true
-    return("failed: expected " .. str(true) .. ", was " .. str(_x345.foo))
+    local _x346 = {}
+    _x346.foo = true
+    return("failed: expected " .. str(true) .. ", was " .. str(({_x346})[1].foo))
   else
     passed = passed + 1
   end
   local _x347 = {}
   _x347.foo = true
-  if not equal63(true, join({1, 2, 3}, _x347).foo) then
+  if not equal63(true, _x347.foo) then
     failed = failed + 1
-    local _x349 = {}
-    _x349.foo = true
-    return("failed: expected " .. str(true) .. ", was " .. str(join({1, 2, 3}, _x349).foo))
+    local _x348 = {}
+    _x348.foo = true
+    return("failed: expected " .. str(true) .. ", was " .. str(_x348.foo))
+  else
+    passed = passed + 1
+  end
+  local _x350 = {}
+  _x350.foo = true
+  if not equal63(true, join({1, 2, 3}, _x350).foo) then
+    failed = failed + 1
+    local _x352 = {}
+    _x352.foo = true
+    return("failed: expected " .. str(true) .. ", was " .. str(join({1, 2, 3}, _x352).foo))
   else
     passed = passed + 1
   end
@@ -1671,11 +1670,11 @@ add(tests, {"=", function ()
   end
 end})
 add(tests, {"wipe", function ()
-  local _x518 = {}
-  _x518.b = true
-  _x518.c = true
-  _x518.a = true
-  local x = _x518
+  local _x521 = {}
+  _x521.b = true
+  _x521.c = true
+  _x521.a = true
+  local x = _x521
   x.a = nil
   if not equal63(nil, x.a) then
     failed = failed + 1
@@ -2076,8 +2075,8 @@ add(tests, {"case", function ()
   else
     passed = passed + 1
   end
-  local _x544 = "z"
-  local _e2 = _x544
+  local _x547 = "z"
+  local _e2 = _x547
   local _e43
   if "z" == _e2 then
     _e43 = 9
@@ -2086,7 +2085,7 @@ add(tests, {"case", function ()
   end
   if not equal63(9, _e43) then
     failed = failed + 1
-    local _e3 = _x544
+    local _e3 = _x547
     local _e44
     if "z" == _e3 then
       _e44 = 9
@@ -2097,7 +2096,7 @@ add(tests, {"case", function ()
   else
     passed = passed + 1
   end
-  local _e4 = _x544
+  local _e4 = _x547
   local _e45
   if "a" == _e4 then
     _e45 = 1
@@ -2112,7 +2111,7 @@ add(tests, {"case", function ()
   end
   if not equal63(7, _e45) then
     failed = failed + 1
-    local _e5 = _x544
+    local _e5 = _x547
     local _e47
     if "a" == _e5 then
       _e47 = 1
@@ -2260,13 +2259,13 @@ add(tests, {"empty", function ()
   else
     passed = passed + 1
   end
-  local _x555 = {}
-  _x555.a = true
-  if not equal63(false, empty63(_x555)) then
+  local _x558 = {}
+  _x558.a = true
+  if not equal63(false, empty63(_x558)) then
     failed = failed + 1
-    local _x556 = {}
-    _x556.a = true
-    return("failed: expected " .. str(false) .. ", was " .. str(empty63(_x556)))
+    local _x559 = {}
+    _x559.a = true
+    return("failed: expected " .. str(false) .. ", was " .. str(empty63(_x559)))
   else
     passed = passed + 1
   end
@@ -2276,13 +2275,13 @@ add(tests, {"empty", function ()
   else
     passed = passed + 1
   end
-  local _x557 = {}
-  _x557.b = false
-  if not equal63(false, empty63(_x557)) then
+  local _x560 = {}
+  _x560.b = false
+  if not equal63(false, empty63(_x560)) then
     failed = failed + 1
-    local _x558 = {}
-    _x558.b = false
-    return("failed: expected " .. str(false) .. ", was " .. str(empty63(_x558)))
+    local _x561 = {}
+    _x561.b = false
+    return("failed: expected " .. str(false) .. ", was " .. str(empty63(_x561)))
   else
     passed = passed + 1
     return(passed)
@@ -2361,10 +2360,10 @@ add(tests, {"get-=", function ()
   end
 end})
 add(tests, {"each", function ()
-  local _x563 = {1, 2, 3}
-  _x563.b = false
-  _x563.a = true
-  local t = _x563
+  local _x566 = {1, 2, 3}
+  _x566.b = false
+  _x566.a = true
+  local t = _x566
   local a = 0
   local b = 0
   local _l3 = t
@@ -2402,9 +2401,9 @@ add(tests, {"each", function ()
   else
     passed = passed + 1
   end
-  local _x564 = {{1}, {2}}
-  _x564.b = {3}
-  local _t = _x564
+  local _x567 = {{1}, {2}}
+  _x567.b = {3}
+  local _t = _x567
   local _l5 = _t
   local _i3 = nil
   for _i3 in next, _l5 do
@@ -2569,205 +2568,205 @@ add(tests, {"return", function ()
   end
 end})
 add(tests, {"guard", function ()
-  local _x581 = nil
-  local _msg1 = nil
-  local _trace1 = nil
+  local _x584 = nil
+  local _msg2 = nil
+  local _trace2 = nil
   local _e49
   if xpcall(function ()
-    _x581 = 42
-    return(_x581)
+    _x584 = 42
+    return(_x584)
   end, function (_)
-    _msg1 = clip(_, search(_, ": ") + 2)
-    _trace1 = debug.traceback()
-    return(_trace1)
+    _msg2 = clip(_, search(_, ": ") + 2)
+    _trace2 = debug.traceback()
+    return(_trace2)
   end) then
-    _e49 = {true, _x581}
+    _e49 = {true, _x584}
   else
-    _e49 = {false, _msg1, _trace1}
+    _e49 = {false, _msg2, _trace2}
   end
   if not equal63({true, 42}, cut(_e49, 0, 2)) then
     failed = failed + 1
-    local _x585 = nil
-    local _msg2 = nil
-    local _trace2 = nil
+    local _x588 = nil
+    local _msg3 = nil
+    local _trace3 = nil
     local _e50
     if xpcall(function ()
-      _x585 = 42
-      return(_x585)
+      _x588 = 42
+      return(_x588)
     end, function (_)
-      _msg2 = clip(_, search(_, ": ") + 2)
-      _trace2 = debug.traceback()
-      return(_trace2)
+      _msg3 = clip(_, search(_, ": ") + 2)
+      _trace3 = debug.traceback()
+      return(_trace3)
     end) then
-      _e50 = {true, _x585}
+      _e50 = {true, _x588}
     else
-      _e50 = {false, _msg2, _trace2}
+      _e50 = {false, _msg3, _trace3}
     end
     return("failed: expected " .. str({true, 42}) .. ", was " .. str(cut(_e50, 0, 2)))
   else
     passed = passed + 1
   end
-  local _x589 = nil
-  local _msg3 = nil
-  local _trace3 = nil
+  local _x592 = nil
+  local _msg4 = nil
+  local _trace4 = nil
   local _e51
   if xpcall(function ()
     error("foo")
-    _x589 = nil
-    return(_x589)
+    _x592 = nil
+    return(_x592)
   end, function (_)
-    _msg3 = clip(_, search(_, ": ") + 2)
-    _trace3 = debug.traceback()
-    return(_trace3)
+    _msg4 = clip(_, search(_, ": ") + 2)
+    _trace4 = debug.traceback()
+    return(_trace4)
   end) then
-    _e51 = {true, _x589}
+    _e51 = {true, _x592}
   else
-    _e51 = {false, _msg3, _trace3}
+    _e51 = {false, _msg4, _trace4}
   end
   if not equal63({false, "foo"}, cut(_e51, 0, 2)) then
     failed = failed + 1
-    local _x593 = nil
-    local _msg4 = nil
-    local _trace4 = nil
+    local _x596 = nil
+    local _msg5 = nil
+    local _trace5 = nil
     local _e52
     if xpcall(function ()
       error("foo")
-      _x593 = nil
-      return(_x593)
+      _x596 = nil
+      return(_x596)
     end, function (_)
-      _msg4 = clip(_, search(_, ": ") + 2)
-      _trace4 = debug.traceback()
-      return(_trace4)
+      _msg5 = clip(_, search(_, ": ") + 2)
+      _trace5 = debug.traceback()
+      return(_trace5)
     end) then
-      _e52 = {true, _x593}
+      _e52 = {true, _x596}
     else
-      _e52 = {false, _msg4, _trace4}
+      _e52 = {false, _msg5, _trace5}
     end
     return("failed: expected " .. str({false, "foo"}) .. ", was " .. str(cut(_e52, 0, 2)))
   else
     passed = passed + 1
   end
-  local _x597 = nil
-  local _msg5 = nil
-  local _trace5 = nil
+  local _x600 = nil
+  local _msg6 = nil
+  local _trace6 = nil
   local _e53
   if xpcall(function ()
     error("foo")
     error("baz")
-    _x597 = nil
-    return(_x597)
+    _x600 = nil
+    return(_x600)
   end, function (_)
-    _msg5 = clip(_, search(_, ": ") + 2)
-    _trace5 = debug.traceback()
-    return(_trace5)
+    _msg6 = clip(_, search(_, ": ") + 2)
+    _trace6 = debug.traceback()
+    return(_trace6)
   end) then
-    _e53 = {true, _x597}
+    _e53 = {true, _x600}
   else
-    _e53 = {false, _msg5, _trace5}
+    _e53 = {false, _msg6, _trace6}
   end
   if not equal63({false, "foo"}, cut(_e53, 0, 2)) then
     failed = failed + 1
-    local _x601 = nil
-    local _msg6 = nil
-    local _trace6 = nil
+    local _x604 = nil
+    local _msg7 = nil
+    local _trace7 = nil
     local _e54
     if xpcall(function ()
       error("foo")
       error("baz")
-      _x601 = nil
-      return(_x601)
+      _x604 = nil
+      return(_x604)
     end, function (_)
-      _msg6 = clip(_, search(_, ": ") + 2)
-      _trace6 = debug.traceback()
-      return(_trace6)
+      _msg7 = clip(_, search(_, ": ") + 2)
+      _trace7 = debug.traceback()
+      return(_trace7)
     end) then
-      _e54 = {true, _x601}
+      _e54 = {true, _x604}
     else
-      _e54 = {false, _msg6, _trace6}
+      _e54 = {false, _msg7, _trace7}
     end
     return("failed: expected " .. str({false, "foo"}) .. ", was " .. str(cut(_e54, 0, 2)))
   else
     passed = passed + 1
   end
-  local _x605 = nil
-  local _msg7 = nil
-  local _trace7 = nil
+  local _x608 = nil
+  local _msg8 = nil
+  local _trace8 = nil
   local _e55
   if xpcall(function ()
-    local _x606 = nil
-    local _msg8 = nil
-    local _trace8 = nil
+    local _x609 = nil
+    local _msg9 = nil
+    local _trace9 = nil
     local _e56
     if xpcall(function ()
       error("foo")
-      _x606 = nil
-      return(_x606)
-    end, function (_)
-      _msg8 = clip(_, search(_, ": ") + 2)
-      _trace8 = debug.traceback()
-      return(_trace8)
-    end) then
-      _e56 = {true, _x606}
-    else
-      _e56 = {false, _msg8, _trace8}
-    end
-    cut(_e56, 0, 2)
-    error("baz")
-    _x605 = nil
-    return(_x605)
-  end, function (_)
-    _msg7 = clip(_, search(_, ": ") + 2)
-    _trace7 = debug.traceback()
-    return(_trace7)
-  end) then
-    _e55 = {true, _x605}
-  else
-    _e55 = {false, _msg7, _trace7}
-  end
-  if not equal63({false, "baz"}, cut(_e55, 0, 2)) then
-    failed = failed + 1
-    local _x612 = nil
-    local _msg9 = nil
-    local _trace9 = nil
-    local _e57
-    if xpcall(function ()
-      local _x613 = nil
-      local _msg10 = nil
-      local _trace10 = nil
-      local _e58
-      if xpcall(function ()
-        error("foo")
-        _x613 = nil
-        return(_x613)
-      end, function (_)
-        _msg10 = clip(_, search(_, ": ") + 2)
-        _trace10 = debug.traceback()
-        return(_trace10)
-      end) then
-        _e58 = {true, _x613}
-      else
-        _e58 = {false, _msg10, _trace10}
-      end
-      cut(_e58, 0, 2)
-      error("baz")
-      _x612 = nil
-      return(_x612)
+      _x609 = nil
+      return(_x609)
     end, function (_)
       _msg9 = clip(_, search(_, ": ") + 2)
       _trace9 = debug.traceback()
       return(_trace9)
     end) then
-      _e57 = {true, _x612}
+      _e56 = {true, _x609}
     else
-      _e57 = {false, _msg9, _trace9}
+      _e56 = {false, _msg9, _trace9}
+    end
+    cut(_e56, 0, 2)
+    error("baz")
+    _x608 = nil
+    return(_x608)
+  end, function (_)
+    _msg8 = clip(_, search(_, ": ") + 2)
+    _trace8 = debug.traceback()
+    return(_trace8)
+  end) then
+    _e55 = {true, _x608}
+  else
+    _e55 = {false, _msg8, _trace8}
+  end
+  if not equal63({false, "baz"}, cut(_e55, 0, 2)) then
+    failed = failed + 1
+    local _x615 = nil
+    local _msg10 = nil
+    local _trace10 = nil
+    local _e57
+    if xpcall(function ()
+      local _x616 = nil
+      local _msg11 = nil
+      local _trace11 = nil
+      local _e58
+      if xpcall(function ()
+        error("foo")
+        _x616 = nil
+        return(_x616)
+      end, function (_)
+        _msg11 = clip(_, search(_, ": ") + 2)
+        _trace11 = debug.traceback()
+        return(_trace11)
+      end) then
+        _e58 = {true, _x616}
+      else
+        _e58 = {false, _msg11, _trace11}
+      end
+      cut(_e58, 0, 2)
+      error("baz")
+      _x615 = nil
+      return(_x615)
+    end, function (_)
+      _msg10 = clip(_, search(_, ": ") + 2)
+      _trace10 = debug.traceback()
+      return(_trace10)
+    end) then
+      _e57 = {true, _x615}
+    else
+      _e57 = {false, _msg10, _trace10}
     end
     return("failed: expected " .. str({false, "baz"}) .. ", was " .. str(cut(_e57, 0, 2)))
   else
     passed = passed + 1
   end
-  local _x619 = nil
-  local _msg11 = nil
-  local _trace11 = nil
+  local _x622 = nil
+  local _msg12 = nil
+  local _trace12 = nil
   local _e59
   if xpcall(function ()
     local _e60
@@ -2777,22 +2776,22 @@ add(tests, {"guard", function ()
       error("baz")
       _e60 = nil
     end
-    _x619 = _e60
-    return(_x619)
+    _x622 = _e60
+    return(_x622)
   end, function (_)
-    _msg11 = clip(_, search(_, ": ") + 2)
-    _trace11 = debug.traceback()
-    return(_trace11)
+    _msg12 = clip(_, search(_, ": ") + 2)
+    _trace12 = debug.traceback()
+    return(_trace12)
   end) then
-    _e59 = {true, _x619}
+    _e59 = {true, _x622}
   else
-    _e59 = {false, _msg11, _trace11}
+    _e59 = {false, _msg12, _trace12}
   end
   if not equal63({true, 42}, cut(_e59, 0, 2)) then
     failed = failed + 1
-    local _x623 = nil
-    local _msg12 = nil
-    local _trace12 = nil
+    local _x626 = nil
+    local _msg13 = nil
+    local _trace13 = nil
     local _e61
     if xpcall(function ()
       local _e62
@@ -2802,24 +2801,24 @@ add(tests, {"guard", function ()
         error("baz")
         _e62 = nil
       end
-      _x623 = _e62
-      return(_x623)
+      _x626 = _e62
+      return(_x626)
     end, function (_)
-      _msg12 = clip(_, search(_, ": ") + 2)
-      _trace12 = debug.traceback()
-      return(_trace12)
+      _msg13 = clip(_, search(_, ": ") + 2)
+      _trace13 = debug.traceback()
+      return(_trace13)
     end) then
-      _e61 = {true, _x623}
+      _e61 = {true, _x626}
     else
-      _e61 = {false, _msg12, _trace12}
+      _e61 = {false, _msg13, _trace13}
     end
     return("failed: expected " .. str({true, 42}) .. ", was " .. str(cut(_e61, 0, 2)))
   else
     passed = passed + 1
   end
-  local _x627 = nil
-  local _msg13 = nil
-  local _trace13 = nil
+  local _x630 = nil
+  local _msg14 = nil
+  local _trace14 = nil
   local _e63
   if xpcall(function ()
     local _e64
@@ -2829,22 +2828,22 @@ add(tests, {"guard", function ()
       error("baz")
       _e64 = nil
     end
-    _x627 = _e64
-    return(_x627)
+    _x630 = _e64
+    return(_x630)
   end, function (_)
-    _msg13 = clip(_, search(_, ": ") + 2)
-    _trace13 = debug.traceback()
-    return(_trace13)
+    _msg14 = clip(_, search(_, ": ") + 2)
+    _trace14 = debug.traceback()
+    return(_trace14)
   end) then
-    _e63 = {true, _x627}
+    _e63 = {true, _x630}
   else
-    _e63 = {false, _msg13, _trace13}
+    _e63 = {false, _msg14, _trace14}
   end
   if not equal63({false, "baz"}, cut(_e63, 0, 2)) then
     failed = failed + 1
-    local _x631 = nil
-    local _msg14 = nil
-    local _trace14 = nil
+    local _x634 = nil
+    local _msg15 = nil
+    local _trace15 = nil
     local _e65
     if xpcall(function ()
       local _e66
@@ -2854,16 +2853,16 @@ add(tests, {"guard", function ()
         error("baz")
         _e66 = nil
       end
-      _x631 = _e66
-      return(_x631)
+      _x634 = _e66
+      return(_x634)
     end, function (_)
-      _msg14 = clip(_, search(_, ": ") + 2)
-      _trace14 = debug.traceback()
-      return(_trace14)
+      _msg15 = clip(_, search(_, ": ") + 2)
+      _trace15 = debug.traceback()
+      return(_trace15)
     end) then
-      _e65 = {true, _x631}
+      _e65 = {true, _x634}
     else
-      _e65 = {false, _msg14, _trace14}
+      _e65 = {false, _msg15, _trace15}
     end
     return("failed: expected " .. str({false, "baz"}) .. ", was " .. str(cut(_e65, 0, 2)))
   else
@@ -3046,9 +3045,9 @@ add(tests, {"with", function ()
   x = x + 1
   if not equal63(10, x) then
     failed = failed + 1
-    local _x636 = 9
-    _x636 = _x636 + 1
-    return("failed: expected " .. str(10) .. ", was " .. str(_x636))
+    local _x639 = 9
+    _x639 = _x639 + 1
+    return("failed: expected " .. str(10) .. ", was " .. str(_x639))
   else
     passed = passed + 1
     return(passed)
@@ -3094,9 +3093,8 @@ add(tests, {"let-when", function ()
   local _y4 = {19, 20}
   local _e71
   if _y4 then
-    local _id5 = _y4
-    local a = _id5[1]
-    local b = _id5[2]
+    local a = _y4[1]
+    local b = _y4[2]
     _e71 = b
   end
   if not equal63(20, _e71) then
@@ -3104,9 +3102,8 @@ add(tests, {"let-when", function ()
     local _y5 = {19, 20}
     local _e72
     if _y5 then
-      local _id6 = _y5
-      local a = _id6[1]
-      local b = _id6[2]
+      local a = _y5[1]
+      local b = _y5[2]
       _e72 = b
     end
     return("failed: expected " .. str(20) .. ", was " .. str(_e72))
@@ -3116,9 +3113,8 @@ add(tests, {"let-when", function ()
   local _y6 = nil
   local _e73
   if _y6 then
-    local _id7 = _y6
-    local a = _id7[1]
-    local b = _id7[2]
+    local a = _y6[1]
+    local b = _y6[2]
     _e73 = b
   end
   if not equal63(nil, _e73) then
@@ -3126,9 +3122,8 @@ add(tests, {"let-when", function ()
     local _y7 = nil
     local _e74
     if _y7 then
-      local _id8 = _y7
-      local a = _id8[1]
-      local b = _id8[2]
+      local a = _y7[1]
+      local b = _y7[2]
       _e74 = b
     end
     return("failed: expected " .. str(nil) .. ", was " .. str(_e74))
@@ -3141,10 +3136,10 @@ local zzop = 99
 local zzap = 100
 local _zzop = 10
 local _zzap = _zzop + 10
-local _x640 = {1, 2, 3}
-_x640.b = 20
-_x640.a = 10
-local _id9 = _x640
+local _x644 = {1, 2, 3}
+_x644.b = 20
+_x644.a = 10
+local _id9 = _x644
 local zza = _id9[1]
 local zzb = _id9[2]
 add(tests, {"let-toplevel1", function ()
@@ -3312,9 +3307,9 @@ add(tests, {"destructuring", function ()
   else
     passed = passed + 1
   end
-  local _x658 = {}
-  _x658.foo = 99
-  local _id18 = _x658
+  local _x670 = {}
+  _x670.foo = 99
+  local _id18 = _x670
   local foo = _id18.foo
   if not equal63(99, foo) then
     failed = failed + 1
@@ -3346,9 +3341,9 @@ add(tests, {"destructuring", function ()
   else
     passed = passed + 1
   end
-  local _x660 = {99}
-  _x660.baz = true
-  local _id22 = {foo = 42, bar = _x660}
+  local _x674 = {99}
+  _x674.baz = true
+  local _id22 = {foo = 42, bar = _x674}
   local foo = _id22.foo
   local _id23 = _id22.bar
   local baz = _id23.baz
@@ -3364,11 +3359,11 @@ add(tests, {"destructuring", function ()
   else
     passed = passed + 1
   end
-  local _x662 = {20}
-  _x662.foo = 17
-  local _x661 = {10, _x662}
-  _x661.bar = {1, 2, 3}
-  local _id24 = _x661
+  local _x679 = {20}
+  _x679.foo = 17
+  local _x678 = {10, _x679}
+  _x678.bar = {1, 2, 3}
+  local _id24 = _x678
   local a = _id24[1]
   local _id25 = _id24[2]
   local b = _id25[1]
@@ -3871,63 +3866,63 @@ add(tests, {"join", function ()
   else
     passed = passed + 1
   end
-  local _x720 = {"a"}
-  _x720.b = true
-  if not equal63(_x720, join({"a"}, {b = true})) then
+  local _x737 = {"a"}
+  _x737.b = true
+  if not equal63(_x737, join({"a"}, {b = true})) then
     failed = failed + 1
-    local _x722 = {"a"}
-    _x722.b = true
-    return("failed: expected " .. str(_x722) .. ", was " .. str(join({"a"}, {b = true})))
+    local _x739 = {"a"}
+    _x739.b = true
+    return("failed: expected " .. str(_x739) .. ", was " .. str(join({"a"}, {b = true})))
   else
     passed = passed + 1
   end
-  local _x724 = {"a", "b"}
-  _x724.b = true
-  local _x726 = {"b"}
-  _x726.b = true
-  if not equal63(_x724, join({"a"}, _x726)) then
+  local _x741 = {"a", "b"}
+  _x741.b = true
+  local _x743 = {"b"}
+  _x743.b = true
+  if not equal63(_x741, join({"a"}, _x743)) then
     failed = failed + 1
-    local _x727 = {"a", "b"}
-    _x727.b = true
-    local _x729 = {"b"}
-    _x729.b = true
-    return("failed: expected " .. str(_x727) .. ", was " .. str(join({"a"}, _x729)))
+    local _x744 = {"a", "b"}
+    _x744.b = true
+    local _x746 = {"b"}
+    _x746.b = true
+    return("failed: expected " .. str(_x744) .. ", was " .. str(join({"a"}, _x746)))
   else
     passed = passed + 1
   end
-  local _x730 = {"a"}
-  _x730.b = 10
-  local _x731 = {"a"}
-  _x731.b = true
-  if not equal63(_x730, join(_x731, {b = 10})) then
+  local _x747 = {"a"}
+  _x747.b = 10
+  local _x748 = {"a"}
+  _x748.b = true
+  if not equal63(_x747, join(_x748, {b = 10})) then
     failed = failed + 1
-    local _x732 = {"a"}
-    _x732.b = 10
-    local _x733 = {"a"}
-    _x733.b = true
-    return("failed: expected " .. str(_x732) .. ", was " .. str(join(_x733, {b = 10})))
+    local _x749 = {"a"}
+    _x749.b = 10
+    local _x750 = {"a"}
+    _x750.b = true
+    return("failed: expected " .. str(_x749) .. ", was " .. str(join(_x750, {b = 10})))
   else
     passed = passed + 1
   end
-  local _x734 = {}
-  _x734.b = 10
-  local _x735 = {}
-  _x735.b = 10
-  if not equal63(_x734, join({b = true}, _x735)) then
+  local _x751 = {}
+  _x751.b = 10
+  local _x752 = {}
+  _x752.b = 10
+  if not equal63(_x751, join({b = true}, _x752)) then
     failed = failed + 1
-    local _x736 = {}
-    _x736.b = 10
-    local _x737 = {}
-    _x737.b = 10
-    return("failed: expected " .. str(_x736) .. ", was " .. str(join({b = true}, _x737)))
+    local _x753 = {}
+    _x753.b = 10
+    local _x754 = {}
+    _x754.b = 10
+    return("failed: expected " .. str(_x753) .. ", was " .. str(join({b = true}, _x754)))
   else
     passed = passed + 1
   end
-  local _x738 = {"a"}
-  _x738.b = 1
-  local _x739 = {"b"}
-  _x739.c = 2
-  local t = join(_x738, _x739)
+  local _x755 = {"a"}
+  _x755.b = 1
+  local _x756 = {"b"}
+  _x756.c = 2
+  local t = join(_x755, _x756)
   if not equal63(1, t.b) then
     failed = failed + 1
     return("failed: expected " .. str(1) .. ", was " .. str(t.b))
@@ -3961,17 +3956,17 @@ add(tests, {"reverse", function ()
   else
     passed = passed + 1
   end
-  local _x745 = {3, 2, 1}
-  _x745.a = true
-  local _x746 = {1, 2, 3}
-  _x746.a = true
-  if not equal63(_x745, reverse(_x746)) then
+  local _x762 = {3, 2, 1}
+  _x762.a = true
+  local _x763 = {1, 2, 3}
+  _x763.a = true
+  if not equal63(_x762, reverse(_x763)) then
     failed = failed + 1
-    local _x747 = {3, 2, 1}
-    _x747.a = true
-    local _x748 = {1, 2, 3}
-    _x748.a = true
-    return("failed: expected " .. str(_x747) .. ", was " .. str(reverse(_x748)))
+    local _x764 = {3, 2, 1}
+    _x764.a = true
+    local _x765 = {1, 2, 3}
+    _x765.a = true
+    return("failed: expected " .. str(_x764) .. ", was " .. str(reverse(_x765)))
   else
     passed = passed + 1
     return(passed)
@@ -4008,79 +4003,79 @@ add(tests, {"map", function (_)
   else
     passed = passed + 1
   end
-  local _x758 = {2, 3, 4}
-  _x758.a = 5
-  local _x759 = {1, 2, 3}
-  _x759.a = 4
-  if not equal63(_x758, map(function (_)
+  local _x775 = {2, 3, 4}
+  _x775.a = 5
+  local _x776 = {1, 2, 3}
+  _x776.a = 4
+  if not equal63(_x775, map(function (_)
     return(_ + 1)
-  end, _x759)) then
+  end, _x776)) then
     failed = failed + 1
-    local _x760 = {2, 3, 4}
-    _x760.a = 5
-    local _x761 = {1, 2, 3}
-    _x761.a = 4
-    return("failed: expected " .. str(_x760) .. ", was " .. str(map(function (_)
+    local _x777 = {2, 3, 4}
+    _x777.a = 5
+    local _x778 = {1, 2, 3}
+    _x778.a = 4
+    return("failed: expected " .. str(_x777) .. ", was " .. str(map(function (_)
       return(_ + 1)
-    end, _x761)))
+    end, _x778)))
   else
     passed = passed + 1
   end
-  local _x762 = {}
-  _x762.a = true
-  local _x763 = {}
-  _x763.a = true
-  if not equal63(_x762, map(function (_)
+  local _x779 = {}
+  _x779.a = true
+  local _x780 = {}
+  _x780.a = true
+  if not equal63(_x779, map(function (_)
     return(_)
-  end, _x763)) then
+  end, _x780)) then
     failed = failed + 1
-    local _x764 = {}
-    _x764.a = true
-    local _x765 = {}
-    _x765.a = true
-    return("failed: expected " .. str(_x764) .. ", was " .. str(map(function (_)
+    local _x781 = {}
+    _x781.a = true
+    local _x782 = {}
+    _x782.a = true
+    return("failed: expected " .. str(_x781) .. ", was " .. str(map(function (_)
       return(_)
-    end, _x765)))
+    end, _x782)))
   else
     passed = passed + 1
   end
-  local _x766 = {}
-  _x766.b = false
-  local _x767 = {}
-  _x767.b = false
-  if not equal63(_x766, map(function (_)
+  local _x783 = {}
+  _x783.b = false
+  local _x784 = {}
+  _x784.b = false
+  if not equal63(_x783, map(function (_)
     return(_)
-  end, _x767)) then
+  end, _x784)) then
     failed = failed + 1
-    local _x768 = {}
-    _x768.b = false
-    local _x769 = {}
-    _x769.b = false
-    return("failed: expected " .. str(_x768) .. ", was " .. str(map(function (_)
+    local _x785 = {}
+    _x785.b = false
+    local _x786 = {}
+    _x786.b = false
+    return("failed: expected " .. str(_x785) .. ", was " .. str(map(function (_)
       return(_)
-    end, _x769)))
+    end, _x786)))
   else
     passed = passed + 1
   end
-  local _x770 = {}
-  _x770.b = false
-  _x770.a = true
-  local _x771 = {}
-  _x771.b = false
-  _x771.a = true
-  if not equal63(_x770, map(function (_)
+  local _x787 = {}
+  _x787.b = false
+  _x787.a = true
+  local _x788 = {}
+  _x788.b = false
+  _x788.a = true
+  if not equal63(_x787, map(function (_)
     return(_)
-  end, _x771)) then
+  end, _x788)) then
     failed = failed + 1
-    local _x772 = {}
-    _x772.b = false
-    _x772.a = true
-    local _x773 = {}
-    _x773.b = false
-    _x773.a = true
-    return("failed: expected " .. str(_x772) .. ", was " .. str(map(function (_)
+    local _x789 = {}
+    _x789.b = false
+    _x789.a = true
+    local _x790 = {}
+    _x790.b = false
+    _x790.a = true
+    return("failed: expected " .. str(_x789) .. ", was " .. str(map(function (_)
       return(_)
-    end, _x773)))
+    end, _x790)))
   else
     passed = passed + 1
   end
@@ -4095,19 +4090,19 @@ add(tests, {"map", function (_)
   else
     passed = passed + 1
   end
-  local _x778 = {2, 4, 6}
-  _x778.b = 8
-  local _x779 = {1, 2, 3, 4, 5, 6}
-  _x779.b = 8
-  _x779.a = 7
-  if not equal63(_x778, map(evens, _x779)) then
+  local _x795 = {2, 4, 6}
+  _x795.b = 8
+  local _x796 = {1, 2, 3, 4, 5, 6}
+  _x796.b = 8
+  _x796.a = 7
+  if not equal63(_x795, map(evens, _x796)) then
     failed = failed + 1
-    local _x780 = {2, 4, 6}
-    _x780.b = 8
-    local _x781 = {1, 2, 3, 4, 5, 6}
-    _x781.b = 8
-    _x781.a = 7
-    return("failed: expected " .. str(_x780) .. ", was " .. str(map(evens, _x781)))
+    local _x797 = {2, 4, 6}
+    _x797.b = 8
+    local _x798 = {1, 2, 3, 4, 5, 6}
+    _x798.b = 8
+    _x798.a = 7
+    return("failed: expected " .. str(_x797) .. ", was " .. str(map(evens, _x798)))
   else
     passed = passed + 1
     return(passed)
@@ -4156,35 +4151,35 @@ add(tests, {"cut", function ()
   else
     passed = passed + 1
   end
-  local _x807 = {2}
-  _x807.a = true
-  local _x808 = {1, 2}
-  _x808.a = true
-  if not equal63(_x807, cut(_x808, 1)) then
+  local _x824 = {2}
+  _x824.a = true
+  local _x825 = {1, 2}
+  _x825.a = true
+  if not equal63(_x824, cut(_x825, 1)) then
     failed = failed + 1
-    local _x809 = {2}
-    _x809.a = true
-    local _x810 = {1, 2}
-    _x810.a = true
-    return("failed: expected " .. str(_x809) .. ", was " .. str(cut(_x810, 1)))
+    local _x826 = {2}
+    _x826.a = true
+    local _x827 = {1, 2}
+    _x827.a = true
+    return("failed: expected " .. str(_x826) .. ", was " .. str(cut(_x827, 1)))
   else
     passed = passed + 1
   end
-  local _x811 = {}
-  _x811.b = 2
-  _x811.a = true
-  local _x812 = {}
-  _x812.b = 2
-  _x812.a = true
-  if not equal63(_x811, cut(_x812)) then
+  local _x828 = {}
+  _x828.b = 2
+  _x828.a = true
+  local _x829 = {}
+  _x829.b = 2
+  _x829.a = true
+  if not equal63(_x828, cut(_x829)) then
     failed = failed + 1
-    local _x813 = {}
-    _x813.b = 2
-    _x813.a = true
-    local _x814 = {}
-    _x814.b = 2
-    _x814.a = true
-    return("failed: expected " .. str(_x813) .. ", was " .. str(cut(_x814)))
+    local _x830 = {}
+    _x830.b = 2
+    _x830.a = true
+    local _x831 = {}
+    _x831.b = 2
+    _x831.a = true
+    return("failed: expected " .. str(_x830) .. ", was " .. str(cut(_x831)))
   else
     passed = passed + 1
   end
@@ -4195,16 +4190,16 @@ add(tests, {"cut", function ()
   else
     passed = passed + 1
   end
-  local _x816 = {1, 2, 3}
-  _x816.a = true
-  local _t1 = _x816
-  local _x817 = {}
-  _x817.a = true
-  if not equal63(_x817, cut(_t1, #(_t1))) then
+  local _x833 = {1, 2, 3}
+  _x833.a = true
+  local _t1 = _x833
+  local _x834 = {}
+  _x834.a = true
+  if not equal63(_x834, cut(_t1, #(_t1))) then
     failed = failed + 1
-    local _x818 = {}
-    _x818.a = true
-    return("failed: expected " .. str(_x818) .. ", was " .. str(cut(_t1, #(_t1))))
+    local _x835 = {}
+    _x835.a = true
+    return("failed: expected " .. str(_x835) .. ", was " .. str(cut(_t1, #(_t1))))
   else
     passed = passed + 1
     return(passed)
@@ -4423,19 +4418,19 @@ add(tests, {"keep", function (_)
   else
     passed = passed + 1
   end
-  local _x882 = {2, 4, 6}
-  _x882.b = 8
-  local _x883 = {1, 2, 3, 4, 5, 6}
-  _x883.b = 8
-  _x883.a = 7
-  if not equal63(_x882, keep(even63, _x883)) then
+  local _x899 = {2, 4, 6}
+  _x899.b = 8
+  local _x900 = {1, 2, 3, 4, 5, 6}
+  _x900.b = 8
+  _x900.a = 7
+  if not equal63(_x899, keep(even63, _x900)) then
     failed = failed + 1
-    local _x884 = {2, 4, 6}
-    _x884.b = 8
-    local _x885 = {1, 2, 3, 4, 5, 6}
-    _x885.b = 8
-    _x885.a = 7
-    return("failed: expected " .. str(_x884) .. ", was " .. str(keep(even63, _x885)))
+    local _x901 = {2, 4, 6}
+    _x901.b = 8
+    local _x902 = {1, 2, 3, 4, 5, 6}
+    _x902.b = 8
+    _x902.a = 7
+    return("failed: expected " .. str(_x901) .. ", was " .. str(keep(even63, _x902)))
   else
     passed = passed + 1
     return(passed)
@@ -4493,31 +4488,31 @@ add(tests, {"find", function (_)
   else
     passed = passed + 1
   end
-  local _x898 = {2, 4}
-  _x898.foo = 7
+  local _x915 = {2, 4}
+  _x915.foo = 7
   if not equal63(true, find(function (_)
     return(_ == 7)
-  end, _x898)) then
+  end, _x915)) then
     failed = failed + 1
-    local _x899 = {2, 4}
-    _x899.foo = 7
+    local _x916 = {2, 4}
+    _x916.foo = 7
     return("failed: expected " .. str(true) .. ", was " .. str(find(function (_)
       return(_ == 7)
-    end, _x899)))
+    end, _x916)))
   else
     passed = passed + 1
   end
-  local _x900 = {2, 4}
-  _x900.bar = true
+  local _x917 = {2, 4}
+  _x917.bar = true
   if not equal63(true, find(function (_)
     return(_ == true)
-  end, _x900)) then
+  end, _x917)) then
     failed = failed + 1
-    local _x901 = {2, 4}
-    _x901.bar = true
+    local _x918 = {2, 4}
+    _x918.bar = true
     return("failed: expected " .. str(true) .. ", was " .. str(find(function (_)
       return(_ == true)
-    end, _x901)))
+    end, _x918)))
   else
     passed = passed + 1
   end
@@ -4527,23 +4522,23 @@ add(tests, {"find", function (_)
   else
     passed = passed + 1
   end
-  local _x904 = {2, 4}
-  _x904.foo = 7
-  if not equal63(true, in63(7, _x904)) then
+  local _x921 = {2, 4}
+  _x921.foo = 7
+  if not equal63(true, in63(7, _x921)) then
     failed = failed + 1
-    local _x905 = {2, 4}
-    _x905.foo = 7
-    return("failed: expected " .. str(true) .. ", was " .. str(in63(7, _x905)))
+    local _x922 = {2, 4}
+    _x922.foo = 7
+    return("failed: expected " .. str(true) .. ", was " .. str(in63(7, _x922)))
   else
     passed = passed + 1
   end
-  local _x906 = {2, 4}
-  _x906.bar = true
-  if not equal63(true, in63(true, _x906)) then
+  local _x923 = {2, 4}
+  _x923.bar = true
+  if not equal63(true, in63(true, _x923)) then
     failed = failed + 1
-    local _x907 = {2, 4}
-    _x907.bar = true
-    return("failed: expected " .. str(true) .. ", was " .. str(in63(true, _x907)))
+    local _x924 = {2, 4}
+    _x924.bar = true
+    return("failed: expected " .. str(true) .. ", was " .. str(in63(true, _x924)))
   else
     passed = passed + 1
     return(passed)
@@ -4781,41 +4776,37 @@ add(tests, {"apply", function (_0, _1)
   else
     passed = passed + 1
   end
-  local _x946 = {}
-  _x946.foo = 42
+  local _x963 = {}
+  _x963.foo = 42
   if not equal63(42, apply(function (...)
-    local _r198 = unstash({...})
-    local _id27 = _r198
-    local foo = _id27.foo
+    local _r200 = unstash({...})
+    local foo = _r200.foo
     return(foo)
-  end, _x946)) then
+  end, _x963)) then
     failed = failed + 1
-    local _x948 = {}
-    _x948.foo = 42
+    local _x965 = {}
+    _x965.foo = 42
     return("failed: expected " .. str(42) .. ", was " .. str(apply(function (...)
-      local _r199 = unstash({...})
-      local _id28 = _r199
-      local foo = _id28.foo
+      local _r201 = unstash({...})
+      local foo = _r201.foo
       return(foo)
-    end, _x948)))
+    end, _x965)))
   else
     passed = passed + 1
   end
-  local _x951 = {}
-  _x951.foo = 42
-  if not equal63(42, apply(function (_x949)
-    local _id29 = _x949
-    local foo = _id29.foo
+  local _x968 = {}
+  _x968.foo = 42
+  if not equal63(42, apply(function (_x966)
+    local foo = _x966.foo
     return(foo)
-  end, {_x951})) then
+  end, {_x968})) then
     failed = failed + 1
-    local _x954 = {}
-    _x954.foo = 42
-    return("failed: expected " .. str(42) .. ", was " .. str(apply(function (_x952)
-      local _id30 = _x952
-      local foo = _id30.foo
+    local _x971 = {}
+    _x971.foo = 42
+    return("failed: expected " .. str(42) .. ", was " .. str(apply(function (_x969)
+      local foo = _x969.foo
       return(foo)
-    end, {_x954})))
+    end, {_x971})))
   else
     passed = passed + 1
     return(passed)
@@ -4873,24 +4864,21 @@ add(tests, {"call", function ()
   end
 end})
 add(tests, {"parameters", function ()
-  if not equal63(42, (function (_x979)
-    local _id31 = _x979
-    local a = _id31[1]
+  if not equal63(42, (function (_x996)
+    local a = _x996[1]
     return(a)
   end)({42})) then
     failed = failed + 1
-    return("failed: expected " .. str(42) .. ", was " .. str((function (_x981)
-      local _id32 = _x981
-      local a = _id32[1]
+    return("failed: expected " .. str(42) .. ", was " .. str((function (_x998)
+      local a = _x998[1]
       return(a)
     end)({42})))
   else
     passed = passed + 1
   end
-  local f = function (a, _x983)
-    local _id33 = _x983
-    local b = _id33[1]
-    local c = _id33[2]
+  local f = function (a, _x1000)
+    local b = _x1000[1]
+    local c = _x1000[2]
     return({a, b, c})
   end
   if not equal63({1, 2, 3}, f(1, {2, 3})) then
@@ -4899,13 +4887,11 @@ add(tests, {"parameters", function ()
   else
     passed = passed + 1
   end
-  local _f = function (a, _x989, ...)
-    local _id34 = _x989
-    local b = _id34[1]
-    local c = cut(_id34, 1)
-    local _r211 = unstash({...})
-    local _id35 = _r211
-    local d = cut(_id35, 0)
+  local _f = function (a, _x1006, ...)
+    local b = _x1006[1]
+    local c = cut(_x1006, 1)
+    local _r213 = unstash({...})
+    local d = cut(_r213, 0)
     return({a, b, c, d})
   end
   if not equal63({1, 2, {3, 4}, {5, 6, 7}}, _f(1, {2, 3, 4}, 5, 6, 7)) then
@@ -4915,28 +4901,24 @@ add(tests, {"parameters", function ()
     passed = passed + 1
   end
   if not equal63({3, 4}, (function (a, b, ...)
-    local _r212 = unstash({...})
-    local _id36 = _r212
-    local c = cut(_id36, 0)
+    local _r214 = unstash({...})
+    local c = cut(_r214, 0)
     return(c)
   end)(1, 2, 3, 4)) then
     failed = failed + 1
     return("failed: expected " .. str({3, 4}) .. ", was " .. str((function (a, b, ...)
-      local _r213 = unstash({...})
-      local _id37 = _r213
-      local c = cut(_id37, 0)
+      local _r215 = unstash({...})
+      local c = cut(_r215, 0)
       return(c)
     end)(1, 2, 3, 4)))
   else
     passed = passed + 1
   end
-  local _f1 = function (w, _x1004, ...)
-    local _id38 = _x1004
-    local x = _id38[1]
-    local y = cut(_id38, 1)
-    local _r214 = unstash({...})
-    local _id39 = _r214
-    local z = cut(_id39, 0)
+  local _f1 = function (w, _x1021, ...)
+    local x = _x1021[1]
+    local y = cut(_x1021, 1)
+    local _r216 = unstash({...})
+    local z = cut(_r216, 0)
     return({y, z})
   end
   if not equal63({{3, 4}, {5, 6, 7}}, _f1(1, {2, 3, 4}, 5, 6, 7)) then
@@ -4946,54 +4928,48 @@ add(tests, {"parameters", function ()
     passed = passed + 1
   end
   if not equal63(42, (function (...)
-    local _r215 = unstash({...})
-    local _id40 = _r215
-    local foo = _id40.foo
+    local _r217 = unstash({...})
+    local foo = _r217.foo
     return(foo)
   end)({_stash = true, foo = 42})) then
     failed = failed + 1
     return("failed: expected " .. str(42) .. ", was " .. str((function (...)
-      local _r216 = unstash({...})
-      local _id41 = _r216
-      local foo = _id41.foo
+      local _r218 = unstash({...})
+      local foo = _r218.foo
       return(foo)
     end)({_stash = true, foo = 42})))
   else
     passed = passed + 1
   end
-  local _x1018 = {}
-  _x1018.foo = 42
-  if not equal63(42, (function (_x1017)
-    local _id42 = _x1017
-    local foo = _id42.foo
+  local _x1035 = {}
+  _x1035.foo = 42
+  if not equal63(42, (function (_x1034)
+    local foo = _x1034.foo
     return(foo)
-  end)(_x1018)) then
+  end)(_x1035)) then
     failed = failed + 1
-    local _x1020 = {}
-    _x1020.foo = 42
-    return("failed: expected " .. str(42) .. ", was " .. str((function (_x1019)
-      local _id43 = _x1019
-      local foo = _id43.foo
+    local _x1037 = {}
+    _x1037.foo = 42
+    return("failed: expected " .. str(42) .. ", was " .. str((function (_x1036)
+      local foo = _x1036.foo
       return(foo)
-    end)(_x1020)))
+    end)(_x1037)))
   else
     passed = passed + 1
   end
-  local _f2 = function (a, _x1021, ...)
-    local _id44 = _x1021
-    local foo = _id44.foo
-    local _r219 = unstash({...})
-    local _id45 = _r219
-    local b = _id45.bar
+  local _f2 = function (a, _x1038, ...)
+    local foo = _x1038.foo
+    local _r221 = unstash({...})
+    local b = _r221.bar
     return({a, b, foo})
   end
-  local _x1025 = {}
-  _x1025.foo = 42
-  if not equal63({10, 20, 42}, _f2(10, _x1025, {_stash = true, bar = 20})) then
+  local _x1042 = {}
+  _x1042.foo = 42
+  if not equal63({10, 20, 42}, _f2(10, _x1042, {_stash = true, bar = 20})) then
     failed = failed + 1
-    local _x1027 = {}
-    _x1027.foo = 42
-    return("failed: expected " .. str({10, 20, 42}) .. ", was " .. str(_f2(10, _x1027, {_stash = true, bar = 20})))
+    local _x1044 = {}
+    _x1044.foo = 42
+    return("failed: expected " .. str({10, 20, 42}) .. ", was " .. str(_f2(10, _x1044, {_stash = true, bar = 20})))
   else
     passed = passed + 1
   end
@@ -5009,7 +4985,7 @@ add(tests, {"parameters", function ()
     return(passed)
   end
 end})
-if _x1031 == nil then
-  _x1031 = true
+if _x1048 == nil then
+  _x1048 = true
   run_tests()
 end

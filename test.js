@@ -19,8 +19,7 @@ setenv("eq", {_stash: true, macro: function (a, b) {
 }});
 setenv("deftest", {_stash: true, macro: function (name) {
   var _r6 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _id1 = _r6;
-  var body = cut(_id1, 0);
+  var body = cut(_r6, 0);
   return(["add", "tests", ["list", ["quote", name], ["%fn", join(["do"], body)]]]);
 }});
 run_tests = function () {
@@ -970,95 +969,95 @@ add(tests, ["list", function () {
   } else {
     passed = passed + 1;
   }
-  var _x121 = [];
-  _x121.foo = 17;
-  if (! equal63(17, _x121.foo)) {
+  var _x122 = [];
+  _x122.foo = 17;
+  if (! equal63(17, _x122.foo)) {
     failed = failed + 1;
-    var _x122 = [];
-    _x122.foo = 17;
-    return("failed: expected " + str(17) + ", was " + str(_x122.foo));
+    var _x123 = [];
+    _x123.foo = 17;
+    return("failed: expected " + str(17) + ", was " + str(_x123.foo));
   } else {
     passed = passed + 1;
   }
-  var _x123 = [1];
-  _x123.foo = 17;
-  if (! equal63(17, _x123.foo)) {
+  var _x124 = [1];
+  _x124.foo = 17;
+  if (! equal63(17, _x124.foo)) {
     failed = failed + 1;
-    var _x124 = [1];
-    _x124.foo = 17;
-    return("failed: expected " + str(17) + ", was " + str(_x124.foo));
+    var _x125 = [1];
+    _x125.foo = 17;
+    return("failed: expected " + str(17) + ", was " + str(_x125.foo));
   } else {
     passed = passed + 1;
   }
-  var _x125 = [];
-  _x125.foo = true;
-  if (! equal63(true, _x125.foo)) {
+  var _x126 = [];
+  _x126.foo = true;
+  if (! equal63(true, _x126.foo)) {
     failed = failed + 1;
-    var _x126 = [];
-    _x126.foo = true;
-    return("failed: expected " + str(true) + ", was " + str(_x126.foo));
+    var _x127 = [];
+    _x127.foo = true;
+    return("failed: expected " + str(true) + ", was " + str(_x127.foo));
   } else {
     passed = passed + 1;
   }
-  var _x127 = [];
-  _x127.foo = true;
-  if (! equal63(true, _x127.foo)) {
+  var _x128 = [];
+  _x128.foo = true;
+  if (! equal63(true, _x128.foo)) {
     failed = failed + 1;
-    var _x128 = [];
-    _x128.foo = true;
-    return("failed: expected " + str(true) + ", was " + str(_x128.foo));
+    var _x129 = [];
+    _x129.foo = true;
+    return("failed: expected " + str(true) + ", was " + str(_x129.foo));
   } else {
     passed = passed + 1;
   }
-  var _x130 = [];
-  _x130.foo = true;
-  if (! equal63(true, [_x130][0].foo)) {
+  var _x131 = [];
+  _x131.foo = true;
+  if (! equal63(true, [_x131][0].foo)) {
     failed = failed + 1;
-    var _x132 = [];
-    _x132.foo = true;
-    return("failed: expected " + str(true) + ", was " + str([_x132][0].foo));
+    var _x133 = [];
+    _x133.foo = true;
+    return("failed: expected " + str(true) + ", was " + str([_x133][0].foo));
   } else {
     passed = passed + 1;
   }
-  var _x133 = [];
-  _x133.a = true;
   var _x134 = [];
   _x134.a = true;
-  if (! equal63(_x133, _x134)) {
+  var _x135 = [];
+  _x135.a = true;
+  if (! equal63(_x134, _x135)) {
     failed = failed + 1;
-    var _x135 = [];
-    _x135.a = true;
     var _x136 = [];
     _x136.a = true;
-    return("failed: expected " + str(_x135) + ", was " + str(_x136));
+    var _x137 = [];
+    _x137.a = true;
+    return("failed: expected " + str(_x136) + ", was " + str(_x137));
   } else {
     passed = passed + 1;
   }
-  var _x137 = [];
-  _x137.b = false;
   var _x138 = [];
   _x138.b = false;
-  if (! equal63(_x137, _x138)) {
+  var _x139 = [];
+  _x139.b = false;
+  if (! equal63(_x138, _x139)) {
     failed = failed + 1;
-    var _x139 = [];
-    _x139.b = false;
     var _x140 = [];
     _x140.b = false;
-    return("failed: expected " + str(_x139) + ", was " + str(_x140));
+    var _x141 = [];
+    _x141.b = false;
+    return("failed: expected " + str(_x140) + ", was " + str(_x141));
   } else {
     passed = passed + 1;
   }
-  var _x141 = [];
-  _x141.c = 0;
   var _x142 = [];
   _x142.c = 0;
-  if (! equal63(_x141, _x142)) {
+  var _x143 = [];
+  _x143.c = 0;
+  if (! equal63(_x142, _x143)) {
     failed = failed + 1;
-    var _x143 = [];
-    _x143.c = 0;
     var _x144 = [];
     _x144.c = 0;
-    return("failed: expected " + str(_x143) + ", was " + str(_x144));
+    var _x145 = [];
+    _x145.c = 0;
+    return("failed: expected " + str(_x144) + ", was " + str(_x145));
   } else {
     passed = passed + 1;
     return(passed);
@@ -1225,109 +1224,109 @@ add(tests, ["quasiquote", function () {
   } else {
     passed = passed + 1;
   }
-  var _x315 = [];
-  _x315.foo = true;
-  if (! equal63(true, _x315.foo)) {
+  var _x316 = [];
+  _x316.foo = true;
+  if (! equal63(true, _x316.foo)) {
     failed = failed + 1;
-    var _x316 = [];
-    _x316.foo = true;
-    return("failed: expected " + str(true) + ", was " + str(_x316.foo));
+    var _x317 = [];
+    _x317.foo = true;
+    return("failed: expected " + str(true) + ", was " + str(_x317.foo));
   } else {
     passed = passed + 1;
   }
   var _a1 = 17;
   var b = [1, 2];
   var _c = {a: 10};
-  var _x318 = [];
-  _x318.a = 10;
-  var d = _x318;
   var _x319 = [];
-  _x319.foo = _a1;
-  if (! equal63(17, _x319.foo)) {
+  _x319.a = 10;
+  var d = _x319;
+  var _x320 = [];
+  _x320.foo = _a1;
+  if (! equal63(17, _x320.foo)) {
     failed = failed + 1;
-    var _x320 = [];
-    _x320.foo = _a1;
-    return("failed: expected " + str(17) + ", was " + str(_x320.foo));
+    var _x321 = [];
+    _x321.foo = _a1;
+    return("failed: expected " + str(17) + ", was " + str(_x321.foo));
   } else {
     passed = passed + 1;
   }
-  var _x321 = [];
-  _x321.foo = _a1;
-  if (! equal63(2, join(_x321, b).length || 0)) {
+  var _x322 = [];
+  _x322.foo = _a1;
+  if (! equal63(2, join(_x322, b).length || 0)) {
     failed = failed + 1;
-    var _x322 = [];
-    _x322.foo = _a1;
-    return("failed: expected " + str(2) + ", was " + str(join(_x322, b).length || 0));
+    var _x323 = [];
+    _x323.foo = _a1;
+    return("failed: expected " + str(2) + ", was " + str(join(_x323, b).length || 0));
   } else {
     passed = passed + 1;
   }
-  var _x323 = [];
-  _x323.foo = _a1;
-  if (! equal63(17, _x323.foo)) {
+  var _x324 = [];
+  _x324.foo = _a1;
+  if (! equal63(17, _x324.foo)) {
     failed = failed + 1;
-    var _x324 = [];
-    _x324.foo = _a1;
-    return("failed: expected " + str(17) + ", was " + str(_x324.foo));
+    var _x325 = [];
+    _x325.foo = _a1;
+    return("failed: expected " + str(17) + ", was " + str(_x325.foo));
   } else {
     passed = passed + 1;
   }
-  var _x325 = [1];
-  _x325.a = 10;
-  if (! equal63(_x325, join([1], _c))) {
+  var _x326 = [1];
+  _x326.a = 10;
+  if (! equal63(_x326, join([1], _c))) {
     failed = failed + 1;
-    var _x327 = [1];
-    _x327.a = 10;
-    return("failed: expected " + str(_x327) + ", was " + str(join([1], _c)));
+    var _x328 = [1];
+    _x328.a = 10;
+    return("failed: expected " + str(_x328) + ", was " + str(join([1], _c)));
   } else {
     passed = passed + 1;
   }
-  var _x329 = [1];
-  _x329.a = 10;
-  if (! equal63(_x329, join([1], d))) {
+  var _x330 = [1];
+  _x330.a = 10;
+  if (! equal63(_x330, join([1], d))) {
     failed = failed + 1;
-    var _x331 = [1];
-    _x331.a = 10;
-    return("failed: expected " + str(_x331) + ", was " + str(join([1], d)));
+    var _x332 = [1];
+    _x332.a = 10;
+    return("failed: expected " + str(_x332) + ", was " + str(join([1], d)));
   } else {
     passed = passed + 1;
   }
-  var _x334 = [];
-  _x334.foo = true;
-  if (! equal63(true, [_x334][0].foo)) {
+  var _x335 = [];
+  _x335.foo = true;
+  if (! equal63(true, [_x335][0].foo)) {
     failed = failed + 1;
-    var _x336 = [];
-    _x336.foo = true;
-    return("failed: expected " + str(true) + ", was " + str([_x336][0].foo));
+    var _x337 = [];
+    _x337.foo = true;
+    return("failed: expected " + str(true) + ", was " + str([_x337][0].foo));
   } else {
     passed = passed + 1;
   }
-  var _x338 = [];
-  _x338.foo = true;
-  if (! equal63(true, [_x338][0].foo)) {
+  var _x339 = [];
+  _x339.foo = true;
+  if (! equal63(true, [_x339][0].foo)) {
     failed = failed + 1;
-    var _x340 = [];
-    _x340.foo = true;
-    return("failed: expected " + str(true) + ", was " + str([_x340][0].foo));
+    var _x341 = [];
+    _x341.foo = true;
+    return("failed: expected " + str(true) + ", was " + str([_x341][0].foo));
   } else {
     passed = passed + 1;
   }
-  var _x341 = [];
-  _x341.foo = true;
-  if (! equal63(true, _x341.foo)) {
+  var _x342 = [];
+  _x342.foo = true;
+  if (! equal63(true, _x342.foo)) {
     failed = failed + 1;
-    var _x342 = [];
-    _x342.foo = true;
-    return("failed: expected " + str(true) + ", was " + str(_x342.foo));
+    var _x343 = [];
+    _x343.foo = true;
+    return("failed: expected " + str(true) + ", was " + str(_x343.foo));
   } else {
     passed = passed + 1;
   }
-  var _x344 = [];
-  _x344.foo = true;
-  if (! equal63(true, join([1, 2, 3], _x344).foo)) {
+  var _x345 = [];
+  _x345.foo = true;
+  if (! equal63(true, join([1, 2, 3], _x345).foo)) {
     failed = failed + 1;
-    var _x346 = [];
-    _x346.foo = true;
-    return("failed: expected " + str(true) + ", was " + str(join([1, 2, 3], _x346).foo));
+    var _x347 = [];
+    _x347.foo = true;
+    return("failed: expected " + str(true) + ", was " + str(join([1, 2, 3], _x347).foo));
   } else {
     passed = passed + 1;
   }
@@ -1669,11 +1668,11 @@ add(tests, ["=", function () {
   }
 }]);
 add(tests, ["wipe", function () {
-  var _x514 = [];
-  _x514.b = true;
-  _x514.c = true;
-  _x514.a = true;
-  var x = _x514;
+  var _x515 = [];
+  _x515.b = true;
+  _x515.c = true;
+  _x515.a = true;
+  var x = _x515;
   delete x.a;
   if (! equal63(undefined, x.a)) {
     failed = failed + 1;
@@ -2074,8 +2073,8 @@ add(tests, ["case", function () {
   } else {
     passed = passed + 1;
   }
-  var _x540 = "z";
-  var _e2 = _x540;
+  var _x541 = "z";
+  var _e2 = _x541;
   var _e43;
   if ("z" === _e2) {
     _e43 = 9;
@@ -2084,7 +2083,7 @@ add(tests, ["case", function () {
   }
   if (! equal63(9, _e43)) {
     failed = failed + 1;
-    var _e3 = _x540;
+    var _e3 = _x541;
     var _e44;
     if ("z" === _e3) {
       _e44 = 9;
@@ -2095,7 +2094,7 @@ add(tests, ["case", function () {
   } else {
     passed = passed + 1;
   }
-  var _e4 = _x540;
+  var _e4 = _x541;
   var _e45;
   if ("a" === _e4) {
     _e45 = 1;
@@ -2110,7 +2109,7 @@ add(tests, ["case", function () {
   }
   if (! equal63(7, _e45)) {
     failed = failed + 1;
-    var _e5 = _x540;
+    var _e5 = _x541;
     var _e47;
     if ("a" === _e5) {
       _e47 = 1;
@@ -2258,13 +2257,13 @@ add(tests, ["empty", function () {
   } else {
     passed = passed + 1;
   }
-  var _x551 = [];
-  _x551.a = true;
-  if (! equal63(false, empty63(_x551))) {
+  var _x552 = [];
+  _x552.a = true;
+  if (! equal63(false, empty63(_x552))) {
     failed = failed + 1;
-    var _x552 = [];
-    _x552.a = true;
-    return("failed: expected " + str(false) + ", was " + str(empty63(_x552)));
+    var _x553 = [];
+    _x553.a = true;
+    return("failed: expected " + str(false) + ", was " + str(empty63(_x553)));
   } else {
     passed = passed + 1;
   }
@@ -2274,13 +2273,13 @@ add(tests, ["empty", function () {
   } else {
     passed = passed + 1;
   }
-  var _x553 = [];
-  _x553.b = false;
-  if (! equal63(false, empty63(_x553))) {
+  var _x554 = [];
+  _x554.b = false;
+  if (! equal63(false, empty63(_x554))) {
     failed = failed + 1;
-    var _x554 = [];
-    _x554.b = false;
-    return("failed: expected " + str(false) + ", was " + str(empty63(_x554)));
+    var _x555 = [];
+    _x555.b = false;
+    return("failed: expected " + str(false) + ", was " + str(empty63(_x555)));
   } else {
     passed = passed + 1;
     return(passed);
@@ -2359,10 +2358,10 @@ add(tests, ["get-=", function () {
   }
 }]);
 add(tests, ["each", function () {
-  var _x559 = [1, 2, 3];
-  _x559.b = false;
-  _x559.a = true;
-  var t = _x559;
+  var _x560 = [1, 2, 3];
+  _x560.b = false;
+  _x560.a = true;
+  var t = _x560;
   var a = 0;
   var b = 0;
   var _l3 = t;
@@ -2414,9 +2413,9 @@ add(tests, ["each", function () {
   } else {
     passed = passed + 1;
   }
-  var _x560 = [[1], [2]];
-  _x560.b = [3];
-  var _t = _x560;
+  var _x561 = [[1], [2]];
+  _x561.b = [3];
+  var _t = _x561;
   var _l5 = _t;
   var _i3 = undefined;
   for (_i3 in _l5) {
@@ -2953,9 +2952,9 @@ add(tests, ["with", function () {
   x = x + 1;
   if (! equal63(10, x)) {
     failed = failed + 1;
-    var _x604 = 9;
-    _x604 = _x604 + 1;
-    return("failed: expected " + str(10) + ", was " + str(_x604));
+    var _x605 = 9;
+    _x605 = _x605 + 1;
+    return("failed: expected " + str(10) + ", was " + str(_x605));
   } else {
     passed = passed + 1;
     return(passed);
@@ -3001,9 +3000,8 @@ add(tests, ["let-when", function () {
   var _y4 = [19, 20];
   var _e62;
   if (_y4) {
-    var _id5 = _y4;
-    var a = _id5[0];
-    var b = _id5[1];
+    var a = _y4[0];
+    var b = _y4[1];
     _e62 = b;
   }
   if (! equal63(20, _e62)) {
@@ -3011,9 +3009,8 @@ add(tests, ["let-when", function () {
     var _y5 = [19, 20];
     var _e63;
     if (_y5) {
-      var _id6 = _y5;
-      var a = _id6[0];
-      var b = _id6[1];
+      var a = _y5[0];
+      var b = _y5[1];
       _e63 = b;
     }
     return("failed: expected " + str(20) + ", was " + str(_e63));
@@ -3023,9 +3020,8 @@ add(tests, ["let-when", function () {
   var _y6 = undefined;
   var _e64;
   if (_y6) {
-    var _id7 = _y6;
-    var a = _id7[0];
-    var b = _id7[1];
+    var a = _y6[0];
+    var b = _y6[1];
     _e64 = b;
   }
   if (! equal63(undefined, _e64)) {
@@ -3033,9 +3029,8 @@ add(tests, ["let-when", function () {
     var _y7 = undefined;
     var _e65;
     if (_y7) {
-      var _id8 = _y7;
-      var a = _id8[0];
-      var b = _id8[1];
+      var a = _y7[0];
+      var b = _y7[1];
       _e65 = b;
     }
     return("failed: expected " + str(undefined) + ", was " + str(_e65));
@@ -3048,10 +3043,10 @@ var zzop = 99;
 var zzap = 100;
 var _zzop = 10;
 var _zzap = _zzop + 10;
-var _x608 = [1, 2, 3];
-_x608.b = 20;
-_x608.a = 10;
-var _id9 = _x608;
+var _x610 = [1, 2, 3];
+_x610.b = 20;
+_x610.a = 10;
+var _id9 = _x610;
 var zza = _id9[0];
 var zzb = _id9[1];
 add(tests, ["let-toplevel1", function () {
@@ -3219,9 +3214,9 @@ add(tests, ["destructuring", function () {
   } else {
     passed = passed + 1;
   }
-  var _x626 = [];
-  _x626.foo = 99;
-  var _id18 = _x626;
+  var _x636 = [];
+  _x636.foo = 99;
+  var _id18 = _x636;
   var foo = _id18.foo;
   if (! equal63(99, foo)) {
     failed = failed + 1;
@@ -3253,9 +3248,9 @@ add(tests, ["destructuring", function () {
   } else {
     passed = passed + 1;
   }
-  var _x628 = [99];
-  _x628.baz = true;
-  var _id22 = {foo: 42, bar: _x628};
+  var _x640 = [99];
+  _x640.baz = true;
+  var _id22 = {foo: 42, bar: _x640};
   var foo = _id22.foo;
   var _id23 = _id22.bar;
   var baz = _id23.baz;
@@ -3271,11 +3266,11 @@ add(tests, ["destructuring", function () {
   } else {
     passed = passed + 1;
   }
-  var _x630 = [20];
-  _x630.foo = 17;
-  var _x629 = [10, _x630];
-  _x629.bar = [1, 2, 3];
-  var _id24 = _x629;
+  var _x645 = [20];
+  _x645.foo = 17;
+  var _x644 = [10, _x645];
+  _x644.bar = [1, 2, 3];
+  var _id24 = _x644;
   var a = _id24[0];
   var _id25 = _id24[1];
   var b = _id25[0];
@@ -3778,63 +3773,63 @@ add(tests, ["join", function () {
   } else {
     passed = passed + 1;
   }
-  var _x688 = ["a"];
-  _x688.b = true;
-  if (! equal63(_x688, join(["a"], {b: true}))) {
+  var _x703 = ["a"];
+  _x703.b = true;
+  if (! equal63(_x703, join(["a"], {b: true}))) {
     failed = failed + 1;
-    var _x690 = ["a"];
-    _x690.b = true;
-    return("failed: expected " + str(_x690) + ", was " + str(join(["a"], {b: true})));
+    var _x705 = ["a"];
+    _x705.b = true;
+    return("failed: expected " + str(_x705) + ", was " + str(join(["a"], {b: true})));
   } else {
     passed = passed + 1;
   }
-  var _x692 = ["a", "b"];
-  _x692.b = true;
-  var _x694 = ["b"];
-  _x694.b = true;
-  if (! equal63(_x692, join(["a"], _x694))) {
+  var _x707 = ["a", "b"];
+  _x707.b = true;
+  var _x709 = ["b"];
+  _x709.b = true;
+  if (! equal63(_x707, join(["a"], _x709))) {
     failed = failed + 1;
-    var _x695 = ["a", "b"];
-    _x695.b = true;
-    var _x697 = ["b"];
-    _x697.b = true;
-    return("failed: expected " + str(_x695) + ", was " + str(join(["a"], _x697)));
+    var _x710 = ["a", "b"];
+    _x710.b = true;
+    var _x712 = ["b"];
+    _x712.b = true;
+    return("failed: expected " + str(_x710) + ", was " + str(join(["a"], _x712)));
   } else {
     passed = passed + 1;
   }
-  var _x698 = ["a"];
-  _x698.b = 10;
-  var _x699 = ["a"];
-  _x699.b = true;
-  if (! equal63(_x698, join(_x699, {b: 10}))) {
+  var _x713 = ["a"];
+  _x713.b = 10;
+  var _x714 = ["a"];
+  _x714.b = true;
+  if (! equal63(_x713, join(_x714, {b: 10}))) {
     failed = failed + 1;
-    var _x700 = ["a"];
-    _x700.b = 10;
-    var _x701 = ["a"];
-    _x701.b = true;
-    return("failed: expected " + str(_x700) + ", was " + str(join(_x701, {b: 10})));
+    var _x715 = ["a"];
+    _x715.b = 10;
+    var _x716 = ["a"];
+    _x716.b = true;
+    return("failed: expected " + str(_x715) + ", was " + str(join(_x716, {b: 10})));
   } else {
     passed = passed + 1;
   }
-  var _x702 = [];
-  _x702.b = 10;
-  var _x703 = [];
-  _x703.b = 10;
-  if (! equal63(_x702, join({b: true}, _x703))) {
+  var _x717 = [];
+  _x717.b = 10;
+  var _x718 = [];
+  _x718.b = 10;
+  if (! equal63(_x717, join({b: true}, _x718))) {
     failed = failed + 1;
-    var _x704 = [];
-    _x704.b = 10;
-    var _x705 = [];
-    _x705.b = 10;
-    return("failed: expected " + str(_x704) + ", was " + str(join({b: true}, _x705)));
+    var _x719 = [];
+    _x719.b = 10;
+    var _x720 = [];
+    _x720.b = 10;
+    return("failed: expected " + str(_x719) + ", was " + str(join({b: true}, _x720)));
   } else {
     passed = passed + 1;
   }
-  var _x706 = ["a"];
-  _x706.b = 1;
-  var _x707 = ["b"];
-  _x707.c = 2;
-  var t = join(_x706, _x707);
+  var _x721 = ["a"];
+  _x721.b = 1;
+  var _x722 = ["b"];
+  _x722.c = 2;
+  var t = join(_x721, _x722);
   if (! equal63(1, t.b)) {
     failed = failed + 1;
     return("failed: expected " + str(1) + ", was " + str(t.b));
@@ -3868,17 +3863,17 @@ add(tests, ["reverse", function () {
   } else {
     passed = passed + 1;
   }
-  var _x713 = [3, 2, 1];
-  _x713.a = true;
-  var _x714 = [1, 2, 3];
-  _x714.a = true;
-  if (! equal63(_x713, reverse(_x714))) {
+  var _x728 = [3, 2, 1];
+  _x728.a = true;
+  var _x729 = [1, 2, 3];
+  _x729.a = true;
+  if (! equal63(_x728, reverse(_x729))) {
     failed = failed + 1;
-    var _x715 = [3, 2, 1];
-    _x715.a = true;
-    var _x716 = [1, 2, 3];
-    _x716.a = true;
-    return("failed: expected " + str(_x715) + ", was " + str(reverse(_x716)));
+    var _x730 = [3, 2, 1];
+    _x730.a = true;
+    var _x731 = [1, 2, 3];
+    _x731.a = true;
+    return("failed: expected " + str(_x730) + ", was " + str(reverse(_x731)));
   } else {
     passed = passed + 1;
     return(passed);
@@ -3915,79 +3910,79 @@ add(tests, ["map", function (_) {
   } else {
     passed = passed + 1;
   }
-  var _x726 = [2, 3, 4];
-  _x726.a = 5;
-  var _x727 = [1, 2, 3];
-  _x727.a = 4;
-  if (! equal63(_x726, map(function (_) {
+  var _x741 = [2, 3, 4];
+  _x741.a = 5;
+  var _x742 = [1, 2, 3];
+  _x742.a = 4;
+  if (! equal63(_x741, map(function (_) {
     return(_ + 1);
-  }, _x727))) {
+  }, _x742))) {
     failed = failed + 1;
-    var _x728 = [2, 3, 4];
-    _x728.a = 5;
-    var _x729 = [1, 2, 3];
-    _x729.a = 4;
-    return("failed: expected " + str(_x728) + ", was " + str(map(function (_) {
+    var _x743 = [2, 3, 4];
+    _x743.a = 5;
+    var _x744 = [1, 2, 3];
+    _x744.a = 4;
+    return("failed: expected " + str(_x743) + ", was " + str(map(function (_) {
       return(_ + 1);
-    }, _x729)));
+    }, _x744)));
   } else {
     passed = passed + 1;
   }
-  var _x730 = [];
-  _x730.a = true;
-  var _x731 = [];
-  _x731.a = true;
-  if (! equal63(_x730, map(function (_) {
+  var _x745 = [];
+  _x745.a = true;
+  var _x746 = [];
+  _x746.a = true;
+  if (! equal63(_x745, map(function (_) {
     return(_);
-  }, _x731))) {
+  }, _x746))) {
     failed = failed + 1;
-    var _x732 = [];
-    _x732.a = true;
-    var _x733 = [];
-    _x733.a = true;
-    return("failed: expected " + str(_x732) + ", was " + str(map(function (_) {
+    var _x747 = [];
+    _x747.a = true;
+    var _x748 = [];
+    _x748.a = true;
+    return("failed: expected " + str(_x747) + ", was " + str(map(function (_) {
       return(_);
-    }, _x733)));
+    }, _x748)));
   } else {
     passed = passed + 1;
   }
-  var _x734 = [];
-  _x734.b = false;
-  var _x735 = [];
-  _x735.b = false;
-  if (! equal63(_x734, map(function (_) {
+  var _x749 = [];
+  _x749.b = false;
+  var _x750 = [];
+  _x750.b = false;
+  if (! equal63(_x749, map(function (_) {
     return(_);
-  }, _x735))) {
+  }, _x750))) {
     failed = failed + 1;
-    var _x736 = [];
-    _x736.b = false;
-    var _x737 = [];
-    _x737.b = false;
-    return("failed: expected " + str(_x736) + ", was " + str(map(function (_) {
+    var _x751 = [];
+    _x751.b = false;
+    var _x752 = [];
+    _x752.b = false;
+    return("failed: expected " + str(_x751) + ", was " + str(map(function (_) {
       return(_);
-    }, _x737)));
+    }, _x752)));
   } else {
     passed = passed + 1;
   }
-  var _x738 = [];
-  _x738.b = false;
-  _x738.a = true;
-  var _x739 = [];
-  _x739.b = false;
-  _x739.a = true;
-  if (! equal63(_x738, map(function (_) {
+  var _x753 = [];
+  _x753.b = false;
+  _x753.a = true;
+  var _x754 = [];
+  _x754.b = false;
+  _x754.a = true;
+  if (! equal63(_x753, map(function (_) {
     return(_);
-  }, _x739))) {
+  }, _x754))) {
     failed = failed + 1;
-    var _x740 = [];
-    _x740.b = false;
-    _x740.a = true;
-    var _x741 = [];
-    _x741.b = false;
-    _x741.a = true;
-    return("failed: expected " + str(_x740) + ", was " + str(map(function (_) {
+    var _x755 = [];
+    _x755.b = false;
+    _x755.a = true;
+    var _x756 = [];
+    _x756.b = false;
+    _x756.a = true;
+    return("failed: expected " + str(_x755) + ", was " + str(map(function (_) {
       return(_);
-    }, _x741)));
+    }, _x756)));
   } else {
     passed = passed + 1;
   }
@@ -4002,19 +3997,19 @@ add(tests, ["map", function (_) {
   } else {
     passed = passed + 1;
   }
-  var _x746 = [2, 4, 6];
-  _x746.b = 8;
-  var _x747 = [1, 2, 3, 4, 5, 6];
-  _x747.b = 8;
-  _x747.a = 7;
-  if (! equal63(_x746, map(evens, _x747))) {
+  var _x761 = [2, 4, 6];
+  _x761.b = 8;
+  var _x762 = [1, 2, 3, 4, 5, 6];
+  _x762.b = 8;
+  _x762.a = 7;
+  if (! equal63(_x761, map(evens, _x762))) {
     failed = failed + 1;
-    var _x748 = [2, 4, 6];
-    _x748.b = 8;
-    var _x749 = [1, 2, 3, 4, 5, 6];
-    _x749.b = 8;
-    _x749.a = 7;
-    return("failed: expected " + str(_x748) + ", was " + str(map(evens, _x749)));
+    var _x763 = [2, 4, 6];
+    _x763.b = 8;
+    var _x764 = [1, 2, 3, 4, 5, 6];
+    _x764.b = 8;
+    _x764.a = 7;
+    return("failed: expected " + str(_x763) + ", was " + str(map(evens, _x764)));
   } else {
     passed = passed + 1;
     return(passed);
@@ -4063,35 +4058,35 @@ add(tests, ["cut", function () {
   } else {
     passed = passed + 1;
   }
-  var _x775 = [2];
-  _x775.a = true;
-  var _x776 = [1, 2];
-  _x776.a = true;
-  if (! equal63(_x775, cut(_x776, 1))) {
+  var _x790 = [2];
+  _x790.a = true;
+  var _x791 = [1, 2];
+  _x791.a = true;
+  if (! equal63(_x790, cut(_x791, 1))) {
     failed = failed + 1;
-    var _x777 = [2];
-    _x777.a = true;
-    var _x778 = [1, 2];
-    _x778.a = true;
-    return("failed: expected " + str(_x777) + ", was " + str(cut(_x778, 1)));
+    var _x792 = [2];
+    _x792.a = true;
+    var _x793 = [1, 2];
+    _x793.a = true;
+    return("failed: expected " + str(_x792) + ", was " + str(cut(_x793, 1)));
   } else {
     passed = passed + 1;
   }
-  var _x779 = [];
-  _x779.b = 2;
-  _x779.a = true;
-  var _x780 = [];
-  _x780.b = 2;
-  _x780.a = true;
-  if (! equal63(_x779, cut(_x780))) {
+  var _x794 = [];
+  _x794.b = 2;
+  _x794.a = true;
+  var _x795 = [];
+  _x795.b = 2;
+  _x795.a = true;
+  if (! equal63(_x794, cut(_x795))) {
     failed = failed + 1;
-    var _x781 = [];
-    _x781.b = 2;
-    _x781.a = true;
-    var _x782 = [];
-    _x782.b = 2;
-    _x782.a = true;
-    return("failed: expected " + str(_x781) + ", was " + str(cut(_x782)));
+    var _x796 = [];
+    _x796.b = 2;
+    _x796.a = true;
+    var _x797 = [];
+    _x797.b = 2;
+    _x797.a = true;
+    return("failed: expected " + str(_x796) + ", was " + str(cut(_x797)));
   } else {
     passed = passed + 1;
   }
@@ -4102,16 +4097,16 @@ add(tests, ["cut", function () {
   } else {
     passed = passed + 1;
   }
-  var _x784 = [1, 2, 3];
-  _x784.a = true;
-  var _t1 = _x784;
-  var _x785 = [];
-  _x785.a = true;
-  if (! equal63(_x785, cut(_t1, _t1.length || 0))) {
+  var _x799 = [1, 2, 3];
+  _x799.a = true;
+  var _t1 = _x799;
+  var _x800 = [];
+  _x800.a = true;
+  if (! equal63(_x800, cut(_t1, _t1.length || 0))) {
     failed = failed + 1;
-    var _x786 = [];
-    _x786.a = true;
-    return("failed: expected " + str(_x786) + ", was " + str(cut(_t1, _t1.length || 0)));
+    var _x801 = [];
+    _x801.a = true;
+    return("failed: expected " + str(_x801) + ", was " + str(cut(_t1, _t1.length || 0)));
   } else {
     passed = passed + 1;
     return(passed);
@@ -4330,19 +4325,19 @@ add(tests, ["keep", function (_) {
   } else {
     passed = passed + 1;
   }
-  var _x850 = [2, 4, 6];
-  _x850.b = 8;
-  var _x851 = [1, 2, 3, 4, 5, 6];
-  _x851.b = 8;
-  _x851.a = 7;
-  if (! equal63(_x850, keep(even63, _x851))) {
+  var _x865 = [2, 4, 6];
+  _x865.b = 8;
+  var _x866 = [1, 2, 3, 4, 5, 6];
+  _x866.b = 8;
+  _x866.a = 7;
+  if (! equal63(_x865, keep(even63, _x866))) {
     failed = failed + 1;
-    var _x852 = [2, 4, 6];
-    _x852.b = 8;
-    var _x853 = [1, 2, 3, 4, 5, 6];
-    _x853.b = 8;
-    _x853.a = 7;
-    return("failed: expected " + str(_x852) + ", was " + str(keep(even63, _x853)));
+    var _x867 = [2, 4, 6];
+    _x867.b = 8;
+    var _x868 = [1, 2, 3, 4, 5, 6];
+    _x868.b = 8;
+    _x868.a = 7;
+    return("failed: expected " + str(_x867) + ", was " + str(keep(even63, _x868)));
   } else {
     passed = passed + 1;
     return(passed);
@@ -4400,31 +4395,31 @@ add(tests, ["find", function (_) {
   } else {
     passed = passed + 1;
   }
-  var _x866 = [2, 4];
-  _x866.foo = 7;
+  var _x881 = [2, 4];
+  _x881.foo = 7;
   if (! equal63(true, find(function (_) {
     return(_ === 7);
-  }, _x866))) {
+  }, _x881))) {
     failed = failed + 1;
-    var _x867 = [2, 4];
-    _x867.foo = 7;
+    var _x882 = [2, 4];
+    _x882.foo = 7;
     return("failed: expected " + str(true) + ", was " + str(find(function (_) {
       return(_ === 7);
-    }, _x867)));
+    }, _x882)));
   } else {
     passed = passed + 1;
   }
-  var _x868 = [2, 4];
-  _x868.bar = true;
+  var _x883 = [2, 4];
+  _x883.bar = true;
   if (! equal63(true, find(function (_) {
     return(_ === true);
-  }, _x868))) {
+  }, _x883))) {
     failed = failed + 1;
-    var _x869 = [2, 4];
-    _x869.bar = true;
+    var _x884 = [2, 4];
+    _x884.bar = true;
     return("failed: expected " + str(true) + ", was " + str(find(function (_) {
       return(_ === true);
-    }, _x869)));
+    }, _x884)));
   } else {
     passed = passed + 1;
   }
@@ -4434,23 +4429,23 @@ add(tests, ["find", function (_) {
   } else {
     passed = passed + 1;
   }
-  var _x872 = [2, 4];
-  _x872.foo = 7;
-  if (! equal63(true, in63(7, _x872))) {
+  var _x887 = [2, 4];
+  _x887.foo = 7;
+  if (! equal63(true, in63(7, _x887))) {
     failed = failed + 1;
-    var _x873 = [2, 4];
-    _x873.foo = 7;
-    return("failed: expected " + str(true) + ", was " + str(in63(7, _x873)));
+    var _x888 = [2, 4];
+    _x888.foo = 7;
+    return("failed: expected " + str(true) + ", was " + str(in63(7, _x888)));
   } else {
     passed = passed + 1;
   }
-  var _x874 = [2, 4];
-  _x874.bar = true;
-  if (! equal63(true, in63(true, _x874))) {
+  var _x889 = [2, 4];
+  _x889.bar = true;
+  if (! equal63(true, in63(true, _x889))) {
     failed = failed + 1;
-    var _x875 = [2, 4];
-    _x875.bar = true;
-    return("failed: expected " + str(true) + ", was " + str(in63(true, _x875)));
+    var _x890 = [2, 4];
+    _x890.bar = true;
+    return("failed: expected " + str(true) + ", was " + str(in63(true, _x890)));
   } else {
     passed = passed + 1;
     return(passed);
@@ -4688,41 +4683,37 @@ add(tests, ["apply", function (_0, _1) {
   } else {
     passed = passed + 1;
   }
-  var _x909 = [];
-  _x909.foo = 42;
+  var _x924 = [];
+  _x924.foo = 42;
   if (! equal63(42, apply(function () {
-    var _r183 = unstash(Array.prototype.slice.call(arguments, 0));
-    var _id27 = _r183;
-    var foo = _id27.foo;
+    var _r184 = unstash(Array.prototype.slice.call(arguments, 0));
+    var foo = _r184.foo;
     return(foo);
-  }, _x909))) {
+  }, _x924))) {
     failed = failed + 1;
-    var _x910 = [];
-    _x910.foo = 42;
+    var _x925 = [];
+    _x925.foo = 42;
     return("failed: expected " + str(42) + ", was " + str(apply(function () {
-      var _r184 = unstash(Array.prototype.slice.call(arguments, 0));
-      var _id28 = _r184;
-      var foo = _id28.foo;
+      var _r185 = unstash(Array.prototype.slice.call(arguments, 0));
+      var foo = _r185.foo;
       return(foo);
-    }, _x910)));
+    }, _x925)));
   } else {
     passed = passed + 1;
   }
-  var _x913 = [];
-  _x913.foo = 42;
-  if (! equal63(42, apply(function (_x911) {
-    var _id29 = _x911;
-    var foo = _id29.foo;
+  var _x928 = [];
+  _x928.foo = 42;
+  if (! equal63(42, apply(function (_x926) {
+    var foo = _x926.foo;
     return(foo);
-  }, [_x913]))) {
+  }, [_x928]))) {
     failed = failed + 1;
-    var _x916 = [];
-    _x916.foo = 42;
-    return("failed: expected " + str(42) + ", was " + str(apply(function (_x914) {
-      var _id30 = _x914;
-      var foo = _id30.foo;
+    var _x931 = [];
+    _x931.foo = 42;
+    return("failed: expected " + str(42) + ", was " + str(apply(function (_x929) {
+      var foo = _x929.foo;
       return(foo);
-    }, [_x916])));
+    }, [_x931])));
   } else {
     passed = passed + 1;
     return(passed);
@@ -4780,24 +4771,21 @@ add(tests, ["call", function () {
   }
 }]);
 add(tests, ["parameters", function () {
-  if (! equal63(42, (function (_x941) {
-    var _id31 = _x941;
-    var a = _id31[0];
+  if (! equal63(42, (function (_x956) {
+    var a = _x956[0];
     return(a);
   })([42]))) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str((function (_x943) {
-      var _id32 = _x943;
-      var a = _id32[0];
+    return("failed: expected " + str(42) + ", was " + str((function (_x958) {
+      var a = _x958[0];
       return(a);
     })([42])));
   } else {
     passed = passed + 1;
   }
-  var f = function (a, _x945) {
-    var _id33 = _x945;
-    var b = _id33[0];
-    var c = _id33[1];
+  var f = function (a, _x960) {
+    var b = _x960[0];
+    var c = _x960[1];
     return([a, b, c]);
   };
   if (! equal63([1, 2, 3], f(1, [2, 3]))) {
@@ -4806,13 +4794,11 @@ add(tests, ["parameters", function () {
   } else {
     passed = passed + 1;
   }
-  var _f = function (a, _x951) {
-    var _id34 = _x951;
-    var b = _id34[0];
-    var c = cut(_id34, 1);
-    var _r196 = unstash(Array.prototype.slice.call(arguments, 2));
-    var _id35 = _r196;
-    var d = cut(_id35, 0);
+  var _f = function (a, _x966) {
+    var b = _x966[0];
+    var c = cut(_x966, 1);
+    var _r197 = unstash(Array.prototype.slice.call(arguments, 2));
+    var d = cut(_r197, 0);
     return([a, b, c, d]);
   };
   if (! equal63([1, 2, [3, 4], [5, 6, 7]], _f(1, [2, 3, 4], 5, 6, 7))) {
@@ -4822,28 +4808,24 @@ add(tests, ["parameters", function () {
     passed = passed + 1;
   }
   if (! equal63([3, 4], (function (a, b) {
-    var _r197 = unstash(Array.prototype.slice.call(arguments, 2));
-    var _id36 = _r197;
-    var c = cut(_id36, 0);
+    var _r198 = unstash(Array.prototype.slice.call(arguments, 2));
+    var c = cut(_r198, 0);
     return(c);
   })(1, 2, 3, 4))) {
     failed = failed + 1;
     return("failed: expected " + str([3, 4]) + ", was " + str((function (a, b) {
-      var _r198 = unstash(Array.prototype.slice.call(arguments, 2));
-      var _id37 = _r198;
-      var c = cut(_id37, 0);
+      var _r199 = unstash(Array.prototype.slice.call(arguments, 2));
+      var c = cut(_r199, 0);
       return(c);
     })(1, 2, 3, 4)));
   } else {
     passed = passed + 1;
   }
-  var _f1 = function (w, _x963) {
-    var _id38 = _x963;
-    var x = _id38[0];
-    var y = cut(_id38, 1);
-    var _r199 = unstash(Array.prototype.slice.call(arguments, 2));
-    var _id39 = _r199;
-    var z = cut(_id39, 0);
+  var _f1 = function (w, _x978) {
+    var x = _x978[0];
+    var y = cut(_x978, 1);
+    var _r200 = unstash(Array.prototype.slice.call(arguments, 2));
+    var z = cut(_r200, 0);
     return([y, z]);
   };
   if (! equal63([[3, 4], [5, 6, 7]], _f1(1, [2, 3, 4], 5, 6, 7))) {
@@ -4853,54 +4835,48 @@ add(tests, ["parameters", function () {
     passed = passed + 1;
   }
   if (! equal63(42, (function () {
-    var _r200 = unstash(Array.prototype.slice.call(arguments, 0));
-    var _id40 = _r200;
-    var foo = _id40.foo;
+    var _r201 = unstash(Array.prototype.slice.call(arguments, 0));
+    var foo = _r201.foo;
     return(foo);
   })({_stash: true, foo: 42}))) {
     failed = failed + 1;
     return("failed: expected " + str(42) + ", was " + str((function () {
-      var _r201 = unstash(Array.prototype.slice.call(arguments, 0));
-      var _id41 = _r201;
-      var foo = _id41.foo;
+      var _r202 = unstash(Array.prototype.slice.call(arguments, 0));
+      var foo = _r202.foo;
       return(foo);
     })({_stash: true, foo: 42})));
   } else {
     passed = passed + 1;
   }
-  var _x974 = [];
-  _x974.foo = 42;
-  if (! equal63(42, (function (_x973) {
-    var _id42 = _x973;
-    var foo = _id42.foo;
+  var _x989 = [];
+  _x989.foo = 42;
+  if (! equal63(42, (function (_x988) {
+    var foo = _x988.foo;
     return(foo);
-  })(_x974))) {
+  })(_x989))) {
     failed = failed + 1;
-    var _x976 = [];
-    _x976.foo = 42;
-    return("failed: expected " + str(42) + ", was " + str((function (_x975) {
-      var _id43 = _x975;
-      var foo = _id43.foo;
+    var _x991 = [];
+    _x991.foo = 42;
+    return("failed: expected " + str(42) + ", was " + str((function (_x990) {
+      var foo = _x990.foo;
       return(foo);
-    })(_x976)));
+    })(_x991)));
   } else {
     passed = passed + 1;
   }
-  var _f2 = function (a, _x977) {
-    var _id44 = _x977;
-    var foo = _id44.foo;
-    var _r204 = unstash(Array.prototype.slice.call(arguments, 2));
-    var _id45 = _r204;
-    var b = _id45.bar;
+  var _f2 = function (a, _x992) {
+    var foo = _x992.foo;
+    var _r205 = unstash(Array.prototype.slice.call(arguments, 2));
+    var b = _r205.bar;
     return([a, b, foo]);
   };
-  var _x980 = [];
-  _x980.foo = 42;
-  if (! equal63([10, 20, 42], _f2(10, _x980, {_stash: true, bar: 20}))) {
+  var _x995 = [];
+  _x995.foo = 42;
+  if (! equal63([10, 20, 42], _f2(10, _x995, {_stash: true, bar: 20}))) {
     failed = failed + 1;
-    var _x982 = [];
-    _x982.foo = 42;
-    return("failed: expected " + str([10, 20, 42]) + ", was " + str(_f2(10, _x982, {_stash: true, bar: 20})));
+    var _x997 = [];
+    _x997.foo = 42;
+    return("failed: expected " + str([10, 20, 42]) + ", was " + str(_f2(10, _x997, {_stash: true, bar: 20})));
   } else {
     passed = passed + 1;
   }
@@ -4916,7 +4892,7 @@ add(tests, ["parameters", function () {
     return(passed);
   }
 }]);
-if (typeof(_x985) === "undefined") {
-  _x985 = true;
+if (typeof(_x1000) === "undefined") {
+  _x1000 = true;
   run_tests();
 }

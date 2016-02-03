@@ -424,6 +424,11 @@
     (let y (f x)
       (if y (return y)))))
 
+(def find (f t)
+  (each x t
+    (let y (f x)
+      (if y (return y)))))
+
 (def first (f l)
   (step x l
     (let y (f x)
@@ -454,14 +459,11 @@
           (unless (nil? y)
             (= (get t k) y)))))))
 
-(def cons (x y)
-  `(,x ,@y))
-
-(def treewise (f base tree)
-  (if (atom? tree) (base tree)
-      (none? tree) ()
-    (f (treewise f base (hd tree))
-       (treewise f base (tl tree)))))
+(def contains? (f x)
+  (if (atom? x) (f x)
+    (each (k v) x
+      (let-when a (contains? f v)
+        (return a)))))
 
 (def keep (f x)
   (map [when (f _) _] x))

@@ -136,8 +136,9 @@
   (case (peek-char s)
     "." (do (read-char s)
             (skip-non-code s)
-            (if (not (peek-char s)) (or s.more eof)
-              (let x (read s)
+            (if (not (peek-char s))
+                (or s.more eof)
+              (let x (read-atom s)
                 (if (or (is x eof) (is x s.more)) x
                   (read-next s (parse-index x prev))))))
     "(" (if ws? prev

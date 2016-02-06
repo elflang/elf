@@ -213,7 +213,7 @@ var read_next = function (s, prev, ws63) {
     if (! peek_char(s)) {
       return(s.more || eof);
     } else {
-      var x = read(s);
+      var x = read_atom(s);
       if (x === eof || x === s.more) {
         return(x);
       } else {

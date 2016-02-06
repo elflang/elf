@@ -213,7 +213,7 @@ local function read_next(s, prev, ws63)
     if not peek_char(s) then
       return(s.more or eof)
     else
-      local x = read(s)
+      local x = read_atom(s)
       if x == eof or x == s.more then
         return(x)
       else

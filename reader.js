@@ -209,14 +209,28 @@ var read_next = function (s, prev, ws63) {
   var _e = peek_char(s);
   if ("." === _e) {
     read_char(s);
-    return(read_next(s, parse_index(read_atom(s), prev)));
+    skip_non_code(s);
+    if (! peek_char(s)) {
+      return(s.more || eof);
+    } else {
+      var x = read(s);
+      if (x === eof || x === s.more) {
+        return(x);
+      } else {
+        return(read_next(s, parse_index(x, prev)));
+      }
+    }
   } else {
     if ("(" === _e) {
       if (ws63) {
         return(prev);
       } else {
-        var x = join([prev], read_list(s, ")"));
-        return(read_next(s, x, skip_non_code(s)));
+        var _x15 = read_list(s, ")");
+        if (_x15 === s.more) {
+          return(_x15);
+        } else {
+          return(read_next(s, join([prev], _x15), skip_non_code(s)));
+        }
       }
     } else {
       return(prev);
@@ -259,7 +273,12 @@ setenv("%fn", {_stash: true, macro: function (body) {
   return(["fn", l, body]);
 }});
 read_table["["] = function (s) {
-  return(read_next(s, ["%fn", read_list(s, "]")], skip_non_code(s)));
+  var x = read_list(s, "]");
+  if (x === s.more) {
+    return(x);
+  } else {
+    return(read_next(s, ["%fn", x], skip_non_code(s)));
+  }
 };
 read_table["]"] = function (s) {
   throw new Error("Unexpected ] at " + s.pos);

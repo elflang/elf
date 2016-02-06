@@ -134,10 +134,16 @@
 
 (var read-next (s prev ws?)
   (case (peek-char s)
-    "." (do (read-char s) (read-next s (parse-index (read-atom s) prev)))
+    "." (do (read-char s)
+            (skip-non-code s)
+            (if (not (peek-char s)) (or s.more eof)
+              (let x (read s)
+                (if (or (is x eof) (is x s.more)) x
+                  (read-next s (parse-index x prev))))))
     "(" (if ws? prev
-          (let x `(,prev ,@(read-list s ")"))
-            (read-next s x (skip-non-code s))))
+          (let x (read-list s ")")
+            (if (is x s.more) x
+              (read-next s `(,prev ,@x) (skip-non-code s)))))
     prev))
 
 (defreader ("" s) ; atom
@@ -165,7 +171,9 @@
   `(fn ,l ,body)))
 
 (defreader ("[" s)
-  (read-next s `(%fn ,(read-list s "]")) (skip-non-code s)))
+  (let x (read-list s "]")
+    (if (is x s.more) x
+      (read-next s `(%fn ,x) (skip-non-code s)))))
 
 (defreader ("]" s)
   (error (cat "Unexpected ] at " s.pos)))

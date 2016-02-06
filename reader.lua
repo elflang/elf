@@ -209,14 +209,28 @@ local function read_next(s, prev, ws63)
   local _e = peek_char(s)
   if "." == _e then
     read_char(s)
-    return(read_next(s, parse_index(read_atom(s), prev)))
+    skip_non_code(s)
+    if not peek_char(s) then
+      return(s.more or eof)
+    else
+      local x = read(s)
+      if x == eof or x == s.more then
+        return(x)
+      else
+        return(read_next(s, parse_index(x, prev)))
+      end
+    end
   else
     if "(" == _e then
       if ws63 then
         return(prev)
       else
-        local x = join({prev}, read_list(s, ")"))
-        return(read_next(s, x, skip_non_code(s)))
+        local _x16 = read_list(s, ")")
+        if _x16 == s.more then
+          return(_x16)
+        else
+          return(read_next(s, join({prev}, _x16), skip_non_code(s)))
+        end
       end
     else
       return(prev)
@@ -259,7 +273,12 @@ setenv("%fn", {_stash = true, macro = function (body)
   return({"fn", l, body})
 end})
 read_table["["] = function (s)
-  return(read_next(s, {"%fn", read_list(s, "]")}, skip_non_code(s)))
+  local x = read_list(s, "]")
+  if x == s.more then
+    return(x)
+  else
+    return(read_next(s, {"%fn", x}, skip_non_code(s)))
+  end
 end
 read_table["]"] = function (s)
   error("Unexpected ] at " .. s.pos)

@@ -1042,8 +1042,11 @@ escape = function (s) {
   }
   return(s1 + "\"");
 };
-str = function (x, depth) {
-  if (depth && depth > 40) {
+str = function (x, depth, stack) {
+  if (typeof(stack) === "undefined" || stack === null) {
+    stack = [];
+  }
+  if (in63(x, stack)) {
     return("circular");
   } else {
     if (typeof(x) === "undefined" || x === null) {
@@ -1071,14 +1074,13 @@ str = function (x, depth) {
                 if (typeof(x) === "function") {
                   return("fn");
                 } else {
-                  if (!( typeof(x) === "object")) {
-                    return(tostring(x));
-                  } else {
+                  if (! !( typeof(x) === "object")) {
                     var s = "(";
                     var sp = "";
                     var xs = [];
                     var ks = [];
                     var d = (depth || 0) + 1;
+                    add(stack, x);
                     var _l17 = x;
                     var k = undefined;
                     for (k in _l17) {
@@ -1091,12 +1093,13 @@ str = function (x, depth) {
                       }
                       var _k9 = _e43;
                       if (typeof(_k9) === "number") {
-                        xs[_k9] = str(v, d);
+                        xs[_k9] = str(v, d, stack);
                       } else {
                         add(ks, _k9 + ":");
-                        add(ks, str(v, d));
+                        add(ks, str(v, d, stack));
                       }
                     }
+                    drop(stack);
                     var _l18 = join(xs, ks);
                     var _i20 = undefined;
                     for (_i20 in _l18) {
@@ -1112,6 +1115,8 @@ str = function (x, depth) {
                       sp = " ";
                     }
                     return(s + ")");
+                  } else {
+                    return(escape(tostring(x)));
                   }
                 }
               }

@@ -934,8 +934,11 @@ function escape(s)
   end
   return(s1 .. "\"")
 end
-function str(x, depth)
-  if depth and depth > 40 then
+function str(x, depth, stack)
+  if stack == nil then
+    stack = {}
+  end
+  if in63(x, stack) then
     return("circular")
   else
     if x == nil then
@@ -963,25 +966,25 @@ function str(x, depth)
                 if type(x) == "function" then
                   return("fn")
                 else
-                  if not( type(x) == "table") then
-                    return(tostring(x))
-                  else
+                  if not not( type(x) == "table") then
                     local s = "("
                     local sp = ""
                     local xs = {}
                     local ks = {}
                     local d = (depth or 0) + 1
+                    add(stack, x)
                     local _l17 = x
                     local k = nil
                     for k in next, _l17 do
                       local v = _l17[k]
                       if type(k) == "number" then
-                        xs[k] = str(v, d)
+                        xs[k] = str(v, d, stack)
                       else
                         add(ks, k .. ":")
-                        add(ks, str(v, d))
+                        add(ks, str(v, d, stack))
                       end
                     end
+                    drop(stack)
                     local _l18 = join(xs, ks)
                     local _i20 = nil
                     for _i20 in next, _l18 do
@@ -990,6 +993,8 @@ function str(x, depth)
                       sp = " "
                     end
                     return(s .. ")")
+                  else
+                    return(escape(tostring(x)))
                   end
                 end
               end

@@ -571,8 +571,8 @@
         (cat! s1 c1)))
     (cat s1 "\"")))
 
-(def str (x depth)
-  (if (and depth (> depth 40)) "circular"
+(def str (x depth (o stack ()))
+  (if (in? x stack) "circular"
       (nil? x) "nil"
       (nan? x) "nan"
       (is x inf) "inf"
@@ -580,19 +580,22 @@
       (boolean? x) (if x "true" "false")
       (string? x) (escape x)
       (function? x) "fn"
-      (atom? x) (tostring x)
-    (let (s "(" sp ""
-          xs () ks ()
-          d (+ (or depth 0) 1))
-      (each (k v) x
-        (if (number? k)
-            (= (get xs k) (str v d))
-          (do (add ks (cat k ":"))
-              (add ks (str v d)))))
-      (each v (join xs ks)
-        (cat! s sp v)
-        (= sp " "))
-      (cat s  ")"))))
+      (~atom? x)
+      (let (s "(" sp ""
+            xs () ks ()
+            d (+ (or depth 0) 1))
+        (add stack x)
+        (each (k v) x
+          (if (number? k)
+              (= (get xs k) (str v d stack))
+            (do (add ks (cat k ":"))
+                (add ks (str v d stack)))))
+        (drop stack)
+        (each v (join xs ks)
+          (cat! s sp v)
+          (= sp " "))
+        (cat s  ")"))
+    (escape (tostring x))))
 
 (%lua (var values (or unpack table.unpack)))
 

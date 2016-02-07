@@ -427,11 +427,16 @@
       (if y (return y)))))
 
 (def ontree (f t :skip)
-  (each x t
-    (unless (and skip (skip x))
-      (let y (if (atom? x) (f x)
-               (ontree f x skip: skip))
-        (if y (return y))))))
+  (unless (and skip (skip t))
+    (let y (f t)
+      (if y (return y)))
+    (unless (atom? t)
+      (each x t
+        (let y (ontree f x skip: skip)
+          (if y (return y)))))))
+
+(def hd-is? (l val)
+  (and (~atom? l) (is (hd l) val)))
 
 (def first (f l)
   (step x l
@@ -537,7 +542,7 @@
 
 (def > (a b) (> a b))
 (def < (a b) (< a b))
-(def = (a b) (is a b))
+(def is (a b) (is a b))
 (def >= (a b) (>= a b))
 (def <= (a b) (<= a b))
 

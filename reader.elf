@@ -158,7 +158,7 @@
 
 (mac %fn (body)
   (let (n -1 l () any? nil)
-    (ontree skip: [unless (atom? _) (is (hd _) '%fn)]
+    (ontree skip: [hd-is? _ '%fn]
        [when (and (string? _) (<= (# _) 2) (is (code _ 0) 95)) ; "_"
          (= any? true)
          (var c (code _ 1))

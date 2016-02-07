@@ -263,9 +263,7 @@ setenv("%fn", {_stash: true, macro: function (body) {
       return(undefined);
     }
   }, body, {_stash: true, skip: function (_) {
-    if (! !( typeof(_) === "object")) {
-      return(_[0] === "%fn");
-    }
+    return(hd_is63(_, "%fn"));
   }});
   if (any63 && (l.length || 0) === 0) {
     add(l, "_");

@@ -669,23 +669,26 @@ end
 function ontree(f, t, ...)
   local _r142 = unstash({...})
   local skip = _r142.skip
-  local _l11 = t
-  local _i11 = nil
-  for _i11 in next, _l11 do
-    local x = _l11[_i11]
-    if not( skip and skip(x)) then
-      local _e25
-      if not( type(x) == "table") then
-        _e25 = f(x)
-      else
-        _e25 = ontree(f, x, {_stash = true, skip = skip})
-      end
-      local y = _e25
-      if y then
-        return(y)
+  if not( skip and skip(t)) then
+    local y = f(t)
+    if y then
+      return(y)
+    end
+    if not not( type(t) == "table") then
+      local _l11 = t
+      local _i11 = nil
+      for _i11 in next, _l11 do
+        local x = _l11[_i11]
+        local _y = ontree(f, x, {_stash = true, skip = skip})
+        if _y then
+          return(_y)
+        end
       end
     end
   end
+end
+function hd_is63(l, val)
+  return(not not( type(l) == "table") and l[1] == val)
 end
 function first(f, l)
   local _x540 = l
@@ -810,11 +813,11 @@ function unstash(args)
   end
 end
 function search(s, pattern, start)
-  local _e26
+  local _e25
   if start then
-    _e26 = start + 1
+    _e25 = start + 1
   end
-  local _start = _e26
+  local _start = _e25
   local i = string.find(s, pattern, _start, true)
   return(i and i - 1)
 end
@@ -879,7 +882,7 @@ end
 function _60(a, b)
   return(a < b)
 end
-function _61(a, b)
+function is(a, b)
   return(a == b)
 end
 function _6261(a, b)
@@ -910,25 +913,25 @@ function escape(s)
   local i = 0
   while i < #(s) do
     local c = char(s, i)
-    local _e27
+    local _e26
     if c == "\n" then
-      _e27 = "\\n"
+      _e26 = "\\n"
     else
-      local _e28
+      local _e27
       if c == "\"" then
-        _e28 = "\\\""
+        _e27 = "\\\""
       else
-        local _e29
+        local _e28
         if c == "\\" then
-          _e29 = "\\\\"
+          _e28 = "\\\\"
         else
-          _e29 = c
+          _e28 = c
         end
-        _e28 = _e29
+        _e27 = _e28
       end
-      _e27 = _e28
+      _e26 = _e27
     end
-    local c1 = _e27
+    local c1 = _e26
     s1 = s1 .. c1
     i = i + 1
   end
@@ -1017,16 +1020,16 @@ function toplevel63()
   return(#(environment) == 1)
 end
 function setenv(k, ...)
-  local _r176 = unstash({...})
-  local _keys = cut(_r176, 0)
+  local _r177 = unstash({...})
+  local _keys = cut(_r177, 0)
   if type(k) == "string" then
-    local _e30
+    local _e29
     if _keys.toplevel then
-      _e30 = environment[1]
+      _e29 = environment[1]
     else
-      _e30 = last(environment)
+      _e29 = last(environment)
     end
-    local frame = _e30
+    local frame = _e29
     local entry = frame[k] or {}
     local _l19 = _keys
     local _k = nil

@@ -263,9 +263,7 @@ setenv("%fn", {_stash = true, macro = function (body)
       return(nil)
     end
   end, body, {_stash = true, skip = function (_)
-    if not not( type(_) == "table") then
-      return(_[1] == "%fn")
-    end
+    return(hd_is63(_, "%fn"))
   end})
   if any63 and #(l) == 0 then
     add(l, "_")

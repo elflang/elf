@@ -67,7 +67,7 @@
             (id val rest: bs1) (bind lh rh))
         (let renames ()
           (if (or (bound? id) (toplevel?))
-              (let id1 (unique id)
+              (let id1 (uniq id)
                 (assign renames (list id id1))
                 (assign id id1))
             (setenv id :variable))
@@ -156,7 +156,7 @@
   (mac w/uniq (names rest: body)
     `(let ,(apply join
              (xform (listify names)
-               `(,_ (unique ',_))))
+               `(,_ (uniq ',_))))
        ,@body))
 
   (mac fn (args rest: body)

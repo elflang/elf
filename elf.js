@@ -24,7 +24,7 @@ var setup = function () {
   }});
   setenv("list", {_stash: true, macro: function () {
     var body = unstash(Array.prototype.slice.call(arguments, 0));
-    var x = unique("x");
+    var x = uniq("x");
     var l = [];
     var forms = [];
     var _l1 = body;
@@ -60,7 +60,7 @@ var setup = function () {
   setenv("case", {_stash: true, macro: function (x) {
     var _r13 = unstash(Array.prototype.slice.call(arguments, 1));
     var clauses = cut(_r13, 0);
-    var e = unique("e");
+    var e = uniq("e");
     var bs = map(function (_x38) {
       var a = _x38[0];
       var b = _x38[1];
@@ -110,7 +110,7 @@ var setup = function () {
         var bs1 = cut(_id13, 2);
         var renames = [];
         if (bound63(id) || toplevel63()) {
-          var id1 = unique(id);
+          var id1 = uniq(id);
           renames = [id, id1];
           id = id1;
         } else {
@@ -179,7 +179,7 @@ var setup = function () {
   setenv("let-when", {_stash: true, macro: function (x, v) {
     var _r34 = unstash(Array.prototype.slice.call(arguments, 2));
     var body = cut(_r34, 0);
-    var y = unique("y");
+    var y = uniq("y");
     return(["let", y, v, ["when", y, join(["let", [x, y]], body)]]);
   }});
   setenv("mac", {_stash: true, macro: function (name, args) {
@@ -228,14 +228,14 @@ var setup = function () {
   }});
   setenv("with-frame", {_stash: true, macro: function () {
     var body = unstash(Array.prototype.slice.call(arguments, 0));
-    var x = unique("x");
+    var x = uniq("x");
     return(["do", ["add", "environment*", ["obj"]], ["with", x, join(["do"], body), ["drop", "environment*"]]]);
   }});
   setenv("with-bindings", {_stash: true, macro: function (_x166) {
     var names = _x166[0];
     var _r46 = unstash(Array.prototype.slice.call(arguments, 1));
     var body = cut(_r46, 0);
-    var x = unique("x");
+    var x = uniq("x");
     var _x169 = ["setenv", x];
     _x169.variable = true;
     return(join(["with-frame", ["each", x, names, _x169]], body));
@@ -274,7 +274,7 @@ var setup = function () {
       _e21 = [names];
     }
     return(join(["let", apply(join, map(function (_) {
-      return([_, ["unique", ["quote", _]]]);
+      return([_, ["uniq", ["quote", _]]]);
     }, _e21))], body));
   }});
   setenv("fn", {_stash: true, macro: function (args) {
@@ -286,18 +286,18 @@ var setup = function () {
     if (target42 === "js") {
       return([["%fn", ["%try", ["list", true, expr]]]]);
     } else {
-      var x = unique("x");
-      var msg = unique("msg");
-      var trace = unique("trace");
+      var x = uniq("x");
+      var msg = uniq("msg");
+      var trace = uniq("trace");
       return(["let", [x, "nil", msg, "nil", trace, "nil"], ["if", ["xpcall", ["%fn", ["=", x, expr]], ["%fn", ["do", ["=", msg, ["clip", "_", ["+", ["search", "_", "\": \""], 2]]], ["=", trace, [["get", "debug", ["quote", "traceback"]]]]]]], ["list", true, x], ["list", false, msg, trace]]]);
     }
   }});
   setenv("each", {_stash: true, macro: function (x, t) {
     var _r64 = unstash(Array.prototype.slice.call(arguments, 2));
     var body = cut(_r64, 0);
-    var l = unique("l");
-    var n = unique("n");
-    var i = unique("i");
+    var l = uniq("l");
+    var n = uniq("n");
+    var i = uniq("i");
     var _e22;
     if (!( typeof(x) === "object")) {
       _e22 = [i, x];
@@ -357,9 +357,9 @@ var setup = function () {
   setenv("step", {_stash: true, macro: function (v, t) {
     var _r68 = unstash(Array.prototype.slice.call(arguments, 2));
     var body = cut(_r68, 0);
-    var x = unique("x");
-    var n = unique("n");
-    var i = unique("i");
+    var x = uniq("x");
+    var n = uniq("n");
+    var i = uniq("i");
     return(["let", [x, t, n, ["#", x]], ["for", i, n, join(["let", [v, ["at", x, i]]], body)]]);
   }});
   setenv("set-of", {_stash: true, macro: function () {
@@ -404,7 +404,7 @@ var setup = function () {
     return(["=", n, ["-", n, by || 1]]);
   }});
   setenv("with-indent", {_stash: true, macro: function (form) {
-    var x = unique("x");
+    var x = uniq("x");
     return(["do", ["++", "indent-level*"], ["with", x, form, ["--", "indent-level*"]]]);
   }});
   setenv("export", {_stash: true, macro: function () {
@@ -457,7 +457,7 @@ var setup = function () {
   }});
   setenv("once", {_stash: true, macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));
-    var x = unique("x");
+    var x = uniq("x");
     return(join(["when", ["undef?", x], ["=", x, true]], forms));
   }});
   setenv("elf", {_stash: true, macro: function () {

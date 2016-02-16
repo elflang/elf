@@ -3530,8 +3530,8 @@ add(tests, ["macros-and-let", function () {
   }
 }]);
 add(tests, ["w/uniq", function () {
-  var ham = unique("ham");
-  var chap = unique("chap");
+  var ham = uniq("ham");
+  var chap = uniq("chap");
   if (! equal63("_ham", ham)) {
     failed = failed + 1;
     return("failed: expected " + str("_ham") + ", was " + str(ham));
@@ -3544,7 +3544,7 @@ add(tests, ["w/uniq", function () {
   } else {
     passed = passed + 1;
   }
-  var _ham = unique("ham");
+  var _ham = uniq("ham");
   if (! equal63("_ham1", _ham)) {
     failed = failed + 1;
     return("failed: expected " + str("_ham1") + ", was " + str(_ham));

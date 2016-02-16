@@ -66,11 +66,11 @@ local function literal(s)
   end
 end
 local _names = {}
-function unique(x)
+function uniq(x)
   if _names[x] then
     local i = _names[x]
     _names[x] = _names[x] + 1
-    return(unique(x .. i))
+    return(uniq(x .. i))
   else
     _names[x] = 1
     return("_" .. x)
@@ -113,7 +113,7 @@ function bind(lh, rh, vars)
       local val = lh[3]
       return({_var, {"if", {"nil?", rh}, val, rh}})
     else
-      local id = unique("id")
+      local id = uniq("id")
       local bs = {id, rh}
       if not( type(macroexpand(rh)) == "table") and not ontree(function (_)
         return(_ == rh)
@@ -169,7 +169,7 @@ function bind42(args, body)
   else
     local bs = {}
     local inits = {}
-    local r = unique("r")
+    local r = uniq("r")
     local _x32 = args
     local _n2 = #(_x32)
     local _i2 = 0
@@ -185,7 +185,7 @@ function bind42(args, body)
           add(args1, _var1)
           add(inits, {"if", {"nil?", _var1}, {"=", _var1, val}})
         else
-          local x = unique("x")
+          local x = uniq("x")
           add(args1, x)
           bs = join(bs, {v, x})
         end
@@ -830,7 +830,7 @@ local function lower_if(args, hoist, stmt63, tail63)
     end
     return(add(hoist, join({"%if", lower(cond, hoist), lower_body({_then}, tail63)}, _e25)))
   else
-    local e = unique("e")
+    local e = uniq("e")
     add(hoist, {"%local", e})
     local _e24
     if _else then
@@ -846,7 +846,7 @@ local function lower_short(x, args, hoist)
   local hoist1 = {}
   local b1 = lower(b, hoist1)
   if #(hoist1) > 0 then
-    local _id20 = unique("id")
+    local _id20 = uniq("id")
     local _e26
     if x == "and" then
       _e26 = {"%if", _id20, b, _id20}
@@ -1064,7 +1064,7 @@ setenv("%for", {_stash = true, tr = true, special = function (t, k, form)
   end
 end, stmt = true})
 setenv("%try", {_stash = true, tr = true, special = function (form)
-  local e = unique("e")
+  local e = uniq("e")
   local ind = indentation()
   indent_level42 = indent_level42 + 1
   local _x135 = compile(form, {_stash = true, stmt = true})

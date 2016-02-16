@@ -50,11 +50,11 @@
   (if (string-literal? s) s (quoted s)))
 
 (let (names (obj))
-  (def unique (x)
+  (def uniq (x)
     (if (get names x)
         (let i (get names x)
           (++ (get names x))
-          (unique (cat x i)))
+          (uniq (cat x i)))
       (do (= (get names x) 1)
           (cat "_" x)))))
 

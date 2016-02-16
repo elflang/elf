@@ -3623,8 +3623,8 @@ add(tests, {"macros-and-let", function ()
   end
 end})
 add(tests, {"w/uniq", function ()
-  local ham = unique("ham")
-  local chap = unique("chap")
+  local ham = uniq("ham")
+  local chap = uniq("chap")
   if not equal63("_ham", ham) then
     failed = failed + 1
     return("failed: expected " .. str("_ham") .. ", was " .. str(ham))
@@ -3637,7 +3637,7 @@ add(tests, {"w/uniq", function ()
   else
     passed = passed + 1
   end
-  local _ham = unique("ham")
+  local _ham = uniq("ham")
   if not equal63("_ham1", _ham) then
     failed = failed + 1
     return("failed: expected " .. str("_ham1") .. ", was " .. str(_ham))

@@ -77,11 +77,11 @@ var literal = function (s) {
   }
 };
 var _names = {};
-unique = function (x) {
+uniq = function (x) {
   if (_names[x]) {
     var i = _names[x];
     _names[x] = _names[x] + 1;
-    return(unique(x + i));
+    return(uniq(x + i));
   } else {
     _names[x] = 1;
     return("_" + x);
@@ -131,7 +131,7 @@ bind = function (lh, rh, vars) {
       var val = lh[2];
       return([_var, ["if", ["nil?", rh], val, rh]]);
     } else {
-      var id = unique("id");
+      var id = uniq("id");
       var bs = [id, rh];
       if (!( typeof(macroexpand(rh)) === "object") && ! ontree(function (_) {
         return(_ === rh);
@@ -194,7 +194,7 @@ bind42 = function (args, body) {
   } else {
     var bs = [];
     var inits = [];
-    var r = unique("r");
+    var r = uniq("r");
     var _x32 = args;
     var _n2 = _x32.length || 0;
     var _i2 = 0;
@@ -210,7 +210,7 @@ bind42 = function (args, body) {
           add(args1, _var1);
           add(inits, ["if", ["nil?", _var1], ["=", _var1, val]]);
         } else {
-          var x = unique("x");
+          var x = uniq("x");
           add(args1, x);
           bs = join(bs, [v, x]);
         }
@@ -889,7 +889,7 @@ var lower_if = function (args, hoist, stmt63, tail63) {
     }
     return(add(hoist, join(["%if", lower(cond, hoist), lower_body([_then], tail63)], _e33)));
   } else {
-    var e = unique("e");
+    var e = uniq("e");
     add(hoist, ["%local", e]);
     var _e32;
     if (_else) {
@@ -905,7 +905,7 @@ var lower_short = function (x, args, hoist) {
   var hoist1 = [];
   var b1 = lower(b, hoist1);
   if ((hoist1.length || 0) > 0) {
-    var _id20 = unique("id");
+    var _id20 = uniq("id");
     var _e34;
     if (x === "and") {
       _e34 = ["%if", _id20, b, _id20];
@@ -1116,7 +1116,7 @@ setenv("%for", {_stash: true, tr: true, special: function (t, k, form) {
   }
 }, stmt: true});
 setenv("%try", {_stash: true, tr: true, special: function (form) {
-  var e = unique("e");
+  var e = uniq("e");
   var ind = indentation();
   indent_level42 = indent_level42 + 1;
   var _x132 = compile(form, {_stash: true, stmt: true});

@@ -692,11 +692,11 @@ c"
       (eq 42 d))
     (eq 40 d)))
 
-(deftest let-unique
-  (let-unique (ham chap)
+(deftest w/uniq
+  (w/uniq (ham chap)
     (eq '_ham ham)
     (eq '_chap chap)
-    (let-unique (ham)
+    (w/uniq (ham)
       (eq '_ham1 ham))))
 
 (deftest literals

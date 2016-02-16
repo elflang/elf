@@ -3529,7 +3529,7 @@ add(tests, ["macros-and-let", function () {
     return(passed);
   }
 }]);
-add(tests, ["let-unique", function () {
+add(tests, ["w/uniq", function () {
   var ham = unique("ham");
   var chap = unique("chap");
   if (! equal63("_ham", ham)) {

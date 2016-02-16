@@ -264,7 +264,7 @@ var setup = function () {
     drop(environment42);
     return(_x182);
   }});
-  setenv("let-unique", {_stash: true, macro: function (names) {
+  setenv("w/uniq", {_stash: true, macro: function (names) {
     var _r57 = unstash(Array.prototype.slice.call(arguments, 1));
     var body = cut(_r57, 0);
     var bs = map(function (_) {

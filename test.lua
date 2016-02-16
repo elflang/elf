@@ -3622,7 +3622,7 @@ add(tests, {"macros-and-let", function ()
     return(passed)
   end
 end})
-add(tests, {"let-unique", function ()
+add(tests, {"w/uniq", function ()
   local ham = unique("ham")
   local chap = unique("chap")
   if not equal63("_ham", ham) then

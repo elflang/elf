@@ -139,11 +139,11 @@
   `(%local ,name ,(macroexpand value)))
 
 (var expand-function ((x args rest: body))
-  (with-bindings (args)
+  (w/bindings (args)
     `(%function ,args ,@(macroexpand body))))
 
 (var expand-definition ((x name args rest: body))
-  (with-bindings (args)
+  (w/bindings (args)
     `(,x ,name ,args ,@(macroexpand body))))
 
 (var expand-macro ((name rest: body))

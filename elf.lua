@@ -224,7 +224,7 @@ local function setup()
     local x = uniq("x")
     return({"do", {"add", "environment*", {"obj"}}, {"with", x, join({"do"}, body), {"drop", "environment*"}}})
   end})
-  setenv("with-bindings", {_stash = true, macro = function (_x181, ...)
+  setenv("w/bindings", {_stash = true, macro = function (_x181, ...)
     local names = _x181[1]
     local _r46 = unstash({...})
     local body = cut(_r46, 0)

@@ -142,7 +142,7 @@
            (with ,x (do ,@body)
              (drop environment*)))))
 
-  (mac with-bindings ((names) rest: body)
+  (mac w/bindings ((names) rest: body)
     (w/uniq x
      `(w/frame
         (each ,x ,names

@@ -231,7 +231,7 @@ var setup = function () {
     var x = uniq("x");
     return(["do", ["add", "environment*", ["obj"]], ["with", x, join(["do"], body), ["drop", "environment*"]]]);
   }});
-  setenv("with-bindings", {_stash: true, macro: function (_x166) {
+  setenv("w/bindings", {_stash: true, macro: function (_x166) {
     var names = _x166[0];
     var _r46 = unstash(Array.prototype.slice.call(arguments, 1));
     var body = cut(_r46, 0);

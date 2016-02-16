@@ -154,10 +154,10 @@
       `(do ,@(macroexpand body))))
 
   (mac w/uniq (names rest: body)
-    (let bs (xform names
-              `(,_ (unique ',_)))
-      `(let ,(apply join bs)
-         ,@body)))
+    `(let ,(apply join
+             (xform (listify names)
+               `(,_ (unique ',_))))
+       ,@body))
 
   (mac fn (args rest: body)
     `(%function ,@(bind* args body)))
@@ -313,6 +313,10 @@
   (mac function? (x) `(is (type ,x) 'function))
   (mac table? (x) `(is (type ,x) (target js: 'object lua: 'table)))
   (mac atom? (x) `(~table? ,x))
+
+  (mac listify (x)
+    (assert (atom? x))
+    `(if (table? ,x) ,x (list ,x)))
 
   nil
 

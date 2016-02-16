@@ -81,7 +81,7 @@
                 (assign id id1))
             (setenv id :variable))
           `(do (%local ,id ,val)
-               (let-symbol ,renames
+               (w/sym ,renames
                  (let ,(join bs1 bs2) ,@body)))))))
 
   (mac = l
@@ -154,12 +154,14 @@
       (macroexpand `(mac ,name ,args ,definition))
       `(do ,@(macroexpand body))))
 
-  (mac let-symbol (expansions rest: body)
-    (w/frame
-      (map (fn ((name exp))
-             (macroexpand `(defsym ,name ,exp)))
-           (pair expansions))
-      `(do ,@(macroexpand body))))
+  (mac w/sym (expansions rest: body)
+    (if (atom? expansions)
+        `(w/sym (,expansions ,(hd body)) ,@(tl body))
+      (w/frame
+        (map (fn ((name exp))
+               (macroexpand `(defsym ,name ,exp)))
+             (pair expansions))
+        `(do ,@(macroexpand body)))))
 
   (mac w/uniq (names rest: body)
     `(let ,(apply join

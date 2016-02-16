@@ -3373,7 +3373,7 @@ add(tests, ["w/mac", function () {
     return(passed);
   }
 }]);
-add(tests, ["let-symbol", function () {
+add(tests, ["w/sym", function () {
   if (! equal63(17, 17)) {
     failed = failed + 1;
     return("failed: expected " + str(17) + ", was " + str(17));

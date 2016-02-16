@@ -642,16 +642,15 @@ c"
                    `(+ ,x 1))
     (eq 2 (a 1))))
 
-(deftest let-symbol
-  (let-symbol (a 17
-               b (+ 10 7))
+(deftest w/sym
+  (w/sym (a 17 b (+ 10 7))
     (eq 17 a)
     (eq 17 b)
-    (let-symbol (a 1)
+    (w/sym a 1
       (eq 1 a))
     (eq 17 a))
-  (let-symbol (a 18)
-    (let (b 20)
+  (w/sym a 18
+    (let b 20
       (eq 18 a)
       (eq 20 b))))
 
@@ -660,12 +659,12 @@ c"
   (eq zzz 42))
 
 (deftest macros-and-symbols
-  (let-symbol (a 1)
+  (w/sym a 1
     (w/mac a () 2
       (eq 2 (a)))
     (eq 1 a))
   (w/mac a () 2
-    (let-symbol (a 1)
+    (w/sym a 1
       (eq 1 a))
     (eq 2 (a))))
 
@@ -677,7 +676,7 @@ c"
     (eq a 10))
   (let b 20
     (eq b 20)
-    (let-symbol (b 22)
+    (w/sym b 22
       (eq 22 b))
     (eq b 20))
   (w/mac c () 30
@@ -685,7 +684,7 @@ c"
     (let c 32
       (eq 32 c))
     (eq 30 (c)))
-  (let-symbol (d 40)
+  (w/sym d 40
     (eq 40 d)
     (let d 42
       (eq 42 d))

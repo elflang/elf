@@ -3466,7 +3466,7 @@ add(tests, {"w/mac", function ()
     return(passed)
   end
 end})
-add(tests, {"let-symbol", function ()
+add(tests, {"w/sym", function ()
   if not equal63(17, 17) then
     failed = failed + 1
     return("failed: expected " .. str(17) .. ", was " .. str(17))

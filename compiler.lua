@@ -388,6 +388,10 @@ function indentation()
   end
   return(s)
 end
+setenv("w/indent", {_stash = true, macro = function (form)
+  local x = uniq("x")
+  return({"do", {"++", "indent-level*"}, {"with", x, form, {"--", "indent-level*"}}})
+end})
 local reserved = {["else"] = true, ["<"] = true, ["true"] = true, ["/"] = true, ["end"] = true, ["typeof"] = true, ["function"] = true, ["switch"] = true, ["="] = true, ["or"] = true, ["try"] = true, ["catch"] = true, ["until"] = true, ["local"] = true, ["repeat"] = true, ["-"] = true, ["false"] = true, ["continue"] = true, ["=="] = true, ["and"] = true, ["if"] = true, ["for"] = true, [">="] = true, ["<="] = true, ["with"] = true, ["return"] = true, ["finally"] = true, ["nil"] = true, ["new"] = true, ["do"] = true, ["case"] = true, ["break"] = true, ["elseif"] = true, ["+"] = true, ["not"] = true, ["void"] = true, ["var"] = true, ["%"] = true, ["in"] = true, ["delete"] = true, ["throw"] = true, ["debugger"] = true, ["instanceof"] = true, ["this"] = true, ["while"] = true, ["then"] = true, ["default"] = true, ["*"] = true, [">"] = true}
 function reserved63(x)
   return(reserved[x])
@@ -435,44 +439,44 @@ function mapo(f, t)
   end
   return(o)
 end
-local __x66 = {}
-local _x67 = {}
-_x67.lua = "not"
-_x67.js = "!"
-__x66["not"] = _x67
-local __x68 = {}
-__x68["/"] = true
-__x68["*"] = true
-__x68["%"] = true
-local __x69 = {}
-__x69["+"] = true
-__x69["-"] = true
-local __x70 = {}
-local _x71 = {}
-_x71.lua = ".."
-_x71.js = "+"
-__x70.cat = _x71
-local __x72 = {}
-__x72["<="] = true
-__x72[">="] = true
-__x72["<"] = true
-__x72[">"] = true
-local __x73 = {}
-local _x74 = {}
-_x74.lua = "=="
-_x74.js = "==="
-__x73.is = _x74
-local __x75 = {}
-local _x76 = {}
-_x76.lua = "and"
-_x76.js = "&&"
-__x75["and"] = _x76
+local __x74 = {}
+local _x75 = {}
+_x75.lua = "not"
+_x75.js = "!"
+__x74["not"] = _x75
+local __x76 = {}
+__x76["/"] = true
+__x76["*"] = true
+__x76["%"] = true
 local __x77 = {}
-local _x78 = {}
-_x78.lua = "or"
-_x78.js = "||"
-__x77["or"] = _x78
-local infix = {__x66, __x68, __x69, __x70, __x72, __x73, __x75, __x77}
+__x77["+"] = true
+__x77["-"] = true
+local __x78 = {}
+local _x79 = {}
+_x79.lua = ".."
+_x79.js = "+"
+__x78.cat = _x79
+local __x80 = {}
+__x80["<="] = true
+__x80[">="] = true
+__x80["<"] = true
+__x80[">"] = true
+local __x81 = {}
+local _x82 = {}
+_x82.lua = "=="
+_x82.js = "==="
+__x81.is = _x82
+local __x83 = {}
+local _x84 = {}
+_x84.lua = "and"
+_x84.js = "&&"
+__x83["and"] = _x84
+local __x85 = {}
+local _x86 = {}
+_x86.lua = "or"
+_x86.js = "||"
+__x85["or"] = _x86
+local infix = {__x74, __x76, __x77, __x78, __x80, __x81, __x83, __x85}
 local function unary63(form)
   return(#(form) == 2 and in63(form[1], {"not", "-"}))
 end
@@ -512,11 +516,11 @@ end
 local function compile_args(args)
   local s = "("
   local c = ""
-  local _x80 = args
-  local _n9 = #(_x80)
+  local _x88 = args
+  local _n9 = #(_x88)
   local _i9 = 0
   while _i9 < _n9 do
-    local x = _x80[_i9 + 1]
+    local x = _x88[_i9 + 1]
     s = s .. c .. compile(x)
     c = ", "
     _i9 = _i9 + 1
@@ -655,8 +659,8 @@ local function compile_call(form)
   end
 end
 local function op_delims(parent, child, ...)
-  local _r56 = unstash({...})
-  local right = _r56.right
+  local _r58 = unstash({...})
+  local right = _r58.right
   local _e17
   if right then
     _e17 = precedence(child) >= precedence(parent)
@@ -690,9 +694,9 @@ local function compile_infix(form)
   end
 end
 function compile_function(args, body, ...)
-  local _r58 = unstash({...})
-  local name = _r58.name
-  local prefix = _r58.prefix
+  local _r60 = unstash({...})
+  local name = _r60.name
+  local prefix = _r60.prefix
   local _e18
   if name then
     _e18 = compile(name)
@@ -702,9 +706,9 @@ function compile_function(args, body, ...)
   local _id15 = _e18
   local _args = compile_args(args)
   indent_level42 = indent_level42 + 1
-  local _x85 = compile(body, {_stash = true, stmt = true})
+  local _x93 = compile(body, {_stash = true, stmt = true})
   indent_level42 = indent_level42 - 1
-  local _body = _x85
+  local _body = _x93
   local ind = indentation()
   local _e19
   if prefix then
@@ -733,8 +737,8 @@ local function can_return63(form)
   return(not( form == nil) and (not( type(form) == "table") or not( form[1] == "return") and not statement63(form[1])))
 end
 function compile(form, ...)
-  local _r60 = unstash({...})
-  local stmt = _r60.stmt
+  local _r62 = unstash({...})
+  local stmt = _r62.stmt
   if form == nil then
     return("")
   else
@@ -793,11 +797,11 @@ local function standalone63(form)
   return(not not( type(form) == "table") and not infix63(form[1]) and not literal63(form) and not( "get" == form[1]))
 end
 local function lower_do(args, hoist, stmt63, tail63)
-  local _x91 = almost(args)
-  local _n10 = #(_x91)
+  local _x99 = almost(args)
+  local _n10 = #(_x99)
   local _i10 = 0
   while _i10 < _n10 do
-    local x = _x91[_i10 + 1]
+    local x = _x99[_i10 + 1]
     local e = lower(x, hoist, stmt63)
     if standalone63(e) then
       add(hoist, e)
@@ -993,11 +997,11 @@ end
 setenv("do", {_stash = true, tr = true, special = function (...)
   local forms = unstash({...})
   local s = ""
-  local _x120 = forms
-  local _n12 = #(_x120)
+  local _x128 = forms
+  local _n12 = #(_x128)
   local _i12 = 0
   while _i12 < _n12 do
-    local x = _x120[_i12 + 1]
+    local x = _x128[_i12 + 1]
     s = s .. compile(x, {_stash = true, stmt = true})
     _i12 = _i12 + 1
   end
@@ -1006,15 +1010,15 @@ end, stmt = true})
 setenv("%if", {_stash = true, tr = true, special = function (cond, cons, alt)
   local _cond1 = compile(cond)
   indent_level42 = indent_level42 + 1
-  local _x123 = compile(cons, {_stash = true, stmt = true})
+  local _x131 = compile(cons, {_stash = true, stmt = true})
   indent_level42 = indent_level42 - 1
-  local _cons1 = _x123
+  local _cons1 = _x131
   local _e27
   if alt then
     indent_level42 = indent_level42 + 1
-    local _x124 = compile(alt, {_stash = true, stmt = true})
+    local _x132 = compile(alt, {_stash = true, stmt = true})
     indent_level42 = indent_level42 - 1
-    _e27 = _x124
+    _e27 = _x132
   end
   local _alt1 = _e27
   local ind = indentation()
@@ -1040,9 +1044,9 @@ end, stmt = true})
 setenv("while", {_stash = true, tr = true, special = function (cond, form)
   local _cond3 = compile(cond)
   indent_level42 = indent_level42 + 1
-  local _x126 = compile(form, {_stash = true, stmt = true})
+  local _x134 = compile(form, {_stash = true, stmt = true})
   indent_level42 = indent_level42 - 1
-  local body = _x126
+  local body = _x134
   local ind = indentation()
   if target42 == "js" then
     return(ind .. "while (" .. _cond3 .. ") {\n" .. body .. ind .. "}\n")
@@ -1054,9 +1058,9 @@ setenv("%for", {_stash = true, tr = true, special = function (t, k, form)
   local _t1 = compile(t)
   local ind = indentation()
   indent_level42 = indent_level42 + 1
-  local _x128 = compile(form, {_stash = true, stmt = true})
+  local _x136 = compile(form, {_stash = true, stmt = true})
   indent_level42 = indent_level42 - 1
-  local body = _x128
+  local body = _x136
   if target42 == "lua" then
     return(ind .. "for " .. k .. " in next, " .. _t1 .. " do\n" .. body .. ind .. "end\n")
   else
@@ -1067,14 +1071,14 @@ setenv("%try", {_stash = true, tr = true, special = function (form)
   local e = uniq("e")
   local ind = indentation()
   indent_level42 = indent_level42 + 1
-  local _x135 = compile(form, {_stash = true, stmt = true})
+  local _x143 = compile(form, {_stash = true, stmt = true})
   indent_level42 = indent_level42 - 1
-  local body = _x135
+  local body = _x143
   local hf = {"return", {"%array", false, {"get", e, "\"message\""}, {"get", e, "\"stack\""}}}
   indent_level42 = indent_level42 + 1
-  local _x140 = compile(hf, {_stash = true, stmt = true})
+  local _x148 = compile(hf, {_stash = true, stmt = true})
   indent_level42 = indent_level42 - 1
-  local h = _x140
+  local h = _x148
   return(ind .. "try {\n" .. body .. ind .. "}\n" .. ind .. "catch (" .. e .. ") {\n" .. h .. ind .. "}\n")
 end, stmt = true})
 setenv("%delete", {_stash = true, special = function (place)
@@ -1109,8 +1113,8 @@ setenv("return", {_stash = true, special = function (x)
   else
     _e28 = "return(" .. compile(x) .. ")"
   end
-  local _x150 = _e28
-  return(indentation() .. _x150)
+  local _x158 = _e28
+  return(indentation() .. _x158)
 end, stmt = true})
 setenv("new", {_stash = true, special = function (x)
   return("new " .. compile(x))

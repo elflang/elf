@@ -242,12 +242,6 @@
   (mac -- (n by)
     `(= ,n (- ,n ,(or by 1))))
 
-  (mac with-indent (form)
-    (w/uniq x
-      `(do (++ indent-level*)
-           (with ,x ,form
-             (-- indent-level*)))))
-
   (mac export names
     (if (is target* 'js)
         `(do ,@(xform names

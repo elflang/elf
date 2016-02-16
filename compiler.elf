@@ -221,6 +221,12 @@
     (for i indent-level*
       (cat! s "  "))))
 
+(mac w/indent (form)
+  (w/uniq x
+    `(do (++ indent-level*)
+         (with ,x ,form
+           (-- indent-level*)))))
+
 (var reserved
   (set-of "=" "==" "+" "-" "%" "*" "/" "<" ">" "<=" ">="
           ;; js
@@ -382,7 +388,7 @@
 (def compile-function (args body :name :prefix)
   (let (id (if name (compile name) "")
         args (compile-args args)
-        body (with-indent (compile body :stmt))
+        body (w/indent (compile body :stmt))
         ind (indentation)
         p (if prefix (cat prefix " ") "")
         tr (if (is target* 'js) "" "end"))
@@ -565,8 +571,8 @@
 
 (defspecial %if (cond cons alt) :stmt :tr
   (let (cond (compile cond)
-        cons (with-indent (compile cons :stmt))
-        alt (if alt (with-indent (compile alt :stmt)))
+        cons (w/indent (compile cons :stmt))
+        alt (if alt (w/indent (compile alt :stmt)))
         ind (indentation)
         s "")
     (if (is target* 'js)
@@ -581,7 +587,7 @@
 
 (defspecial while (cond form) :stmt :tr
   (let (cond (compile cond)
-        body (with-indent (compile form :stmt))
+        body (w/indent (compile form :stmt))
         ind (indentation))
     (if (is target* 'js)
 	(cat ind "while (" cond ") {\n" body ind "}\n")
@@ -590,7 +596,7 @@
 (defspecial %for (t k form) :stmt :tr
   (let (t (compile t)
         ind (indentation)
-        body (with-indent (compile form :stmt)))
+        body (w/indent (compile form :stmt)))
     (if (is target* 'lua)
 	(cat ind "for " k " in next, " t " do\n" body ind "end\n")
       (cat ind "for (" k " in " t ") {\n" body ind "}\n"))))
@@ -598,9 +604,9 @@
 (defspecial %try (form) :stmt :tr
   (w/uniq e
     (let (ind (indentation)
-          body (with-indent (compile form :stmt))
+          body (w/indent (compile form :stmt))
           hf `(return (%array false (get ,e "message") (get ,e "stack")))
-          h (with-indent (compile hf :stmt)))
+          h (w/indent (compile hf :stmt)))
       (cat ind "try {\n" body ind "}\n"
            ind "catch (" e ") {\n" h ind "}\n"))))
 

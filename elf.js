@@ -403,10 +403,6 @@ var setup = function () {
   setenv("--", {_stash: true, macro: function (n, by) {
     return(["=", n, ["-", n, by || 1]]);
   }});
-  setenv("with-indent", {_stash: true, macro: function (form) {
-    var x = uniq("x");
-    return(["do", ["++", "indent-level*"], ["with", x, form, ["--", "indent-level*"]]]);
-  }});
   setenv("export", {_stash: true, macro: function () {
     var names = unstash(Array.prototype.slice.call(arguments, 0));
     if (target42 === "js") {
@@ -476,25 +472,25 @@ var setup = function () {
     }, modules)));
   }});
   setenv("nil?", {_stash: true, macro: function (x) {
-    var _x416 = ["target"];
-    _x416.lua = ["is", x, "nil"];
+    var _x408 = ["target"];
+    _x408.lua = ["is", x, "nil"];
     var _e28;
     if (!( typeof(x) === "object")) {
       _e28 = ["let", join(), ["or", ["is", ["typeof", x], "\"undefined\""], ["is", x, "null"]]];
     } else {
       _e28 = ["let", ["x", x], ["nil?", "x"]];
     }
-    _x416.js = _e28;
-    return(_x416);
+    _x408.js = _e28;
+    return(_x408);
   }});
   setenv("%len", {_stash: true, special: function (x) {
     return("#(" + compile(x) + ")");
   }});
   setenv("#", {_stash: true, macro: function (x) {
-    var _x431 = ["target"];
-    _x431.lua = ["%len", x];
-    _x431.js = ["or", ["get", x, ["quote", "length"]], 0];
-    return(_x431);
+    var _x423 = ["target"];
+    _x423.lua = ["%len", x];
+    _x423.js = ["or", ["get", x, ["quote", "length"]], 0];
+    return(_x423);
   }});
   setenv("none?", {_stash: true, macro: function (x) {
     return(["is", ["#", x], 0]);
@@ -515,10 +511,10 @@ var setup = function () {
     return(["cut", l, 1]);
   }});
   setenv("type", {_stash: true, macro: function (x) {
-    var _x460 = ["target"];
-    _x460.lua = [["do", "type"], x];
-    _x460.js = ["typeof", x];
-    return(_x460);
+    var _x452 = ["target"];
+    _x452.lua = [["do", "type"], x];
+    _x452.js = ["typeof", x];
+    return(_x452);
   }});
   setenv("string?", {_stash: true, macro: function (x) {
     return(["is", ["type", x], ["quote", "string"]]);
@@ -533,10 +529,10 @@ var setup = function () {
     return(["is", ["type", x], ["quote", "function"]]);
   }});
   setenv("table?", {_stash: true, macro: function (x) {
-    var _x495 = ["target"];
-    _x495.lua = ["quote", "table"];
-    _x495.js = ["quote", "object"];
-    return(["is", ["type", x], _x495]);
+    var _x487 = ["target"];
+    _x487.lua = ["quote", "table"];
+    _x487.js = ["quote", "object"];
+    return(["is", ["type", x], _x487]);
   }});
   setenv("atom?", {_stash: true, macro: function (x) {
     return(["~table?", x]);
@@ -549,8 +545,8 @@ var setup = function () {
   }});
   return(undefined);
 };
-if (typeof(_x506) === "undefined") {
-  _x506 = true;
+if (typeof(_x498) === "undefined") {
+  _x498 = true;
   environment42 = [{}];
   target42 = "js";
 }
@@ -735,8 +731,8 @@ find = function (f, t) {
   }
 };
 ontree = function (f, t) {
-  var _r144 = unstash(Array.prototype.slice.call(arguments, 2));
-  var skip = _r144.skip;
+  var _r142 = unstash(Array.prototype.slice.call(arguments, 2));
+  var skip = _r142.skip;
   if (!( skip && skip(t))) {
     var y = f(t);
     if (y) {
@@ -766,11 +762,11 @@ hd_is63 = function (l, val) {
   return(! !( typeof(l) === "object") && l[0] === val);
 };
 first = function (f, l) {
-  var _x508 = l;
-  var _n12 = _x508.length || 0;
+  var _x500 = l;
+  var _n12 = _x500.length || 0;
   var _i12 = 0;
   while (_i12 < _n12) {
-    var x = _x508[_i12];
+    var x = _x500[_i12];
     var y = f(x);
     if (y) {
       return(y);
@@ -808,11 +804,11 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var t = [];
-  var _x510 = x;
-  var _n13 = _x510.length || 0;
+  var _x502 = x;
+  var _n13 = _x502.length || 0;
   var _i13 = 0;
   while (_i13 < _n13) {
-    var v = _x510[_i13];
+    var v = _x502[_i13];
     var y = f(v);
     if (!( typeof(y) === "undefined" || y === null)) {
       add(t, y);
@@ -1152,8 +1148,8 @@ toplevel63 = function () {
   return((environment42.length || 0) === 1);
 };
 setenv = function (k) {
-  var _r180 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _keys = cut(_r180, 0);
+  var _r178 = unstash(Array.prototype.slice.call(arguments, 1));
+  var _keys = cut(_r178, 0);
   if (typeof(k) === "string") {
     var _e46;
     if (_keys.toplevel) {

@@ -176,7 +176,7 @@ var setup = function () {
     var body = cut(_r32, 0);
     return(join(["let", [x, v]], body, [x]));
   }});
-  setenv("let-when", {_stash: true, macro: function (x, v) {
+  setenv("whenlet", {_stash: true, macro: function (x, v) {
     var _r34 = unstash(Array.prototype.slice.call(arguments, 2));
     var body = cut(_r34, 0);
     var y = uniq("y");

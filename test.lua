@@ -3053,7 +3053,7 @@ add(tests, {"with", function ()
     return(passed)
   end
 end})
-add(tests, {"let-when", function ()
+add(tests, {"whenlet", function ()
   local _y = "a" == "b"
   local _e67
   if _y then

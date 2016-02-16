@@ -2960,7 +2960,7 @@ add(tests, ["with", function () {
     return(passed);
   }
 }]);
-add(tests, ["let-when", function () {
+add(tests, ["whenlet", function () {
   var _y = "a" === "b";
   var _e58;
   if (_y) {

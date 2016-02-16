@@ -552,11 +552,11 @@ c"
 (deftest with
   (eq 10 (with x 9 (++ x))))
 
-(deftest let-when
-  (eq nil (let-when frips (is 'a 'b) 19))
-  (eq 19 (let-when frips 20 (- frips 1)))
-  (eq 20 (let-when (a b) '(19 20) b))
-  (eq nil (let-when (a b) nil b)))
+(deftest whenlet
+  (eq nil (whenlet frips (is 'a 'b) 19))
+  (eq 19 (whenlet frips 20 (- frips 1)))
+  (eq 20 (whenlet (a b) '(19 20) b))
+  (eq nil (whenlet (a b) nil b)))
 
 (var zzop 99)
 (var zzap 100)

@@ -103,7 +103,7 @@
   (mac with (x v rest: body)
     `(let (,x ,v) ,@body ,x))
 
-  (mac let-when (x v rest: body)
+  (mac whenlet (x v rest: body)
     (w/uniq y
       `(let ,y ,v
          (when ,y

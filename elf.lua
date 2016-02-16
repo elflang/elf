@@ -452,25 +452,25 @@ local function setup()
     end, modules)))
   end})
   setenv("nil?", {_stash = true, macro = function (x)
-    local _x446 = {"target"}
-    _x446.lua = {"is", x, "nil"}
+    local _x445 = {"target"}
+    _x445.lua = {"is", x, "nil"}
     local _e25
     if not( type(x) == "table") then
-      _e25 = {"let", join(), {"or", {"is", {"typeof", x}, "\"undefined\""}, {"is", x, "null"}}}
+      _e25 = {"or", {"is", {"typeof", x}, "\"undefined\""}, {"is", x, "null"}}
     else
       _e25 = {"let", {"x", x}, {"nil?", "x"}}
     end
-    _x446.js = _e25
-    return(_x446)
+    _x445.js = _e25
+    return(_x445)
   end})
   setenv("%len", {_stash = true, special = function (x)
     return("#(" .. compile(x) .. ")")
   end})
   setenv("#", {_stash = true, macro = function (x)
-    local _x461 = {"target"}
-    _x461.lua = {"%len", x}
-    _x461.js = {"or", {"get", x, {"quote", "length"}}, 0}
-    return(_x461)
+    local _x459 = {"target"}
+    _x459.lua = {"%len", x}
+    _x459.js = {"or", {"get", x, {"quote", "length"}}, 0}
+    return(_x459)
   end})
   setenv("none?", {_stash = true, macro = function (x)
     return({"is", {"#", x}, 0})
@@ -491,10 +491,10 @@ local function setup()
     return({"cut", l, 1})
   end})
   setenv("type", {_stash = true, macro = function (x)
-    local _x490 = {"target"}
-    _x490.lua = {{"do", "type"}, x}
-    _x490.js = {"typeof", x}
-    return(_x490)
+    local _x488 = {"target"}
+    _x488.lua = {{"do", "type"}, x}
+    _x488.js = {"typeof", x}
+    return(_x488)
   end})
   setenv("string?", {_stash = true, macro = function (x)
     return({"is", {"type", x}, {"quote", "string"}})
@@ -509,10 +509,10 @@ local function setup()
     return({"is", {"type", x}, {"quote", "function"}})
   end})
   setenv("table?", {_stash = true, macro = function (x)
-    local _x525 = {"target"}
-    _x525.lua = {"quote", "table"}
-    _x525.js = {"quote", "object"}
-    return({"is", {"type", x}, _x525})
+    local _x523 = {"target"}
+    _x523.lua = {"quote", "table"}
+    _x523.js = {"quote", "object"}
+    return({"is", {"type", x}, _x523})
   end})
   setenv("atom?", {_stash = true, macro = function (x)
     return({"~table?", x})
@@ -525,8 +525,8 @@ local function setup()
   end})
   return(nil)
 end
-if _x536 == nil then
-  _x536 = true
+if _x534 == nil then
+  _x534 = true
   environment42 = {{}}
   target42 = "lua"
 end
@@ -703,11 +703,11 @@ function hd_is63(l, val)
   return(not not( type(l) == "table") and l[1] == val)
 end
 function first(f, l)
-  local _x540 = l
-  local _n12 = #(_x540)
+  local _x538 = l
+  local _n12 = #(_x538)
   local _i12 = 0
   while _i12 < _n12 do
-    local x = _x540[_i12 + 1]
+    local x = _x538[_i12 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -736,11 +736,11 @@ function sort(l, f)
 end
 function map(f, x)
   local t = {}
-  local _x542 = x
-  local _n13 = #(_x542)
+  local _x540 = x
+  local _n13 = #(_x540)
   local _i13 = 0
   while _i13 < _n13 do
-    local v = _x542[_i13 + 1]
+    local v = _x540[_i13 + 1]
     local y = f(v)
     if not( y == nil) then
       add(t, y)

@@ -474,25 +474,25 @@ var setup = function () {
     }, modules)));
   }});
   setenv("nil?", {_stash: true, macro: function (x) {
-    var _x412 = ["target"];
-    _x412.lua = ["is", x, "nil"];
+    var _x411 = ["target"];
+    _x411.lua = ["is", x, "nil"];
     var _e28;
     if (!( typeof(x) === "object")) {
-      _e28 = ["let", join(), ["or", ["is", ["typeof", x], "\"undefined\""], ["is", x, "null"]]];
+      _e28 = ["or", ["is", ["typeof", x], "\"undefined\""], ["is", x, "null"]];
     } else {
       _e28 = ["let", ["x", x], ["nil?", "x"]];
     }
-    _x412.js = _e28;
-    return(_x412);
+    _x411.js = _e28;
+    return(_x411);
   }});
   setenv("%len", {_stash: true, special: function (x) {
     return("#(" + compile(x) + ")");
   }});
   setenv("#", {_stash: true, macro: function (x) {
-    var _x427 = ["target"];
-    _x427.lua = ["%len", x];
-    _x427.js = ["or", ["get", x, ["quote", "length"]], 0];
-    return(_x427);
+    var _x425 = ["target"];
+    _x425.lua = ["%len", x];
+    _x425.js = ["or", ["get", x, ["quote", "length"]], 0];
+    return(_x425);
   }});
   setenv("none?", {_stash: true, macro: function (x) {
     return(["is", ["#", x], 0]);
@@ -513,10 +513,10 @@ var setup = function () {
     return(["cut", l, 1]);
   }});
   setenv("type", {_stash: true, macro: function (x) {
-    var _x456 = ["target"];
-    _x456.lua = [["do", "type"], x];
-    _x456.js = ["typeof", x];
-    return(_x456);
+    var _x454 = ["target"];
+    _x454.lua = [["do", "type"], x];
+    _x454.js = ["typeof", x];
+    return(_x454);
   }});
   setenv("string?", {_stash: true, macro: function (x) {
     return(["is", ["type", x], ["quote", "string"]]);
@@ -531,10 +531,10 @@ var setup = function () {
     return(["is", ["type", x], ["quote", "function"]]);
   }});
   setenv("table?", {_stash: true, macro: function (x) {
-    var _x491 = ["target"];
-    _x491.lua = ["quote", "table"];
-    _x491.js = ["quote", "object"];
-    return(["is", ["type", x], _x491]);
+    var _x489 = ["target"];
+    _x489.lua = ["quote", "table"];
+    _x489.js = ["quote", "object"];
+    return(["is", ["type", x], _x489]);
   }});
   setenv("atom?", {_stash: true, macro: function (x) {
     return(["~table?", x]);
@@ -547,8 +547,8 @@ var setup = function () {
   }});
   return(undefined);
 };
-if (typeof(_x502) === "undefined") {
-  _x502 = true;
+if (typeof(_x500) === "undefined") {
+  _x500 = true;
   environment42 = [{}];
   target42 = "js";
 }
@@ -764,11 +764,11 @@ hd_is63 = function (l, val) {
   return(! !( typeof(l) === "object") && l[0] === val);
 };
 first = function (f, l) {
-  var _x504 = l;
-  var _n12 = _x504.length || 0;
+  var _x502 = l;
+  var _n12 = _x502.length || 0;
   var _i12 = 0;
   while (_i12 < _n12) {
-    var x = _x504[_i12];
+    var x = _x502[_i12];
     var y = f(x);
     if (y) {
       return(y);
@@ -806,11 +806,11 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var t = [];
-  var _x506 = x;
-  var _n13 = _x506.length || 0;
+  var _x504 = x;
+  var _n13 = _x504.length || 0;
   var _i13 = 0;
   while (_i13 < _n13) {
-    var v = _x506[_i13];
+    var v = _x504[_i13];
     var y = f(v);
     if (!( typeof(y) === "undefined" || y === null)) {
       add(t, y);

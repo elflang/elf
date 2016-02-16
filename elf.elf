@@ -204,7 +204,8 @@
   (mac for (i rest: body)
     (let (from 0 to 0 increment 1)
       (if (atom? i)
-          (= to (hd body) body (tl body))
+          (= to (hd body)
+             body (tl body))
         (= (i from to (o increment 1)) i))
       (assert (number? increment))
       (if (> increment 0)
@@ -288,7 +289,7 @@
     `(target
        lua: (is ,x nil)
        js: ,(if (atom? x)
-                `(let () (or (is (typeof ,x) "undefined") (is ,x null)))
+                `(or (is (typeof ,x) "undefined") (is ,x null))
               `(let (x ,x) (nil? x)))))
 
   (defspecial %len (x)

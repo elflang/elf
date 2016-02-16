@@ -319,7 +319,7 @@
 
   (mac string? (x) `(is (type ,x) 'string))
   (mac number? (x) `(is (type ,x) 'number))
-  (mac boolean? (x) `(is (type ,x) 'boolean))
+  (mac bool? (x) `(is (type ,x) 'boolean))
   (mac fn? (x) `(is (type ,x) 'function))
   (mac list? (x) `(is (type ,x) (target js: 'object lua: 'table)))
   (mac atom? (x) `(~list? ,x))
@@ -575,7 +575,7 @@
       (nan? x) "nan"
       (is x inf) "inf"
       (is x -inf) "-inf"
-      (boolean? x) (if x "true" "false")
+      (bool? x) (if x "true" "false")
       (string? x) (escape x)
       (fn? x) "fn"
       (~atom? x)

@@ -4574,33 +4574,33 @@ add(tests, ["type", function () {
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, typeof("abc") === "boolean")) {
+  if (! equal63(false, boolean63("abc"))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof("abc") === "boolean"));
+    return("failed: expected " + str(false) + ", was " + str(boolean63("abc")));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, typeof(17) === "boolean")) {
+  if (! equal63(false, boolean63(17))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof(17) === "boolean"));
+    return("failed: expected " + str(false) + ", was " + str(boolean63(17)));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, typeof(["a"]) === "boolean")) {
+  if (! equal63(false, boolean63(["a"]))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof(["a"]) === "boolean"));
+    return("failed: expected " + str(false) + ", was " + str(boolean63(["a"])));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(true, typeof(true) === "boolean")) {
+  if (! equal63(true, boolean63(true))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(typeof(true) === "boolean"));
+    return("failed: expected " + str(true) + ", was " + str(boolean63(true)));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, typeof({}) === "boolean")) {
+  if (! equal63(false, boolean63({}))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof({}) === "boolean"));
+    return("failed: expected " + str(false) + ", was " + str(boolean63({})));
   } else {
     passed = passed + 1;
   }

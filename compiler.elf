@@ -336,7 +336,7 @@
       (id-literal? x) (inner x)
       (string-literal? x) (escape-newlines x)
       (string? x) (id x)
-      (boolean? x) (if x "true" "false")
+      (bool? x) (if x "true" "false")
       (nan? x) "nan"
       (is x inf) "inf"
       (is x -inf) "-inf"

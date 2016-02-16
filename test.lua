@@ -4667,33 +4667,33 @@ add(tests, {"type", function ()
   else
     passed = passed + 1
   end
-  if not equal63(false, type("abc") == "boolean") then
+  if not equal63(false, boolean63("abc")) then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(type("abc") == "boolean"))
+    return("failed: expected " .. str(false) .. ", was " .. str(boolean63("abc")))
   else
     passed = passed + 1
   end
-  if not equal63(false, type(17) == "boolean") then
+  if not equal63(false, boolean63(17)) then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(type(17) == "boolean"))
+    return("failed: expected " .. str(false) .. ", was " .. str(boolean63(17)))
   else
     passed = passed + 1
   end
-  if not equal63(false, type({"a"}) == "boolean") then
+  if not equal63(false, boolean63({"a"})) then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(type({"a"}) == "boolean"))
+    return("failed: expected " .. str(false) .. ", was " .. str(boolean63({"a"})))
   else
     passed = passed + 1
   end
-  if not equal63(true, type(true) == "boolean") then
+  if not equal63(true, boolean63(true)) then
     failed = failed + 1
-    return("failed: expected " .. str(true) .. ", was " .. str(type(true) == "boolean"))
+    return("failed: expected " .. str(true) .. ", was " .. str(boolean63(true)))
   else
     passed = passed + 1
   end
-  if not equal63(false, type({}) == "boolean") then
+  if not equal63(false, boolean63({})) then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(type({}) == "boolean"))
+    return("failed: expected " .. str(false) .. ", was " .. str(boolean63({})))
   else
     passed = passed + 1
   end

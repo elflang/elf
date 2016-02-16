@@ -6,17 +6,17 @@ var setup = function () {
     return(quasiexpand(form, 1));
   }});
   setenv("at", {_stash: true, macro: function (l, i) {
-    if (target === "lua" && typeof(i) === "number") {
+    if (target42 === "lua" && typeof(i) === "number") {
       i = i + 1;
     } else {
-      if (target === "lua") {
+      if (target42 === "lua") {
         i = ["+", i, 1];
       }
     }
     return(["get", l, i]);
   }});
   setenv("wipe", {_stash: true, macro: function (place) {
-    if (target === "lua") {
+    if (target42 === "lua") {
       return(["assign", place, "nil"]);
     } else {
       return(["%delete", place]);
@@ -278,7 +278,7 @@ var setup = function () {
     return(join(["%function"], bind42(args, body)));
   }});
   setenv("guard", {_stash: true, macro: function (expr) {
-    if (target === "js") {
+    if (target42 === "js") {
       return([["%fn", ["%try", ["list", true, expr]]]]);
     } else {
       var x = unique("x");
@@ -309,7 +309,7 @@ var setup = function () {
     var k = _id48[0];
     var v = _id48[1];
     var _e22;
-    if (target === "lua") {
+    if (target42 === "lua") {
       _e22 = body;
     } else {
       _e22 = [join(["let", k, ["if", ["numeric?", k], ["parseInt", k], k]], body)];
@@ -376,11 +376,11 @@ var setup = function () {
     return(join(["obj"], l));
   }});
   setenv("language", {_stash: true, macro: function () {
-    return(["quote", target]);
+    return(["quote", target42]);
   }});
   setenv("target", {_stash: true, macro: function () {
     var clauses = unstash(Array.prototype.slice.call(arguments, 0));
-    return(clauses[target]);
+    return(clauses[target42]);
   }});
   setenv("join!", {_stash: true, macro: function (a) {
     var _r72 = unstash(Array.prototype.slice.call(arguments, 1));
@@ -404,7 +404,7 @@ var setup = function () {
   }});
   setenv("export", {_stash: true, macro: function () {
     var names = unstash(Array.prototype.slice.call(arguments, 0));
-    if (target === "js") {
+    if (target42 === "js") {
       return(join(["do"], map(function (_) {
         return(["=", ["get", "exports", ["quote", _]], _]);
       }, names)));
@@ -427,7 +427,7 @@ var setup = function () {
     }
   }});
   setenv("undef?", {_stash: true, macro: function (_var) {
-    if (target === "js") {
+    if (target42 === "js") {
       return(["is", ["typeof", _var], "\"undefined\""]);
     } else {
       return(["is", _var, "nil"]);
@@ -435,13 +435,13 @@ var setup = function () {
   }});
   setenv("%js", {_stash: true, macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));
-    if (target === "js") {
+    if (target42 === "js") {
       return(join(["do"], forms));
     }
   }});
   setenv("%lua", {_stash: true, macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));
-    if (target === "lua") {
+    if (target42 === "lua") {
       return(join(["do"], forms));
     }
   }});
@@ -538,7 +538,7 @@ var setup = function () {
 if (typeof(_x502) === "undefined") {
   _x502 = true;
   environment42 = [{}];
-  target = "js";
+  target42 = "js";
 }
 nan = 0 / 0;
 inf = 1 / 0;

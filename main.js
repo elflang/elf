@@ -123,7 +123,7 @@ elf_main = function () {
     }
   } else {
     if (target1) {
-      target = target1;
+      target42 = target1;
     }
     var code = compile_file(input);
     if (typeof(output) === "undefined" || output === null || output === "-") {

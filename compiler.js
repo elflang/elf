@@ -112,8 +112,8 @@ var stash42 = function (args) {
   }
 };
 var bias = function (k) {
-  if (typeof(k) === "number" && !( target === "js")) {
-    if (target === "js") {
+  if (typeof(k) === "number" && !( target42 === "js")) {
+    if (target42 === "js") {
       k = k - 1;
     } else {
       k = k + 1;
@@ -182,7 +182,7 @@ setenv("arguments%", {_stash: true, macro: function (from) {
 bind42 = function (args, body) {
   var args1 = [];
   var rest = function () {
-    if (target === "js") {
+    if (target42 === "js") {
       return(["unstash", ["arguments%", args1.length || 0]]);
     } else {
       add(args1, "|...|");
@@ -460,7 +460,7 @@ key = function (k) {
   if (valid_id63(i)) {
     return(i);
   } else {
-    if (target === "js") {
+    if (target42 === "js") {
       return(k);
     } else {
       return("[" + k + "]");
@@ -559,7 +559,7 @@ var getop = function (op) {
       return(op);
     } else {
       if (!( typeof(x) === "undefined" || x === null)) {
-        return(x[target]);
+        return(x[target42]);
       }
     }
   }, infix));
@@ -633,7 +633,7 @@ var id = function (id) {
   }
 };
 var compile_atom = function (x) {
-  if (x === "nil" && target === "lua") {
+  if (x === "nil" && target42 === "lua") {
     return(x);
   } else {
     if (x === "nil") {
@@ -683,7 +683,7 @@ var terminator = function (stmt63) {
   if (! stmt63) {
     return("");
   } else {
-    if (target === "js") {
+    if (target42 === "js") {
       return(";\n");
     } else {
       return("\n");
@@ -773,7 +773,7 @@ compile_function = function (args, body) {
   }
   var p = _e27;
   var _e28;
-  if (target === "js") {
+  if (target42 === "js") {
     _e28 = "";
   } else {
     _e28 = "end";
@@ -782,7 +782,7 @@ compile_function = function (args, body) {
   if (name) {
     tr = tr + "\n";
   }
-  if (target === "js") {
+  if (target42 === "js") {
     return("function " + _id15 + _args + " {\n" + _body + ind + "}" + tr);
   } else {
     return(p + "function " + _id15 + _args + "\n" + _body + ind + tr);
@@ -1035,10 +1035,10 @@ global.require = require;
 var run = eval;
 _37result = undefined;
 eval = function (form) {
-  var previous = target;
-  target = "js";
+  var previous = target42;
+  target42 = "js";
   var code = compile(expand(["=", "%result", form]));
-  target = previous;
+  target42 = previous;
   run(code);
   return(_37result);
 };
@@ -1071,19 +1071,19 @@ setenv("%if", {_stash: true, tr: true, special: function (cond, cons, alt) {
   var _alt1 = _e35;
   var ind = indentation();
   var s = "";
-  if (target === "js") {
+  if (target42 === "js") {
     s = s + ind + "if (" + _cond1 + ") {\n" + _cons1 + ind + "}";
   } else {
     s = s + ind + "if " + _cond1 + " then\n" + _cons1;
   }
-  if (_alt1 && target === "js") {
+  if (_alt1 && target42 === "js") {
     s = s + " else {\n" + _alt1 + ind + "}";
   } else {
     if (_alt1) {
       s = s + ind + "else\n" + _alt1;
     }
   }
-  if (target === "lua") {
+  if (target42 === "lua") {
     return(s + ind + "end\n");
   } else {
     return(s + "\n");
@@ -1096,7 +1096,7 @@ setenv("while", {_stash: true, tr: true, special: function (cond, form) {
   indent_level42 = indent_level42 - 1;
   var body = _x123;
   var ind = indentation();
-  if (target === "js") {
+  if (target42 === "js") {
     return(ind + "while (" + _cond3 + ") {\n" + body + ind + "}\n");
   } else {
     return(ind + "while " + _cond3 + " do\n" + body + ind + "end\n");
@@ -1109,7 +1109,7 @@ setenv("%for", {_stash: true, tr: true, special: function (t, k, form) {
   var _x125 = compile(form, {_stash: true, stmt: true});
   indent_level42 = indent_level42 - 1;
   var body = _x125;
-  if (target === "lua") {
+  if (target42 === "lua") {
     return(ind + "for " + k + " in next, " + _t1 + " do\n" + body + ind + "end\n");
   } else {
     return(ind + "for (" + k + " in " + _t1 + ") {\n" + body + ind + "}\n");
@@ -1139,7 +1139,7 @@ setenv("%function", {_stash: true, special: function (args, body) {
   return(compile_function(args, body));
 }});
 setenv("%global-function", {_stash: true, tr: true, special: function (name, args, body) {
-  if (target === "lua") {
+  if (target42 === "lua") {
     var x = compile_function(args, body, {_stash: true, name: name});
     return(indentation() + x);
   } else {
@@ -1147,7 +1147,7 @@ setenv("%global-function", {_stash: true, tr: true, special: function (name, arg
   }
 }, stmt: true});
 setenv("%local-function", {_stash: true, tr: true, special: function (name, args, body) {
-  if (target === "lua") {
+  if (target42 === "lua") {
     var x = compile_function(args, body, {_stash: true, name: name, prefix: "local"});
     return(indentation() + x);
   } else {
@@ -1172,7 +1172,7 @@ setenv("typeof", {_stash: true, special: function (x) {
 }});
 setenv("error", {_stash: true, special: function (x) {
   var _e37;
-  if (target === "js") {
+  if (target42 === "js") {
     _e37 = "throw " + compile(["new", ["Error", x]]);
   } else {
     _e37 = "error(" + compile(x) + ")";
@@ -1191,7 +1191,7 @@ setenv("%local", {_stash: true, special: function (name, value) {
   }
   var rh = _e38;
   var _e39;
-  if (target === "js") {
+  if (target42 === "js") {
     _e39 = "var ";
   } else {
     _e39 = "local ";
@@ -1214,7 +1214,7 @@ setenv("assign", {_stash: true, special: function (lh, rh) {
 setenv("get", {_stash: true, special: function (t, k) {
   var _t3 = compile(t);
   var k1 = compile(k);
-  if (target === "lua" && char(_t3, 0) === "{") {
+  if (target42 === "lua" && char(_t3, 0) === "{") {
     _t3 = "(" + _t3 + ")";
   }
   if (string_literal63(k) && valid_id63(inner(k))) {
@@ -1226,14 +1226,14 @@ setenv("get", {_stash: true, special: function (t, k) {
 setenv("%array", {_stash: true, special: function () {
   var forms = unstash(Array.prototype.slice.call(arguments, 0));
   var _e41;
-  if (target === "lua") {
+  if (target42 === "lua") {
     _e41 = "{";
   } else {
     _e41 = "[";
   }
   var open = _e41;
   var _e42;
-  if (target === "lua") {
+  if (target42 === "lua") {
     _e42 = "}";
   } else {
     _e42 = "]";
@@ -1264,7 +1264,7 @@ setenv("%object", {_stash: true, special: function () {
   var s = "{";
   var c = "";
   var _e44;
-  if (target === "lua") {
+  if (target42 === "lua") {
     _e44 = " = ";
   } else {
     _e44 = ": ";

@@ -9,14 +9,14 @@
     (quasiexpand form 1))
 
   (mac at (l i)
-    (if (and (is target 'lua) (number? i))
+    (if (and (is target* 'lua) (number? i))
         (inc i)
-        (is target 'lua)
+        (is target* 'lua)
         (assign i `(+ ,i 1)))
     `(get ,l ,i))
 
   (mac wipe (place)
-    (if (is target 'lua)
+    (if (is target* 'lua)
         `(assign ,place nil)
       `(%delete ,place)))
 
@@ -163,7 +163,7 @@
     `(%function ,@(bind* args body)))
 
   (mac guard (expr)
-    (if (is target 'js)
+    (if (is target* 'js)
         `([%try (list true ,expr)])
       (let-unique (x msg trace)
         `(let (,x nil
@@ -185,7 +185,7 @@
         `(let (,l ,t ,k nil)
            (%for ,l ,k
              (let (,v (get ,l ,k))
-               ,@(if (is target 'lua) body
+               ,@(if (is target* 'lua) body
                      `((let ,k (if (numeric? ,k)
                                    (parseInt ,k)
                                  ,k)
@@ -216,10 +216,10 @@
         (= (get l x) true))
       `(obj ,@l)))
 
-  (mac language () `',target)
+  (mac language () `',target*)
 
   (mac target clauses
-    (get clauses target))
+    (get clauses target*))
 
   (mac join! (a rest: bs)
     `(= ,a (join ,a ,@bs)))
@@ -240,7 +240,7 @@
              (dec indent-level*)))))
 
   (mac export names
-    (if (is target 'js)
+    (if (is target* 'js)
         `(do ,@(xform names
                  `(= (get exports ',_) ,_)))
       (let x (obj)
@@ -249,16 +249,16 @@
         `(return (obj ,@x)))))
 
   (mac undef? (var)
-    (if (is target 'js)
+    (if (is target* 'js)
        `(is (typeof ,var) "undefined")
      `(is ,var nil)))
 
   (mac %js forms
-    (when (is target 'js)
+    (when (is target* 'js)
       `(do ,@forms)))
 
   (mac %lua forms
-    (when (is target 'lua)
+    (when (is target* 'lua)
       `(do ,@forms)))
 
   (mac %compiling forms
@@ -326,7 +326,7 @@
 
 (once
   (def environment* (list (obj)))
-  (def target (language)))
+  (def target* (language)))
 
 (def nan (/ 0 0))
 (def inf (/ 1 0))

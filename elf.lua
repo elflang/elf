@@ -6,17 +6,17 @@ local function setup()
     return(quasiexpand(form, 1))
   end})
   setenv("at", {_stash = true, macro = function (l, i)
-    if target == "lua" and type(i) == "number" then
+    if target42 == "lua" and type(i) == "number" then
       i = i + 1
     else
-      if target == "lua" then
+      if target42 == "lua" then
         i = {"+", i, 1}
       end
     end
     return({"get", l, i})
   end})
   setenv("wipe", {_stash = true, macro = function (place)
-    if target == "lua" then
+    if target42 == "lua" then
       return({"assign", place, "nil"})
     else
       return({"%delete", place})
@@ -271,7 +271,7 @@ local function setup()
     return(join({"%function"}, bind42(args, body)))
   end})
   setenv("guard", {_stash = true, macro = function (expr)
-    if target == "js" then
+    if target42 == "js" then
       return({{"%fn", {"%try", {"list", true, expr}}}})
     else
       local x = unique("x")
@@ -302,7 +302,7 @@ local function setup()
     local k = _id48[1]
     local v = _id48[2]
     local _e21
-    if target == "lua" then
+    if target42 == "lua" then
       _e21 = body
     else
       _e21 = {join({"let", k, {"if", {"numeric?", k}, {"parseInt", k}, k}}, body)}
@@ -361,11 +361,11 @@ local function setup()
     return(join({"obj"}, l))
   end})
   setenv("language", {_stash = true, macro = function ()
-    return({"quote", target})
+    return({"quote", target42})
   end})
   setenv("target", {_stash = true, macro = function (...)
     local clauses = unstash({...})
-    return(clauses[target])
+    return(clauses[target42])
   end})
   setenv("join!", {_stash = true, macro = function (a, ...)
     local _r72 = unstash({...})
@@ -389,7 +389,7 @@ local function setup()
   end})
   setenv("export", {_stash = true, macro = function (...)
     local names = unstash({...})
-    if target == "js" then
+    if target42 == "js" then
       return(join({"do"}, map(function (_)
         return({"=", {"get", "exports", {"quote", _}}, _})
       end, names)))
@@ -405,7 +405,7 @@ local function setup()
     end
   end})
   setenv("undef?", {_stash = true, macro = function (_var)
-    if target == "js" then
+    if target42 == "js" then
       return({"is", {"typeof", _var}, "\"undefined\""})
     else
       return({"is", _var, "nil"})
@@ -413,13 +413,13 @@ local function setup()
   end})
   setenv("%js", {_stash = true, macro = function (...)
     local forms = unstash({...})
-    if target == "js" then
+    if target42 == "js" then
       return(join({"do"}, forms))
     end
   end})
   setenv("%lua", {_stash = true, macro = function (...)
     local forms = unstash({...})
-    if target == "lua" then
+    if target42 == "lua" then
       return(join({"do"}, forms))
     end
   end})
@@ -516,7 +516,7 @@ end
 if _x536 == nil then
   _x536 = true
   environment42 = {{}}
-  target = "lua"
+  target42 = "lua"
 end
 nan = 0 / 0
 inf = 1 / 0

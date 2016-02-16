@@ -94,8 +94,8 @@ local function stash42(args)
   end
 end
 local function bias(k)
-  if type(k) == "number" and not( target == "lua") then
-    if target == "js" then
+  if type(k) == "number" and not( target42 == "lua") then
+    if target42 == "js" then
       k = k - 1
     else
       k = k + 1
@@ -157,7 +157,7 @@ end})
 function bind42(args, body)
   local args1 = {}
   local function rest()
-    if target == "js" then
+    if target42 == "js" then
       return({"unstash", {"arguments%", #(args1)}})
     else
       add(args1, "|...|")
@@ -414,7 +414,7 @@ function key(k)
   if valid_id63(i) then
     return(i)
   else
-    if target == "js" then
+    if target42 == "js" then
       return(k)
     else
       return("[" .. k .. "]")
@@ -501,7 +501,7 @@ local function getop(op)
       return(op)
     else
       if not( x == nil) then
-        return(x[target])
+        return(x[target42])
       end
     end
   end, infix))
@@ -574,7 +574,7 @@ local function id(id)
   end
 end
 local function compile_atom(x)
-  if x == "nil" and target == "lua" then
+  if x == "nil" and target42 == "lua" then
     return(x)
   else
     if x == "nil" then
@@ -624,7 +624,7 @@ local function terminator(stmt63)
   if not stmt63 then
     return("")
   else
-    if target == "js" then
+    if target42 == "js" then
       return(";\n")
     else
       return("\n")
@@ -714,7 +714,7 @@ function compile_function(args, body, ...)
   end
   local p = _e19
   local _e20
-  if target == "js" then
+  if target42 == "js" then
     _e20 = ""
   else
     _e20 = "end"
@@ -723,7 +723,7 @@ function compile_function(args, body, ...)
   if name then
     tr = tr .. "\n"
   end
-  if target == "js" then
+  if target42 == "js" then
     return("function " .. _id15 .. _args .. " {\n" .. _body .. ind .. "}" .. tr)
   else
     return(p .. "function " .. _id15 .. _args .. "\n" .. _body .. ind .. tr)
@@ -983,10 +983,10 @@ local function run(code)
 end
 _37result = nil
 function eval(form)
-  local previous = target
-  target = "lua"
+  local previous = target42
+  target42 = "lua"
   local code = compile(expand({"=", "%result", form}))
-  target = previous
+  target42 = previous
   run(code)
   return(_37result)
 end
@@ -1019,19 +1019,19 @@ setenv("%if", {_stash = true, tr = true, special = function (cond, cons, alt)
   local _alt1 = _e27
   local ind = indentation()
   local s = ""
-  if target == "js" then
+  if target42 == "js" then
     s = s .. ind .. "if (" .. _cond1 .. ") {\n" .. _cons1 .. ind .. "}"
   else
     s = s .. ind .. "if " .. _cond1 .. " then\n" .. _cons1
   end
-  if _alt1 and target == "js" then
+  if _alt1 and target42 == "js" then
     s = s .. " else {\n" .. _alt1 .. ind .. "}"
   else
     if _alt1 then
       s = s .. ind .. "else\n" .. _alt1
     end
   end
-  if target == "lua" then
+  if target42 == "lua" then
     return(s .. ind .. "end\n")
   else
     return(s .. "\n")
@@ -1044,7 +1044,7 @@ setenv("while", {_stash = true, tr = true, special = function (cond, form)
   indent_level42 = indent_level42 - 1
   local body = _x126
   local ind = indentation()
-  if target == "js" then
+  if target42 == "js" then
     return(ind .. "while (" .. _cond3 .. ") {\n" .. body .. ind .. "}\n")
   else
     return(ind .. "while " .. _cond3 .. " do\n" .. body .. ind .. "end\n")
@@ -1057,7 +1057,7 @@ setenv("%for", {_stash = true, tr = true, special = function (t, k, form)
   local _x128 = compile(form, {_stash = true, stmt = true})
   indent_level42 = indent_level42 - 1
   local body = _x128
-  if target == "lua" then
+  if target42 == "lua" then
     return(ind .. "for " .. k .. " in next, " .. _t1 .. " do\n" .. body .. ind .. "end\n")
   else
     return(ind .. "for (" .. k .. " in " .. _t1 .. ") {\n" .. body .. ind .. "}\n")
@@ -1087,7 +1087,7 @@ setenv("%function", {_stash = true, special = function (args, body)
   return(compile_function(args, body))
 end})
 setenv("%global-function", {_stash = true, tr = true, special = function (name, args, body)
-  if target == "lua" then
+  if target42 == "lua" then
     local x = compile_function(args, body, {_stash = true, name = name})
     return(indentation() .. x)
   else
@@ -1095,7 +1095,7 @@ setenv("%global-function", {_stash = true, tr = true, special = function (name, 
   end
 end, stmt = true})
 setenv("%local-function", {_stash = true, tr = true, special = function (name, args, body)
-  if target == "lua" then
+  if target42 == "lua" then
     local x = compile_function(args, body, {_stash = true, name = name, prefix = "local"})
     return(indentation() .. x)
   else
@@ -1120,7 +1120,7 @@ setenv("typeof", {_stash = true, special = function (x)
 end})
 setenv("error", {_stash = true, special = function (x)
   local _e29
-  if target == "js" then
+  if target42 == "js" then
     _e29 = "throw " .. compile({"new", {"Error", x}})
   else
     _e29 = "error(" .. compile(x) .. ")"
@@ -1139,7 +1139,7 @@ setenv("%local", {_stash = true, special = function (name, value)
   end
   local rh = _e30
   local _e31
-  if target == "js" then
+  if target42 == "js" then
     _e31 = "var "
   else
     _e31 = "local "
@@ -1162,7 +1162,7 @@ end, stmt = true})
 setenv("get", {_stash = true, special = function (t, k)
   local _t3 = compile(t)
   local k1 = compile(k)
-  if target == "lua" and char(_t3, 0) == "{" then
+  if target42 == "lua" and char(_t3, 0) == "{" then
     _t3 = "(" .. _t3 .. ")"
   end
   if string_literal63(k) and valid_id63(inner(k)) then
@@ -1174,14 +1174,14 @@ end})
 setenv("%array", {_stash = true, special = function (...)
   local forms = unstash({...})
   local _e33
-  if target == "lua" then
+  if target42 == "lua" then
     _e33 = "{"
   else
     _e33 = "["
   end
   local open = _e33
   local _e34
-  if target == "lua" then
+  if target42 == "lua" then
     _e34 = "}"
   else
     _e34 = "]"
@@ -1205,7 +1205,7 @@ setenv("%object", {_stash = true, special = function (...)
   local s = "{"
   local c = ""
   local _e35
-  if target == "lua" then
+  if target42 == "lua" then
     _e35 = " = "
   else
     _e35 = ": "

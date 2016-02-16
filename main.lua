@@ -137,7 +137,7 @@ function elf_main()
     end
   else
     if target1 then
-      target = target1
+      target42 = target1
     end
     local code = compile_file(input)
     if output == nil or output == "-" then

@@ -272,9 +272,7 @@
          ,@forms)))
 
   (mac elf () `(require 'elf))
-
   (mac lib modules `(do ,@(xform modules `(def ,_ (require ',_)))))
-
   (mac use modules `(do ,@(xform modules `(var ,_ (require ',_)))))
 
   (mac nil? (x)

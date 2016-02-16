@@ -1470,7 +1470,7 @@ add(tests, ["calls", function () {
     return(42);
   };
   var l = [f];
-  var t = {f: f};
+  var o = {f: f};
   if (! equal63(42, f())) {
     failed = failed + 1;
     return("failed: expected " + str(42) + ", was " + str(f()));
@@ -1483,9 +1483,9 @@ add(tests, ["calls", function () {
   } else {
     passed = passed + 1;
   }
-  if (! equal63(42, t.f())) {
+  if (! equal63(42, o.f())) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(t.f()));
+    return("failed: expected " + str(42) + ", was " + str(o.f()));
   } else {
     passed = passed + 1;
   }
@@ -2322,36 +2322,36 @@ add(tests, ["at", function () {
   }
 }]);
 add(tests, ["get-=", function () {
-  var t = {};
-  t.foo = "bar";
-  if (! equal63("bar", t.foo)) {
+  var l = {};
+  l.foo = "bar";
+  if (! equal63("bar", l.foo)) {
     failed = failed + 1;
-    return("failed: expected " + str("bar") + ", was " + str(t.foo));
+    return("failed: expected " + str("bar") + ", was " + str(l.foo));
   } else {
     passed = passed + 1;
   }
-  if (! equal63("bar", t.foo)) {
+  if (! equal63("bar", l.foo)) {
     failed = failed + 1;
-    return("failed: expected " + str("bar") + ", was " + str(t.foo));
+    return("failed: expected " + str("bar") + ", was " + str(l.foo));
   } else {
     passed = passed + 1;
   }
-  if (! equal63("bar", t.foo)) {
+  if (! equal63("bar", l.foo)) {
     failed = failed + 1;
-    return("failed: expected " + str("bar") + ", was " + str(t.foo));
+    return("failed: expected " + str("bar") + ", was " + str(l.foo));
   } else {
     passed = passed + 1;
   }
   var k = "foo";
-  if (! equal63("bar", t[k])) {
+  if (! equal63("bar", l[k])) {
     failed = failed + 1;
-    return("failed: expected " + str("bar") + ", was " + str(t[k]));
+    return("failed: expected " + str("bar") + ", was " + str(l[k]));
   } else {
     passed = passed + 1;
   }
-  if (! equal63("bar", t["f" + "oo"])) {
+  if (! equal63("bar", l["f" + "oo"])) {
     failed = failed + 1;
-    return("failed: expected " + str("bar") + ", was " + str(t["f" + "oo"]));
+    return("failed: expected " + str("bar") + ", was " + str(l["f" + "oo"]));
   } else {
     passed = passed + 1;
     return(passed);
@@ -2361,10 +2361,10 @@ add(tests, ["each", function () {
   var _x560 = [1, 2, 3];
   _x560.b = false;
   _x560.a = true;
-  var t = _x560;
+  var l = _x560;
   var a = 0;
   var b = 0;
-  var _l3 = t;
+  var _l3 = l;
   var k = undefined;
   for (k in _l3) {
     var v = _l3[k];
@@ -2394,7 +2394,7 @@ add(tests, ["each", function () {
     passed = passed + 1;
   }
   var _a11 = 0;
-  var _l4 = t;
+  var _l4 = l;
   var _i2 = undefined;
   for (_i2 in _l4) {
     var x = _l4[_i2];
@@ -2415,11 +2415,11 @@ add(tests, ["each", function () {
   }
   var _x561 = [[1], [2]];
   _x561.b = [3];
-  var _t = _x561;
-  var _l5 = _t;
+  var _l5 = _x561;
+  var _l6 = _l5;
   var _i3 = undefined;
-  for (_i3 in _l5) {
-    var x = _l5[_i3];
+  for (_i3 in _l6) {
+    var x = _l6[_i3];
     var _e51;
     if (numeric63(_i3)) {
       _e51 = parseInt(_i3);
@@ -2434,10 +2434,10 @@ add(tests, ["each", function () {
       passed = passed + 1;
     }
   }
-  var _l6 = _t;
+  var _l7 = _l5;
   var _i4 = undefined;
-  for (_i4 in _l6) {
-    var x = _l6[_i4];
+  for (_i4 in _l7) {
+    var x = _l7[_i4];
     var _e52;
     if (numeric63(_i4)) {
       _e52 = parseInt(_i4);
@@ -2452,10 +2452,10 @@ add(tests, ["each", function () {
       passed = passed + 1;
     }
   }
-  var _l7 = _t;
+  var _l8 = _l5;
   var _i5 = undefined;
-  for (_i5 in _l7) {
-    var _id4 = _l7[_i5];
+  for (_i5 in _l8) {
+    var _id4 = _l8[_i5];
     var x = _id4[0];
     var _e53;
     if (numeric63(_i5)) {
@@ -3829,22 +3829,22 @@ add(tests, ["join", function () {
   _x721.b = 1;
   var _x722 = ["b"];
   _x722.c = 2;
-  var t = join(_x721, _x722);
-  if (! equal63(1, t.b)) {
+  var l = join(_x721, _x722);
+  if (! equal63(1, l.b)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(t.b));
+    return("failed: expected " + str(1) + ", was " + str(l.b));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(2, t.c)) {
+  if (! equal63(2, l.c)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(t.c));
+    return("failed: expected " + str(2) + ", was " + str(l.c));
   } else {
     passed = passed + 1;
   }
-  if (! equal63("b", t[1])) {
+  if (! equal63("b", l[1])) {
     failed = failed + 1;
-    return("failed: expected " + str("b") + ", was " + str(t[1]));
+    return("failed: expected " + str("b") + ", was " + str(l[1]));
   } else {
     passed = passed + 1;
     return(passed);
@@ -4090,23 +4090,23 @@ add(tests, ["cut", function () {
   } else {
     passed = passed + 1;
   }
-  var t = [1, 2, 3];
-  if (! equal63([], cut(t, t.length || 0))) {
+  var l = [1, 2, 3];
+  if (! equal63([], cut(l, l.length || 0))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(cut(t, t.length || 0)));
+    return("failed: expected " + str([]) + ", was " + str(cut(l, l.length || 0)));
   } else {
     passed = passed + 1;
   }
   var _x799 = [1, 2, 3];
   _x799.a = true;
-  var _t1 = _x799;
+  var _l9 = _x799;
   var _x800 = [];
   _x800.a = true;
-  if (! equal63(_x800, cut(_t1, _t1.length || 0))) {
+  if (! equal63(_x800, cut(_l9, _l9.length || 0))) {
     failed = failed + 1;
     var _x801 = [];
     _x801.a = true;
-    return("failed: expected " + str(_x801) + ", was " + str(cut(_t1, _t1.length || 0)));
+    return("failed: expected " + str(_x801) + ", was " + str(cut(_l9, _l9.length || 0)));
   } else {
     passed = passed + 1;
     return(passed);
@@ -4673,17 +4673,17 @@ add(tests, ["apply", function () {
   } else {
     passed = passed + 1;
   }
-  var t = [1];
-  t.foo = 17;
+  var l = [1];
+  l.foo = 17;
   if (! equal63(17, apply(function () {
     var a = unstash(Array.prototype.slice.call(arguments, 0));
     return(a.foo);
-  }, t))) {
+  }, l))) {
     failed = failed + 1;
     return("failed: expected " + str(17) + ", was " + str(apply(function () {
       var a = unstash(Array.prototype.slice.call(arguments, 0));
       return(a.foo);
-    }, t)));
+    }, l)));
   } else {
     passed = passed + 1;
   }

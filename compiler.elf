@@ -91,7 +91,7 @@
                      `(cut ,id ,#lh)
                    `(get ,id ',(bias k)))
             (when (~nil? k)
-              (let k (if (is v true) k v)
+              (let k (if (is v t) k v)
                 (join! bs (bind k x vars))))))))))
 
 (mac arguments% (from)
@@ -255,7 +255,7 @@
     (do (for i #id
           (unless (valid-code? (code id i))
             (return false)))
-        true)))
+        t)))
 
 (def key (k)
   (let i (inner k)
@@ -263,9 +263,9 @@
         (is target* 'js) k
       (cat "[" k "]"))))
 
-(def mapo (f t)
+(def mapo (f l)
   (with o ()
-    (each (k v) t
+    (each (k v) l
       (let x (f v)
         (when (~nil? x)
           (add o (literal k))
@@ -296,7 +296,7 @@
 
 (var getop (op)
   (find [let x (get _ op)
-          (if (is x true) op
+          (if (is x t) op
             (~nil? x) (get x target*))]
         infix))
 
@@ -415,7 +415,7 @@
       (cat ind form tr))))
 
 (var lower-statement (form tail?)
-  (let (hoist () e (lower form hoist true tail?))
+  (let (hoist () e (lower form hoist t tail?))
     (if (and (some? hoist) (~nil? e))
         `(do ,@hoist ,e)
         (~nil? e) e
@@ -491,18 +491,18 @@
             ,(lower-body body)))))
 
 (var lower-for (args hoist)
-  (let ((t k rest: body) args)
+  (let ((l k rest: body) args)
     (add hoist
-         `(%for ,(lower t hoist) ,k
+         `(%for ,(lower l hoist) ,k
             ,(lower-body body)))))
 
 (var lower-function (args)
   (let ((a rest: body) args)
-    `(%function ,a ,(lower-body body true))))
+    `(%function ,a ,(lower-body body t))))
 
 (var lower-definition (kind args hoist)
   (let ((name args rest: body) args)
-    (add hoist `(,kind ,name ,args ,(lower-body body true)))))
+    (add hoist `(,kind ,name ,args ,(lower-body body t)))))
 
 (var lower-call (form hoist)
   (let form (xform form (lower _ hoist))
@@ -593,13 +593,13 @@
 	(cat ind "while (" cond ") {\n" body ind "}\n")
       (cat ind "while " cond " do\n" body ind "end\n"))))
 
-(defspecial %for (t k form) :stmt :tr
-  (let (t (compile t)
+(defspecial %for (l k form) :stmt :tr
+  (let (l (compile l)
         ind (indentation)
         body (w/indent (compile form :stmt)))
     (if (is target* 'lua)
-	(cat ind "for " k " in next, " t " do\n" body ind "end\n")
-      (cat ind "for (" k " in " t ") {\n" body ind "}\n"))))
+	(cat ind "for " k " in next, " l " do\n" body ind "end\n")
+      (cat ind "for (" k " in " l ") {\n" body ind "}\n"))))
 
 (defspecial %try (form) :stmt :tr
   (w/uniq e
@@ -662,16 +662,16 @@
         rh (compile (if (nil? rh) 'nil rh)))
     (cat (indentation) lh " = " rh)))
 
-(defspecial get (t k)
-  (let (t (compile t)
+(defspecial get (l k)
+  (let (l (compile l)
 	k1 (compile k))
     (when (and (is target* 'lua)
-               (is (char t 0) "{"))
-      (= t (cat "(" t ")")))
+               (is (char l 0) "{"))
+      (= l (cat "(" l ")")))
     (if (and (string-literal? k)
              (valid-id? (inner k)))
-        (cat t "." (inner k))
-      (cat t "[" k1 "]"))))
+        (cat l "." (inner k))
+      (cat l "[" k1 "]"))))
 
 (defspecial %array forms
   (let (open (if (is target* 'lua) "{" "[")

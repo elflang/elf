@@ -20,7 +20,7 @@
 
 (var skip-non-code (s)
   (with any? nil
-    (while true
+    (while t
       (let c (peek-char s)
         (if (nil? c) (break)
             (get whitespace c) (read-char s)
@@ -29,7 +29,7 @@
                   (= c (read-char s)))
                 (skip-non-code s))
           (break)))
-      (= any? true))))
+      (= any? t))))
 
 (var read-table (obj))
 (var eof (obj))
@@ -45,7 +45,7 @@
 
 (var read-all (s)
   (with l ()
-    (while true
+    (while t
       (let form (read s)
         (if (is form eof) (break))
         (add l form)))))
@@ -97,13 +97,13 @@
 
 (var read-atom (s)
   (let (str "" dot? false)
-    (while true
+    (while t
       (let c (peek-char s)
         (when (or (not c) (get whitespace c) (get delimiters c))
           (break))
-        (if (is c ".") (= dot? true))
+        (if (is c ".") (= dot? t))
         (cat! str (read-char s))))
-    (if (is str "true") true
+    (if (is str "true") t
         (is str "false") false
         (is str "nan") nan
         (is str "-nan") nan
@@ -129,7 +129,7 @@
                   (let (k (clip x 0 (edge x))
                         v (read s))
                     (= (get l k) v))
-                  (flag? x) (= (get l (clip x 1)) true)
+                  (flag? x) (= (get l (clip x 1)) t)
                 (add l x)))))))))
 
 (var read-next (s prev ws?)
@@ -160,7 +160,7 @@
   (let (n -1 l () any? nil)
     (ontree skip: [hd-is? _ '%fn]
        [when (and (str? _) (<= (len _) 2) (is (code _ 0) 95)) ; "_"
-         (= any? true)
+         (= any? t)
          (var c (code _ 1))
          (when (and c (>= c 48) (<= c 57)) ; "0" through "9"
            (while (< n (- c 48))

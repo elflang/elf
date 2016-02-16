@@ -1,4 +1,5 @@
 local function setup()
+  setenv("t", {_stash = true, symbol = true})
   setenv("quote", {_stash = true, macro = function (form)
     return(quoted(form))
   end})
@@ -279,15 +280,15 @@ local function setup()
   end})
   setenv("guard", {_stash = true, macro = function (expr)
     if target42 == "js" then
-      return({{"%fn", {"%try", {"list", true, expr}}}})
+      return({{"%fn", {"%try", {"list", "t", expr}}}})
     else
       local x = uniq("x")
       local msg = uniq("msg")
       local trace = uniq("trace")
-      return({"let", {x, "nil", msg, "nil", trace, "nil"}, {"if", {"xpcall", {"%fn", {"=", x, expr}}, {"%fn", {"do", {"=", msg, {"clip", "_", {"+", {"search", "_", "\": \""}, 2}}}, {"=", trace, {{"get", "debug", {"quote", "traceback"}}}}}}}, {"list", true, x}, {"list", false, msg, trace}}})
+      return({"let", {x, "nil", msg, "nil", trace, "nil"}, {"if", {"xpcall", {"%fn", {"=", x, expr}}, {"%fn", {"do", {"=", msg, {"clip", "_", {"+", {"search", "_", "\": \""}, 2}}}, {"=", trace, {{"get", "debug", {"quote", "traceback"}}}}}}}, {"list", "t", x}, {"list", false, msg, trace}}})
     end
   end})
-  setenv("each", {_stash = true, macro = function (x, t, ...)
+  setenv("each", {_stash = true, macro = function (x, lst, ...)
     local _r62 = unstash({...})
     local body = cut(_r62, 0)
     local l = uniq("l")
@@ -314,7 +315,7 @@ local function setup()
     else
       _e23 = {join({"let", k, {"if", {"numeric?", k}, {"parseInt", k}, k}}, body)}
     end
-    return({"let", {l, t, k, "nil"}, {"%for", l, k, join({"let", {v, {"get", l, k}}}, _e23)}})
+    return({"let", {l, lst, k, "nil"}, {"%for", l, k, join({"let", {v, {"get", l, k}}}, _e23)}})
   end})
   setenv("for", {_stash = true, macro = function (i, ...)
     local _r64 = unstash({...})
@@ -348,13 +349,13 @@ local function setup()
       return({"let", {i, {"-", to, 1}}, join({"while", {">=", i, from}}, body, {{"--", i, - increment}})})
     end
   end})
-  setenv("step", {_stash = true, macro = function (v, t, ...)
+  setenv("step", {_stash = true, macro = function (v, l, ...)
     local _r66 = unstash({...})
     local body = cut(_r66, 0)
     local x = uniq("x")
     local n = uniq("n")
     local i = uniq("i")
-    return({"let", {x, t, n, {"len", x}}, {"for", i, n, join({"let", {v, {"at", x, i}}}, body)}})
+    return({"let", {x, l, n, {"len", x}}, {"for", i, n, join({"let", {v, {"at", x, i}}}, body)}})
   end})
   setenv("set-of", {_stash = true, macro = function (...)
     local xs = unstash({...})
@@ -427,7 +428,7 @@ local function setup()
   setenv("once", {_stash = true, macro = function (...)
     local forms = unstash({...})
     local x = uniq("x")
-    return(join({"when", {"nil?", x}, {"=", x, true}}, forms))
+    return(join({"when", {"nil?", x}, {"=", x, "t"}}, forms))
   end})
   setenv("elf", {_stash = true, macro = function ()
     return({"require", {"quote", "elf"}})
@@ -561,16 +562,16 @@ function cut(x, from, upto)
   return(l)
 end
 function keys(x)
-  local t = {}
+  local l = {}
   local _l7 = x
   local k = nil
   for k in next, _l7 do
     local v = _l7[k]
     if not( type(k) == "number") then
-      t[k] = v
+      l[k] = v
     end
   end
-  return(t)
+  return(l)
 end
 function edge(x)
   return(#(x) - 1)
@@ -660,8 +661,8 @@ function join(...)
     return(reduce(join, ls) or {})
   end
 end
-function find(f, t)
-  local _l10 = t
+function find(f, l)
+  local _l10 = l
   local _i10 = nil
   for _i10 in next, _l10 do
     local x = _l10[_i10]
@@ -671,16 +672,16 @@ function find(f, t)
     end
   end
 end
-function ontree(f, t, ...)
+function ontree(f, l, ...)
   local _r138 = unstash({...})
   local skip = _r138.skip
-  if not( skip and skip(t)) then
-    local y = f(t)
+  if not( skip and skip(l)) then
+    local y = f(l)
     if y then
       return(y)
     end
-    if not not( type(t) == "table") then
-      local _l11 = t
+    if not not( type(l) == "table") then
+      local _l11 = l
       local _i11 = nil
       for _i11 in next, _l11 do
         local x = _l11[_i11]
@@ -708,10 +709,10 @@ function first(f, l)
     _i12 = _i12 + 1
   end
 end
-function in63(x, t)
+function in63(x, l)
   return(find(function (_)
     return(x == _)
-  end, t))
+  end, l))
 end
 function pair(l)
   local l1 = {}
@@ -728,7 +729,7 @@ function sort(l, f)
   return(l)
 end
 function map(f, x)
-  local t = {}
+  local l = {}
   local _x534 = x
   local _n13 = #(_x534)
   local _i13 = 0
@@ -736,7 +737,7 @@ function map(f, x)
     local v = _x534[_i13 + 1]
     local y = f(v)
     if not( y == nil) then
-      add(t, y)
+      add(l, y)
     end
     _i13 = _i13 + 1
   end
@@ -747,11 +748,11 @@ function map(f, x)
     if not( type(k) == "number") then
       local y = f(v)
       if not( y == nil) then
-        t[k] = y
+        l[k] = y
       end
     end
   end
-  return(t)
+  return(l)
 end
 function keep(f, x)
   return(map(function (_)
@@ -760,8 +761,8 @@ function keep(f, x)
     end
   end, x))
 end
-function keys63(t)
-  local _l13 = t
+function keys63(l)
+  local _l13 = l
   local k = nil
   for k in next, _l13 do
     local v = _l13[k]
@@ -771,8 +772,8 @@ function keys63(t)
   end
   return(false)
 end
-function empty63(t)
-  local _l14 = t
+function empty63(l)
+  local _l14 = l
   local _i16 = nil
   for _i16 in next, _l14 do
     local x = _l14[_i16]

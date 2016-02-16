@@ -1472,7 +1472,7 @@ add(tests, {"calls", function ()
     return(42)
   end
   local l = {f}
-  local t = {f = f}
+  local o = {f = f}
   if not equal63(42, f()) then
     failed = failed + 1
     return("failed: expected " .. str(42) .. ", was " .. str(f()))
@@ -1485,9 +1485,9 @@ add(tests, {"calls", function ()
   else
     passed = passed + 1
   end
-  if not equal63(42, t.f()) then
+  if not equal63(42, o.f()) then
     failed = failed + 1
-    return("failed: expected " .. str(42) .. ", was " .. str(t.f()))
+    return("failed: expected " .. str(42) .. ", was " .. str(o.f()))
   else
     passed = passed + 1
   end
@@ -2324,36 +2324,36 @@ add(tests, {"at", function ()
   end
 end})
 add(tests, {"get-=", function ()
-  local t = {}
-  t.foo = "bar"
-  if not equal63("bar", t.foo) then
+  local l = {}
+  l.foo = "bar"
+  if not equal63("bar", l.foo) then
     failed = failed + 1
-    return("failed: expected " .. str("bar") .. ", was " .. str(t.foo))
+    return("failed: expected " .. str("bar") .. ", was " .. str(l.foo))
   else
     passed = passed + 1
   end
-  if not equal63("bar", t.foo) then
+  if not equal63("bar", l.foo) then
     failed = failed + 1
-    return("failed: expected " .. str("bar") .. ", was " .. str(t.foo))
+    return("failed: expected " .. str("bar") .. ", was " .. str(l.foo))
   else
     passed = passed + 1
   end
-  if not equal63("bar", t.foo) then
+  if not equal63("bar", l.foo) then
     failed = failed + 1
-    return("failed: expected " .. str("bar") .. ", was " .. str(t.foo))
+    return("failed: expected " .. str("bar") .. ", was " .. str(l.foo))
   else
     passed = passed + 1
   end
   local k = "foo"
-  if not equal63("bar", t[k]) then
+  if not equal63("bar", l[k]) then
     failed = failed + 1
-    return("failed: expected " .. str("bar") .. ", was " .. str(t[k]))
+    return("failed: expected " .. str("bar") .. ", was " .. str(l[k]))
   else
     passed = passed + 1
   end
-  if not equal63("bar", t["f" .. "oo"]) then
+  if not equal63("bar", l["f" .. "oo"]) then
     failed = failed + 1
-    return("failed: expected " .. str("bar") .. ", was " .. str(t["f" .. "oo"]))
+    return("failed: expected " .. str("bar") .. ", was " .. str(l["f" .. "oo"]))
   else
     passed = passed + 1
     return(passed)
@@ -2363,10 +2363,10 @@ add(tests, {"each", function ()
   local _x566 = {1, 2, 3}
   _x566.b = false
   _x566.a = true
-  local t = _x566
+  local l = _x566
   local a = 0
   local b = 0
-  local _l3 = t
+  local _l3 = l
   local k = nil
   for k in next, _l3 do
     local v = _l3[k]
@@ -2389,7 +2389,7 @@ add(tests, {"each", function ()
     passed = passed + 1
   end
   local _a11 = 0
-  local _l4 = t
+  local _l4 = l
   local _i2 = nil
   for _i2 in next, _l4 do
     local x = _l4[_i2]
@@ -2403,11 +2403,11 @@ add(tests, {"each", function ()
   end
   local _x567 = {{1}, {2}}
   _x567.b = {3}
-  local _t = _x567
-  local _l5 = _t
+  local _l5 = _x567
+  local _l6 = _l5
   local _i3 = nil
-  for _i3 in next, _l5 do
-    local x = _l5[_i3]
+  for _i3 in next, _l6 do
+    local x = _l6[_i3]
     if not equal63(false, not( type(x) == "table")) then
       failed = failed + 1
       return("failed: expected " .. str(false) .. ", was " .. str(not( type(x) == "table")))
@@ -2415,10 +2415,10 @@ add(tests, {"each", function ()
       passed = passed + 1
     end
   end
-  local _l6 = _t
+  local _l7 = _l5
   local _i4 = nil
-  for _i4 in next, _l6 do
-    local x = _l6[_i4]
+  for _i4 in next, _l7 do
+    local x = _l7[_i4]
     if not equal63(false, not( type(x) == "table")) then
       failed = failed + 1
       return("failed: expected " .. str(false) .. ", was " .. str(not( type(x) == "table")))
@@ -2426,10 +2426,10 @@ add(tests, {"each", function ()
       passed = passed + 1
     end
   end
-  local _l7 = _t
+  local _l8 = _l5
   local _i5 = nil
-  for _i5 in next, _l7 do
-    local _id4 = _l7[_i5]
+  for _i5 in next, _l8 do
+    local _id4 = _l8[_i5]
     local x = _id4[1]
     if not equal63(true, type(x) == "number") then
       failed = failed + 1
@@ -3922,22 +3922,22 @@ add(tests, {"join", function ()
   _x755.b = 1
   local _x756 = {"b"}
   _x756.c = 2
-  local t = join(_x755, _x756)
-  if not equal63(1, t.b) then
+  local l = join(_x755, _x756)
+  if not equal63(1, l.b) then
     failed = failed + 1
-    return("failed: expected " .. str(1) .. ", was " .. str(t.b))
+    return("failed: expected " .. str(1) .. ", was " .. str(l.b))
   else
     passed = passed + 1
   end
-  if not equal63(2, t.c) then
+  if not equal63(2, l.c) then
     failed = failed + 1
-    return("failed: expected " .. str(2) .. ", was " .. str(t.c))
+    return("failed: expected " .. str(2) .. ", was " .. str(l.c))
   else
     passed = passed + 1
   end
-  if not equal63("b", t[2]) then
+  if not equal63("b", l[2]) then
     failed = failed + 1
-    return("failed: expected " .. str("b") .. ", was " .. str(t[2]))
+    return("failed: expected " .. str("b") .. ", was " .. str(l[2]))
   else
     passed = passed + 1
     return(passed)
@@ -4183,23 +4183,23 @@ add(tests, {"cut", function ()
   else
     passed = passed + 1
   end
-  local t = {1, 2, 3}
-  if not equal63({}, cut(t, #(t))) then
+  local l = {1, 2, 3}
+  if not equal63({}, cut(l, #(l))) then
     failed = failed + 1
-    return("failed: expected " .. str({}) .. ", was " .. str(cut(t, #(t))))
+    return("failed: expected " .. str({}) .. ", was " .. str(cut(l, #(l))))
   else
     passed = passed + 1
   end
   local _x833 = {1, 2, 3}
   _x833.a = true
-  local _t1 = _x833
+  local _l9 = _x833
   local _x834 = {}
   _x834.a = true
-  if not equal63(_x834, cut(_t1, #(_t1))) then
+  if not equal63(_x834, cut(_l9, #(_l9))) then
     failed = failed + 1
     local _x835 = {}
     _x835.a = true
-    return("failed: expected " .. str(_x835) .. ", was " .. str(cut(_t1, #(_t1))))
+    return("failed: expected " .. str(_x835) .. ", was " .. str(cut(_l9, #(_l9))))
   else
     passed = passed + 1
     return(passed)
@@ -4766,17 +4766,17 @@ add(tests, {"apply", function ()
   else
     passed = passed + 1
   end
-  local t = {1}
-  t.foo = 17
+  local l = {1}
+  l.foo = 17
   if not equal63(17, apply(function (...)
     local a = unstash({...})
     return(a.foo)
-  end, t)) then
+  end, l)) then
     failed = failed + 1
     return("failed: expected " .. str(17) .. ", was " .. str(apply(function (...)
       local a = unstash({...})
       return(a.foo)
-    end, t)))
+    end, l)))
   else
     passed = passed + 1
   end

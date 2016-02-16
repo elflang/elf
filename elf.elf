@@ -11,6 +11,8 @@
   (%compile-time
     (assign environment*.1 environment*.0))
 
+  (defsym t true)
+
   (mac quote (form)
     (quoted form))
 
@@ -89,7 +91,7 @@
       0 nil
       1 `(= ,@l nil)
       2 (let ((lh rh) l)
-          (if (or (atom? lh) (case (hd lh) 'at true 'get true))
+          (if (or (atom? lh) (case (hd lh) 'at t 'get t))
               `(assign ,lh ,rh)
               (let (vars ()
                     forms (bind lh rh vars))
@@ -174,7 +176,7 @@
 
   (mac guard (expr)
     (if (is target* 'js)
-        `([%try (list true ,expr)])
+        `([%try (list t ,expr)])
       (w/uniq (x msg trace)
         `(let (,x nil
                ,msg nil
@@ -184,15 +186,15 @@
                 [do
                   (= ,msg (clip _ (+ (search _ ": ") 2)))
                   (= ,trace (debug.traceback))])
-               (list true ,x)
+               (list t ,x)
              (list false ,msg ,trace))))))
 
-  (mac each (x t rest: body)
+  (mac each (x lst rest: body)
     (w/uniq (l n i)
       (let ((k v) (if (atom? x) (list i x)
                     (if (> #x 1) x
                         (list i (hd x)))))
-        `(let (,l ,t ,k nil)
+        `(let (,l ,lst ,k nil)
            (%for ,l ,k
              (let (,v (get ,l ,k))
                ,@(if (is target* 'lua) body
@@ -214,9 +216,9 @@
         `(let (,i (- ,to 1))
            (while (>= ,i ,from) ,@body (-- ,i ,(- increment)))))))
 
-  (mac step (v t rest: body)
+  (mac step (v l rest: body)
     (w/uniq (x n i)
-      `(let (,x ,t ,n #,x)
+      `(let (,x ,l ,n #,x)
          (for ,i ,n
            (let (,v (at ,x ,i))
              ,@body)))))
@@ -224,7 +226,7 @@
   (mac set-of xs
     (let l ()
       (each x xs
-        (= (get l x) true))
+        (= (get l x) t))
       `(obj ,@l)))
 
   (mac language () `',target*)
@@ -268,7 +270,7 @@
   (mac once forms
     (w/uniq x
       `(when (nil? ,x)
-         (= ,x true)
+         (= ,x t)
          ,@forms)))
 
   (mac elf () `(require 'elf))
@@ -342,10 +344,10 @@
         (= (get l k) v)))))
 
 (def keys (x)
-  (with t ()
+  (with l ()
     (each (k v) x
       (unless (num? k)
-        (= (get t k) v)))))
+        (= (get l k) v)))))
 
 (def edge (x)
   (- #x 1))
@@ -410,17 +412,17 @@
           (or a b ())))
     (or (reduce join ls) ())))
 
-(def find (f t)
-  (each x t
+(def find (f l)
+  (each x l
     (let y (f x)
       (if y (return y)))))
 
-(def ontree (f t :skip)
-  (unless (and skip (skip t))
-    (let y (f t)
+(def ontree (f l :skip)
+  (unless (and skip (skip l))
+    (let y (f l)
       (if y (return y)))
-    (unless (atom? t)
-      (each x t
+    (unless (atom? l)
+      (each x l
         (let y (ontree f x skip: skip)
           (if y (return y)))))))
 
@@ -432,8 +434,8 @@
     (let y (f x)
       (if y (return y)))))
 
-(def in? (x t)
-  (find [is x _] t))
+(def in? (x l)
+  (find [is x _] l))
 
 (def pair (l)
   (with l1 ()
@@ -446,30 +448,30 @@
   (%js (l.sort (when f [if (f _0 _1) -1 1]))))
 
 (def map (f x)
-  (with t ()
+  (with l ()
     (step v x
       (let y (f v)
         (unless (nil? y)
-          (add t y))))
+          (add l y))))
     (each (k v) x
       (unless (num? k)
         (let y (f v)
           (unless (nil? y)
-            (= (get t k) y)))))))
+            (= (get l k) y)))))))
 
 (def keep (f x)
   (map [when (f _) _] x))
 
-(def keys? (t)
-  (each (k v) t
+(def keys? (l)
+  (each (k v) l
     (unless (num? k)
-      (return true)))
+      (return t)))
   false)
 
-(def empty? (t)
-  (each x t
+(def empty? (l)
+  (each x l
     (return false))
-  true)
+  t)
 
 (def stash (args)
   (when (keys? args)
@@ -477,7 +479,7 @@
       (each (k v) args
         (unless (num? k)
           (= (get p k) v)))
-      (= p._stash true)
+      (= p._stash t)
       (add args p)))
   args)
 
@@ -497,14 +499,14 @@
     (if (>= i 0) i))
   (%lua
     (let (start (if start (+ start 1))
-          i (string.find s pattern start true))
+          i (string.find s pattern start t))
       (and i (- i 1)))))
 
 (def split (s sep)
   (if (or (is s "") (is sep "")) ()
     (with l ()
       (let n #sep
-        (while true
+        (while t
           (let i (search s sep)
             (if (nil? i) (break)
               (do (add l (clip s 0 i))
@@ -537,7 +539,7 @@
     (for i n
       (unless (number-code? (code s i))
         (return false))))
-  true)
+  t)
 
 (%js (var tostring (x) (x.toString)))
 

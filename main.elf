@@ -30,7 +30,7 @@
       (in.setEncoding 'utf8)
       (in.on 'data rep1)))
   (%lua
-    (while true
+    (while t
       (let s (io.read)
         (if s (rep1 (cat s "\n"))
           (break))))))

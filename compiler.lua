@@ -425,9 +425,9 @@ function key(k)
     end
   end
 end
-function mapo(f, t)
+function mapo(f, l)
   local o = {}
-  local _l5 = t
+  local _l5 = l
   local k = nil
   for k in next, _l5 do
     local v = _l5[k]
@@ -871,10 +871,10 @@ local function lower_while(args, hoist)
   return(add(hoist, {"while", lower(c, hoist), lower_body(body)}))
 end
 local function lower_for(args, hoist)
-  local t = args[1]
+  local l = args[1]
   local k = args[2]
   local body = cut(args, 2)
-  return(add(hoist, {"%for", lower(t, hoist), k, lower_body(body)}))
+  return(add(hoist, {"%for", lower(l, hoist), k, lower_body(body)}))
 end
 local function lower_function(args)
   local a = args[1]
@@ -1054,17 +1054,17 @@ setenv("while", {_stash = true, tr = true, special = function (cond, form)
     return(ind .. "while " .. _cond3 .. " do\n" .. body .. ind .. "end\n")
   end
 end, stmt = true})
-setenv("%for", {_stash = true, tr = true, special = function (t, k, form)
-  local _t1 = compile(t)
+setenv("%for", {_stash = true, tr = true, special = function (l, k, form)
+  local _l8 = compile(l)
   local ind = indentation()
   indent_level42 = indent_level42 + 1
   local _x136 = compile(form, {_stash = true, stmt = true})
   indent_level42 = indent_level42 - 1
   local body = _x136
   if target42 == "lua" then
-    return(ind .. "for " .. k .. " in next, " .. _t1 .. " do\n" .. body .. ind .. "end\n")
+    return(ind .. "for " .. k .. " in next, " .. _l8 .. " do\n" .. body .. ind .. "end\n")
   else
-    return(ind .. "for (" .. k .. " in " .. _t1 .. ") {\n" .. body .. ind .. "}\n")
+    return(ind .. "for (" .. k .. " in " .. _l8 .. ") {\n" .. body .. ind .. "}\n")
   end
 end, stmt = true})
 setenv("%try", {_stash = true, tr = true, special = function (form)
@@ -1163,16 +1163,16 @@ setenv("assign", {_stash = true, special = function (lh, rh)
   local _rh1 = compile(_e32)
   return(indentation() .. _lh1 .. " = " .. _rh1)
 end, stmt = true})
-setenv("get", {_stash = true, special = function (t, k)
-  local _t3 = compile(t)
+setenv("get", {_stash = true, special = function (l, k)
+  local _l10 = compile(l)
   local k1 = compile(k)
-  if target42 == "lua" and char(_t3, 0) == "{" then
-    _t3 = "(" .. _t3 .. ")"
+  if target42 == "lua" and char(_l10, 0) == "{" then
+    _l10 = "(" .. _l10 .. ")"
   end
   if string_literal63(k) and valid_id63(inner(k)) then
-    return(_t3 .. "." .. inner(k))
+    return(_l10 .. "." .. inner(k))
   else
-    return(_t3 .. "[" .. k1 .. "]")
+    return(_l10 .. "[" .. k1 .. "]")
   end
 end})
 setenv("%array", {_stash = true, special = function (...)
@@ -1193,10 +1193,10 @@ setenv("%array", {_stash = true, special = function (...)
   local close = _e34
   local s = ""
   local c = ""
-  local _l8 = forms
+  local _l12 = forms
   local k = nil
-  for k in next, _l8 do
-    local v = _l8[k]
+  for k in next, _l12 do
+    local v = _l12[k]
     if type(k) == "number" then
       s = s .. c .. compile(v)
       c = ", "
@@ -1215,10 +1215,10 @@ setenv("%object", {_stash = true, special = function (...)
     _e35 = ": "
   end
   local sep = _e35
-  local _l10 = pair(forms)
+  local _l14 = pair(forms)
   local k = nil
-  for k in next, _l10 do
-    local v = _l10[k]
+  for k in next, _l14 do
+    local v = _l14[k]
     if type(k) == "number" then
       local _id30 = v
       local _k2 = _id30[1]

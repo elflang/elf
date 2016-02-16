@@ -273,10 +273,10 @@ c"
 (deftest calls
   (let (f [do 42]
         l (list f)
-        t (obj f: f))
+        o (obj f: f))
     (eq 42 (f))
     (eq 42 ((at l 0)))
-    (eq 42 ((get t 'f)))
+    (eq 42 ((get o 'f)))
     (eq nil ([return]))
     (eq 10 ([- _ 2] 12))))
 
@@ -435,33 +435,33 @@ c"
     (eq 10 (at l 3))))
 
 (deftest get-=
-  (let t (obj)
-    (= (get t 'foo) 'bar)
-    (eq 'bar (get t 'foo))
-    (eq 'bar (get t "foo"))
-    (eq 'bar t.foo)
+  (let l (obj)
+    (= (get l 'foo) 'bar)
+    (eq 'bar (get l 'foo))
+    (eq 'bar (get l "foo"))
+    (eq 'bar l.foo)
     (let k 'foo
-      (eq 'bar (get t k)))
-    (eq 'bar (get t (cat "f" "oo")))))
+      (eq 'bar (get l k)))
+    (eq 'bar (get l (cat "f" "oo")))))
 
 (deftest each
-  (let t '(1 2 3 :a b: false)
+  (let l '(1 2 3 :a b: false)
     (let (a 0 b 0)
-      (each (k v) t
+      (each (k v) l
         (if (num? k)
             (++ a)
           (++ b)))
       (eq 3 a)
       (eq 2 b))
     (let a 0
-      (each x t (++ a))
+      (each x l (++ a))
       (eq 5 a)))
-  (let t '((1) (2) b: (3))
-    (each x t
+  (let l '((1) (2) b: (3))
+    (each x l
       (eq false (atom? x)))
-    (each (x) t
+    (each (x) l
       (eq false (atom? x)))
-    (each ((x)) t
+    (each ((x)) l
       (eq true (num? x)))))
 
 (deftest fn
@@ -749,10 +749,10 @@ c"
   (eq '(a b :b) (join '(a) '(b :b)))
   (eq '(a b: 10) (join '(a :b) (obj b: 10)))
   (eq '(b: 10) (join (obj :b) '(b: 10)))
-  (let t (join '(a b: 1) '(b c: 2))
-    (eq 1 (get t 'b))
-    (eq 2 (get t 'c))
-    (eq 'b (at t 1))))
+  (let l (join '(a b: 1) '(b c: 2))
+    (eq 1 (get l 'b))
+    (eq 2 (get l 'c))
+    (eq 'b (at l 1))))
 
 (deftest rev
   (eq () (rev ()))
@@ -781,10 +781,10 @@ c"
   (eq '(1 2 3) (cut '(1 2 3) -4))
   (eq '(2 :a) (cut '(1 2 :a) 1))
   (eq '(:a b: 2) (cut '(:a b: 2)))
-  (let t '(1 2 3)
-    (eq () (cut t #t)))
-  (let t '(1 2 3 :a)
-    (eq '(:a) (cut t #t))))
+  (let l '(1 2 3)
+    (eq () (cut l #l)))
+  (let l '(1 2 3 :a)
+    (eq '(:a) (cut l #l))))
 
 (deftest clip
   (eq "uux" (clip "quux" 1))
@@ -880,9 +880,9 @@ c"
 (deftest apply
   (eq 4 (apply [+ _0 _1] '(2 2)))
   (eq '(2 2) (apply (fn a a) '(2 2)))
-  (let t '(1)
-    (= (get t 'foo) 17)
-    (eq 17 (apply (fn a (get a 'foo)) t)))
+  (let l '(1)
+    (= (get l 'foo) 17)
+    (eq 17 (apply (fn a (get a 'foo)) l)))
   (eq 42 (apply (fn (:foo) foo) (list foo: 42)))
   (eq 42 (apply (fn ((:foo)) foo) (list (list foo: 42)))))
 

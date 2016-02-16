@@ -471,9 +471,9 @@ key = function (k) {
     }
   }
 };
-mapo = function (f, t) {
+mapo = function (f, l) {
   var o = [];
-  var _l5 = t;
+  var _l5 = l;
   var k = undefined;
   for (k in _l5) {
     var v = _l5[k];
@@ -930,10 +930,10 @@ var lower_while = function (args, hoist) {
   return(add(hoist, ["while", lower(c, hoist), lower_body(body)]));
 };
 var lower_for = function (args, hoist) {
-  var t = args[0];
+  var l = args[0];
   var k = args[1];
   var body = cut(args, 2);
-  return(add(hoist, ["%for", lower(t, hoist), k, lower_body(body)]));
+  return(add(hoist, ["%for", lower(l, hoist), k, lower_body(body)]));
 };
 var lower_function = function (args) {
   var a = args[0];
@@ -1106,17 +1106,17 @@ setenv("while", {_stash: true, tr: true, special: function (cond, form) {
     return(ind + "while " + _cond3 + " do\n" + body + ind + "end\n");
   }
 }, stmt: true});
-setenv("%for", {_stash: true, tr: true, special: function (t, k, form) {
-  var _t1 = compile(t);
+setenv("%for", {_stash: true, tr: true, special: function (l, k, form) {
+  var _l8 = compile(l);
   var ind = indentation();
   indent_level42 = indent_level42 + 1;
   var _x133 = compile(form, {_stash: true, stmt: true});
   indent_level42 = indent_level42 - 1;
   var body = _x133;
   if (target42 === "lua") {
-    return(ind + "for " + k + " in next, " + _t1 + " do\n" + body + ind + "end\n");
+    return(ind + "for " + k + " in next, " + _l8 + " do\n" + body + ind + "end\n");
   } else {
-    return(ind + "for (" + k + " in " + _t1 + ") {\n" + body + ind + "}\n");
+    return(ind + "for (" + k + " in " + _l8 + ") {\n" + body + ind + "}\n");
   }
 }, stmt: true});
 setenv("%try", {_stash: true, tr: true, special: function (form) {
@@ -1215,16 +1215,16 @@ setenv("assign", {_stash: true, special: function (lh, rh) {
   var _rh1 = compile(_e40);
   return(indentation() + _lh1 + " = " + _rh1);
 }, stmt: true});
-setenv("get", {_stash: true, special: function (t, k) {
-  var _t3 = compile(t);
+setenv("get", {_stash: true, special: function (l, k) {
+  var _l10 = compile(l);
   var k1 = compile(k);
-  if (target42 === "lua" && char(_t3, 0) === "{") {
-    _t3 = "(" + _t3 + ")";
+  if (target42 === "lua" && char(_l10, 0) === "{") {
+    _l10 = "(" + _l10 + ")";
   }
   if (string_literal63(k) && valid_id63(inner(k))) {
-    return(_t3 + "." + inner(k));
+    return(_l10 + "." + inner(k));
   } else {
-    return(_t3 + "[" + k1 + "]");
+    return(_l10 + "[" + k1 + "]");
   }
 }});
 setenv("%array", {_stash: true, special: function () {
@@ -1245,10 +1245,10 @@ setenv("%array", {_stash: true, special: function () {
   var close = _e42;
   var s = "";
   var c = "";
-  var _l8 = forms;
+  var _l12 = forms;
   var k = undefined;
-  for (k in _l8) {
-    var v = _l8[k];
+  for (k in _l12) {
+    var v = _l12[k];
     var _e43;
     if (numeric63(k)) {
       _e43 = parseInt(k);
@@ -1274,10 +1274,10 @@ setenv("%object", {_stash: true, special: function () {
     _e44 = ": ";
   }
   var sep = _e44;
-  var _l10 = pair(forms);
+  var _l14 = pair(forms);
   var k = undefined;
-  for (k in _l10) {
-    var v = _l10[k];
+  for (k in _l14) {
+    var v = _l14[k];
     var _e45;
     if (numeric63(k)) {
       _e45 = parseInt(k);

@@ -55,12 +55,12 @@
     (unless (is x eof) x)))
 
 (var key? (atom)
-  (and (string? atom)
+  (and (str? atom)
        (> (# atom) 1)
        (is (char atom (edge atom)) ":")))
 
 (var flag? (atom)
-  (and (string? atom)
+  (and (str? atom)
        (> (# atom) 1)
        (is (char atom 0) ":")))
 
@@ -159,7 +159,7 @@
 (mac %fn (body)
   (let (n -1 l () any? nil)
     (ontree skip: [hd-is? _ '%fn]
-       [when (and (string? _) (<= (# _) 2) (is (code _ 0) 95)) ; "_"
+       [when (and (str? _) (<= (# _) 2) (is (code _ 0) 95)) ; "_"
          (= any? true)
          (var c (code _ 1))
          (when (and c (>= c 48) (<= c 57)) ; "0" through "9"

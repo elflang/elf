@@ -496,7 +496,7 @@ local function setup()
     _x488.js = {"typeof", x}
     return(_x488)
   end})
-  setenv("string?", {_stash = true, macro = function (x)
+  setenv("str?", {_stash = true, macro = function (x)
     return({"is", {"type", x}, {"quote", "string"}})
   end})
   setenv("number?", {_stash = true, macro = function (x)

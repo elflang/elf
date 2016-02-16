@@ -3,7 +3,7 @@
 (use reader)
 
 (def getenv (k p)
-  (when (string? k)
+  (when (str? k)
     (for (i 0 (# environment*) -1)
       (let b (get (at environment* i) k)
         (if (~nil? b)
@@ -42,7 +42,7 @@
       (variable? x)))
 
 (def quoted (form)
-  (if (string? form) (escape form)
+  (if (str? form) (escape form)
       (atom? form) form
     `(list ,@(map quoted form))))
 
@@ -158,7 +158,7 @@
           (is x '%function) (expand-function form)
           (is x '%global-function) (expand-definition form)
           (is x '%local-function) (expand-definition form)
-          (and (string? x) (is (char x 0) "~"))
+          (and (str? x) (is (char x 0) "~"))
           (macroexpand `(not (,(clip x 1) ,@(tl form))))
 	  (macro? x) (expand-macro form)
         (map macroexpand form)))))
@@ -335,7 +335,7 @@
       (is x "nil") "undefined"
       (id-literal? x) (inner x)
       (string-literal? x) (escape-newlines x)
-      (string? x) (id x)
+      (str? x) (id x)
       (bool? x) (if x "true" "false")
       (nan? x) "nan"
       (is x inf) "inf"
@@ -689,7 +689,7 @@
     (each (k v) (pair forms)
       (when (number? k)
         (let ((k v) v)
-          (unless (string? k)
+          (unless (str? k)
             (error (cat "Illegal key: " (str k))))
           (cat! s c (key k) sep (compile v))
           (= c ", "))))

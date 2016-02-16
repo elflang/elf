@@ -286,7 +286,7 @@ add(tests, {"read-more", function ()
     return(passed)
   end
 end})
-add(tests, {"boolean", function ()
+add(tests, {"bool", function ()
   if not equal63(true, true or false) then
     failed = failed + 1
     return("failed: expected " .. str(true) .. ", was " .. str(true or false))
@@ -4667,33 +4667,33 @@ add(tests, {"type", function ()
   else
     passed = passed + 1
   end
-  if not equal63(false, boolean63("abc")) then
+  if not equal63(false, type("abc") == "boolean") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(boolean63("abc")))
+    return("failed: expected " .. str(false) .. ", was " .. str(type("abc") == "boolean"))
   else
     passed = passed + 1
   end
-  if not equal63(false, boolean63(17)) then
+  if not equal63(false, type(17) == "boolean") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(boolean63(17)))
+    return("failed: expected " .. str(false) .. ", was " .. str(type(17) == "boolean"))
   else
     passed = passed + 1
   end
-  if not equal63(false, boolean63({"a"})) then
+  if not equal63(false, type({"a"}) == "boolean") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(boolean63({"a"})))
+    return("failed: expected " .. str(false) .. ", was " .. str(type({"a"}) == "boolean"))
   else
     passed = passed + 1
   end
-  if not equal63(true, boolean63(true)) then
+  if not equal63(true, type(true) == "boolean") then
     failed = failed + 1
-    return("failed: expected " .. str(true) .. ", was " .. str(boolean63(true)))
+    return("failed: expected " .. str(true) .. ", was " .. str(type(true) == "boolean"))
   else
     passed = passed + 1
   end
-  if not equal63(false, boolean63({})) then
+  if not equal63(false, type({}) == "boolean") then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(boolean63({})))
+    return("failed: expected " .. str(false) .. ", was " .. str(type({}) == "boolean"))
   else
     passed = passed + 1
   end

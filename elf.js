@@ -518,7 +518,7 @@ var setup = function () {
     _x454.js = ["typeof", x];
     return(_x454);
   }});
-  setenv("string?", {_stash: true, macro: function (x) {
+  setenv("str?", {_stash: true, macro: function (x) {
     return(["is", ["type", x], ["quote", "string"]]);
   }});
   setenv("number?", {_stash: true, macro: function (x) {

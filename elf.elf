@@ -317,7 +317,7 @@
        lua: ((do type) ,x)
        js: (typeof ,x)))
 
-  (mac string? (x) `(is (type ,x) 'string))
+  (mac str? (x) `(is (type ,x) 'string))
   (mac number? (x) `(is (type ,x) 'number))
   (mac bool? (x) `(is (type ,x) 'boolean))
   (mac fn? (x) `(is (type ,x) 'function))
@@ -383,10 +383,10 @@
   (%lua (string.char c)))
 
 (def string-literal? (x)
-  (and (string? x) (is (char x 0) "\"")))
+  (and (str? x) (is (char x 0) "\"")))
 
 (def id-literal? (x)
-  (and (string? x) (is (char x 0) "|")))
+  (and (str? x) (is (char x 0) "|")))
 
 (def add (l x)
   (%js (do (l.push x) nil))
@@ -576,7 +576,7 @@
       (is x inf) "inf"
       (is x -inf) "-inf"
       (bool? x) (if x "true" "false")
-      (string? x) (escape x)
+      (str? x) (escape x)
       (fn? x) "fn"
       (~atom? x)
       (let (s "(" sp ""
@@ -606,7 +606,7 @@
   (one? environment*))
 
 (def setenv (k rest: keys)
-  (when (string? k)
+  (when (str? k)
     (let (frame (if keys.toplevel
                     (hd environment*)
                   (last environment*))

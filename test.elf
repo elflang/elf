@@ -28,7 +28,7 @@
 (def run-tests ()
   (each ((name f)) tests
     (let result (f)
-      (when (string? result)
+      (when (str? result)
         (print (cat " " name " " result)))))
   (print (cat " " passed " passed, " failed " failed")))
 
@@ -77,7 +77,7 @@
       (eq false ok)
       (eq "Expected ) at 5" msg))))
 
-(deftest boolean
+(deftest bool
   (eq true (or true false))
   (eq false (or false false))
   (eq true (or false false true))
@@ -854,21 +854,21 @@ c"
   (eq '(3 2 1) (sort '(1 2 3) >)))
 
 (deftest type
-  (eq true (string? "abc"))
-  (eq false (string? 17))
-  (eq false (string? '(a)))
-  (eq false (string? true))
-  (eq false (string? (obj)))
+  (eq true (str? "abc"))
+  (eq false (str? 17))
+  (eq false (str? '(a)))
+  (eq false (str? true))
+  (eq false (str? (obj)))
   (eq false (number? "abc"))
   (eq true (number? 17))
   (eq false (number? '(a)))
   (eq false (number? true))
   (eq false (number? (obj)))
-  (eq false (boolean? "abc"))
-  (eq false (boolean? 17))
-  (eq false (boolean? '(a)))
-  (eq true (boolean? true))
-  (eq false (boolean? (obj)))
+  (eq false (bool? "abc"))
+  (eq false (bool? 17))
+  (eq false (bool? '(a)))
+  (eq true (bool? true))
+  (eq false (bool? (obj)))
   (eq true (atom? nil))
   (eq true (atom? "abc"))
   (eq true (atom? 42))

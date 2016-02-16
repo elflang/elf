@@ -400,7 +400,7 @@ var setup = function () {
   }});
   setenv("with-indent", {_stash: true, macro: function (form) {
     var x = unique("x");
-    return(["do", ["inc", "indent-level"], ["with", x, form, ["dec", "indent-level"]]]);
+    return(["do", ["inc", "indent-level*"], ["with", x, form, ["dec", "indent-level*"]]]);
   }});
   setenv("export", {_stash: true, macro: function () {
     var names = unstash(Array.prototype.slice.call(arguments, 0));

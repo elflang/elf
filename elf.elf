@@ -235,9 +235,9 @@
 
   (mac with-indent (form)
     (let-unique (x)
-      `(do (inc indent-level)
+      `(do (inc indent-level*)
            (with ,x ,form
-             (dec indent-level)))))
+             (dec indent-level*)))))
 
   (mac export names
     (if (is target 'js)

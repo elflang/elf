@@ -378,11 +378,11 @@ function expand_if(_x61)
     end
   end
 end
-indent_level = 0
+indent_level42 = 0
 function indentation()
   local s = ""
   local i = 0
-  while i < indent_level do
+  while i < indent_level42 do
     s = s .. "  "
     i = i + 1
   end
@@ -701,9 +701,9 @@ function compile_function(args, body, ...)
   end
   local _id15 = _e18
   local _args = compile_args(args)
-  indent_level = indent_level + 1
+  indent_level42 = indent_level42 + 1
   local _x85 = compile(body, {_stash = true, stmt = true})
-  indent_level = indent_level - 1
+  indent_level42 = indent_level42 - 1
   local _body = _x85
   local ind = indentation()
   local _e19
@@ -1005,15 +1005,15 @@ setenv("do", {_stash = true, tr = true, special = function (...)
 end, stmt = true})
 setenv("%if", {_stash = true, tr = true, special = function (cond, cons, alt)
   local _cond1 = compile(cond)
-  indent_level = indent_level + 1
+  indent_level42 = indent_level42 + 1
   local _x123 = compile(cons, {_stash = true, stmt = true})
-  indent_level = indent_level - 1
+  indent_level42 = indent_level42 - 1
   local _cons1 = _x123
   local _e27
   if alt then
-    indent_level = indent_level + 1
+    indent_level42 = indent_level42 + 1
     local _x124 = compile(alt, {_stash = true, stmt = true})
-    indent_level = indent_level - 1
+    indent_level42 = indent_level42 - 1
     _e27 = _x124
   end
   local _alt1 = _e27
@@ -1039,9 +1039,9 @@ setenv("%if", {_stash = true, tr = true, special = function (cond, cons, alt)
 end, stmt = true})
 setenv("while", {_stash = true, tr = true, special = function (cond, form)
   local _cond3 = compile(cond)
-  indent_level = indent_level + 1
+  indent_level42 = indent_level42 + 1
   local _x126 = compile(form, {_stash = true, stmt = true})
-  indent_level = indent_level - 1
+  indent_level42 = indent_level42 - 1
   local body = _x126
   local ind = indentation()
   if target == "js" then
@@ -1053,9 +1053,9 @@ end, stmt = true})
 setenv("%for", {_stash = true, tr = true, special = function (t, k, form)
   local _t1 = compile(t)
   local ind = indentation()
-  indent_level = indent_level + 1
+  indent_level42 = indent_level42 + 1
   local _x128 = compile(form, {_stash = true, stmt = true})
-  indent_level = indent_level - 1
+  indent_level42 = indent_level42 - 1
   local body = _x128
   if target == "lua" then
     return(ind .. "for " .. k .. " in next, " .. _t1 .. " do\n" .. body .. ind .. "end\n")
@@ -1066,14 +1066,14 @@ end, stmt = true})
 setenv("%try", {_stash = true, tr = true, special = function (form)
   local e = unique("e")
   local ind = indentation()
-  indent_level = indent_level + 1
+  indent_level42 = indent_level42 + 1
   local _x135 = compile(form, {_stash = true, stmt = true})
-  indent_level = indent_level - 1
+  indent_level42 = indent_level42 - 1
   local body = _x135
   local hf = {"return", {"%array", false, {"get", e, "\"message\""}, {"get", e, "\"stack\""}}}
-  indent_level = indent_level + 1
+  indent_level42 = indent_level42 + 1
   local _x140 = compile(hf, {_stash = true, stmt = true})
-  indent_level = indent_level - 1
+  indent_level42 = indent_level42 - 1
   local h = _x140
   return(ind .. "try {\n" .. body .. ind .. "}\n" .. ind .. "catch (" .. e .. ") {\n" .. h .. ind .. "}\n")
 end, stmt = true})

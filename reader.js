@@ -337,6 +337,10 @@ read_table[","] = function (s) {
     return(wrap(s, "unquote"));
   }
 };
+read_table["#"] = function (s) {
+  read_char(s);
+  return(wrap(s, "len"));
+};
 exports.stream = stream;
 exports.read = read;
 exports["read-all"] = read_all;

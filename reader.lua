@@ -337,4 +337,8 @@ read_table[","] = function (s)
     return(wrap(s, "unquote"))
   end
 end
+read_table["#"] = function (s)
+  read_char(s)
+  return(wrap(s, "len"))
+end
 return({["read-string"] = read_string, ["read-all"] = read_all, read = read, ["read-table"] = read_table, stream = stream})

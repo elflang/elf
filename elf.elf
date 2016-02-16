@@ -253,11 +253,6 @@
           (= (get x k) k))
         `(return (obj ,@x)))))
 
-  (mac undef? (var)
-    (if (is target* 'js)
-       `(is (typeof ,var) "undefined")
-     `(is ,var nil)))
-
   (mac %js forms
     (when (is target* 'js)
       `(do ,@forms)))
@@ -272,7 +267,7 @@
 
   (mac once forms
     (w/uniq x
-      `(when (undef? ,x)
+      `(when (nil? ,x)
          (= ,x true)
          ,@forms)))
 

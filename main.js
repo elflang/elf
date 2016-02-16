@@ -133,7 +133,7 @@ elf_main = function () {
     }
   }
 };
-if (typeof(_x4) === "undefined") {
+if (typeof(_x4) === "undefined" || _x4 === null) {
   _x4 = true;
   elf_main();
 }

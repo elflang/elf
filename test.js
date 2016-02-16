@@ -4873,7 +4873,7 @@ add(tests, ["parameters", function () {
     return(passed);
   }
 }]);
-if (typeof(_x996) === "undefined") {
+if (typeof(_x996) === "undefined" || _x996 === null) {
   _x996 = true;
   run_tests();
 }

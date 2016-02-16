@@ -12,9 +12,9 @@ local function stream(str, more)
 end
 local function peek_char(s)
   local pos = s.pos
-  local len = s.len
+  local _len = s.len
   local string = s.string
-  if pos < len then
+  if pos < _len then
     return(char(string, pos))
   end
 end

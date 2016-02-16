@@ -49,7 +49,7 @@
     (eq '(quasiquote a) (read "`a"))
     (eq '(quasiquote (unquote a)) (read "`,a"))
     (eq '(quasiquote (unquote-splicing a)) (read "`,@a"))
-    (eq 2 (# (read "(1 2 a: 7)")))
+    (eq 2 (len (read "(1 2 a: 7)")))
     (eq 7 (get (read "(1 2 a: 7)") 'a))
     (eq true (get (read "(:a)") 'a))
     (eq 1 (- -1))
@@ -151,19 +151,19 @@
   (eq 12 (do (get but zz) 12)))
 
 (deftest string
-  (eq 3 (# "foo"))
-  (eq 3 (# "\"a\""))
+  (eq 3 (len "foo"))
+  (eq 3 (len "\"a\""))
   (eq 'a "a")
   (eq "a" (char "bar" 1))
   (let s "a
 b"
-    (eq 3 (# s)))
+    (eq 3 (len s)))
   (let s "a
 b
 c"
-    (eq 5 (# s)))
-  (eq 3 (# "a\nb"))
-  (eq 3 (# "a\\b")))
+    (eq 5 (len s)))
+  (eq 3 (len "a\nb"))
+  (eq 3 (len "a\\b")))
 
 (deftest quote
   (eq 7 (quote 7))
@@ -186,8 +186,8 @@ c"
   (eq '(a) (list 'a))
   (eq '(a) (quote (a)))
   (eq '(()) (list (list)))
-  (eq 0 (# (list)))
-  (eq 2 (# (list 1 2)))
+  (eq 0 (len (list)))
+  (eq 2 (len (list 1 2)))
   (eq '(1 2 3) (list 1 2 3))
   (eq 17 (get (list foo: 17) 'foo))
   (eq 17 (get (list 1 foo: 17) 'foo))
@@ -235,7 +235,7 @@ c"
         c (obj a: 10)
         d (list a: 10))
     (eq 17 (get `(foo: ,a) 'foo))
-    (eq 2 (# `(foo: ,a ,@b)))
+    (eq 2 (len `(foo: ,a ,@b)))
     (eq 17 (get `(foo: ,@a) 'foo))
     (eq '(1 a: 10) `(1 ,@c))
     (eq '(1 a: 10) `(1 ,@d))
@@ -782,9 +782,9 @@ c"
   (eq '(2 :a) (cut '(1 2 :a) 1))
   (eq '(:a b: 2) (cut '(:a b: 2)))
   (let t '(1 2 3)
-    (eq () (cut t (# t))))
+    (eq () (cut t (len t))))
   (let t '(1 2 3 :a)
-    (eq '(:a) (cut t (# t)))))
+    (eq '(:a) (cut t (len t)))))
 
 (deftest clip
   (eq "uux" (clip "quux" 1))

@@ -12,9 +12,9 @@ var stream = function (str, more) {
 };
 var peek_char = function (s) {
   var pos = s.pos;
-  var len = s.len;
+  var _len = s.len;
   var string = s.string;
-  if (pos < len) {
+  if (pos < _len) {
     return(char(string, pos));
   }
 };

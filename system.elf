@@ -71,7 +71,7 @@
   (var argv
     (if (nil? arg) ()
       (with l ()
-        (for i (# arg)
+        (for i (len arg)
           (add l (at arg i))))))
 
   (var shell (cmd)

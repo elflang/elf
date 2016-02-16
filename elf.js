@@ -362,7 +362,7 @@ var setup = function () {
     var x = uniq("x");
     var n = uniq("n");
     var i = uniq("i");
-    return(["let", [x, t, n, ["#", x]], ["for", i, n, join(["let", [v, ["at", x, i]]], body)]]);
+    return(["let", [x, t, n, ["len", x]], ["for", i, n, join(["let", [v, ["at", x, i]]], body)]]);
   }});
   setenv("set-of", {_stash: true, macro: function () {
     var xs = unstash(Array.prototype.slice.call(arguments, 0));
@@ -481,23 +481,23 @@ var setup = function () {
   setenv("%len", {_stash: true, special: function (x) {
     return("#(" + compile(x) + ")");
   }});
-  setenv("#", {_stash: true, macro: function (x) {
+  setenv("len", {_stash: true, macro: function (x) {
     var _x419 = ["target"];
     _x419.lua = ["%len", x];
     _x419.js = ["or", ["get", x, ["quote", "length"]], 0];
     return(_x419);
   }});
   setenv("none?", {_stash: true, macro: function (x) {
-    return(["is", ["#", x], 0]);
+    return(["is", ["len", x], 0]);
   }});
   setenv("some?", {_stash: true, macro: function (x) {
-    return([">", ["#", x], 0]);
+    return([">", ["len", x], 0]);
   }});
   setenv("one?", {_stash: true, macro: function (x) {
-    return(["is", ["#", x], 1]);
+    return(["is", ["len", x], 1]);
   }});
   setenv("two?", {_stash: true, macro: function (x) {
-    return(["is", ["#", x], 2]);
+    return(["is", ["len", x], 2]);
   }});
   setenv("hd", {_stash: true, macro: function (l) {
     return(["at", l, 0]);

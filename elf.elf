@@ -85,7 +85,7 @@
                  (let ,(join bs1 bs2) ,@body)))))))
 
   (mac = l
-    (case (# l)
+    (case (len l)
       0 nil
       1 `(= ,@l nil)
       2 (let ((lh rh) l)
@@ -190,7 +190,7 @@
   (mac each (x t rest: body)
     (w/uniq (l n i)
       (let ((k v) (if (atom? x) (list i x)
-                    (if (> (# x) 1) x
+                    (if (> (len x) 1) x
                         (list i (hd x)))))
         `(let (,l ,t ,k nil)
            (%for ,l ,k
@@ -216,7 +216,7 @@
 
   (mac step (v t rest: body)
     (w/uniq (x n i)
-      `(let (,x ,t ,n (# ,x))
+      `(let (,x ,t ,n (len ,x))
          (for ,i ,n
            (let (,v (at ,x ,i))
              ,@body)))))
@@ -284,12 +284,12 @@
 
   (defspecial %len (x) (cat "#(" (compile x) ")"))
 
-  (mac # (x) `(target js: (or (get ,x 'length) 0) lua: (%len ,x)))
+  (mac len (x) `(target js: (or (get ,x 'length) 0) lua: (%len ,x)))
 
-  (mac none? (x) `(is (# ,x) 0))
-  (mac some? (x) `(> (# ,x) 0))
-  (mac one? (x) `(is (# ,x) 1))
-  (mac two? (x) `(is (# ,x) 2))
+  (mac none? (x) `(is (len ,x) 0))
+  (mac some? (x) `(> (len ,x) 0))
+  (mac one? (x) `(is (len ,x) 1))
+  (mac two? (x) `(is (len ,x) 2))
 
   (mac hd (l) `(at ,l 0))
   (mac tl (l) `(cut ,l 1))
@@ -330,10 +330,10 @@
   (%js (s.substring from upto))
   (%lua (string.sub s (+ from 1) upto)))
 
-(def cut (x (o from 0) (o upto (# x)))
+(def cut (x (o from 0) (o upto (len x)))
   (with l ()
     (var j 0)
-    (var to (min (# x) upto))
+    (var to (min (len x) upto))
     (for (i (max 0 from) to)
       (= (at l j) (at x i))
       (++ j))
@@ -348,7 +348,7 @@
         (= (get t k) v)))))
 
 (def edge (x)
-  (- (# x) 1))
+  (- (len x) 1))
 
 (def inner (x)
   (clip x 1 (edge x)))
@@ -387,7 +387,7 @@
 
 (def rev (l)
   (with l1 (keys l)
-    (for (i 0 (# l) -1)
+    (for (i 0 (len l) -1)
       (add l1 (at l i)))))
 
 (def reduce (f x)
@@ -399,7 +399,7 @@
   (if (two? ls)
       (let ((a b) ls)
         (if (and a b)
-            (let (c () o (# a))
+            (let (c () o (len a))
               (each (k v) a
                 (= (get c k) v))
               (each (k v) b
@@ -437,7 +437,7 @@
 
 (def pair (l)
   (with l1 ()
-    (for i (# l)
+    (for i (len l)
       (add l1 (list (at l i) (at l (+ i 1))))
       (++ i))))
 
@@ -503,7 +503,7 @@
 (def split (s sep)
   (if (or (is s "") (is sep "")) ()
     (with l ()
-      (let n (# sep)
+      (let n (len sep)
         (while true
           (let i (search s sep)
             (if (nil? i) (break)
@@ -533,7 +533,7 @@
   (and (> n 47) (< n 58)))
 
 (def numeric? (s)
-  (let n (# s)
+  (let n (len s)
     (for i n
       (unless (number-code? (code s i))
         (return false))))
@@ -543,7 +543,7 @@
 
 (def escape (s)
   (let s1 "\""
-    (for i (# s)
+    (for i (len s)
       (let (c (char s i)
             c1 (if (is c "\n") "\\n"
                    (is c "\"") "\\\""

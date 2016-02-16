@@ -88,7 +88,7 @@
           (when vars (add vars id)))
         (each (k v) lh
           (let x (if (is k 'rest)
-                     `(cut ,id ,(len lh))
+                     `(cut ,id ,#lh)
                    `(get ,id ',(bias k)))
             (when (~nil? k)
               (let k (if (is v true) k v)
@@ -101,7 +101,7 @@
   (let args1 ()
     (var rest ()
       (if (is target* 'js)
-          `(unstash (arguments% ,(len args1)))
+          `(unstash (arguments% ,#args1))
         (do (add args1 '|...|) '(unstash (list |...|)))))
     (if (atom? args)
         (list args1 `(let ,(list args (rest)) ,@body))
@@ -180,7 +180,7 @@
             (add xs '(list)))
         (add (last xs) (quasiexpand x depth))))
     (let pruned
-        (keep [or (> (len _) 1)
+        (keep [or (> #_ 1)
                   (~is (hd _) 'list)
                   (keys? _)]
               xs)
@@ -252,7 +252,7 @@
 (def valid-id? (id)
   (if (or (none? id) (reserved? id))
       false
-    (do (for i (len id)
+    (do (for i #id
           (unless (valid-code? (code id i))
             (return false)))
         true)))
@@ -312,13 +312,13 @@
 
 (var escape-newlines (s)
   (with s1 ""
-    (for i (len s)
+    (for i #s
       (let c (char s i)
         (cat! s1 (if (is c "\n") "\\n" c))))))
 
 (var id (id)
   (let id1 ""
-    (for i (len id)
+    (for i #id
       (let (c (char id i)
             n (code c)
             c1 (if (is c "-") "_"
@@ -419,7 +419,7 @@
     (if (and (some? hoist) (~nil? e))
         `(do ,@hoist ,e)
         (~nil? e) e
-        (> (len hoist) 1) `(do ,@hoist)
+        (> #hoist 1) `(do ,@hoist)
       (hd hoist))))
 
 (var lower-body (body tail?)
@@ -509,7 +509,7 @@
     (if (some? form) form)))
 
 (var lower-infix? (form)
-  (and (infix? (hd form)) (> (len form) 3)))
+  (and (infix? (hd form)) (> #form 3)))
 
 (var lower-infix (form hoist)
   (let ((x rest: args) form)

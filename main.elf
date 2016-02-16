@@ -67,7 +67,7 @@
         target1 nil
         expr nil
         argv system.argv
-        n (len argv))
+        n #argv)
     (for i n
       (let a (at argv i)
         (if (or (is a "-c") (is a "-o") (is a "-t") (is a "-e"))

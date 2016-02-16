@@ -7,7 +7,7 @@
 (var whitespace (set-of " " "\t" "\n"))
 
 (var stream (str more)
-  (obj pos: 0 string: str len: (len str) more: more))
+  (obj pos: 0 string: str len: #str more: more))
 
 (var peek-char (s)
   (let ((:pos :len :string) s)
@@ -56,12 +56,12 @@
 
 (var key? (atom)
   (and (str? atom)
-       (> (len atom) 1)
+       (> #atom 1)
        (is (char atom (edge atom)) ":")))
 
 (var flag? (atom)
   (and (str? atom)
-       (> (len atom) 1)
+       (> #atom 1)
        (is (char atom 0) ":")))
 
 (var expected (s c)
@@ -81,7 +81,7 @@
   (and (num? x) (~nan? x) (~inf? x)))
 
 (var valid-access? (str)
-  (and (> (len str) 2)
+  (and (> #str 2)
        (~is "." (char str 0))
        (~is "." (char str (edge str)))
        (~search str "..")))

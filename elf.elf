@@ -276,14 +276,11 @@
          (= ,x true)
          ,@forms)))
 
-  (mac elf ()
-    `(require 'elf))
+  (mac elf () `(require 'elf))
 
-  (mac lib modules
-    `(do ,@(xform modules `(def ,_ (require ',_)))))
+  (mac lib modules `(do ,@(xform modules `(def ,_ (require ',_)))))
 
-  (mac use modules
-    `(do ,@(xform modules `(var ,_ (require ',_)))))
+  (mac use modules `(do ,@(xform modules `(var ,_ (require ',_)))))
 
   (mac nil? (x)
     `(target
@@ -312,10 +309,7 @@
   ;; macro takes priority: (foo ...) will expand the macro.  To call
   ;; the function, write ((do foo) ...)
 
-  (mac type (x)
-    `(target
-       lua: ((do type) ,x)
-       js: (typeof ,x)))
+  (mac type (x) `(target js: (typeof ,x) lua: ((do type) ,x)))
 
   (mac str? (x) `(is (type ,x) 'string))
   (mac num? (x) `(is (type ,x) 'number))

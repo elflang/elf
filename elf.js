@@ -1145,15 +1145,12 @@ apply = function (f, args) {
   var _args = stash(args);
   return(f.apply(f, _args));
 };
-call = function (f) {
-  return(f());
-};
 toplevel63 = function () {
   return((environment42.length || 0) === 1);
 };
 setenv = function (k) {
-  var _r181 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _keys = cut(_r181, 0);
+  var _r180 = unstash(Array.prototype.slice.call(arguments, 1));
+  var _keys = cut(_r180, 0);
   if (typeof(k) === "string") {
     var _e46;
     if (_keys.toplevel) {

@@ -4844,45 +4844,22 @@ add(tests, {"eval", function ()
     return(passed)
   end
 end})
-add(tests, {"call", function ()
-  local f = function ()
-    return(42)
-  end
-  if not equal63(42, call(f)) then
-    failed = failed + 1
-    return("failed: expected " .. str(42) .. ", was " .. str(call(f)))
-  else
-    passed = passed + 1
-  end
-  local fs = {function ()
-    return(1)
-  end, function ()
-    return(10)
-  end}
-  if not equal63({1, 10}, map(call, fs)) then
-    failed = failed + 1
-    return("failed: expected " .. str({1, 10}) .. ", was " .. str(map(call, fs)))
-  else
-    passed = passed + 1
-    return(passed)
-  end
-end})
 add(tests, {"parameters", function ()
-  if not equal63(42, (function (_x996)
-    local a = _x996[1]
+  if not equal63(42, (function (_x992)
+    local a = _x992[1]
     return(a)
   end)({42})) then
     failed = failed + 1
-    return("failed: expected " .. str(42) .. ", was " .. str((function (_x998)
-      local a = _x998[1]
+    return("failed: expected " .. str(42) .. ", was " .. str((function (_x994)
+      local a = _x994[1]
       return(a)
     end)({42})))
   else
     passed = passed + 1
   end
-  local f = function (a, _x1000)
-    local b = _x1000[1]
-    local c = _x1000[2]
+  local f = function (a, _x996)
+    local b = _x996[1]
+    local c = _x996[2]
     return({a, b, c})
   end
   if not equal63({1, 2, 3}, f(1, {2, 3})) then
@@ -4891,11 +4868,11 @@ add(tests, {"parameters", function ()
   else
     passed = passed + 1
   end
-  local _f = function (a, _x1006, ...)
-    local b = _x1006[1]
-    local c = cut(_x1006, 1)
-    local _r215 = unstash({...})
-    local d = cut(_r215, 0)
+  local _f = function (a, _x1002, ...)
+    local b = _x1002[1]
+    local c = cut(_x1002, 1)
+    local _r211 = unstash({...})
+    local d = cut(_r211, 0)
     return({a, b, c, d})
   end
   if not equal63({1, 2, {3, 4}, {5, 6, 7}}, _f(1, {2, 3, 4}, 5, 6, 7)) then
@@ -4905,24 +4882,24 @@ add(tests, {"parameters", function ()
     passed = passed + 1
   end
   if not equal63({3, 4}, (function (a, b, ...)
-    local _r216 = unstash({...})
-    local c = cut(_r216, 0)
+    local _r212 = unstash({...})
+    local c = cut(_r212, 0)
     return(c)
   end)(1, 2, 3, 4)) then
     failed = failed + 1
     return("failed: expected " .. str({3, 4}) .. ", was " .. str((function (a, b, ...)
-      local _r217 = unstash({...})
-      local c = cut(_r217, 0)
+      local _r213 = unstash({...})
+      local c = cut(_r213, 0)
       return(c)
     end)(1, 2, 3, 4)))
   else
     passed = passed + 1
   end
-  local _f1 = function (w, _x1021, ...)
-    local x = _x1021[1]
-    local y = cut(_x1021, 1)
-    local _r218 = unstash({...})
-    local z = cut(_r218, 0)
+  local _f1 = function (w, _x1017, ...)
+    local x = _x1017[1]
+    local y = cut(_x1017, 1)
+    local _r214 = unstash({...})
+    local z = cut(_r214, 0)
     return({y, z})
   end
   if not equal63({{3, 4}, {5, 6, 7}}, _f1(1, {2, 3, 4}, 5, 6, 7)) then
@@ -4932,48 +4909,48 @@ add(tests, {"parameters", function ()
     passed = passed + 1
   end
   if not equal63(42, (function (...)
-    local _r219 = unstash({...})
-    local foo = _r219.foo
+    local _r215 = unstash({...})
+    local foo = _r215.foo
     return(foo)
   end)({_stash = true, foo = 42})) then
     failed = failed + 1
     return("failed: expected " .. str(42) .. ", was " .. str((function (...)
-      local _r220 = unstash({...})
-      local foo = _r220.foo
+      local _r216 = unstash({...})
+      local foo = _r216.foo
       return(foo)
     end)({_stash = true, foo = 42})))
   else
     passed = passed + 1
   end
-  local _x1035 = {}
-  _x1035.foo = 42
-  if not equal63(42, (function (_x1034)
-    local foo = _x1034.foo
+  local _x1031 = {}
+  _x1031.foo = 42
+  if not equal63(42, (function (_x1030)
+    local foo = _x1030.foo
     return(foo)
-  end)(_x1035)) then
+  end)(_x1031)) then
     failed = failed + 1
-    local _x1037 = {}
-    _x1037.foo = 42
-    return("failed: expected " .. str(42) .. ", was " .. str((function (_x1036)
-      local foo = _x1036.foo
+    local _x1033 = {}
+    _x1033.foo = 42
+    return("failed: expected " .. str(42) .. ", was " .. str((function (_x1032)
+      local foo = _x1032.foo
       return(foo)
-    end)(_x1037)))
+    end)(_x1033)))
   else
     passed = passed + 1
   end
-  local _f2 = function (a, _x1038, ...)
-    local foo = _x1038.foo
-    local _r223 = unstash({...})
-    local b = _r223.bar
+  local _f2 = function (a, _x1034, ...)
+    local foo = _x1034.foo
+    local _r219 = unstash({...})
+    local b = _r219.bar
     return({a, b, foo})
   end
-  local _x1042 = {}
-  _x1042.foo = 42
-  if not equal63({10, 20, 42}, _f2(10, _x1042, {_stash = true, bar = 20})) then
+  local _x1038 = {}
+  _x1038.foo = 42
+  if not equal63({10, 20, 42}, _f2(10, _x1038, {_stash = true, bar = 20})) then
     failed = failed + 1
-    local _x1044 = {}
-    _x1044.foo = 42
-    return("failed: expected " .. str({10, 20, 42}) .. ", was " .. str(_f2(10, _x1044, {_stash = true, bar = 20})))
+    local _x1040 = {}
+    _x1040.foo = 42
+    return("failed: expected " .. str({10, 20, 42}) .. ", was " .. str(_f2(10, _x1040, {_stash = true, bar = 20})))
   else
     passed = passed + 1
   end
@@ -4989,7 +4966,7 @@ add(tests, {"parameters", function ()
     return(passed)
   end
 end})
-if _x1048 == nil then
-  _x1048 = true
+if _x1044 == nil then
+  _x1044 = true
   run_tests()
 end

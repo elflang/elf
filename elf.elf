@@ -613,8 +613,6 @@
     (%js (f.apply f args))
     (%lua (f (values args)))))
 
-(def call (f) (f))
-
 (def toplevel? ()
   (one? environment*))
 

@@ -895,12 +895,6 @@ c"
     (eq 9 (eval '(do (var x 7) (+ x 2))))
     (eq 6 (eval '(apply + '(1 2 3))))))
 
-(deftest call
-  (let f [do 42]
-    (eq 42 (call f)))
-  (let fs (list [do 1] [do 10])
-    (eq '(1 10) (map call fs))))
-
 (deftest parameters
   (eq 42 ((fn ((a)) a) '(42)))
   (let f (fn (a (b c)) (list a b c))

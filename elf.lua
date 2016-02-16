@@ -1024,15 +1024,12 @@ function apply(f, args)
   local _args = stash(args)
   return(f(values(_args)))
 end
-function call(f)
-  return(f())
-end
 function toplevel63()
   return(#(environment42) == 1)
 end
 function setenv(k, ...)
-  local _r179 = unstash({...})
-  local _keys = cut(_r179, 0)
+  local _r178 = unstash({...})
+  local _keys = cut(_r178, 0)
   if type(k) == "string" then
     local _e31
     if _keys.toplevel then

@@ -201,7 +201,7 @@
         `(let (,i ,from)
            (while (< ,i ,to) ,@body (++ ,i ,increment)))
         `(let (,i (- ,to 1))
-           (while (>= ,i ,from) ,@body (dec ,i ,(- increment)))))))
+           (while (>= ,i ,from) ,@body (-- ,i ,(- increment)))))))
 
   (mac step (v t rest: body)
     (let-unique (x n i)
@@ -230,14 +230,14 @@
   (mac ++ (n by)
     `(= ,n (+ ,n ,(or by 1))))
 
-  (mac dec (n by)
+  (mac -- (n by)
     `(= ,n (- ,n ,(or by 1))))
 
   (mac with-indent (form)
     (let-unique (x)
       `(do (++ indent-level*)
            (with ,x ,form
-             (dec indent-level*)))))
+             (-- indent-level*)))))
 
   (mac export names
     (if (is target* 'js)

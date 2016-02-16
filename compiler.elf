@@ -72,7 +72,7 @@
   (when (and (number? k)
              (~is target* (language)))
     (if (is target* 'js)
-        (dec k)
+        (-- k)
       (++ k)))
   k)
 

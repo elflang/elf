@@ -346,7 +346,7 @@ var setup = function () {
     if (increment > 0) {
       return(["let", [i, from], join(["while", ["<", i, to]], body, [["++", i, increment]])]);
     } else {
-      return(["let", [i, ["-", to, 1]], join(["while", [">=", i, from]], body, [["dec", i, - increment]])]);
+      return(["let", [i, ["-", to, 1]], join(["while", [">=", i, from]], body, [["--", i, - increment]])]);
     }
   }});
   setenv("step", {_stash: true, macro: function (v, t) {
@@ -395,12 +395,12 @@ var setup = function () {
   setenv("++", {_stash: true, macro: function (n, by) {
     return(["=", n, ["+", n, by || 1]]);
   }});
-  setenv("dec", {_stash: true, macro: function (n, by) {
+  setenv("--", {_stash: true, macro: function (n, by) {
     return(["=", n, ["-", n, by || 1]]);
   }});
   setenv("with-indent", {_stash: true, macro: function (form) {
     var x = unique("x");
-    return(["do", ["++", "indent-level*"], ["with", x, form, ["dec", "indent-level*"]]]);
+    return(["do", ["++", "indent-level*"], ["with", x, form, ["--", "indent-level*"]]]);
   }});
   setenv("export", {_stash: true, macro: function () {
     var names = unstash(Array.prototype.slice.call(arguments, 0));

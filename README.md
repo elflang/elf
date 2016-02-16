@@ -305,7 +305,7 @@ There are several iteration mechanisms in Elf. The simplest is a `while` loop:
 ```
 > (let i 3
     (while (> i 0)
-      (print (dec i))))
+      (print (-- i))))
 2
 1
 0

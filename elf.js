@@ -450,7 +450,7 @@ var setup = function () {
       return(join(["do"], forms));
     }
   }});
-  setenv("%compiling", {_stash: true, macro: function () {
+  setenv("%compile-time", {_stash: true, macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));
     eval(join(["do"], forms));
     return(undefined);
@@ -515,7 +515,10 @@ var setup = function () {
     return(["cut", l, 1]);
   }});
   setenv("type", {_stash: true, macro: function (x) {
-    return(["do", ["%lua", [["do", "type"], x]], ["%js", ["typeof", x]]]);
+    var _x460 = ["target"];
+    _x460.lua = [["do", "type"], x];
+    _x460.js = ["typeof", x];
+    return(_x460);
   }});
   setenv("string?", {_stash: true, macro: function (x) {
     return(["is", ["type", x], ["quote", "string"]]);
@@ -530,10 +533,10 @@ var setup = function () {
     return(["is", ["type", x], ["quote", "function"]]);
   }});
   setenv("table?", {_stash: true, macro: function (x) {
-    var _x499 = ["target"];
-    _x499.lua = ["quote", "table"];
-    _x499.js = ["quote", "object"];
-    return(["is", ["type", x], _x499]);
+    var _x495 = ["target"];
+    _x495.lua = ["quote", "table"];
+    _x495.js = ["quote", "object"];
+    return(["is", ["type", x], _x495]);
   }});
   setenv("atom?", {_stash: true, macro: function (x) {
     return(["~table?", x]);
@@ -546,8 +549,8 @@ var setup = function () {
   }});
   return(undefined);
 };
-if (typeof(_x510) === "undefined") {
-  _x510 = true;
+if (typeof(_x506) === "undefined") {
+  _x506 = true;
   environment42 = [{}];
   target42 = "js";
 }
@@ -763,11 +766,11 @@ hd_is63 = function (l, val) {
   return(! !( typeof(l) === "object") && l[0] === val);
 };
 first = function (f, l) {
-  var _x512 = l;
-  var _n12 = _x512.length || 0;
+  var _x508 = l;
+  var _n12 = _x508.length || 0;
   var _i12 = 0;
   while (_i12 < _n12) {
-    var x = _x512[_i12];
+    var x = _x508[_i12];
     var y = f(x);
     if (y) {
       return(y);
@@ -805,11 +808,11 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var t = [];
-  var _x514 = x;
-  var _n13 = _x514.length || 0;
+  var _x510 = x;
+  var _n13 = _x510.length || 0;
   var _i13 = 0;
   while (_i13 < _n13) {
-    var v = _x514[_i13];
+    var v = _x510[_i13];
     var y = f(v);
     if (!( typeof(y) === "undefined" || y === null)) {
       add(t, y);

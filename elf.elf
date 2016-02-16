@@ -2,6 +2,15 @@
 
 (var setup ()
 
+  ;; Usually, macros are like variables: if a macro is defined within
+  ;; a function, then it's local to that function.  In this case,
+  ;; however, we want all macros defined within SETUP to be global.  We
+  ;; accomplish this by replacing the local environment frame with the
+  ;; global environment frame at compile time.
+
+  (%compile-time
+    (assign environment*.1 environment*.0))
+
   (mac quote (form)
     (quoted form))
 
@@ -261,7 +270,7 @@
     (when (is target* 'lua)
       `(do ,@forms)))
 
-  (mac %compiling forms
+  (mac %compile-time forms
     (eval `(do ,@forms))
     nil)
 
@@ -303,9 +312,14 @@
   (mac hd (l) `(at ,l 0))
   (mac tl (l) `(cut ,l 1))
 
+  ;; When a function and a macro share the same name, e.g. FOO, the
+  ;; macro takes priority: (foo ...) will expand the macro.  To call
+  ;; the function, write ((do foo) ...)
+
   (mac type (x)
-    `(do (%lua ((do type) ,x))
-         (%js (typeof ,x))))
+    `(target
+       lua: ((do type) ,x)
+       js: (typeof ,x)))
 
   (mac string? (x) `(is (type ,x) 'string))
   (mac number? (x) `(is (type ,x) 'number))
@@ -318,15 +332,7 @@
     (assert (atom? x))
     `(if (table? ,x) ,x (list ,x)))
 
-  nil
-
-  ;; Since we're within a wrapper function, the above definitions were
-  ;; attached to a local compilation frame.  Normally this frame would
-  ;; be dropped at the end of this wrapper function's scope.  Since we
-  ;; want the definitions to persist, we merge the defs into the
-  ;; toplevel frame.
-  (%compiling
-    (join! (at environment* 0) (at environment* 1))))
+  nil)
 
 (once
   (def environment* (list (obj)))

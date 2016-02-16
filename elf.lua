@@ -428,7 +428,7 @@ local function setup()
       return(join({"do"}, forms))
     end
   end})
-  setenv("%compiling", {_stash = true, macro = function (...)
+  setenv("%compile-time", {_stash = true, macro = function (...)
     local forms = unstash({...})
     eval(join({"do"}, forms))
     return(nil)
@@ -493,7 +493,10 @@ local function setup()
     return({"cut", l, 1})
   end})
   setenv("type", {_stash = true, macro = function (x)
-    return({"do", {"%lua", {{"do", "type"}, x}}, {"%js", {"typeof", x}}})
+    local _x494 = {"target"}
+    _x494.lua = {{"do", "type"}, x}
+    _x494.js = {"typeof", x}
+    return(_x494)
   end})
   setenv("string?", {_stash = true, macro = function (x)
     return({"is", {"type", x}, {"quote", "string"}})
@@ -508,10 +511,10 @@ local function setup()
     return({"is", {"type", x}, {"quote", "function"}})
   end})
   setenv("table?", {_stash = true, macro = function (x)
-    local _x533 = {"target"}
-    _x533.lua = {"quote", "table"}
-    _x533.js = {"quote", "object"}
-    return({"is", {"type", x}, _x533})
+    local _x529 = {"target"}
+    _x529.lua = {"quote", "table"}
+    _x529.js = {"quote", "object"}
+    return({"is", {"type", x}, _x529})
   end})
   setenv("atom?", {_stash = true, macro = function (x)
     return({"~table?", x})
@@ -524,8 +527,8 @@ local function setup()
   end})
   return(nil)
 end
-if _x544 == nil then
-  _x544 = true
+if _x540 == nil then
+  _x540 = true
   environment42 = {{}}
   target42 = "lua"
 end
@@ -702,11 +705,11 @@ function hd_is63(l, val)
   return(not not( type(l) == "table") and l[1] == val)
 end
 function first(f, l)
-  local _x548 = l
-  local _n12 = #(_x548)
+  local _x544 = l
+  local _n12 = #(_x544)
   local _i12 = 0
   while _i12 < _n12 do
-    local x = _x548[_i12 + 1]
+    local x = _x544[_i12 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -735,11 +738,11 @@ function sort(l, f)
 end
 function map(f, x)
   local t = {}
-  local _x550 = x
-  local _n13 = #(_x550)
+  local _x546 = x
+  local _n13 = #(_x546)
   local _i13 = 0
   while _i13 < _n13 do
-    local v = _x550[_i13 + 1]
+    local v = _x546[_i13 + 1]
     local y = f(v)
     if not( y == nil) then
       add(t, y)

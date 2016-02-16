@@ -528,23 +528,12 @@
                   (= s (clip s (+ i n)))))))
         (add l s)))))
 
-(def cat xs
-  (or (reduce [cat _0 _1] xs) ""))
-
-(def + xs
-  (or (reduce [+ _0 _1] xs) 0))
-
-(def - xs
-  (or (reduce [- _1 _0] (rev xs)) 0))
-
-(def * xs
-  (or (reduce [* _0 _1] xs) 1))
-
-(def / xs
-  (or (reduce [/ _1 _0] (rev xs)) 1))
-
-(def % xs
-  (or (reduce [% _1 _0] (rev xs)) 1))
+(def cat xs (or (reduce [cat _0 _1] xs) ""))
+(def + xs (or (reduce [+ _0 _1] xs) 0))
+(def - xs (or (reduce [- _1 _0] (rev xs)) 0))
+(def * xs (or (reduce [* _0 _1] xs) 1))
+(def / xs (or (reduce [/ _1 _0] (rev xs)) 1))
+(def % xs (or (reduce [% _1 _0] (rev xs)) 1))
 
 (def > (a b) (> a b))
 (def < (a b) (< a b))
@@ -553,11 +542,9 @@
 (def <= (a b) (<= a b))
 
 (def number (s)
-  (%lua
-    (tonumber s))
-  (%js
-    (let n (parseFloat s)
-        (unless (isNaN n) n))))
+  (%lua (tonumber s))
+  (%js (let n (parseFloat s)
+         (unless (isNaN n) n))))
 
 (def number-code? (n)
   (and (> n 47) (< n 58)))

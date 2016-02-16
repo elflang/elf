@@ -696,7 +696,7 @@ c"
   (w/uniq (ham chap)
     (eq '_ham ham)
     (eq '_chap chap)
-    (w/uniq (ham)
+    (w/uniq ham
       (eq '_ham1 ham))))
 
 (deftest literals

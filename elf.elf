@@ -21,7 +21,7 @@
       `(%delete ,place)))
 
   (mac list body
-    (w/uniq (x)
+    (w/uniq x
       (let (l () forms ())
         (each (k v) body
           (if (number? k)
@@ -38,7 +38,7 @@
     (hd (expand-if branches)))
 
   (mac case (x rest: clauses)
-    (w/uniq (e)
+    (w/uniq e
       (let bs (map (fn ((a b))
                      (if (nil? b)
                          (list a)
@@ -95,7 +95,7 @@
     `(let (,x ,v) ,@body ,x))
 
   (mac let-when (x v rest: body)
-    (w/uniq (y)
+    (w/uniq y
       `(let ,y ,v
          (when ,y
            (let (,x ,y)
@@ -128,13 +128,13 @@
       `(= ,name ,x)))
 
   (mac with-frame body
-    (w/uniq (x)
+    (w/uniq x
       `(do (add environment* (obj))
            (with ,x (do ,@body)
              (drop environment*)))))
 
   (mac with-bindings ((names) rest: body)
-    (w/uniq (x)
+    (w/uniq x
      `(with-frame
         (each ,x ,names
           (setenv ,x :variable))
@@ -234,7 +234,7 @@
     `(= ,n (- ,n ,(or by 1))))
 
   (mac with-indent (form)
-    (w/uniq (x)
+    (w/uniq x
       `(do (++ indent-level*)
            (with ,x ,form
              (-- indent-level*)))))
@@ -266,7 +266,7 @@
     nil)
 
   (mac once forms
-    (w/uniq (x)
+    (w/uniq x
       `(when (undef? ,x)
          (= ,x true)
          ,@forms)))

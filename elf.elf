@@ -136,7 +136,7 @@
         `(%global-function ,name ,@(bind* x body))
       `(= ,name ,x)))
 
-  (mac with-frame body
+  (mac w/frame body
     (w/uniq x
       `(do (add environment* (obj))
            (with ,x (do ,@body)
@@ -144,19 +144,19 @@
 
   (mac with-bindings ((names) rest: body)
     (w/uniq x
-     `(with-frame
+     `(w/frame
         (each ,x ,names
           (setenv ,x :variable))
         ,@body)))
 
   (mac let-macro (definitions rest: body)
-    (with-frame
+    (w/frame
       (xform definitions
         (macroexpand `(mac ,@_)))
       `(do ,@(macroexpand body))))
 
   (mac let-symbol (expansions rest: body)
-    (with-frame
+    (w/frame
       (map (fn ((name exp))
              (macroexpand `(defsym ,name ,exp)))
            (pair expansions))

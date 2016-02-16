@@ -226,7 +226,7 @@ var setup = function () {
       return(["=", name, x]);
     }
   }});
-  setenv("with-frame", {_stash: true, macro: function () {
+  setenv("w/frame", {_stash: true, macro: function () {
     var body = unstash(Array.prototype.slice.call(arguments, 0));
     var x = uniq("x");
     return(["do", ["add", "environment*", ["obj"]], ["with", x, join(["do"], body), ["drop", "environment*"]]]);
@@ -238,7 +238,7 @@ var setup = function () {
     var x = uniq("x");
     var _x169 = ["setenv", x];
     _x169.variable = true;
-    return(join(["with-frame", ["each", x, names, _x169]], body));
+    return(join(["w/frame", ["each", x, names, _x169]], body));
   }});
   setenv("let-macro", {_stash: true, macro: function (definitions) {
     var _r49 = unstash(Array.prototype.slice.call(arguments, 1));

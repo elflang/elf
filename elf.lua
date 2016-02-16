@@ -219,7 +219,7 @@ local function setup()
       return({"=", name, x})
     end
   end})
-  setenv("with-frame", {_stash = true, macro = function (...)
+  setenv("w/frame", {_stash = true, macro = function (...)
     local body = unstash({...})
     local x = uniq("x")
     return({"do", {"add", "environment*", {"obj"}}, {"with", x, join({"do"}, body), {"drop", "environment*"}}})
@@ -231,7 +231,7 @@ local function setup()
     local x = uniq("x")
     local _x185 = {"setenv", x}
     _x185.variable = true
-    return(join({"with-frame", {"each", x, names, _x185}}, body))
+    return(join({"w/frame", {"each", x, names, _x185}}, body))
   end})
   setenv("let-macro", {_stash = true, macro = function (definitions, ...)
     local _r49 = unstash({...})

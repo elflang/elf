@@ -243,10 +243,10 @@ c"
     (eq true (get (hd `(,(list :foo))) 'foo))
     (eq true (get `(,@(list :foo)) 'foo))
     (eq true (get `(1 2 3 ,@'(:foo)) 'foo)))
-  (let-macro ((a keys `(obj ,@keys)))
+  (w/mac a keys `(obj ,@keys)
     (eq true (get (a :foo) 'foo))
     (eq 17 (get (a bar: 17) 'bar)))
-  (let-macro ((a () `(obj baz: [do 17])))
+  (w/mac a () `(obj baz: [do 17])
     (eq 17 ((get (a) 'baz)))))
 
 (deftest quasiexpand
@@ -494,7 +494,7 @@ c"
       (eq 12 a))))
 
 (deftest guard
-  (let-macro ((guard1 (x) `(cut (guard ,x) 0 2)))
+  (w/mac guard1 (x) `(cut (guard ,x) 0 2)
     (eq '(true 42) (guard1 42))
     (eq '(false foo) (guard1 (error "foo")))
     (eq '(false foo) (guard1 (do (error "foo") (error "baz"))))
@@ -625,22 +625,21 @@ c"
       (eq 2 yy)
       (eq '(3) zz))))
 
-(deftest let-macro
-  (let-macro ((a () 17)
-              (b (a) `(+ ,a 10)))
-    (eq 17 (a))
-    (eq 42 (b 32))
-    (let-macro ((a () 1))
-      (eq 1 (a)))
-    (eq 17 (a)))
-  (let-macro ((a () 18))
-    (let (b [do 20])
+(deftest w/mac
+  (w/mac a () 17
+    (w/mac b (a) `(+ ,a 10)
+      (eq 17 (a))
+      (eq 42 (b 32))
+      (w/mac a () 1
+        (eq 1 (a)))
+      (eq 17 (a))))
+  (w/mac a () 18
+    (let b [do 20]
       (eq 18 (a))
       (eq 20 (b))))
-  (let-macro ((a (x)
-                (let (x 10)
-                  (= x 20))
-                `(+ ,x 1)))
+  (w/mac a (x) (do (let (x 10)
+                     (= x 20))
+                   `(+ ,x 1))
     (eq 2 (a 1))))
 
 (deftest let-symbol
@@ -662,10 +661,10 @@ c"
 
 (deftest macros-and-symbols
   (let-symbol (a 1)
-    (let-macro ((a () 2))
+    (w/mac a () 2
       (eq 2 (a)))
     (eq 1 a))
-  (let-macro ((a () 2))
+  (w/mac a () 2
     (let-symbol (a 1)
       (eq 1 a))
     (eq 2 (a))))
@@ -673,7 +672,7 @@ c"
 (deftest macros-and-let
   (let a 10
     (eq a 10)
-    (let-macro ((a () 12))
+    (w/mac a () 12
       (eq 12 (a)))
     (eq a 10))
   (let b 20
@@ -681,7 +680,7 @@ c"
     (let-symbol (b 22)
       (eq 22 b))
     (eq b 20))
-  (let-macro ((c () 30))
+  (w/mac c () 30
     (eq 30 (c))
     (let c 32
       (eq 32 c))

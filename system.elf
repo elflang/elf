@@ -33,27 +33,28 @@
 
 (%lua
 
-  (var call-with-file (f file)
+  (var call-w/file (f file)
     (let |h,e| file
       (unless h
         (error e))
       (with x (f h)
         (h.close h))))
 
-  (let-macro ((with-file ((var path mode) rest: body)
-               `(call-with-file (fn (,var) ,@body)
-                                (io.open ,path ,mode))))
+  (w/mac w/file (var path rest: body)
+    `(call-w/file
+       (fn (,var) ,@body)
+       (io.open ,@(listify path)))
 
     (var read-file (path)
-      (with-file (f path)
+      (w/file f path
         (f.read f '*a)))
 
     (var write-file (path data)
-      (with-file (f path 'w)
+      (w/file f (path 'w)
         (f.write f data)))
 
     (var file-exists? (path)
-      (with-file (f path)
+      (w/file f path
         (~nil? f))))
 
   (var path-separator (char _G.package.config 0))

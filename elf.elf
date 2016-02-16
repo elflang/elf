@@ -149,10 +149,9 @@
           (setenv ,x :variable))
         ,@body)))
 
-  (mac let-macro (definitions rest: body)
+  (mac w/mac (name args definition rest: body)
     (w/frame
-      (xform definitions
-        (macroexpand `(mac ,@_)))
+      (macroexpand `(mac ,name ,args ,definition))
       `(do ,@(macroexpand body))))
 
   (mac let-symbol (expansions rest: body)

@@ -240,20 +240,18 @@ var setup = function () {
     _x169.variable = true;
     return(join(["w/frame", ["each", x, names, _x169]], body));
   }});
-  setenv("let-macro", {_stash: true, macro: function (definitions) {
-    var _r49 = unstash(Array.prototype.slice.call(arguments, 1));
-    var body = cut(_r49, 0);
+  setenv("w/mac", {_stash: true, macro: function (name, args, definition) {
+    var _r48 = unstash(Array.prototype.slice.call(arguments, 3));
+    var body = cut(_r48, 0);
     add(environment42, {});
-    map(function (_) {
-      return(macroexpand(join(["mac"], _)));
-    }, definitions);
+    macroexpand(["mac", name, args, definition]);
     var _x174 = join(["do"], macroexpand(body));
     drop(environment42);
     return(_x174);
   }});
   setenv("let-symbol", {_stash: true, macro: function (expansions) {
-    var _r53 = unstash(Array.prototype.slice.call(arguments, 1));
-    var body = cut(_r53, 0);
+    var _r51 = unstash(Array.prototype.slice.call(arguments, 1));
+    var body = cut(_r51, 0);
     add(environment42, {});
     map(function (_x183) {
       var name = _x183[0];
@@ -265,8 +263,8 @@ var setup = function () {
     return(_x182);
   }});
   setenv("w/uniq", {_stash: true, macro: function (names) {
-    var _r57 = unstash(Array.prototype.slice.call(arguments, 1));
-    var body = cut(_r57, 0);
+    var _r55 = unstash(Array.prototype.slice.call(arguments, 1));
+    var body = cut(_r55, 0);
     var _e21;
     if (typeof(names) === "object") {
       _e21 = names;
@@ -278,8 +276,8 @@ var setup = function () {
     }, _e21))], body));
   }});
   setenv("fn", {_stash: true, macro: function (args) {
-    var _r60 = unstash(Array.prototype.slice.call(arguments, 1));
-    var body = cut(_r60, 0);
+    var _r58 = unstash(Array.prototype.slice.call(arguments, 1));
+    var body = cut(_r58, 0);
     return(join(["%function"], bind42(args, body)));
   }});
   setenv("guard", {_stash: true, macro: function (expr) {
@@ -293,8 +291,8 @@ var setup = function () {
     }
   }});
   setenv("each", {_stash: true, macro: function (x, t) {
-    var _r64 = unstash(Array.prototype.slice.call(arguments, 2));
-    var body = cut(_r64, 0);
+    var _r62 = unstash(Array.prototype.slice.call(arguments, 2));
+    var body = cut(_r62, 0);
     var l = uniq("l");
     var n = uniq("n");
     var i = uniq("i");
@@ -322,8 +320,8 @@ var setup = function () {
     return(["let", [l, t, k, "nil"], ["%for", l, k, join(["let", [v, ["get", l, k]]], _e24)]]);
   }});
   setenv("for", {_stash: true, macro: function (i) {
-    var _r66 = unstash(Array.prototype.slice.call(arguments, 1));
-    var body = cut(_r66, 0);
+    var _r64 = unstash(Array.prototype.slice.call(arguments, 1));
+    var body = cut(_r64, 0);
     var from = 0;
     var to = 0;
     var increment = 1;
@@ -355,8 +353,8 @@ var setup = function () {
     }
   }});
   setenv("step", {_stash: true, macro: function (v, t) {
-    var _r68 = unstash(Array.prototype.slice.call(arguments, 2));
-    var body = cut(_r68, 0);
+    var _r66 = unstash(Array.prototype.slice.call(arguments, 2));
+    var body = cut(_r66, 0);
     var x = uniq("x");
     var n = uniq("n");
     var i = uniq("i");
@@ -388,13 +386,13 @@ var setup = function () {
     return(clauses[target42]);
   }});
   setenv("join!", {_stash: true, macro: function (a) {
-    var _r72 = unstash(Array.prototype.slice.call(arguments, 1));
-    var bs = cut(_r72, 0);
+    var _r70 = unstash(Array.prototype.slice.call(arguments, 1));
+    var bs = cut(_r70, 0);
     return(["=", a, join(["join", a], bs)]);
   }});
   setenv("cat!", {_stash: true, macro: function (a) {
-    var _r74 = unstash(Array.prototype.slice.call(arguments, 1));
-    var bs = cut(_r74, 0);
+    var _r72 = unstash(Array.prototype.slice.call(arguments, 1));
+    var bs = cut(_r72, 0);
     return(["=", a, join(["cat", a], bs)]);
   }});
   setenv("++", {_stash: true, macro: function (n, by) {
@@ -731,8 +729,8 @@ find = function (f, t) {
   }
 };
 ontree = function (f, t) {
-  var _r142 = unstash(Array.prototype.slice.call(arguments, 2));
-  var skip = _r142.skip;
+  var _r140 = unstash(Array.prototype.slice.call(arguments, 2));
+  var skip = _r140.skip;
   if (!( skip && skip(t))) {
     var y = f(t);
     if (y) {
@@ -1148,8 +1146,8 @@ toplevel63 = function () {
   return((environment42.length || 0) === 1);
 };
 setenv = function (k) {
-  var _r178 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _keys = cut(_r178, 0);
+  var _r176 = unstash(Array.prototype.slice.call(arguments, 1));
+  var _keys = cut(_r176, 0);
   if (typeof(k) === "string") {
     var _e46;
     if (_keys.toplevel) {

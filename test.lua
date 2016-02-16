@@ -3418,7 +3418,7 @@ add(tests, {"destructuring", function ()
     return(passed)
   end
 end})
-add(tests, {"let-macro", function ()
+add(tests, {"w/mac", function ()
   if not equal63(17, 17) then
     failed = failed + 1
     return("failed: expected " .. str(17) .. ", was " .. str(17))

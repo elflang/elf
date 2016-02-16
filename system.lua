@@ -1,4 +1,4 @@
-local function call_with_file(f, file)
+local function call_w47file(f, file)
   local h,e = file
   if not h then
     error(e)
@@ -8,17 +8,17 @@ local function call_with_file(f, file)
   return(x)
 end
 local function read_file(path)
-  return(call_with_file(function (f)
+  return(call_w47file(function (f)
     return(f.read(f, "*a"))
   end, io.open(path)))
 end
 local function write_file(path, data)
-  return(call_with_file(function (f)
+  return(call_w47file(function (f)
     return(f.write(f, data))
   end, io.open(path, "w")))
 end
 local function file_exists63(path)
-  return(call_with_file(function (f)
+  return(call_w47file(function (f)
     return(not( f == nil))
   end, io.open(path)))
 end
@@ -32,9 +32,9 @@ end
 local function exit(code)
   return(os.exit(code))
 end
-local _e
+local _e1
 if arg == nil then
-  _e = {}
+  _e1 = {}
 else
   local _l = {}
   local i = 0
@@ -42,9 +42,9 @@ else
     add(_l, arg[i + 1])
     i = i + 1
   end
-  _e = _l
+  _e1 = _l
 end
-local argv = _e
+local argv = _e1
 local function shell(cmd)
   local x = io.popen(cmd)
   return(x.read(x, "*a"))

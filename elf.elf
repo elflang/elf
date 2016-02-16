@@ -282,13 +282,9 @@
                 `(or (is (typeof ,x) "undefined") (is ,x null))
               `(let (x ,x) (nil? x)))))
 
-  (defspecial %len (x)
-    (cat "#(" (compile x) ")"))
+  (defspecial %len (x) (cat "#(" (compile x) ")"))
 
-  (mac # (x)
-    `(target
-       lua: (%len ,x)
-       js: (or (get ,x 'length) 0)))
+  (mac # (x) `(target js: (or (get ,x 'length) 0) lua: (%len ,x)))
 
   (mac none? (x) `(is (# ,x) 0))
   (mac some? (x) `(> (# ,x) 0))

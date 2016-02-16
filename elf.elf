@@ -402,7 +402,7 @@
 (def almost (l)
   (cut l 0 (edge l)))
 
-(def reverse (l)
+(def rev (l)
   (with l1 (keys l)
     (for (i 0 (# l) -1)
       (add l1 (at l i)))))
@@ -535,16 +535,16 @@
   (or (reduce [+ _0 _1] xs) 0))
 
 (def - xs
-  (or (reduce [- _1 _0] (reverse xs)) 0))
+  (or (reduce [- _1 _0] (rev xs)) 0))
 
 (def * xs
   (or (reduce [* _0 _1] xs) 1))
 
 (def / xs
-  (or (reduce [/ _1 _0] (reverse xs)) 1))
+  (or (reduce [/ _1 _0] (rev xs)) 1))
 
 (def % xs
-  (or (reduce [% _1 _0] (reverse xs)) 1))
+  (or (reduce [% _1 _0] (rev xs)) 1))
 
 (def > (a b) (> a b))
 (def < (a b) (< a b))

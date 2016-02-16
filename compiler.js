@@ -44,7 +44,7 @@ var symbol63 = function (k) {
 var variable63 = function (k) {
   var b = first(function (_) {
     return(_[k]);
-  }, reverse(environment42));
+  }, rev(environment42));
   var _id31 = ! !( typeof(b) === "object");
   var _e10;
   if (_id31) {
@@ -963,7 +963,7 @@ var lower_infix = function (form, hoist) {
   var args = cut(form, 1);
   return(lower(reduce(function (_0, _1) {
     return([x, _1, _0]);
-  }, reverse(args)), hoist));
+  }, rev(args)), hoist));
 };
 var lower_special = function (form, hoist) {
   var e = lower_call(form, hoist);

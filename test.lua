@@ -3943,16 +3943,16 @@ add(tests, {"join", function ()
     return(passed)
   end
 end})
-add(tests, {"reverse", function ()
-  if not equal63({}, reverse({})) then
+add(tests, {"rev", function ()
+  if not equal63({}, rev({})) then
     failed = failed + 1
-    return("failed: expected " .. str({}) .. ", was " .. str(reverse({})))
+    return("failed: expected " .. str({}) .. ", was " .. str(rev({})))
   else
     passed = passed + 1
   end
-  if not equal63({3, 2, 1}, reverse({1, 2, 3})) then
+  if not equal63({3, 2, 1}, rev({1, 2, 3})) then
     failed = failed + 1
-    return("failed: expected " .. str({3, 2, 1}) .. ", was " .. str(reverse({1, 2, 3})))
+    return("failed: expected " .. str({3, 2, 1}) .. ", was " .. str(rev({1, 2, 3})))
   else
     passed = passed + 1
   end
@@ -3960,13 +3960,13 @@ add(tests, {"reverse", function ()
   _x762.a = true
   local _x763 = {1, 2, 3}
   _x763.a = true
-  if not equal63(_x762, reverse(_x763)) then
+  if not equal63(_x762, rev(_x763)) then
     failed = failed + 1
     local _x764 = {3, 2, 1}
     _x764.a = true
     local _x765 = {1, 2, 3}
     _x765.a = true
-    return("failed: expected " .. str(_x764) .. ", was " .. str(reverse(_x765)))
+    return("failed: expected " .. str(_x764) .. ", was " .. str(rev(_x765)))
   else
     passed = passed + 1
     return(passed)

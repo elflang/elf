@@ -649,7 +649,7 @@ last = function (l) {
 almost = function (l) {
   return(cut(l, 0, edge(l)));
 };
-reverse = function (l) {
+rev = function (l) {
   var l1 = keys(l);
   var i = (l.length || 0) - 1;
   while (i >= 0) {
@@ -970,7 +970,7 @@ _ = function () {
   var xs = unstash(Array.prototype.slice.call(arguments, 0));
   return(reduce(function (_0, _1) {
     return(_1 - _0);
-  }, reverse(xs)) || 0);
+  }, rev(xs)) || 0);
 };
 _42 = function () {
   var xs = unstash(Array.prototype.slice.call(arguments, 0));
@@ -982,13 +982,13 @@ _47 = function () {
   var xs = unstash(Array.prototype.slice.call(arguments, 0));
   return(reduce(function (_0, _1) {
     return(_1 / _0);
-  }, reverse(xs)) || 1);
+  }, rev(xs)) || 1);
 };
 _37 = function () {
   var xs = unstash(Array.prototype.slice.call(arguments, 0));
   return(reduce(function (_0, _1) {
     return(_1 % _0);
-  }, reverse(xs)) || 1);
+  }, rev(xs)) || 1);
 };
 _62 = function (a, b) {
   return(a > b);

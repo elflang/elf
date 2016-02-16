@@ -41,7 +41,7 @@ end
 local function variable63(k)
   local b = first(function (_)
     return(_[k])
-  end, reverse(environment42))
+  end, rev(environment42))
   return(not not( type(b) == "table") and not( b.variable == nil))
 end
 function bound63(x)
@@ -904,7 +904,7 @@ local function lower_infix(form, hoist)
   local args = cut(form, 1)
   return(lower(reduce(function (_0, _1)
     return({x, _1, _0})
-  end, reverse(args)), hoist))
+  end, rev(args)), hoist))
 end
 local function lower_special(form, hoist)
   local e = lower_call(form, hoist)

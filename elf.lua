@@ -616,7 +616,7 @@ end
 function almost(l)
   return(cut(l, 0, edge(l)))
 end
-function reverse(l)
+function rev(l)
   local l1 = keys(l)
   local i = #(l) - 1
   while i >= 0 do
@@ -868,7 +868,7 @@ function _(...)
   local xs = unstash({...})
   return(reduce(function (_0, _1)
     return(_1 - _0)
-  end, reverse(xs)) or 0)
+  end, rev(xs)) or 0)
 end
 function _42(...)
   local xs = unstash({...})
@@ -880,13 +880,13 @@ function _47(...)
   local xs = unstash({...})
   return(reduce(function (_0, _1)
     return(_1 / _0)
-  end, reverse(xs)) or 1)
+  end, rev(xs)) or 1)
 end
 function _37(...)
   local xs = unstash({...})
   return(reduce(function (_0, _1)
     return(_1 % _0)
-  end, reverse(xs)) or 1)
+  end, rev(xs)) or 1)
 end
 function _62(a, b)
   return(a > b)

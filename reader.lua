@@ -124,7 +124,7 @@ local function parse_index(a, b)
   end
 end
 local function parse_access(str)
-  return(reduce(parse_index, reverse(split(str, "."))))
+  return(reduce(parse_index, rev(split(str, "."))))
 end
 local function read_atom(s)
   local str = ""

@@ -3850,16 +3850,16 @@ add(tests, ["join", function () {
     return(passed);
   }
 }]);
-add(tests, ["reverse", function () {
-  if (! equal63([], reverse([]))) {
+add(tests, ["rev", function () {
+  if (! equal63([], rev([]))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(reverse([])));
+    return("failed: expected " + str([]) + ", was " + str(rev([])));
   } else {
     passed = passed + 1;
   }
-  if (! equal63([3, 2, 1], reverse([1, 2, 3]))) {
+  if (! equal63([3, 2, 1], rev([1, 2, 3]))) {
     failed = failed + 1;
-    return("failed: expected " + str([3, 2, 1]) + ", was " + str(reverse([1, 2, 3])));
+    return("failed: expected " + str([3, 2, 1]) + ", was " + str(rev([1, 2, 3])));
   } else {
     passed = passed + 1;
   }
@@ -3867,13 +3867,13 @@ add(tests, ["reverse", function () {
   _x728.a = true;
   var _x729 = [1, 2, 3];
   _x729.a = true;
-  if (! equal63(_x728, reverse(_x729))) {
+  if (! equal63(_x728, rev(_x729))) {
     failed = failed + 1;
     var _x730 = [3, 2, 1];
     _x730.a = true;
     var _x731 = [1, 2, 3];
     _x731.a = true;
-    return("failed: expected " + str(_x730) + ", was " + str(reverse(_x731)));
+    return("failed: expected " + str(_x730) + ", was " + str(rev(_x731)));
   } else {
     passed = passed + 1;
     return(passed);

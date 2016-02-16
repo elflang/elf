@@ -754,10 +754,10 @@ c"
     (eq 2 (get t 'c))
     (eq 'b (at t 1))))
 
-(deftest reverse
-  (eq () (reverse ()))
-  (eq '(3 2 1) (reverse '(1 2 3)))
-  (eq '(3 2 1 :a) (reverse '(1 2 3 :a))))
+(deftest rev
+  (eq () (rev ()))
+  (eq '(3 2 1) (rev '(1 2 3)))
+  (eq '(3 2 1 :a) (rev '(1 2 3 :a))))
 
 (deftest map
   (eq () (xform () _))

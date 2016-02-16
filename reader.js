@@ -124,7 +124,7 @@ var parse_index = function (a, b) {
   }
 };
 var parse_access = function (str) {
-  return(reduce(parse_index, reverse(split(str, "."))));
+  return(reduce(parse_index, rev(split(str, "."))));
 };
 var read_atom = function (s) {
   var str = "";

@@ -32,7 +32,7 @@
 
 (var variable? (k)
   (let b (first [get _ k]
-           (reverse environment*))
+           (rev environment*))
     (and (~atom? b) (~nil? b.variable))))
 
 (def bound? (x)
@@ -514,7 +514,7 @@
 (var lower-infix (form hoist)
   (let ((x rest: args) form)
     (lower (reduce [list x _1 _0]
-                   (reverse args))
+                   (rev args))
            hoist)))
 
 (var lower-special (form hoist)

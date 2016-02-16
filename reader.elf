@@ -93,7 +93,7 @@
       `(at ,b ,n))))
 
 (var parse-access (str)
-  (reduce parse-index (reverse (split str "."))))
+  (reduce parse-index (rev (split str "."))))
 
 (var read-atom (s)
   (let (str "" dot? false)

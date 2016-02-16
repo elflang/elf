@@ -5,7 +5,7 @@ local passed = 0
 local failed = 0
 local tests = {}
 setenv("test", {_stash = true, macro = function (x, msg)
-  return({"if", {"not", x}, {"do", {"=", "failed", {"+", "failed", 1}}, {"return", msg}}, {"inc", "passed"}})
+  return({"if", {"not", x}, {"do", {"=", "failed", {"+", "failed", 1}}, {"return", msg}}, {"++", "passed"}})
 end})
 local function equal63(a, b)
   if not( type(a) == "table") then

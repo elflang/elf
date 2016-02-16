@@ -10,7 +10,7 @@
 
   (mac at (l i)
     (if (and (is target* 'lua) (number? i))
-        (inc i)
+        (++ i)
         (is target* 'lua)
         (assign i `(+ ,i 1)))
     `(get ,l ,i))
@@ -199,7 +199,7 @@
       (assert (number? increment))
       (if (> increment 0)
         `(let (,i ,from)
-           (while (< ,i ,to) ,@body (inc ,i ,increment)))
+           (while (< ,i ,to) ,@body (++ ,i ,increment)))
         `(let (,i (- ,to 1))
            (while (>= ,i ,from) ,@body (dec ,i ,(- increment)))))))
 
@@ -227,7 +227,7 @@
   (mac cat! (a rest: bs)
     `(= ,a (cat ,a ,@bs)))
 
-  (mac inc (n by)
+  (mac ++ (n by)
     `(= ,n (+ ,n ,(or by 1))))
 
   (mac dec (n by)
@@ -235,7 +235,7 @@
 
   (mac with-indent (form)
     (let-unique (x)
-      `(do (inc indent-level*)
+      `(do (++ indent-level*)
            (with ,x ,form
              (dec indent-level*)))))
 
@@ -347,7 +347,7 @@
     (var to (min (# x) upto))
     (for (i (max 0 from) to)
       (= (at l j) (at x i))
-      (inc j))
+      (++ j))
     (each (k v) x
       (unless (number? k)
         (= (get l k) v)))))
@@ -415,7 +415,7 @@
                 (= (get c k) v))
               (each (k v) b
                 (when (number? k)
-                  (inc k o))
+                  (++ k o))
                 (= (get c k) v))
               c)
           (or a b ())))
@@ -450,7 +450,7 @@
   (with l1 ()
     (for i (# l)
       (add l1 (list (at l i) (at l (+ i 1))))
-      (inc i))))
+      (++ i))))
 
 (def sort (l f)
   (%lua (do (table.sort l f) l))

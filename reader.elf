@@ -16,7 +16,7 @@
 
 (var read-char (s)
   (let c (peek-char s)
-    (if c (do (inc s.pos) c))))
+    (if c (do (++ s.pos) c))))
 
 (var skip-non-code (s)
   (with any? nil
@@ -164,7 +164,7 @@
          (var c (code _ 1))
          (when (and c (>= c 48) (<= c 57)) ; "0" through "9"
            (while (< n (- c 48))
-             (add l (cat "_" (chr (+ 48 (inc n)))))))
+             (add l (cat "_" (chr (+ 48 (++ n)))))))
          nil]
        body)
     (when (and any? (none? l))

@@ -5,7 +5,7 @@ var passed = 0;
 var failed = 0;
 var tests = [];
 setenv("test", {_stash: true, macro: function (x, msg) {
-  return(["if", ["not", x], ["do", ["=", "failed", ["+", "failed", 1]], ["return", msg]], ["inc", "passed"]]);
+  return(["if", ["not", x], ["do", ["=", "failed", ["+", "failed", 1]], ["return", msg]], ["++", "passed"]]);
 }});
 var equal63 = function (a, b) {
   if (!( typeof(a) === "object")) {

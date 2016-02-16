@@ -12,7 +12,7 @@
   `(if (not ,x)
        (do (= failed (+ failed 1))
 	   (return ,msg))
-     (inc passed)))
+     (++ passed)))
 
 (var equal? (a b)
   (if (atom? a) (is a b)
@@ -389,19 +389,19 @@ c"
 (deftest while
   (let i 0
     (while (< i 5)
-      (if (is i 3) (break) (inc i)))
+      (if (is i 3) (break) (++ i)))
     (eq 3 i)
     (while (< i 10)
-      (inc i))
+      (++ i))
     (eq 10 i)
-    (let a (while (< i 15) (inc i))
+    (let a (while (< i 15) (++ i))
       (eq nil a)
       (eq 15 i))
     (let b
         (while (< i 20)
           (if (is i 19)
               (break)
-            (inc i)))
+            (++ i)))
       (eq nil a)
       (eq 19 i))))
 
@@ -449,12 +449,12 @@ c"
     (let (a 0 b 0)
       (each (k v) t
         (if (number? k)
-            (inc a)
-          (inc b)))
+            (++ a)
+          (++ b)))
       (eq 3 a)
       (eq 2 b))
     (let a 0
-      (each x t (inc a))
+      (each x t (++ a))
       (eq 5 a)))
   (let t '((1) (2) b: (3))
     (each x t
@@ -489,7 +489,7 @@ c"
   (let a ([while false (blah)])
     (eq nil a))
   (let a 11
-    (let b ([inc a])
+    (let b ([++ a])
       (eq 12 b)
       (eq 12 a))))
 
@@ -550,7 +550,7 @@ c"
          (eq 9 q)])))
 
 (deftest with
-  (eq 10 (with x 9 (inc x))))
+  (eq 10 (with x 9 (++ x))))
 
 (deftest let-when
   (eq nil (let-when frips (is 'a 'b) 19))

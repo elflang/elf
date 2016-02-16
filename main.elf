@@ -73,7 +73,7 @@
         (if (or (is a "-c") (is a "-o") (is a "-t") (is a "-e"))
             (if (is i (- n 1))
                 (print (cat "missing argument for " a))
-              (do (inc i)
+              (do (++ i)
                   (let val (at argv i)
                     (if (is a "-c") (= input val)
                         (is a "-o") (= output val)

@@ -344,7 +344,7 @@ var setup = function () {
       throw new Error("assert: (\"number?\" \"increment\")");
     }
     if (increment > 0) {
-      return(["let", [i, from], join(["while", ["<", i, to]], body, [["inc", i, increment]])]);
+      return(["let", [i, from], join(["while", ["<", i, to]], body, [["++", i, increment]])]);
     } else {
       return(["let", [i, ["-", to, 1]], join(["while", [">=", i, from]], body, [["dec", i, - increment]])]);
     }
@@ -392,7 +392,7 @@ var setup = function () {
     var bs = cut(_r74, 0);
     return(["=", a, join(["cat", a], bs)]);
   }});
-  setenv("inc", {_stash: true, macro: function (n, by) {
+  setenv("++", {_stash: true, macro: function (n, by) {
     return(["=", n, ["+", n, by || 1]]);
   }});
   setenv("dec", {_stash: true, macro: function (n, by) {
@@ -400,7 +400,7 @@ var setup = function () {
   }});
   setenv("with-indent", {_stash: true, macro: function (form) {
     var x = unique("x");
-    return(["do", ["inc", "indent-level*"], ["with", x, form, ["dec", "indent-level*"]]]);
+    return(["do", ["++", "indent-level*"], ["with", x, form, ["dec", "indent-level*"]]]);
   }});
   setenv("export", {_stash: true, macro: function () {
     var names = unstash(Array.prototype.slice.call(arguments, 0));

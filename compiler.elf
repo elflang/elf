@@ -53,7 +53,7 @@
   (def unique (x)
     (if (get names x)
         (let i (get names x)
-          (inc (get names x))
+          (++ (get names x))
           (unique (cat x i)))
       (do (= (get names x) 1)
           (cat "_" x)))))
@@ -73,7 +73,7 @@
              (~is target* (language)))
     (if (is target* 'js)
         (dec k)
-      (inc k)))
+      (++ k)))
   k)
 
 (def bind (lh rh vars)

@@ -527,7 +527,7 @@ var setup = function () {
   setenv("boolean?", {_stash: true, macro: function (x) {
     return(["is", ["type", x], ["quote", "boolean"]]);
   }});
-  setenv("function?", {_stash: true, macro: function (x) {
+  setenv("fn?", {_stash: true, macro: function (x) {
     return(["is", ["type", x], ["quote", "function"]]);
   }});
   setenv("list?", {_stash: true, macro: function (x) {

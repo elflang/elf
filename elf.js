@@ -755,7 +755,7 @@ ontree = function (f, l) {
   }
 };
 hd_is63 = function (l, val) {
-  return(! !( typeof(l) === "object") && l[0] === val);
+  return(typeof(l) === "object" && l[0] === val);
 };
 first = function (f, l) {
   var _x496 = l;
@@ -900,7 +900,7 @@ unstash = function (args) {
     return([]);
   } else {
     var l = last(args);
-    if (! !( typeof(l) === "object") && l._stash) {
+    if (typeof(l) === "object" && l._stash) {
       var args1 = almost(args);
       var _l16 = l;
       var k = undefined;
@@ -1080,7 +1080,7 @@ str = function (x, stack) {
                 if (typeof(x) === "function") {
                   return("fn");
                 } else {
-                  if (! !( typeof(x) === "object")) {
+                  if (typeof(x) === "object") {
                     if (stack && in63(x, stack)) {
                       return("circular");
                     } else {

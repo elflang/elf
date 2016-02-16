@@ -19,7 +19,7 @@
   (~nil? (getenv k 'special)))
 
 (var special-form? (form)
-  (and (~atom? form) (special? (hd form))))
+  (and (list? form) (special? (hd form))))
 
 (var statement? (k)
   (and (special? k) (getenv k 'stmt)))
@@ -33,7 +33,7 @@
 (var variable? (k)
   (let b (first [get _ k]
            (rev environment*))
-    (and (~atom? b) (~nil? b.variable))))
+    (and (list? b) (~nil? b.variable))))
 
 (def bound? (x)
   (or (macro? x)
@@ -132,7 +132,7 @@
 
 (var quasisplice? (x depth)
   (and (can-unquote? depth)
-       (~atom? x)
+       (list? x)
        (is (hd x) 'unquote-splicing)))
 
 (var expand-local ((x name value))
@@ -355,7 +355,7 @@
     (cat (apply special args) tr)))
 
 (var parenthesize-call? (x)
-  (or (and (~atom? x)
+  (or (and (list? x)
            (is (hd x) '%function))
       (> (precedence x) 0)))
 
@@ -431,7 +431,7 @@
       (is (hd form) '%object)))
 
 (var standalone? (form)
-  (and (~atom? form)
+  (and (list? form)
        (~infix? (hd form))
        (~literal? form)
        (~is 'get (hd form))))

@@ -427,7 +427,7 @@
           (if y (return y)))))))
 
 (def hd-is? (l val)
-  (and (~atom? l) (is (hd l) val)))
+  (and (list? l) (is (hd l) val)))
 
 (def first (f l)
   (step x l
@@ -486,7 +486,7 @@
 (def unstash (args)
   (if (none? args) ()
     (let l (last args)
-      (if (and (~atom? l) l._stash)
+      (if (and (list? l) l._stash)
           (with args1 (almost args)
             (each (k v) l
               (unless (is k '_stash)
@@ -563,7 +563,7 @@
       (bool? x) (if x "t" "false")
       (str? x) (escape x)
       (fn? x) "fn"
-      (~atom? x)
+      (list? x)
       (if (and stack (in? x stack)) "circular"
         (let (s "(" sp "" fs () xs () ks ())
           (= stack (or stack ()))

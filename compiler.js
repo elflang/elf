@@ -29,7 +29,7 @@ var special63 = function (k) {
   return(!( typeof(x) === "undefined" || x === null));
 };
 var special_form63 = function (form) {
-  return(! !( typeof(form) === "object") && special63(form[0]));
+  return(typeof(form) === "object" && special63(form[0]));
 };
 var statement63 = function (k) {
   return(special63(k) && getenv(k, "stmt"));
@@ -45,7 +45,7 @@ var variable63 = function (k) {
   var b = first(function (_) {
     return(_[k]);
   }, rev(environment42));
-  var _id31 = ! !( typeof(b) === "object");
+  var _id31 = typeof(b) === "object";
   var _e10;
   if (_id31) {
     var x = b.variable;
@@ -234,7 +234,7 @@ var can_unquote63 = function (depth) {
   return(quoting63(depth) && depth === 1);
 };
 var quasisplice63 = function (x, depth) {
-  return(can_unquote63(depth) && ! !( typeof(x) === "object") && x[0] === "unquote-splicing");
+  return(can_unquote63(depth) && typeof(x) === "object" && x[0] === "unquote-splicing");
 };
 var expand_local = function (_x41) {
   var x = _x41[0];
@@ -705,7 +705,7 @@ var compile_special = function (form, stmt63) {
   return(apply(special, args) + tr);
 };
 var parenthesize_call63 = function (x) {
-  return(! !( typeof(x) === "object") && x[0] === "%function" || precedence(x) > 0);
+  return(typeof(x) === "object" && x[0] === "%function" || precedence(x) > 0);
 };
 var compile_call = function (form) {
   var f = form[0];
@@ -853,7 +853,7 @@ var literal63 = function (form) {
   return(!( typeof(form) === "object") || form[0] === "%array" || form[0] === "%object");
 };
 var standalone63 = function (form) {
-  return(! !( typeof(form) === "object") && ! infix63(form[0]) && ! literal63(form) && !( "get" === form[0]));
+  return(typeof(form) === "object" && ! infix63(form[0]) && ! literal63(form) && !( "get" === form[0]));
 };
 var lower_do = function (args, hoist, stmt63, tail63) {
   var _x97 = almost(args);

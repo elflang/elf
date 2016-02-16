@@ -694,7 +694,7 @@ function ontree(f, l, ...)
   end
 end
 function hd_is63(l, val)
-  return(not not( type(l) == "table") and l[1] == val)
+  return(type(l) == "table" and l[1] == val)
 end
 function first(f, l)
   local _x532 = l
@@ -802,7 +802,7 @@ function unstash(args)
     return({})
   else
     local l = last(args)
-    if not not( type(l) == "table") and l._stash then
+    if type(l) == "table" and l._stash then
       local args1 = almost(args)
       local _l16 = l
       local k = nil
@@ -972,7 +972,7 @@ function str(x, stack)
                 if type(x) == "function" then
                   return("fn")
                 else
-                  if not not( type(x) == "table") then
+                  if type(x) == "table" then
                     if stack and in63(x, stack) then
                       return("circular")
                     else

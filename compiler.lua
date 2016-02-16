@@ -27,7 +27,7 @@ local function special63(k)
   return(not( getenv(k, "special") == nil))
 end
 local function special_form63(form)
-  return(not not( type(form) == "table") and special63(form[1]))
+  return(type(form) == "table" and special63(form[1]))
 end
 local function statement63(k)
   return(special63(k) and getenv(k, "stmt"))
@@ -42,7 +42,7 @@ local function variable63(k)
   local b = first(function (_)
     return(_[k])
   end, rev(environment42))
-  return(not not( type(b) == "table") and not( b.variable == nil))
+  return(type(b) == "table" and not( b.variable == nil))
 end
 function bound63(x)
   return(macro63(x) or special63(x) or symbol63(x) or variable63(x))
@@ -209,7 +209,7 @@ local function can_unquote63(depth)
   return(quoting63(depth) and depth == 1)
 end
 local function quasisplice63(x, depth)
-  return(can_unquote63(depth) and not not( type(x) == "table") and x[1] == "unquote-splicing")
+  return(can_unquote63(depth) and type(x) == "table" and x[1] == "unquote-splicing")
 end
 local function expand_local(_x41)
   local x = _x41[1]
@@ -646,7 +646,7 @@ local function compile_special(form, stmt63)
   return(apply(special, args) .. tr)
 end
 local function parenthesize_call63(x)
-  return(not not( type(x) == "table") and x[1] == "%function" or precedence(x) > 0)
+  return(type(x) == "table" and x[1] == "%function" or precedence(x) > 0)
 end
 local function compile_call(form)
   local f = form[1]
@@ -794,7 +794,7 @@ local function literal63(form)
   return(not( type(form) == "table") or form[1] == "%array" or form[1] == "%object")
 end
 local function standalone63(form)
-  return(not not( type(form) == "table") and not infix63(form[1]) and not literal63(form) and not( "get" == form[1]))
+  return(type(form) == "table" and not infix63(form[1]) and not literal63(form) and not( "get" == form[1]))
 end
 local function lower_do(args, hoist, stmt63, tail63)
   local _x99 = almost(args)

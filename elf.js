@@ -530,20 +530,20 @@ var setup = function () {
   setenv("function?", {_stash: true, macro: function (x) {
     return(["is", ["type", x], ["quote", "function"]]);
   }});
-  setenv("table?", {_stash: true, macro: function (x) {
+  setenv("list?", {_stash: true, macro: function (x) {
     var _x489 = ["target"];
     _x489.lua = ["quote", "table"];
     _x489.js = ["quote", "object"];
     return(["is", ["type", x], _x489]);
   }});
   setenv("atom?", {_stash: true, macro: function (x) {
-    return(["~table?", x]);
+    return(["~list?", x]);
   }});
   setenv("listify", {_stash: true, macro: function (x) {
     if (! !( typeof(x) === "object")) {
       throw new Error("assert: (\"atom?\" \"x\")");
     }
-    return(["if", ["table?", x], x, ["list", x]]);
+    return(["if", ["list?", x], x, ["list", x]]);
   }});
   return(undefined);
 };

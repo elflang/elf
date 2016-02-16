@@ -508,20 +508,20 @@ local function setup()
   setenv("function?", {_stash = true, macro = function (x)
     return({"is", {"type", x}, {"quote", "function"}})
   end})
-  setenv("table?", {_stash = true, macro = function (x)
+  setenv("list?", {_stash = true, macro = function (x)
     local _x523 = {"target"}
     _x523.lua = {"quote", "table"}
     _x523.js = {"quote", "object"}
     return({"is", {"type", x}, _x523})
   end})
   setenv("atom?", {_stash = true, macro = function (x)
-    return({"~table?", x})
+    return({"~list?", x})
   end})
   setenv("listify", {_stash = true, macro = function (x)
     if not not( type(x) == "table") then
       error("assert: (\"atom?\" \"x\")")
     end
-    return({"if", {"table?", x}, x, {"list", x}})
+    return({"if", {"list?", x}, x, {"list", x}})
   end})
   return(nil)
 end

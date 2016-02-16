@@ -321,12 +321,12 @@
   (mac number? (x) `(is (type ,x) 'number))
   (mac boolean? (x) `(is (type ,x) 'boolean))
   (mac function? (x) `(is (type ,x) 'function))
-  (mac table? (x) `(is (type ,x) (target js: 'object lua: 'table)))
-  (mac atom? (x) `(~table? ,x))
+  (mac list? (x) `(is (type ,x) (target js: 'object lua: 'table)))
+  (mac atom? (x) `(~list? ,x))
 
   (mac listify (x)
     (assert (atom? x))
-    `(if (table? ,x) ,x (list ,x)))
+    `(if (list? ,x) ,x (list ,x)))
 
   nil)
 

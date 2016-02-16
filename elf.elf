@@ -129,9 +129,9 @@
 
   (mac with-frame body
     (let-unique (x)
-      `(do (add environment (obj))
+      `(do (add environment* (obj))
            (with ,x (do ,@body)
-             (drop environment)))))
+             (drop environment*)))))
 
   (mac with-bindings ((names) rest: body)
     (let-unique (x)
@@ -322,10 +322,10 @@
   ;; want the definitions to persist, we merge the defs into the
   ;; toplevel frame.
   (%compiling
-    (join! (at environment 0) (at environment 1))))
+    (join! (at environment* 0) (at environment* 1))))
 
 (once
-  (def environment (list (obj)))
+  (def environment* (list (obj)))
   (def target (language)))
 
 (def nan (/ 0 0))
@@ -612,13 +612,13 @@
 (def call (f) (f))
 
 (def toplevel? ()
-  (one? environment))
+  (one? environment*))
 
 (def setenv (k rest: keys)
   (when (string? k)
     (let (frame (if keys.toplevel
-                    (hd environment)
-                  (last environment))
+                    (hd environment*)
+                  (last environment*))
           entry (or (get frame k) (obj)))
       (each (k v) keys
         (= (get entry k) v))

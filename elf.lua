@@ -222,7 +222,7 @@ local function setup()
   setenv("with-frame", {_stash = true, macro = function (...)
     local body = unstash({...})
     local x = unique("x")
-    return({"do", {"add", "environment", {"obj"}}, {"with", x, join({"do"}, body), {"drop", "environment"}}})
+    return({"do", {"add", "environment*", {"obj"}}, {"with", x, join({"do"}, body), {"drop", "environment*"}}})
   end})
   setenv("with-bindings", {_stash = true, macro = function (_x181, ...)
     local names = _x181[1]
@@ -236,25 +236,25 @@ local function setup()
   setenv("let-macro", {_stash = true, macro = function (definitions, ...)
     local _r49 = unstash({...})
     local body = cut(_r49, 0)
-    add(environment, {})
+    add(environment42, {})
     map(function (_)
       return(macroexpand(join({"mac"}, _)))
     end, definitions)
     local _x191 = join({"do"}, macroexpand(body))
-    drop(environment)
+    drop(environment42)
     return(_x191)
   end})
   setenv("let-symbol", {_stash = true, macro = function (expansions, ...)
     local _r53 = unstash({...})
     local body = cut(_r53, 0)
-    add(environment, {})
+    add(environment42, {})
     map(function (_x201)
       local name = _x201[1]
       local exp = _x201[2]
       return(macroexpand({"defsym", name, exp}))
     end, pair(expansions))
     local _x200 = join({"do"}, macroexpand(body))
-    drop(environment)
+    drop(environment42)
     return(_x200)
   end})
   setenv("let-unique", {_stash = true, macro = function (names, ...)
@@ -515,7 +515,7 @@ local function setup()
 end
 if _x536 == nil then
   _x536 = true
-  environment = {{}}
+  environment42 = {{}}
   target = "lua"
 end
 nan = 0 / 0
@@ -1017,7 +1017,7 @@ function call(f)
   return(f())
 end
 function toplevel63()
-  return(#(environment) == 1)
+  return(#(environment42) == 1)
 end
 function setenv(k, ...)
   local _r177 = unstash({...})
@@ -1025,9 +1025,9 @@ function setenv(k, ...)
   if type(k) == "string" then
     local _e29
     if _keys.toplevel then
-      _e29 = environment[1]
+      _e29 = environment42[1]
     else
-      _e29 = last(environment)
+      _e29 = last(environment42)
     end
     local frame = _e29
     local entry = frame[k] or {}

@@ -229,7 +229,7 @@ var setup = function () {
   setenv("with-frame", {_stash: true, macro: function () {
     var body = unstash(Array.prototype.slice.call(arguments, 0));
     var x = unique("x");
-    return(["do", ["add", "environment", ["obj"]], ["with", x, join(["do"], body), ["drop", "environment"]]]);
+    return(["do", ["add", "environment*", ["obj"]], ["with", x, join(["do"], body), ["drop", "environment*"]]]);
   }});
   setenv("with-bindings", {_stash: true, macro: function (_x166) {
     var names = _x166[0];
@@ -243,25 +243,25 @@ var setup = function () {
   setenv("let-macro", {_stash: true, macro: function (definitions) {
     var _r49 = unstash(Array.prototype.slice.call(arguments, 1));
     var body = cut(_r49, 0);
-    add(environment, {});
+    add(environment42, {});
     map(function (_) {
       return(macroexpand(join(["mac"], _)));
     }, definitions);
     var _x174 = join(["do"], macroexpand(body));
-    drop(environment);
+    drop(environment42);
     return(_x174);
   }});
   setenv("let-symbol", {_stash: true, macro: function (expansions) {
     var _r53 = unstash(Array.prototype.slice.call(arguments, 1));
     var body = cut(_r53, 0);
-    add(environment, {});
+    add(environment42, {});
     map(function (_x183) {
       var name = _x183[0];
       var exp = _x183[1];
       return(macroexpand(["defsym", name, exp]));
     }, pair(expansions));
     var _x182 = join(["do"], macroexpand(body));
-    drop(environment);
+    drop(environment42);
     return(_x182);
   }});
   setenv("let-unique", {_stash: true, macro: function (names) {
@@ -537,7 +537,7 @@ var setup = function () {
 };
 if (typeof(_x502) === "undefined") {
   _x502 = true;
-  environment = [{}];
+  environment42 = [{}];
   target = "js";
 }
 nan = 0 / 0;
@@ -1138,7 +1138,7 @@ call = function (f) {
   return(f());
 };
 toplevel63 = function () {
-  return((environment.length || 0) === 1);
+  return((environment42.length || 0) === 1);
 };
 setenv = function (k) {
   var _r179 = unstash(Array.prototype.slice.call(arguments, 1));
@@ -1146,9 +1146,9 @@ setenv = function (k) {
   if (typeof(k) === "string") {
     var _e44;
     if (_keys.toplevel) {
-      _e44 = environment[0];
+      _e44 = environment42[0];
     } else {
-      _e44 = last(environment);
+      _e44 = last(environment42);
     }
     var frame = _e44;
     var entry = frame[k] || {};

@@ -1,9 +1,9 @@
 local reader = require("reader")
 function getenv(k, p)
   if type(k) == "string" then
-    local i = #(environment) - 1
+    local i = #(environment42) - 1
     while i >= 0 do
-      local b = environment[i + 1][k]
+      local b = environment42[i + 1][k]
       if not( b == nil) then
         local _e9
         if p then
@@ -41,7 +41,7 @@ end
 local function variable63(k)
   local b = first(function (_)
     return(_[k])
-  end, reverse(environment))
+  end, reverse(environment42))
   return(not not( type(b) == "table") and not( b.variable == nil))
 end
 function bound63(x)
@@ -221,7 +221,7 @@ local function expand_function(_x43)
   local x = _x43[1]
   local args = _x43[2]
   local body = cut(_x43, 2)
-  add(environment, {})
+  add(environment42, {})
   local _l2 = args
   local _i3 = nil
   for _i3 in next, _l2 do
@@ -229,7 +229,7 @@ local function expand_function(_x43)
     setenv(_x44, {_stash = true, variable = true})
   end
   local _x45 = join({"%function", args}, macroexpand(body))
-  drop(environment)
+  drop(environment42)
   return(_x45)
 end
 local function expand_definition(_x47)
@@ -237,7 +237,7 @@ local function expand_definition(_x47)
   local name = _x47[2]
   local args = _x47[3]
   local body = cut(_x47, 3)
-  add(environment, {})
+  add(environment42, {})
   local _l3 = args
   local _i4 = nil
   for _i4 in next, _l3 do
@@ -245,7 +245,7 @@ local function expand_definition(_x47)
     setenv(_x48, {_stash = true, variable = true})
   end
   local _x49 = join({x, name, args}, macroexpand(body))
-  drop(environment)
+  drop(environment42)
   return(_x49)
 end
 local function expand_macro(_x51)

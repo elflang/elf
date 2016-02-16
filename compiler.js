@@ -1,9 +1,9 @@
 var reader = require("reader");
 getenv = function (k, p) {
   if (typeof(k) === "string") {
-    var i = (environment.length || 0) - 1;
+    var i = (environment42.length || 0) - 1;
     while (i >= 0) {
-      var b = environment[i][k];
+      var b = environment42[i][k];
       if (!( typeof(b) === "undefined" || b === null)) {
         var _e9;
         if (p) {
@@ -44,7 +44,7 @@ var symbol63 = function (k) {
 var variable63 = function (k) {
   var b = first(function (_) {
     return(_[k]);
-  }, reverse(environment));
+  }, reverse(environment42));
   var _id31 = ! !( typeof(b) === "object");
   var _e10;
   if (_id31) {
@@ -246,7 +246,7 @@ var expand_function = function (_x43) {
   var x = _x43[0];
   var args = _x43[1];
   var body = cut(_x43, 2);
-  add(environment, {});
+  add(environment42, {});
   var _l2 = args;
   var _i3 = undefined;
   for (_i3 in _l2) {
@@ -261,7 +261,7 @@ var expand_function = function (_x43) {
     setenv(_x44, {_stash: true, variable: true});
   }
   var _x45 = join(["%function", args], macroexpand(body));
-  drop(environment);
+  drop(environment42);
   return(_x45);
 };
 var expand_definition = function (_x47) {
@@ -269,7 +269,7 @@ var expand_definition = function (_x47) {
   var name = _x47[1];
   var args = _x47[2];
   var body = cut(_x47, 3);
-  add(environment, {});
+  add(environment42, {});
   var _l3 = args;
   var _i4 = undefined;
   for (_i4 in _l3) {
@@ -284,7 +284,7 @@ var expand_definition = function (_x47) {
     setenv(_x48, {_stash: true, variable: true});
   }
   var _x49 = join([x, name, args], macroexpand(body));
-  drop(environment);
+  drop(environment42);
   return(_x49);
 };
 var expand_macro = function (_x51) {

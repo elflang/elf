@@ -1050,28 +1050,25 @@ escape = function (s) {
   }
   return(s1 + "\"");
 };
-str = function (x, depth, stack) {
-  if (typeof(stack) === "undefined" || stack === null) {
-    stack = [];
-  }
-  if (in63(x, stack)) {
-    return("circular");
+str = function (x, stack) {
+  if (typeof(x) === "undefined" || x === null) {
+    return("nil");
   } else {
-    if (typeof(x) === "undefined" || x === null) {
-      return("nil");
+    if (nan63(x)) {
+      return("nan");
     } else {
-      if (nan63(x)) {
-        return("nan");
+      if (x === inf) {
+        return("inf");
       } else {
-        if (x === inf) {
-          return("inf");
+        if (x === -inf) {
+          return("-inf");
         } else {
-          if (x === -inf) {
-            return("-inf");
+          if (typeof(x) === "number") {
+            return(tostring(x));
           } else {
             if (typeof(x) === "boolean") {
               if (x) {
-                return("true");
+                return("t");
               } else {
                 return("false");
               }
@@ -1083,46 +1080,55 @@ str = function (x, depth, stack) {
                   return("fn");
                 } else {
                   if (! !( typeof(x) === "object")) {
-                    var s = "(";
-                    var sp = "";
-                    var xs = [];
-                    var ks = [];
-                    var d = (depth || 0) + 1;
-                    add(stack, x);
-                    var _l17 = x;
-                    var k = undefined;
-                    for (k in _l17) {
-                      var v = _l17[k];
-                      var _e44;
-                      if (numeric63(k)) {
-                        _e44 = parseInt(k);
-                      } else {
-                        _e44 = k;
+                    if (stack && in63(x, stack)) {
+                      return("circular");
+                    } else {
+                      var s = "(";
+                      var sp = "";
+                      var fs = [];
+                      var xs = [];
+                      var ks = [];
+                      stack = stack || [];
+                      add(stack, x);
+                      var _l17 = x;
+                      var k = undefined;
+                      for (k in _l17) {
+                        var v = _l17[k];
+                        var _e44;
+                        if (numeric63(k)) {
+                          _e44 = parseInt(k);
+                        } else {
+                          _e44 = k;
+                        }
+                        var _k9 = _e44;
+                        if (typeof(_k9) === "number") {
+                          xs[_k9] = str(v, stack);
+                        } else {
+                          if (typeof(v) === "function") {
+                            add(fs, _k9);
+                          } else {
+                            add(ks, _k9 + ":");
+                            add(ks, str(v, stack));
+                          }
+                        }
                       }
-                      var _k9 = _e44;
-                      if (typeof(_k9) === "number") {
-                        xs[_k9] = str(v, d, stack);
-                      } else {
-                        add(ks, _k9 + ":");
-                        add(ks, str(v, d, stack));
+                      drop(stack);
+                      var _l18 = join(sort(fs), xs, ks);
+                      var _i20 = undefined;
+                      for (_i20 in _l18) {
+                        var v = _l18[_i20];
+                        var _e45;
+                        if (numeric63(_i20)) {
+                          _e45 = parseInt(_i20);
+                        } else {
+                          _e45 = _i20;
+                        }
+                        var __i20 = _e45;
+                        s = s + sp + v;
+                        sp = " ";
                       }
+                      return(s + ")");
                     }
-                    drop(stack);
-                    var _l18 = join(xs, ks);
-                    var _i20 = undefined;
-                    for (_i20 in _l18) {
-                      var v = _l18[_i20];
-                      var _e45;
-                      if (numeric63(_i20)) {
-                        _e45 = parseInt(_i20);
-                      } else {
-                        _e45 = _i20;
-                      }
-                      var __i20 = _e45;
-                      s = s + sp + v;
-                      sp = " ";
-                    }
-                    return(s + ")");
                   } else {
                     return(escape(tostring(x)));
                   }

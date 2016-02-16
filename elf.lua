@@ -942,28 +942,25 @@ function escape(s)
   end
   return(s1 .. "\"")
 end
-function str(x, depth, stack)
-  if stack == nil then
-    stack = {}
-  end
-  if in63(x, stack) then
-    return("circular")
+function str(x, stack)
+  if x == nil then
+    return("nil")
   else
-    if x == nil then
-      return("nil")
+    if nan63(x) then
+      return("nan")
     else
-      if nan63(x) then
-        return("nan")
+      if x == inf then
+        return("inf")
       else
-        if x == inf then
-          return("inf")
+        if x == -inf then
+          return("-inf")
         else
-          if x == -inf then
-            return("-inf")
+          if type(x) == "number" then
+            return(tostring(x))
           else
             if type(x) == "boolean" then
               if x then
-                return("true")
+                return("t")
               else
                 return("false")
               end
@@ -975,32 +972,41 @@ function str(x, depth, stack)
                   return("fn")
                 else
                   if not not( type(x) == "table") then
-                    local s = "("
-                    local sp = ""
-                    local xs = {}
-                    local ks = {}
-                    local d = (depth or 0) + 1
-                    add(stack, x)
-                    local _l17 = x
-                    local k = nil
-                    for k in next, _l17 do
-                      local v = _l17[k]
-                      if type(k) == "number" then
-                        xs[k] = str(v, d, stack)
-                      else
-                        add(ks, k .. ":")
-                        add(ks, str(v, d, stack))
+                    if stack and in63(x, stack) then
+                      return("circular")
+                    else
+                      local s = "("
+                      local sp = ""
+                      local fs = {}
+                      local xs = {}
+                      local ks = {}
+                      stack = stack or {}
+                      add(stack, x)
+                      local _l17 = x
+                      local k = nil
+                      for k in next, _l17 do
+                        local v = _l17[k]
+                        if type(k) == "number" then
+                          xs[k] = str(v, stack)
+                        else
+                          if type(v) == "function" then
+                            add(fs, k)
+                          else
+                            add(ks, k .. ":")
+                            add(ks, str(v, stack))
+                          end
+                        end
                       end
+                      drop(stack)
+                      local _l18 = join(sort(fs), xs, ks)
+                      local _i20 = nil
+                      for _i20 in next, _l18 do
+                        local v = _l18[_i20]
+                        s = s .. sp .. v
+                        sp = " "
+                      end
+                      return(s .. ")")
                     end
-                    drop(stack)
-                    local _l18 = join(xs, ks)
-                    local _i20 = nil
-                    for _i20 in next, _l18 do
-                      local v = _l18[_i20]
-                      s = s .. sp .. v
-                      sp = " "
-                    end
-                    return(s .. ")")
                   else
                     return(escape(tostring(x)))
                   end

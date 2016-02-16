@@ -211,7 +211,7 @@
 
 (defreader ("," s)
   (read-char s)
-  (if (is (peek-char s) "@")
+  (if (is (peek-char s) '@)
       (do (read-char s)
 	  (wrap s 'unquote-splicing))
     (wrap s 'unquote)))

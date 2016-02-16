@@ -340,7 +340,7 @@ local function setup()
       increment = _e24
     end
     if not( type(increment) == "number") then
-      error("assert: (\"number?\" \"increment\")")
+      error("assert: (\"num?\" \"increment\")")
     end
     if increment > 0 then
       return({"let", {i, from}, join({"while", {"<", i, to}}, body, {{"++", i, increment}})})
@@ -499,7 +499,7 @@ local function setup()
   setenv("str?", {_stash = true, macro = function (x)
     return({"is", {"type", x}, {"quote", "string"}})
   end})
-  setenv("number?", {_stash = true, macro = function (x)
+  setenv("num?", {_stash = true, macro = function (x)
     return({"is", {"type", x}, {"quote", "number"}})
   end})
   setenv("bool?", {_stash = true, macro = function (x)

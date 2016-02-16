@@ -18,7 +18,7 @@
     (quasiexpand form 1))
 
   (mac at (l i)
-    (if (and (is target* 'lua) (number? i))
+    (if (and (is target* 'lua) (num? i))
         (++ i)
         (is target* 'lua)
         (assign i `(+ ,i 1)))
@@ -33,7 +33,7 @@
     (w/uniq x
       (let (l () forms ())
         (each (k v) body
-          (if (number? k)
+          (if (num? k)
               (assign (get l k) v)
             (add forms `(assign (get ,x ',k) ,v))))
         (if (some? forms)
@@ -207,7 +207,7 @@
           (= to (hd body)
              body (tl body))
         (= (i from to (o increment 1)) i))
-      (assert (number? increment))
+      (assert (num? increment))
       (if (> increment 0)
         `(let (,i ,from)
            (while (< ,i ,to) ,@body (++ ,i ,increment)))
@@ -318,7 +318,7 @@
        js: (typeof ,x)))
 
   (mac str? (x) `(is (type ,x) 'string))
-  (mac number? (x) `(is (type ,x) 'number))
+  (mac num? (x) `(is (type ,x) 'number))
   (mac bool? (x) `(is (type ,x) 'boolean))
   (mac fn? (x) `(is (type ,x) 'function))
   (mac list? (x) `(is (type ,x) (target js: 'object lua: 'table)))
@@ -355,13 +355,13 @@
       (= (at l j) (at x i))
       (++ j))
     (each (k v) x
-      (unless (number? k)
+      (unless (num? k)
         (= (get l k) v)))))
 
 (def keys (x)
   (with t ()
     (each (k v) x
-      (unless (number? k)
+      (unless (num? k)
         (= (get t k) v)))))
 
 (def edge (x)
@@ -420,7 +420,7 @@
               (each (k v) a
                 (= (get c k) v))
               (each (k v) b
-                (when (number? k)
+                (when (num? k)
                   (++ k o))
                 (= (get c k) v))
               c)
@@ -469,7 +469,7 @@
         (unless (nil? y)
           (add t y))))
     (each (k v) x
-      (unless (number? k)
+      (unless (num? k)
         (let y (f v)
           (unless (nil? y)
             (= (get t k) y)))))))
@@ -479,7 +479,7 @@
 
 (def keys? (t)
   (each (k v) t
-    (unless (number? k)
+    (unless (num? k)
       (return true)))
   false)
 
@@ -492,7 +492,7 @@
   (when (keys? args)
     (let p ()
       (each (k v) args
-        (unless (number? k)
+        (unless (num? k)
           (= (get p k) v)))
       (= p._stash true)
       (add args p)))
@@ -584,7 +584,7 @@
             d (+ (or depth 0) 1))
         (add stack x)
         (each (k v) x
-          (if (number? k)
+          (if (num? k)
               (= (get xs k) (str v d stack))
             (do (add ks (cat k ":"))
                 (add ks (str v d stack)))))

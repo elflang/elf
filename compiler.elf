@@ -62,14 +62,14 @@
   (if (keys? args)
       (let l '(%object "_stash" true)
         (each (k v) args
-          (unless (number? k)
+          (unless (num? k)
             (add l (literal k))
             (add l v)))
         (join args (list l)))
     args))
 
 (var bias (k)
-  (when (and (number? k)
+  (when (and (num? k)
              (~is target* (language)))
     (if (is target* 'js)
         (-- k)
@@ -122,7 +122,7 @@
         (list args1 `(let ,bs ,@inits ,@body))))))
 
 (var quoting? (depth)
-  (number? depth))
+  (num? depth))
 
 (var quasiquoting? (depth)
   (and (quoting? depth) (> depth 0)))
@@ -166,7 +166,7 @@
 (var quasiquote-list (form depth)
   (let xs (list '(list))
     (each (k v) form
-      (unless (number? k)
+      (unless (num? k)
         (let v (if (quasisplice? v depth)
                    ;; don't splice, just expand
                    (quasiexpand (at v 1))
@@ -286,7 +286,7 @@
 
 (var index (k)
   (%js k)
-  (%lua (when (number? k) (- k 1))))
+  (%lua (when (num? k) (- k 1))))
 
 (var precedence (form)
   (unless (or (atom? form) (unary? form))
@@ -340,7 +340,7 @@
       (nan? x) "nan"
       (is x inf) "inf"
       (is x -inf) "-inf"
-      (number? x) (cat x "")
+      (num? x) (cat x "")
     (error (cat "Cannot compile atom: " (str x)))))
 
 (var terminator (stmt?)
@@ -678,7 +678,7 @@
 	close (if (is target* 'lua) "}" "]")
 	s "" c "")
     (each (k v) forms
-      (when (number? k)
+      (when (num? k)
         (cat! s c (compile v))
         (= c ", ")))
     (cat open s close)))
@@ -687,7 +687,7 @@
   (let (s "{" c ""
         sep (if (is target* 'lua) " = " ": "))
     (each (k v) (pair forms)
-      (when (number? k)
+      (when (num? k)
         (let ((k v) v)
           (unless (str? k)
             (error (cat "Illegal key: " (str k))))

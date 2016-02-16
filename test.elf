@@ -448,7 +448,7 @@ c"
   (let t '(1 2 3 :a b: false)
     (let (a 0 b 0)
       (each (k v) t
-        (if (number? k)
+        (if (num? k)
             (++ a)
           (++ b)))
       (eq 3 a)
@@ -462,7 +462,7 @@ c"
     (each (x) t
       (eq false (atom? x)))
     (each ((x)) t
-      (eq true (number? x)))))
+      (eq true (num? x)))))
 
 (deftest fn
   (let f [+ _ 10])
@@ -859,11 +859,11 @@ c"
   (eq false (str? '(a)))
   (eq false (str? true))
   (eq false (str? (obj)))
-  (eq false (number? "abc"))
-  (eq true (number? 17))
-  (eq false (number? '(a)))
-  (eq false (number? true))
-  (eq false (number? (obj)))
+  (eq false (num? "abc"))
+  (eq true (num? 17))
+  (eq false (num? '(a)))
+  (eq false (num? true))
+  (eq false (num? (obj)))
   (eq false (bool? "abc"))
   (eq false (bool? 17))
   (eq false (bool? '(a)))

@@ -348,7 +348,7 @@ var setup = function () {
       increment = _e25;
     }
     if (!( typeof(increment) === "number")) {
-      throw new Error("assert: (\"number?\" \"increment\")");
+      throw new Error("assert: (\"num?\" \"increment\")");
     }
     if (increment > 0) {
       return(["let", [i, from], join(["while", ["<", i, to]], body, [["++", i, increment]])]);
@@ -521,7 +521,7 @@ var setup = function () {
   setenv("str?", {_stash: true, macro: function (x) {
     return(["is", ["type", x], ["quote", "string"]]);
   }});
-  setenv("number?", {_stash: true, macro: function (x) {
+  setenv("num?", {_stash: true, macro: function (x) {
     return(["is", ["type", x], ["quote", "number"]]);
   }});
   setenv("bool?", {_stash: true, macro: function (x) {

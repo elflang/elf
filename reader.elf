@@ -78,7 +78,7 @@
     (number str)))
 
 (var real? (x)
-  (and (number? x) (~nan? x) (~inf? x)))
+  (and (num? x) (~nan? x) (~inf? x)))
 
 (var valid-access? (str)
   (and (> (# str) 2)

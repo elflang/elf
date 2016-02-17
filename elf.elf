@@ -9,7 +9,7 @@
   ;; global environment frame at compile time.
 
   (%compile-time
-    (assign environment*.1 environment*.0))
+    (assign environment*.-1 environment*.0))
 
   (defsym t true)
 

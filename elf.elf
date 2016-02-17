@@ -24,7 +24,7 @@
 
   (mac at (l i)
     (when (and (num? i) (< i 0))
-      (1eval! l (at l i))
+      (%eval-arg l (at l i))
       (assign i (if (is i -1) `(edge ,l) `(+ #,l ,i))))
     (if lua? (assign i (if (num? i) (+ i 1) `(+ ,i 1))))
     `(get ,l ,i))
@@ -298,34 +298,26 @@
 
   (mac type (x) `(target js: (typeof ,x) lua: ((do type) ,x)))
 
-  (mac str? (x) `(is (type ,x) 'string))
-  (mac num? (x) `(is (type ,x) 'number))
-  (mac bool? (x) `(is (type ,x) 'boolean))
-  (mac fn? (x) `(is (type ,x) 'function))
-  (mac list? (x) `(is (type ,x) (target js: 'object lua: 'table)))
+  (mac isa (x kind) `(is (type ,x) ,kind))
+
+  (mac str? (x) `(isa ,x 'string))
+  (mac num? (x) `(isa ,x 'number))
+  (mac bool? (x) `(isa ,x 'boolean))
+  (mac fn? (x) `(isa ,x 'function))
+  (mac list? (x) `(isa ,x (target js: 'object lua: 'table)))
   (mac atom? (x) `(~list? ,x))
 
   ;; Protects macro arguments from multiple evaluation.  The specified
-  ;; args will be evaluated exactly once.
+  ;; arg will be evaluated exactly once.
 
-  (mac 1eval! bs
-    (var rebind? (xs)
-      (let e (xform xs `(list? ,_))
-        (if (one? xs) (hd e) `(or ,@e))))
-    (var rebind (xs name args)
-      (let e ()
-        (step x (listify xs)
-          (add e `',x)
-          (add e x))
-        (list 'list ''let `(list ,@e)
-          `(list ',name ,@(xform args (if (in? _ e) `',_ _))))))
-    (let ((macro rest: args) (last bs)
-          (o which (list (hd args))) (almost bs))
-      `(when ,(rebind? which)
-         (return ,(rebind which macro args)))))
+  (mac %eval-arg (v (macro rest: xs))
+    (var esc (x l) (xform l (if (is _ x) `',_ _)))
+    `(when (list? ,v)
+       (return ,(list 'list ''let `(list ',v ,v)
+                  `(list ',macro ,@(esc v xs))))))
 
   (mac listify (x)
-    (1eval! x (listify x))
+    (%eval-arg x (listify x))
     `(if (list? ,x) ,x (list ,x)))
 
   nil)

@@ -13,6 +13,9 @@
 
   (defsym t true)
 
+  (defsym lua? (is target* 'lua))
+  (defsym js? (is target* 'js))
+
   (mac quote (form)
     (quoted form))
 
@@ -20,14 +23,14 @@
     (quasiexpand form 1))
 
   (mac at (l i)
-    (if (and (is target* 'lua) (num? i))
+    (if (and lua? (num? i))
         (++ i)
-        (is target* 'lua)
+        lua?
         (assign i `(+ ,i 1)))
     `(get ,l ,i))
 
   (mac wipe (place)
-    (if (is target* 'lua)
+    (if lua?
         `(assign ,place nil)
       `(%delete ,place)))
 
@@ -175,8 +178,7 @@
     `(%function ,@(bind* args body)))
 
   (mac guard (expr)
-    (if (is target* 'js)
-        `([%try (list t ,expr)])
+    (if js? `([%try (list t ,expr)])
       (w/uniq (x msg trace)
         `(let (,x nil
                ,msg nil
@@ -197,7 +199,7 @@
         `(let (,l ,lst ,k nil)
            (%for ,l ,k
              (let (,v (get ,l ,k))
-               ,@(if (is target* 'lua) body
+               ,@(if lua? body
                      `((let ,k (if (numeric? ,k)
                                    (parseInt ,k)
                                  ,k)
@@ -247,21 +249,15 @@
     `(= ,n (- ,n ,(or by 1))))
 
   (mac export names
-    (if (is target* 'js)
-        `(do ,@(xform names
-                 `(= (get exports ',_) ,_)))
+    (if js? `(do ,@(xform names `(= (get exports ',_) ,_)))
       (let x (obj)
         (each k names
           (= (get x k) k))
         `(return (obj ,@x)))))
 
-  (mac %js forms
-    (when (is target* 'js)
-      `(do ,@forms)))
+  (mac %js forms (when js? `(do ,@forms)))
 
-  (mac %lua forms
-    (when (is target* 'lua)
-      `(do ,@forms)))
+  (mac %lua forms (when lua? `(do ,@forms)))
 
   (mac %compile-time forms
     (eval `(do ,@forms))

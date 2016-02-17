@@ -429,6 +429,8 @@ c"
     (eq 'a (at l 0))
     (eq 'a l.0)
     (eq 'b (at l 1))
+    (eq 'd (at l -1))
+    (eq 'c l.-2)
     (= (at l 0) 9)
     (eq 9 (at l 0))
     (= (at l 3) 10)

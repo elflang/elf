@@ -473,4 +473,5 @@ hi
 ```
 
 ##### Acknowledgements
-Elf is a fork of [Lumen](https://github.com/sctb/lumen#acknowledgements).
+Elf is a fork of [Lumen](https://github.com/sctb/lumen#acknowledgements).  The `elf` npm package was donated by [Mike Cantelon](http://mikecantelon.com/).
+

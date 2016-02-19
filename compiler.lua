@@ -71,14 +71,14 @@ local function literal(s)
     return(quoted(s))
   end
 end
-local _names = {}
+local names = {}
 function uniq(x)
-  if _names[x] then
-    local i = _names[x]
-    _names[x] = _names[x] + 1
+  if names[x] then
+    local i = names[x]
+    names[x] = names[x] + 1
     return(uniq(x .. i))
   else
-    _names[x] = 1
+    names[x] = 1
     return("_" .. x)
   end
 end
@@ -445,44 +445,44 @@ function mapo(f, l)
   end
   return(o)
 end
-local __x74 = {}
+local _x74 = {}
 local _x75 = {}
 _x75.lua = "not"
 _x75.js = "!"
-__x74["not"] = _x75
-local __x76 = {}
-__x76["/"] = true
-__x76["*"] = true
-__x76["%"] = true
-local __x77 = {}
-__x77["+"] = true
-__x77["-"] = true
-local __x78 = {}
+_x74["not"] = _x75
+local _x76 = {}
+_x76["/"] = true
+_x76["*"] = true
+_x76["%"] = true
+local _x77 = {}
+_x77["+"] = true
+_x77["-"] = true
+local _x78 = {}
 local _x79 = {}
 _x79.lua = ".."
 _x79.js = "+"
-__x78.cat = _x79
-local __x80 = {}
-__x80["<="] = true
-__x80[">="] = true
-__x80["<"] = true
-__x80[">"] = true
-local __x81 = {}
+_x78.cat = _x79
+local _x80 = {}
+_x80["<="] = true
+_x80[">="] = true
+_x80["<"] = true
+_x80[">"] = true
+local _x81 = {}
 local _x82 = {}
 _x82.lua = "=="
 _x82.js = "==="
-__x81.is = _x82
-local __x83 = {}
+_x81.is = _x82
+local _x83 = {}
 local _x84 = {}
 _x84.lua = "and"
 _x84.js = "&&"
-__x83["and"] = _x84
-local __x85 = {}
+_x83["and"] = _x84
+local _x85 = {}
 local _x86 = {}
 _x86.lua = "or"
 _x86.js = "||"
-__x85["or"] = _x86
-local infix = {__x74, __x76, __x77, __x78, __x80, __x81, __x83, __x85}
+_x85["or"] = _x86
+local infix = {_x74, _x76, _x77, _x78, _x80, _x81, _x83, _x85}
 local function unary63(form)
   return(#(form) == 2 and in63(form[1], {"not", "-"}))
 end

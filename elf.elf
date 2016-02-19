@@ -13,6 +13,8 @@
 
   (defsym t true)
 
+  (defsym js? (is target* 'js))
+
   (defsym lua? (is target* 'lua))
   (defsym js? (is target* 'js))
 
@@ -75,6 +77,8 @@
     `(%object ,@(mapo [do _] body)))
 
   (mac let (bs rest: body)
+    (if (toplevel?)
+        (return (w/frame (macroexpand `(let ,bs ,@body)))))
     (if (atom? bs) `(let (,bs ,(hd body)) ,@(tl body))
         (none? bs) `(do ,@body)
       (let ((lh rh rest: bs2) bs
@@ -285,7 +289,8 @@
     (w/uniq x
       `(when (nil? ,x)
          (= ,x t)
-         ,@forms)))
+         (let ()
+           ,@forms))))
 
   (mac elf () `(require 'elf))
   (mac lib modules `(do ,@(xform modules `(def ,_ (require ',_)))))

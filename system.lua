@@ -36,13 +36,13 @@ local _e1
 if arg == nil then
   _e1 = {}
 else
-  local _l = {}
+  local l = {}
   local i = 0
   while i < #(arg) do
-    add(_l, arg[i + 1])
+    add(l, arg[i + 1])
     i = i + 1
   end
-  _e1 = _l
+  _e1 = l
 end
 local argv = _e1
 local function shell(cmd)

@@ -82,14 +82,14 @@ var literal = function (s) {
     return(quoted(s));
   }
 };
-var _names = {};
+var names = {};
 uniq = function (x) {
-  if (_names[x]) {
-    var i = _names[x];
-    _names[x] = _names[x] + 1;
+  if (names[x]) {
+    var i = names[x];
+    names[x] = names[x] + 1;
     return(uniq(x + i));
   } else {
-    _names[x] = 1;
+    names[x] = 1;
     return("_" + x);
   }
 };
@@ -498,44 +498,44 @@ mapo = function (f, l) {
   }
   return(o);
 };
-var __x74 = [];
+var _x74 = [];
 var _x75 = [];
 _x75.lua = "not";
 _x75.js = "!";
-__x74["not"] = _x75;
-var __x76 = [];
-__x76["/"] = true;
-__x76["*"] = true;
-__x76["%"] = true;
-var __x77 = [];
-__x77["+"] = true;
-__x77["-"] = true;
-var __x78 = [];
+_x74["not"] = _x75;
+var _x76 = [];
+_x76["/"] = true;
+_x76["*"] = true;
+_x76["%"] = true;
+var _x77 = [];
+_x77["+"] = true;
+_x77["-"] = true;
+var _x78 = [];
 var _x79 = [];
 _x79.lua = "..";
 _x79.js = "+";
-__x78.cat = _x79;
-var __x80 = [];
-__x80["<="] = true;
-__x80[">="] = true;
-__x80["<"] = true;
-__x80[">"] = true;
-var __x81 = [];
+_x78.cat = _x79;
+var _x80 = [];
+_x80["<="] = true;
+_x80[">="] = true;
+_x80["<"] = true;
+_x80[">"] = true;
+var _x81 = [];
 var _x82 = [];
 _x82.lua = "==";
 _x82.js = "===";
-__x81.is = _x82;
-var __x83 = [];
+_x81.is = _x82;
+var _x83 = [];
 var _x84 = [];
 _x84.lua = "and";
 _x84.js = "&&";
-__x83["and"] = _x84;
-var __x85 = [];
+_x83["and"] = _x84;
+var _x85 = [];
 var _x86 = [];
 _x86.lua = "or";
 _x86.js = "||";
-__x85["or"] = _x86;
-var infix = [__x74, __x76, __x77, __x78, __x80, __x81, __x83, __x85];
+_x85["or"] = _x86;
+var infix = [_x74, _x76, _x77, _x78, _x80, _x81, _x83, _x85];
 var unary63 = function (form) {
   return((form.length || 0) === 2 && in63(form[0], ["not", "-"]));
 };

@@ -2,6 +2,18 @@ local function setup()
   setenv("t", {_stash = true, symbol = true})
   setenv("js?", {_stash = true, symbol = {"is", "target*", {"quote", "js"}}})
   setenv("lua?", {_stash = true, symbol = {"is", "target*", {"quote", "lua"}}})
+  setenv("%js", {_stash = true, macro = function (...)
+    local forms = unstash({...})
+    if target42 == "js" then
+      return(join({"do"}, forms))
+    end
+  end})
+  setenv("%lua", {_stash = true, macro = function (...)
+    local forms = unstash({...})
+    if target42 == "lua" then
+      return(join({"do"}, forms))
+    end
+  end})
   setenv("quote", {_stash = true, macro = function (form)
     return(quoted(form))
   end})
@@ -63,9 +75,9 @@ local function setup()
     local _r13 = unstash({...})
     local clauses = cut(_r13, 0)
     local e = uniq("e")
-    local bs = map(function (_x53)
-      local a = _x53[1]
-      local b = _x53[2]
+    local bs = map(function (_x61)
+      local a = _x61[1]
+      local b = _x61[2]
       if b == nil then
         return({a})
       else
@@ -99,9 +111,9 @@ local function setup()
     local body = cut(_r24, 0)
     if toplevel63() then
       add(environment42, {})
-      local _x96 = macroexpand(join({"let", bs}, body))
+      local _x104 = macroexpand(join({"let", bs}, body))
       drop(environment42)
-      return(_x96)
+      return(_x104)
     end
     if not( type(bs) == "table") then
       return(join({"let", {bs, body[1]}}, cut(body, 1)))
@@ -165,9 +177,9 @@ local function setup()
             local forms = bind(lh, rh, vars)
             return(join({"do"}, map(function (_)
               return({"var", _})
-            end, vars), map(function (_x122)
-              local id = _x122[1]
-              local val = _x122[2]
+            end, vars), map(function (_x130)
+              local id = _x130[1]
+              local val = _x130[2]
               return({"=", id, val})
             end, pair(forms))))
           end
@@ -193,26 +205,26 @@ local function setup()
   setenv("mac", {_stash = true, macro = function (name, args, ...)
     local _r36 = unstash({...})
     local body = cut(_r36, 0)
-    local _x149 = {"setenv", {"quote", name}}
-    _x149.macro = join({"fn", args}, body)
-    local form = _x149
+    local _x157 = {"setenv", {"quote", name}}
+    _x157.macro = join({"fn", args}, body)
+    local form = _x157
     eval(form)
     return(form)
   end})
   setenv("defspecial", {_stash = true, macro = function (name, args, ...)
     local _r38 = unstash({...})
     local body = cut(_r38, 0)
-    local _x157 = {"setenv", {"quote", name}}
-    _x157.special = join({"fn", args}, body)
-    local form = join(_x157, keys(body))
+    local _x165 = {"setenv", {"quote", name}}
+    _x165.special = join({"fn", args}, body)
+    local form = join(_x165, keys(body))
     eval(form)
     return(form)
   end})
   setenv("defsym", {_stash = true, macro = function (name, expansion)
     setenv(name, {_stash = true, symbol = expansion})
-    local _x163 = {"setenv", {"quote", name}}
-    _x163.symbol = {"quote", expansion}
-    return(_x163)
+    local _x171 = {"setenv", {"quote", name}}
+    _x171.symbol = {"quote", expansion}
+    return(_x171)
   end})
   setenv("var", {_stash = true, macro = function (name, x, ...)
     local _r42 = unstash({...})
@@ -239,23 +251,23 @@ local function setup()
     local x = uniq("x")
     return({"do", {"add", "environment*", {"obj"}}, {"with", x, join({"do"}, body), {"drop", "environment*"}}})
   end})
-  setenv("w/bindings", {_stash = true, macro = function (_x197, ...)
-    local names = _x197[1]
+  setenv("w/bindings", {_stash = true, macro = function (_x205, ...)
+    local names = _x205[1]
     local _r46 = unstash({...})
     local body = cut(_r46, 0)
     local x = uniq("x")
-    local _x201 = {"setenv", x}
-    _x201.variable = true
-    return(join({"w/frame", {"each", x, names, _x201}}, body))
+    local _x209 = {"setenv", x}
+    _x209.variable = true
+    return(join({"w/frame", {"each", x, names, _x209}}, body))
   end})
   setenv("w/mac", {_stash = true, macro = function (name, args, definition, ...)
     local _r48 = unstash({...})
     local body = cut(_r48, 0)
     add(environment42, {})
     macroexpand({"mac", name, args, definition})
-    local _x207 = join({"do"}, macroexpand(body))
+    local _x215 = join({"do"}, macroexpand(body))
     drop(environment42)
-    return(_x207)
+    return(_x215)
   end})
   setenv("w/sym", {_stash = true, macro = function (expansions, ...)
     local _r51 = unstash({...})
@@ -264,14 +276,14 @@ local function setup()
       return(join({"w/sym", {expansions, body[1]}}, cut(body, 1)))
     else
       add(environment42, {})
-      map(function (_x221)
-        local name = _x221[1]
-        local exp = _x221[2]
+      map(function (_x229)
+        local name = _x229[1]
+        local exp = _x229[2]
         return(macroexpand({"defsym", name, exp}))
       end, pair(expansions))
-      local _x220 = join({"do"}, macroexpand(body))
+      local _x228 = join({"do"}, macroexpand(body))
       drop(environment42)
-      return(_x220)
+      return(_x228)
     end
   end})
   setenv("w/uniq", {_stash = true, macro = function (names, ...)
@@ -393,18 +405,6 @@ local function setup()
         x[k] = k
       end
       return({"return", join({"obj"}, x)})
-    end
-  end})
-  setenv("%js", {_stash = true, macro = function (...)
-    local forms = unstash({...})
-    if target42 == "js" then
-      return(join({"do"}, forms))
-    end
-  end})
-  setenv("%lua", {_stash = true, macro = function (...)
-    local forms = unstash({...})
-    if target42 == "lua" then
-      return(join({"do"}, forms))
     end
   end})
   setenv("%compile-time", {_stash = true, macro = function (...)

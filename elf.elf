@@ -14,8 +14,10 @@
   (defsym t true)
 
   (defsym js? (is target* 'js))
-
   (defsym lua? (is target* 'lua))
+
+  (mac %js forms (if js? `(do ,@forms)))
+  (mac %lua forms (if lua? `(do ,@forms)))
 
   (mac quote (form)
     (quoted form))
@@ -251,9 +253,6 @@
         (each k names
           (= (get x k) k))
         `(return (obj ,@x)))))
-
-  (mac %js forms (when js? `(do ,@forms)))
-  (mac %lua forms (when lua? `(do ,@forms)))
 
   (mac %compile-time forms
     (eval `(do ,@forms))

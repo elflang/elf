@@ -217,16 +217,13 @@
 
     (mac for args
       (w/for-args
-        (if (> incr 0)
-          `(let (,i ,from)
-             (while (< ,i ,n) ,@body (++ ,i ,incr)))
-          `(let (,i (- ,n 1))
-             (while (>= ,i ,from) ,@body (-- ,i ,(- incr)))))))
+        `(let (,i ,from)
+           (while (< ,i ,n) ,@body (++ ,i ,incr)))))
 
     (mac revfor args
       (w/for-args
-        `(for (,i ,from ,n ,(- incr))
-           ,@body))))
+        `(let (,i (- ,n 1))
+           (while (>= ,i ,from) ,@body (-- ,i ,incr))))))
 
   (mac step (v l rest: body)
     (w/uniq (x n i)
@@ -419,8 +416,8 @@
 
 (def rev (l)
   (with l1 (keys l)
-    (for (i 0 #l -1)
-      (add l1 (at l i)))))
+    (revstep x l
+      (add l1 x))))
 
 (def reduce (f x)
   (if (none? x) nil

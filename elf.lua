@@ -360,11 +360,7 @@ local function setup()
     if not( type(incr) == "number") then
       error("assert: (\"num?\" \"incr\")")
     end
-    if incr > 0 then
-      return({"let", {i, from}, join({"while", {"<", i, n}}, body, {{"++", i, incr}})})
-    else
-      return({"let", {i, {"-", n, 1}}, join({"while", {">=", i, from}}, body, {{"--", i, - incr}})})
-    end
+    return({"let", {i, from}, join({"while", {"<", i, n}}, body, {{"++", i, incr}})})
   end})
   setenv("revfor", {_stash = true, macro = function (...)
     local args = unstash({...})
@@ -393,7 +389,7 @@ local function setup()
     if not( type(incr) == "number") then
       error("assert: (\"num?\" \"incr\")")
     end
-    return(join({"for", {i, from, n, - incr}}, body))
+    return({"let", {i, {"-", n, 1}}, join({"while", {">=", i, from}}, body, {{"--", i, incr}})})
   end})
   setenv("step", {_stash = true, macro = function (v, l, ...)
     local _r64 = unstash({...})
@@ -503,25 +499,25 @@ local function setup()
     end, modules)))
   end})
   setenv("nil?", {_stash = true, macro = function (x)
-    local _x511 = {"target"}
-    _x511.lua = {"is", x, "nil"}
+    local _x507 = {"target"}
+    _x507.lua = {"is", x, "nil"}
     local _e31
     if not( type(x) == "table") then
       _e31 = {"or", {"is", {"typeof", x}, "\"undefined\""}, {"is", x, "null"}}
     else
       _e31 = {"let", {"x", x}, {"nil?", "x"}}
     end
-    _x511.js = _e31
-    return(_x511)
+    _x507.js = _e31
+    return(_x507)
   end})
   setenv("%len", {_stash = true, special = function (x)
     return("#(" .. compile(x) .. ")")
   end})
   setenv("len", {_stash = true, macro = function (x)
-    local _x525 = {"target"}
-    _x525.lua = {"%len", x}
-    _x525.js = {"or", {"get", x, {"quote", "length"}}, 0}
-    return(_x525)
+    local _x521 = {"target"}
+    _x521.lua = {"%len", x}
+    _x521.js = {"or", {"get", x, {"quote", "length"}}, 0}
+    return(_x521)
   end})
   setenv("none?", {_stash = true, macro = function (x)
     return({"is", {"len", x}, 0})
@@ -542,10 +538,10 @@ local function setup()
     return({"cut", l, 1})
   end})
   setenv("type", {_stash = true, macro = function (x)
-    local _x554 = {"target"}
-    _x554.lua = {{"do", "type"}, x}
-    _x554.js = {"typeof", x}
-    return(_x554)
+    local _x550 = {"target"}
+    _x550.lua = {{"do", "type"}, x}
+    _x550.js = {"typeof", x}
+    return(_x550)
   end})
   setenv("isa", {_stash = true, macro = function (x, kind)
     return({"is", {"type", x}, kind})
@@ -563,17 +559,17 @@ local function setup()
     return({"isa", x, {"quote", "function"}})
   end})
   setenv("list?", {_stash = true, macro = function (x)
-    local _x583 = {"target"}
-    _x583.lua = {"quote", "table"}
-    _x583.js = {"quote", "object"}
-    return({"isa", x, _x583})
+    local _x579 = {"target"}
+    _x579.lua = {"quote", "table"}
+    _x579.js = {"quote", "object"}
+    return({"isa", x, _x579})
   end})
   setenv("atom?", {_stash = true, macro = function (x)
     return({"~list?", x})
   end})
-  setenv("%eval-arg", {_stash = true, macro = function (v, _x599)
-    local macro = _x599[1]
-    local xs = cut(_x599, 1)
+  setenv("%eval-arg", {_stash = true, macro = function (v, _x595)
+    local macro = _x595[1]
+    local xs = cut(_x595, 1)
     local function esc(x, l)
       return(map(function (_)
         if _ == x then
@@ -593,8 +589,8 @@ local function setup()
   end})
   return(nil)
 end
-if _x622 == nil then
-  _x622 = true
+if _x618 == nil then
+  _x618 = true
   environment42 = {{}}
   target42 = "lua"
 end
@@ -690,10 +686,11 @@ function almost(l)
 end
 function rev(l)
   local l1 = keys(l)
-  local i = #(l) - 1
-  while i >= 0 do
-    add(l1, l[i + 1])
-    i = i - 1
+  local _i8 = #(l) - 1
+  while _i8 >= 0 do
+    local x = l[_i8 + 1]
+    add(l1, x)
+    _i8 = _i8 - 1
   end
   return(l1)
 end
@@ -741,9 +738,9 @@ function join(...)
 end
 function find(f, l)
   local _l10 = l
-  local _i10 = nil
-  for _i10 in next, _l10 do
-    local x = _l10[_i10]
+  local _i11 = nil
+  for _i11 in next, _l10 do
+    local x = _l10[_i11]
     local y = f(x)
     if y then
       return(y)
@@ -760,9 +757,9 @@ function ontree(f, l, ...)
     end
     if not not( type(l) == "table") then
       local _l11 = l
-      local _i11 = nil
-      for _i11 in next, _l11 do
-        local x = _l11[_i11]
+      local _i12 = nil
+      for _i12 in next, _l11 do
+        local x = _l11[_i12]
         local _y = ontree(f, x, {_stash = true, skip = skip})
         if _y then
           return(_y)
@@ -775,16 +772,16 @@ function hd_is63(l, val)
   return(type(l) == "table" and l[1] == val)
 end
 function first(f, l)
-  local _x626 = l
-  local _n12 = #(_x626)
-  local _i12 = 0
-  while _i12 < _n12 do
-    local x = _x626[_i12 + 1]
+  local _x622 = l
+  local _n12 = #(_x622)
+  local _i13 = 0
+  while _i13 < _n12 do
+    local x = _x622[_i13 + 1]
     local y = f(x)
     if y then
       return(y)
     end
-    _i12 = _i12 + 1
+    _i13 = _i13 + 1
   end
 end
 function in63(x, l)
@@ -808,16 +805,16 @@ function sort(l, f)
 end
 function map(f, x)
   local l = {}
-  local _x628 = x
-  local _n13 = #(_x628)
-  local _i13 = 0
-  while _i13 < _n13 do
-    local v = _x628[_i13 + 1]
+  local _x624 = x
+  local _n13 = #(_x624)
+  local _i14 = 0
+  while _i14 < _n13 do
+    local v = _x624[_i14 + 1]
     local y = f(v)
     if not( y == nil) then
       add(l, y)
     end
-    _i13 = _i13 + 1
+    _i14 = _i14 + 1
   end
   local _l12 = x
   local k = nil
@@ -852,9 +849,9 @@ function keys63(l)
 end
 function empty63(l)
   local _l14 = l
-  local _i16 = nil
-  for _i16 in next, _l14 do
-    local x = _l14[_i16]
+  local _i17 = nil
+  for _i17 in next, _l14 do
+    local x = _l14[_i17]
     return(false)
   end
   return(true)
@@ -1078,9 +1075,9 @@ function str(x, stack)
                       end
                       drop(stack)
                       local _l18 = join(sort(fs), xs, ks)
-                      local _i20 = nil
-                      for _i20 in next, _l18 do
-                        local v = _l18[_i20]
+                      local _i21 = nil
+                      for _i21 in next, _l18 do
+                        local v = _l18[_i21]
                         s = s .. sp .. v
                         sp = " "
                       end

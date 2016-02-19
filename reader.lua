@@ -86,10 +86,10 @@ end
 local function expected(s, c)
   local more = s.more
   local pos = s.pos
-  local _id6 = more
+  local _id7 = more
   local _e1
-  if _id6 then
-    _e1 = _id6
+  if _id7 then
+    _e1 = _id7
   else
     error("Expected " .. c .. " at " .. pos)
     _e1 = nil
@@ -245,6 +245,30 @@ read_table["("] = function (s)
 end
 read_table[")"] = function (s)
   error("Unexpected ) at " .. s.pos)
+end
+function ontree(f, l, ...)
+  local _r24 = unstash({...})
+  local skip = _r24.skip
+  if not( skip and skip(l)) then
+    local y = f(l)
+    if y then
+      return(y)
+    end
+    if not not( type(l) == "table") then
+      local _l = l
+      local _i = nil
+      for _i in next, _l do
+        local x = _l[_i]
+        local _y = ontree(f, x, {_stash = true, skip = skip})
+        if _y then
+          return(_y)
+        end
+      end
+    end
+  end
+end
+function hd_is63(l, val)
+  return(type(l) == "table" and l[1] == val)
 end
 setenv("%fn", {_stash = true, macro = function (body)
   local n = -1

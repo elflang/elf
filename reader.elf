@@ -156,6 +156,18 @@
 (defreader (")" s)
   (error (cat "Unexpected ) at " s.pos)))
 
+(def ontree (f l :skip)
+  (unless (and skip (skip l))
+    (let y (f l)
+      (if y (return y)))
+    (unless (atom? l)
+      (each x l
+        (let y (ontree f x skip: skip)
+          (if y (return y)))))))
+
+(def hd-is? (l val)
+  (and (list? l) (is (hd l) val)))
+
 (mac %fn (body)
   (let (n -1 l () any? nil)
     (ontree skip: [hd-is? _ '%fn]

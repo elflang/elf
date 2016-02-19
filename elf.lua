@@ -149,10 +149,10 @@ local function setup()
         if 2 == _e9 then
           local lh = l[1]
           local rh = l[2]
-          local _id62 = not( type(lh) == "table")
+          local _id61 = not( type(lh) == "table")
           local _e20
-          if _id62 then
-            _e20 = _id62
+          if _id61 then
+            _e20 = _id61
           else
             local _e10 = lh[1]
             local _e21
@@ -690,41 +690,17 @@ function find(f, l)
     end
   end
 end
-function ontree(f, l, ...)
-  local _r146 = unstash({...})
-  local skip = _r146.skip
-  if not( skip and skip(l)) then
-    local y = f(l)
-    if y then
-      return(y)
-    end
-    if not not( type(l) == "table") then
-      local _l11 = l
-      local _i11 = nil
-      for _i11 in next, _l11 do
-        local x = _l11[_i11]
-        local _y = ontree(f, x, {_stash = true, skip = skip})
-        if _y then
-          return(_y)
-        end
-      end
-    end
-  end
-end
-function hd_is63(l, val)
-  return(type(l) == "table" and l[1] == val)
-end
 function first(f, l)
-  local _x564 = l
-  local _n12 = #(_x564)
-  local _i12 = 0
-  while _i12 < _n12 do
-    local x = _x564[_i12 + 1]
+  local _x563 = l
+  local _n11 = #(_x563)
+  local _i11 = 0
+  while _i11 < _n11 do
+    local x = _x563[_i11 + 1]
     local y = f(x)
     if y then
       return(y)
     end
-    _i12 = _i12 + 1
+    _i11 = _i11 + 1
   end
 end
 function in63(x, l)
@@ -748,21 +724,21 @@ function sort(l, f)
 end
 function map(f, x)
   local l = {}
-  local _x566 = x
-  local _n13 = #(_x566)
-  local _i13 = 0
-  while _i13 < _n13 do
-    local v = _x566[_i13 + 1]
+  local _x565 = x
+  local _n12 = #(_x565)
+  local _i12 = 0
+  while _i12 < _n12 do
+    local v = _x565[_i12 + 1]
     local y = f(v)
     if not( y == nil) then
       add(l, y)
     end
-    _i13 = _i13 + 1
+    _i12 = _i12 + 1
   end
-  local _l12 = x
+  local _l11 = x
   local k = nil
-  for k in next, _l12 do
-    local v = _l12[k]
+  for k in next, _l11 do
+    local v = _l11[k]
     if not( type(k) == "number") then
       local y = f(v)
       if not( y == nil) then
@@ -780,10 +756,10 @@ function keep(f, x)
   end, x))
 end
 function keys63(l)
-  local _l13 = l
+  local _l12 = l
   local k = nil
-  for k in next, _l13 do
-    local v = _l13[k]
+  for k in next, _l12 do
+    local v = _l12[k]
     if not( type(k) == "number") then
       return(true)
     end
@@ -791,10 +767,10 @@ function keys63(l)
   return(false)
 end
 function empty63(l)
-  local _l14 = l
-  local _i16 = nil
-  for _i16 in next, _l14 do
-    local x = _l14[_i16]
+  local _l13 = l
+  local _i15 = nil
+  for _i15 in next, _l13 do
+    local x = _l13[_i15]
     return(false)
   end
   return(true)
@@ -802,10 +778,10 @@ end
 function stash(args)
   if keys63(args) then
     local p = {}
-    local _l15 = args
+    local _l14 = args
     local k = nil
-    for k in next, _l15 do
-      local v = _l15[k]
+    for k in next, _l14 do
+      local v = _l14[k]
       if not( type(k) == "number") then
         p[k] = v
       end
@@ -822,10 +798,10 @@ function unstash(args)
     local l = last(args)
     if type(l) == "table" and l._stash then
       local args1 = almost(args)
-      local _l16 = l
+      local _l15 = l
       local k = nil
-      for k in next, _l16 do
-        local v = _l16[k]
+      for k in next, _l15 do
+        local v = _l15[k]
         if not( k == "_stash") then
           args1[k] = v
         end
@@ -1001,10 +977,10 @@ function str(x, stack)
                       local ks = {}
                       stack = stack or {}
                       add(stack, x)
-                      local _l17 = x
+                      local _l16 = x
                       local k = nil
-                      for k in next, _l17 do
-                        local v = _l17[k]
+                      for k in next, _l16 do
+                        local v = _l16[k]
                         if type(k) == "number" then
                           xs[k] = str(v, stack)
                         else
@@ -1017,10 +993,10 @@ function str(x, stack)
                         end
                       end
                       drop(stack)
-                      local _l18 = join(sort(fs), xs, ks)
-                      local _i20 = nil
-                      for _i20 in next, _l18 do
-                        local v = _l18[_i20]
+                      local _l17 = join(sort(fs), xs, ks)
+                      local _i19 = nil
+                      for _i19 in next, _l17 do
+                        local v = _l17[_i19]
                         s = s .. sp .. v
                         sp = " "
                       end
@@ -1047,8 +1023,8 @@ function toplevel63()
   return(#(environment42) == 1)
 end
 function setenv(k, ...)
-  local _r180 = unstash({...})
-  local _keys = cut(_r180, 0)
+  local _r178 = unstash({...})
+  local _keys = cut(_r178, 0)
   if type(k) == "string" then
     local _e33
     if _keys.toplevel then
@@ -1058,10 +1034,10 @@ function setenv(k, ...)
     end
     local frame = _e33
     local entry = frame[k] or {}
-    local _l19 = _keys
+    local _l18 = _keys
     local _k = nil
-    for _k in next, _l19 do
-      local v = _l19[_k]
+    for _k in next, _l18 do
+      local v = _l18[_k]
       entry[_k] = v
     end
     frame[k] = entry

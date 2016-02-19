@@ -86,10 +86,10 @@ var flag63 = function (atom) {
 var expected = function (s, c) {
   var more = s.more;
   var pos = s.pos;
-  var _id6 = more;
+  var _id7 = more;
   var _e1;
-  if (_id6) {
-    _e1 = _id6;
+  if (_id7) {
+    _e1 = _id7;
   } else {
     throw new Error("Expected " + c + " at " + pos);
     _e1 = undefined;
@@ -245,6 +245,37 @@ read_table["("] = function (s) {
 };
 read_table[")"] = function (s) {
   throw new Error("Unexpected ) at " + s.pos);
+};
+ontree = function (f, l) {
+  var _r24 = unstash(Array.prototype.slice.call(arguments, 2));
+  var skip = _r24.skip;
+  if (!( skip && skip(l))) {
+    var y = f(l);
+    if (y) {
+      return(y);
+    }
+    if (! !( typeof(l) === "object")) {
+      var _l = l;
+      var _i = undefined;
+      for (_i in _l) {
+        var x = _l[_i];
+        var _e2;
+        if (numeric63(_i)) {
+          _e2 = parseInt(_i);
+        } else {
+          _e2 = _i;
+        }
+        var __i = _e2;
+        var _y = ontree(f, x, {_stash: true, skip: skip});
+        if (_y) {
+          return(_y);
+        }
+      }
+    }
+  }
+};
+hd_is63 = function (l, val) {
+  return(typeof(l) === "object" && l[0] === val);
 };
 setenv("%fn", {_stash: true, macro: function (body) {
   var n = -1;

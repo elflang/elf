@@ -674,7 +674,11 @@ last = function (l) {
   return(l[edge(l)]);
 };
 almost = function (l) {
-  return(cut(l, 0, edge(l)));
+  if (typeof(l) === "string") {
+    return(clip(l, 0, edge(l)));
+  } else {
+    return(cut(l, 0, edge(l)));
+  }
 };
 rev = function (l) {
   var l1 = keys(l);

@@ -641,7 +641,11 @@ function last(l)
   return(l[edge(l) + 1])
 end
 function almost(l)
-  return(cut(l, 0, edge(l)))
+  if type(l) == "string" then
+    return(clip(l, 0, edge(l)))
+  else
+    return(cut(l, 0, edge(l)))
+  end
 end
 function rev(l)
   local l1 = keys(l)

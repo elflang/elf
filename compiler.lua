@@ -1,9 +1,10 @@
 local reader = require("reader")
 function getenv(k, p)
   if type(k) == "string" then
-    local i = #(environment42) - 1
-    while i >= 0 do
-      local b = environment42[i + 1][k]
+    local _i = #(environment42) - 1
+    while _i >= 0 do
+      local frame = environment42[_i + 1]
+      local b = frame[k]
       if not( b == nil) then
         local _e9
         if p then
@@ -13,7 +14,7 @@ function getenv(k, p)
         end
         return(_e9)
       end
-      i = i - 1
+      _i = _i - 1
     end
   end
 end
@@ -39,10 +40,15 @@ local function symbol63(k)
   return(not( symbol_expansion(k) == nil))
 end
 local function variable63(k)
-  local b = first(function (_)
-    return(_[k])
-  end, rev(environment42))
-  return(type(b) == "table" and not( b.variable == nil))
+  local _i1 = #(environment42) - 1
+  while _i1 >= 0 do
+    local frame = environment42[_i1 + 1]
+    local b = frame[k]
+    if not( b == nil) then
+      return(type(b) == "table" and not( b.variable == nil))
+    end
+    _i1 = _i1 - 1
+  end
 end
 function bound63(x)
   return(macro63(x) or special63(x) or symbol63(x) or variable63(x))
@@ -172,9 +178,9 @@ function bind42(args, body)
     local r = uniq("r")
     local _x32 = args
     local _n2 = #(_x32)
-    local _i2 = 0
-    while _i2 < _n2 do
-      local v = _x32[_i2 + 1]
+    local _i4 = 0
+    while _i4 < _n2 do
+      local v = _x32[_i4 + 1]
       if not( type(v) == "table") then
         add(args1, v)
       else
@@ -190,7 +196,7 @@ function bind42(args, body)
           bs = join(bs, {v, x})
         end
       end
-      _i2 = _i2 + 1
+      _i4 = _i4 + 1
     end
     if keys63(args) then
       bs = join(bs, {r, rest()})
@@ -223,9 +229,9 @@ local function expand_function(_x43)
   local body = cut(_x43, 2)
   add(environment42, {})
   local _l2 = args
-  local _i3 = nil
-  for _i3 in next, _l2 do
-    local _x44 = _l2[_i3]
+  local _i5 = nil
+  for _i5 in next, _l2 do
+    local _x44 = _l2[_i5]
     setenv(_x44, {_stash = true, variable = true})
   end
   local _x45 = join({"%function", args}, macroexpand(body))
@@ -239,9 +245,9 @@ local function expand_definition(_x47)
   local body = cut(_x47, 3)
   add(environment42, {})
   local _l3 = args
-  local _i4 = nil
-  for _i4 in next, _l3 do
-    local _x48 = _l3[_i4]
+  local _i6 = nil
+  for _i6 in next, _l3 do
+    local _x48 = _l3[_i6]
     setenv(_x48, {_stash = true, variable = true})
   end
   local _x49 = join({x, name, args}, macroexpand(body))
@@ -308,9 +314,9 @@ local function quasiquote_list(form, depth)
   end
   local _x56 = form
   local _n6 = #(_x56)
-  local _i6 = 0
-  while _i6 < _n6 do
-    local x = _x56[_i6 + 1]
+  local _i8 = 0
+  while _i8 < _n6 do
+    local x = _x56[_i8 + 1]
     if quasisplice63(x, depth) then
       local _x57 = quasiexpand(x[2])
       add(xs, _x57)
@@ -318,7 +324,7 @@ local function quasiquote_list(form, depth)
     else
       add(last(xs), quasiexpand(x, depth))
     end
-    _i6 = _i6 + 1
+    _i8 = _i8 + 1
   end
   local pruned = keep(function (_)
     return(#(_) > 1 or not( _[1] == "list") or keys63(_))
@@ -518,12 +524,12 @@ local function compile_args(args)
   local c = ""
   local _x88 = args
   local _n9 = #(_x88)
-  local _i9 = 0
-  while _i9 < _n9 do
-    local x = _x88[_i9 + 1]
+  local _i11 = 0
+  while _i11 < _n9 do
+    local x = _x88[_i11 + 1]
     s = s .. c .. compile(x)
     c = ", "
-    _i9 = _i9 + 1
+    _i11 = _i11 + 1
   end
   return(s .. ")")
 end
@@ -659,8 +665,8 @@ local function compile_call(form)
   end
 end
 local function op_delims(parent, child, ...)
-  local _r58 = unstash({...})
-  local right = _r58.right
+  local _r57 = unstash({...})
+  local right = _r57.right
   local _e17
   if right then
     _e17 = precedence(child) >= precedence(parent)
@@ -694,9 +700,9 @@ local function compile_infix(form)
   end
 end
 function compile_function(args, body, ...)
-  local _r60 = unstash({...})
-  local name = _r60.name
-  local prefix = _r60.prefix
+  local _r59 = unstash({...})
+  local name = _r59.name
+  local prefix = _r59.prefix
   local _e18
   if name then
     _e18 = compile(name)
@@ -737,8 +743,8 @@ local function can_return63(form)
   return(not( form == nil) and (not( type(form) == "table") or not( form[1] == "return") and not statement63(form[1])))
 end
 function compile(form, ...)
-  local _r62 = unstash({...})
-  local stmt = _r62.stmt
+  local _r61 = unstash({...})
+  local stmt = _r61.stmt
   if form == nil then
     return("")
   else
@@ -799,14 +805,14 @@ end
 local function lower_do(args, hoist, stmt63, tail63)
   local _x99 = almost(args)
   local _n10 = #(_x99)
-  local _i10 = 0
-  while _i10 < _n10 do
-    local x = _x99[_i10 + 1]
+  local _i12 = 0
+  while _i12 < _n10 do
+    local x = _x99[_i12 + 1]
     local e = lower(x, hoist, stmt63)
     if standalone63(e) then
       add(hoist, e)
     end
-    _i10 = _i10 + 1
+    _i12 = _i12 + 1
   end
   local e = lower(last(args), hoist, stmt63, tail63)
   if tail63 and can_return63(e) then
@@ -999,11 +1005,11 @@ setenv("do", {_stash = true, tr = true, special = function (...)
   local s = ""
   local _x128 = forms
   local _n12 = #(_x128)
-  local _i12 = 0
-  while _i12 < _n12 do
-    local x = _x128[_i12 + 1]
+  local _i14 = 0
+  while _i14 < _n12 do
+    local x = _x128[_i14 + 1]
     s = s .. compile(x, {_stash = true, stmt = true})
-    _i12 = _i12 + 1
+    _i14 = _i14 + 1
   end
   return(s)
 end, stmt = true})

@@ -205,24 +205,45 @@
                                  ,k)
                          ,@body)))))))))
 
-  (mac for (i rest: body)
-    (let (from 0 to 0 increment 1)
-      (if (atom? i)
-          (= to (hd body)
-             body (tl body))
-        (= (i from to (o increment 1)) i))
-      (assert (num? increment))
-      (if (> increment 0)
-        `(let (,i ,from)
-           (while (< ,i ,to) ,@body (++ ,i ,increment)))
-        `(let (,i (- ,to 1))
-           (while (>= ,i ,from) ,@body (-- ,i ,(- increment)))))))
+  (w/mac w/for-args body
+    `(let ((i rest: body) args)
+       (let (from 0 n 0 incr 1)
+         (if (atom? i)
+             (= n (hd body)
+                body (tl body))
+           (= (i from n (o incr 1)) i))
+         (assert (num? incr))
+         ,@body))
+
+    (mac for args
+      (w/for-args
+        (if (> incr 0)
+          `(let (,i ,from)
+             (while (< ,i ,n) ,@body (++ ,i ,incr)))
+          `(let (,i (- ,n 1))
+             (while (>= ,i ,from) ,@body (-- ,i ,(- incr)))))))
+
+    (mac revfor args
+      (w/for-args
+        `(for (,i ,from ,n ,(- incr))
+           ,@body))))
 
   (mac step (v l rest: body)
     (w/uniq (x n i)
       `(let (,x ,l ,n #,x)
          (for ,i ,n
            (let (,v (at ,x ,i))
+             ,@body)))))
+
+  (mac revstep (var l rest: body)
+    (if (list? l)
+        (let gl (uniq 'l)
+          `(let (,gl ,l)
+             (revstep ,var ,gl
+                ,@body)))
+      (w/uniq i
+        `(revfor ,i #,l
+           (let (,var (at ,l ,i))
              ,@body)))))
 
   (mac set-of xs

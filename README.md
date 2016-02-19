@@ -331,13 +331,13 @@ You can specify where to `start`, where to `end`, and (optionally) how much to i
 6
 9
 ```
-To iterate in reverse (i.e. from the `end` to the `start`), use a negative increment:
+If you want to reverse the iteration, you can use `revfor`:
 ```
-> (for (i 1 3 -1)
+> (revfor (i 1 3)
     (print i))
 2
 1
-> (for (i 0 10 -3)
+> (revfor (i 0 10 3)
     (print i))
 9
 6
@@ -378,6 +378,29 @@ bar a b
 2
 10
 20
+```
+If you want a reversed copy of a list, you can call `rev`:
+```
+> (step x (rev (list 1 2 3))
+    (print x))
+3
+2
+1
+```
+You can use `revstep` to step through a list in reverse order without copying it:
+```
+> (revstep x (list 1 2 3)
+    (print x))
+3
+2
+1
+> (revstep (a b) (list (list 1 2) (list 10 20)) ; destructuring
+    (print a)
+    (print b))
+10
+20
+1
+2
 ```
 
 #### Quotation

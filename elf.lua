@@ -790,8 +790,8 @@ function search(s, pattern, start)
   if start then
     _e25 = start + 1
   end
-  local _start = _e25
-  local i = string.find(s, pattern, _start, true)
+  local start = _e25
+  local i = string.find(s, pattern, start, true)
   return(i and i - 1)
 end
 function split(s, sep)

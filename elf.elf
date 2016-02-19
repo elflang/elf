@@ -486,12 +486,12 @@
 
 (def search (s pattern start)
   (%js
-    (let i (s.indexOf pattern start))
+    (var i (s.indexOf pattern start))
     (if (>= i 0) i))
   (%lua
-    (let (start (if start (+ start 1))
-          i (string.find s pattern start t))
-      (and i (- i 1)))))
+    (var start (if start (+ start 1)))
+    (var i (string.find s pattern start t))
+    (and i (- i 1))))
 
 (def split (s sep)
   (if (or (is s "") (is sep "")) ()

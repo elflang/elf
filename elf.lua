@@ -453,6 +453,9 @@ local function setup()
     _x457.js = {"or", {"get", x, {"quote", "length"}}, 0}
     return(_x457)
   end})
+  setenv("edge", {_stash = true, macro = function (x)
+    return({"-", {"len", x}, 1})
+  end})
   setenv("none?", {_stash = true, macro = function (x)
     return({"is", {"len", x}, 0})
   end})
@@ -472,10 +475,10 @@ local function setup()
     return({"cut", l, 1})
   end})
   setenv("type", {_stash = true, macro = function (x)
-    local _x486 = {"target"}
-    _x486.lua = {{"do", "type"}, x}
-    _x486.js = {"typeof", x}
-    return(_x486)
+    local _x490 = {"target"}
+    _x490.lua = {{"do", "type"}, x}
+    _x490.js = {"typeof", x}
+    return(_x490)
   end})
   setenv("isa", {_stash = true, macro = function (x, kind)
     return({"is", {"type", x}, kind})
@@ -493,10 +496,10 @@ local function setup()
     return({"isa", x, {"quote", "function"}})
   end})
   setenv("list?", {_stash = true, macro = function (x)
-    local _x515 = {"target"}
-    _x515.lua = {"quote", "table"}
-    _x515.js = {"quote", "object"}
-    return({"isa", x, _x515})
+    local _x519 = {"target"}
+    _x519.lua = {"quote", "table"}
+    _x519.js = {"quote", "object"}
+    return({"isa", x, _x519})
   end})
   setenv("atom?", {_stash = true, macro = function (x)
     return({"~list?", x})
@@ -509,8 +512,8 @@ local function setup()
   end})
   return(nil)
 end
-if _x530 == nil then
-  _x530 = true
+if _x534 == nil then
+  _x534 = true
   environment42 = {{}}
   target42 = "lua"
 end
@@ -563,11 +566,8 @@ function keys(x)
   end
   return(l)
 end
-function edge(x)
-  return(#(x) - 1)
-end
 function inner(x)
-  return(clip(x, 1, edge(x)))
+  return(clip(x, 1, #(x) - 1))
 end
 function char(s, n)
   return(clip(s, n, n + 1))
@@ -595,18 +595,18 @@ function drop(l)
   return(table.remove(l))
 end
 function last(l)
-  return(l[edge(l) + 1])
+  return(l[#(l) - 1 + 1])
 end
 function almost(l)
   if type(l) == "string" then
-    return(clip(l, 0, edge(l)))
+    return(clip(l, 0, #(l) - 1))
   else
-    return(cut(l, 0, edge(l)))
+    return(cut(l, 0, #(l) - 1))
   end
 end
 function rev(l)
   local l1 = keys(l)
-  local n = edge(l)
+  local n = #(l) - 1
   local i = 0
   while i < #(l) do
     add(l1, l[n - i + 1])
@@ -668,11 +668,11 @@ function find(f, l)
   end
 end
 function first(f, l)
-  local _x533 = l
-  local _n11 = #(_x533)
+  local _x537 = l
+  local _n11 = #(_x537)
   local _i11 = 0
   while _i11 < _n11 do
-    local x = _x533[_i11 + 1]
+    local x = _x537[_i11 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -701,11 +701,11 @@ function sort(l, f)
 end
 function map(f, x)
   local l = {}
-  local _x535 = x
-  local _n12 = #(_x535)
+  local _x539 = x
+  local _n12 = #(_x539)
   local _i12 = 0
   while _i12 < _n12 do
-    local v = _x535[_i12 + 1]
+    local v = _x539[_i12 + 1]
     local y = f(v)
     if not( y == nil) then
       add(l, y)
@@ -1000,8 +1000,8 @@ function toplevel63()
   return(#(environment42) == 1)
 end
 function setenv(k, ...)
-  local _r172 = unstash({...})
-  local _keys = cut(_r172, 0)
+  local _r173 = unstash({...})
+  local _keys = cut(_r173, 0)
   if type(k) == "string" then
     local _e29
     if _keys.toplevel then

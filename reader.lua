@@ -78,7 +78,7 @@ local function read_string(str, more)
   end
 end
 local function key63(atom)
-  return(type(atom) == "string" and #(atom) > 1 and char(atom, edge(atom)) == ":")
+  return(type(atom) == "string" and #(atom) > 1 and char(atom, #(atom) - 1) == ":")
 end
 local function flag63(atom)
   return(type(atom) == "string" and #(atom) > 1 and char(atom, 0) == ":")
@@ -105,7 +105,7 @@ local function wrap(s, x)
   end
 end
 local function maybe_number(str)
-  if number_code63(code(str, edge(str))) then
+  if number_code63(code(str, #(str) - 1)) then
     return(number(str))
   end
 end
@@ -113,7 +113,7 @@ local function real63(x)
   return(type(x) == "number" and not nan63(x) and not inf63(x))
 end
 local function valid_access63(str)
-  return(#(str) > 2 and not( "." == char(str, 0)) and not( "." == char(str, edge(str))) and not search(str, ".."))
+  return(#(str) > 2 and not( "." == char(str, 0)) and not( "." == char(str, #(str) - 1)) and not search(str, ".."))
 end
 local function parse_index(a, b)
   local n = number(a)
@@ -190,7 +190,7 @@ local function read_list(s, ending)
       else
         local x = read(s)
         if key63(x) then
-          local k = clip(x, 0, edge(x))
+          local k = clip(x, 0, #(x) - 1)
           local v = read(s)
           l[k] = v
         else

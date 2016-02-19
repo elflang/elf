@@ -78,7 +78,7 @@ var read_string = function (str, more) {
   }
 };
 var key63 = function (atom) {
-  return(typeof(atom) === "string" && (atom.length || 0) > 1 && char(atom, edge(atom)) === ":");
+  return(typeof(atom) === "string" && (atom.length || 0) > 1 && char(atom, (atom.length || 0) - 1) === ":");
 };
 var flag63 = function (atom) {
   return(typeof(atom) === "string" && (atom.length || 0) > 1 && char(atom, 0) === ":");
@@ -105,7 +105,7 @@ var wrap = function (s, x) {
   }
 };
 var maybe_number = function (str) {
-  if (number_code63(code(str, edge(str)))) {
+  if (number_code63(code(str, (str.length || 0) - 1))) {
     return(number(str));
   }
 };
@@ -113,7 +113,7 @@ var real63 = function (x) {
   return(typeof(x) === "number" && ! nan63(x) && ! inf63(x));
 };
 var valid_access63 = function (str) {
-  return((str.length || 0) > 2 && !( "." === char(str, 0)) && !( "." === char(str, edge(str))) && ! search(str, ".."));
+  return((str.length || 0) > 2 && !( "." === char(str, 0)) && !( "." === char(str, (str.length || 0) - 1)) && ! search(str, ".."));
 };
 var parse_index = function (a, b) {
   var n = number(a);
@@ -190,7 +190,7 @@ var read_list = function (s, ending) {
       } else {
         var x = read(s);
         if (key63(x)) {
-          var k = clip(x, 0, edge(x));
+          var k = clip(x, 0, (x.length || 0) - 1);
           var v = read(s);
           l[k] = v;
         } else {

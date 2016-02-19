@@ -1,7 +1,7 @@
 var reader = require("reader");
 getenv = function (k, p) {
   if (typeof(k) === "string") {
-    var i = edge(environment42);
+    var i = (environment42.length || 0) - 1;
     while (i >= 0) {
       var b = environment42[i][k];
       if (!( typeof(b) === "undefined" || b === null)) {

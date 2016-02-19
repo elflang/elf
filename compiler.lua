@@ -1,7 +1,7 @@
 local reader = require("reader")
 function getenv(k, p)
   if type(k) == "string" then
-    local i = edge(environment42)
+    local i = #(environment42) - 1
     while i >= 0 do
       local b = environment42[i + 1][k]
       if not( b == nil) then

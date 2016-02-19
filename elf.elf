@@ -284,6 +284,7 @@
        js: (or (get ,x 'length) 0)
        lua: (%len ,x)))
 
+  (mac edge (x) `(- #,x 1))
   (mac none? (x) `(is #,x 0))
   (mac some? (x) `(> #,x 0))
   (mac one? (x) `(is #,x 1))
@@ -352,9 +353,6 @@
     (each (k v) x
       (unless (num? k)
         (= (get l k) v)))))
-
-(def edge (x)
-  (- #x 1))
 
 (def inner (x)
   (clip x 1 (edge x)))

@@ -474,6 +474,9 @@ var setup = function () {
     _x423.js = ["or", ["get", x, ["quote", "length"]], 0];
     return(_x423);
   }});
+  setenv("edge", {_stash: true, macro: function (x) {
+    return(["-", ["len", x], 1]);
+  }});
   setenv("none?", {_stash: true, macro: function (x) {
     return(["is", ["len", x], 0]);
   }});
@@ -493,10 +496,10 @@ var setup = function () {
     return(["cut", l, 1]);
   }});
   setenv("type", {_stash: true, macro: function (x) {
-    var _x452 = ["target"];
-    _x452.lua = [["do", "type"], x];
-    _x452.js = ["typeof", x];
-    return(_x452);
+    var _x456 = ["target"];
+    _x456.lua = [["do", "type"], x];
+    _x456.js = ["typeof", x];
+    return(_x456);
   }});
   setenv("isa", {_stash: true, macro: function (x, kind) {
     return(["is", ["type", x], kind]);
@@ -514,10 +517,10 @@ var setup = function () {
     return(["isa", x, ["quote", "function"]]);
   }});
   setenv("list?", {_stash: true, macro: function (x) {
-    var _x481 = ["target"];
-    _x481.lua = ["quote", "table"];
-    _x481.js = ["quote", "object"];
-    return(["isa", x, _x481]);
+    var _x485 = ["target"];
+    _x485.lua = ["quote", "table"];
+    _x485.js = ["quote", "object"];
+    return(["isa", x, _x485]);
   }});
   setenv("atom?", {_stash: true, macro: function (x) {
     return(["~list?", x]);
@@ -530,8 +533,8 @@ var setup = function () {
   }});
   return(undefined);
 };
-if (typeof(_x496) === "undefined" || _x496 === null) {
-  _x496 = true;
+if (typeof(_x500) === "undefined" || _x500 === null) {
+  _x500 = true;
   environment42 = [{}];
   target42 = "js";
 }
@@ -598,11 +601,8 @@ keys = function (x) {
   }
   return(l);
 };
-edge = function (x) {
-  return((x.length || 0) - 1);
-};
 inner = function (x) {
-  return(clip(x, 1, edge(x)));
+  return(clip(x, 1, (x.length || 0) - 1));
 };
 char = function (s, n) {
   return(s.charAt(n));
@@ -627,18 +627,18 @@ drop = function (l) {
   return(l.pop());
 };
 last = function (l) {
-  return(l[edge(l)]);
+  return(l[(l.length || 0) - 1]);
 };
 almost = function (l) {
   if (typeof(l) === "string") {
-    return(clip(l, 0, edge(l)));
+    return(clip(l, 0, (l.length || 0) - 1));
   } else {
-    return(cut(l, 0, edge(l)));
+    return(cut(l, 0, (l.length || 0) - 1));
   }
 };
 rev = function (l) {
   var l1 = keys(l);
-  var n = edge(l);
+  var n = (l.length || 0) - 1;
   var i = 0;
   while (i < (l.length || 0)) {
     add(l1, l[n - i]);
@@ -721,11 +721,11 @@ find = function (f, l) {
   }
 };
 first = function (f, l) {
-  var _x498 = l;
-  var _n11 = _x498.length || 0;
+  var _x502 = l;
+  var _n11 = _x502.length || 0;
   var _i11 = 0;
   while (_i11 < _n11) {
-    var x = _x498[_i11];
+    var x = _x502[_i11];
     var y = f(x);
     if (y) {
       return(y);
@@ -763,11 +763,11 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var l = [];
-  var _x500 = x;
-  var _n12 = _x500.length || 0;
+  var _x504 = x;
+  var _n12 = _x504.length || 0;
   var _i12 = 0;
   while (_i12 < _n12) {
-    var v = _x500[_i12];
+    var v = _x504[_i12];
     var y = f(v);
     if (!( typeof(y) === "undefined" || y === null)) {
       add(l, y);
@@ -1113,8 +1113,8 @@ toplevel63 = function () {
   return((environment42.length || 0) === 1);
 };
 setenv = function (k) {
-  var _r174 = unstash(Array.prototype.slice.call(arguments, 1));
-  var _keys = cut(_r174, 0);
+  var _r175 = unstash(Array.prototype.slice.call(arguments, 1));
+  var _keys = cut(_r175, 0);
   if (typeof(k) === "string") {
     var _e43;
     if (_keys.toplevel) {

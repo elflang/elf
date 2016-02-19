@@ -26,7 +26,7 @@
 
   (mac at (l i)
     (when (and (num? i) (< i 0))
-      (%eval-arg l (at l i))
+      (if (list? l) (return `(let l ,l (at l ,i))))
       (assign i (if (is i -1) `(edge ,l) `(+ #,l ,i))))
     (if lua? (assign i (if (num? i) (+ i 1) `(+ ,i 1))))
     `(get ,l ,i))
@@ -306,15 +306,10 @@
   ;; Protects macro arguments from multiple evaluation.  The specified
   ;; arg will be evaluated exactly once.
 
-  (mac %eval-arg (v (macro rest: xs))
-    (var esc (x l) (xform l (if (is _ x) `',_ _)))
-    `(when (list? ,v)
-       (return ,(list 'list ''let `(list ',v ,v)
-                  `(list ',macro ,@(esc v xs))))))
-
-  (mac listify (x)
-    (%eval-arg x (listify x))
-    `(if (list? ,x) ,x (list ,x)))
+  (mac listify (l)
+    (if (list? l) (return `(let l ,l (listify l))))
+    `(if (list? ,l) ,l
+       (list ,l)))
 
   nil)
 

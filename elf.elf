@@ -16,7 +16,6 @@
   (defsym js? (is target* 'js))
 
   (defsym lua? (is target* 'lua))
-  (defsym js? (is target* 'js))
 
   (mac quote (form)
     (quoted form))
@@ -27,7 +26,7 @@
   (mac at (l i)
     (when (and (num? i) (< i 0))
       (if (list? l) (return `(let l ,l (at l ,i))))
-      (assign i (if (is i -1) `(edge ,l) `(+ #,l ,i))))
+      (= i `(+ #,l ,i)))
     (if lua? (assign i (if (num? i) (+ i 1) `(+ ,i 1))))
     `(get ,l ,i))
 

@@ -2305,9 +2305,9 @@ add(tests, ["at", function () {
   } else {
     passed = passed + 1;
   }
-  if (! equal63("d", l[edge(l)])) {
+  if (! equal63("d", l[(l.length || 0) + -1])) {
     failed = failed + 1;
-    return("failed: expected " + str("d") + ", was " + str(l[edge(l)]));
+    return("failed: expected " + str("d") + ", was " + str(l[(l.length || 0) + -1]));
   } else {
     passed = passed + 1;
   }

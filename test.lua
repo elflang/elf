@@ -2307,9 +2307,9 @@ add(tests, {"at", function ()
   else
     passed = passed + 1
   end
-  if not equal63("d", l[edge(l) + 1]) then
+  if not equal63("d", l[#(l) + -1 + 1]) then
     failed = failed + 1
-    return("failed: expected " .. str("d") .. ", was " .. str(l[edge(l) + 1]))
+    return("failed: expected " .. str("d") .. ", was " .. str(l[#(l) + -1 + 1]))
   else
     passed = passed + 1
   end

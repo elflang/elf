@@ -318,32 +318,6 @@ The shorthand for iterating from 0 to N is `for`:
 1
 2
 ```
-You can specify where to `start`, where to `end`, and (optionally) how much to increment by:
-```
-> (for (i 1 3)
-    (print i))
-1
-2
-> (for (i 0 10 3)
-    (print i))
-0
-3
-6
-9
-```
-If you want to reverse the iteration, you can use `revfor`:
-```
-> (revfor (i 1 3)
-    (print i))
-2
-1
-> (revfor (i 0 10 3)
-    (print i))
-9
-6
-3
-0
-```
 You can enumerate the keys and values of a list with `each`:
 ```
 > (each (k v) (list 1 2 a: 10 b: 20)
@@ -378,29 +352,6 @@ bar a b
 2
 10
 20
-```
-If you want a reversed copy of a list, you can call `rev`:
-```
-> (step x (rev (list 1 2 3))
-    (print x))
-3
-2
-1
-```
-You can use `revstep` to step through a list in reverse order without copying it:
-```
-> (revstep x (list 1 2 3)
-    (print x))
-3
-2
-1
-> (revstep (a b) (list (list 1 2) (list 10 20)) ; destructuring
-    (print a)
-    (print b))
-10
-20
-1
-2
 ```
 
 #### Quotation

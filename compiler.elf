@@ -4,10 +4,12 @@
 
 (def getenv (k p)
   (when (str? k)
-    (revstep frame environment*
-      (let b (get frame k)
+    (var i (edge environment*))
+    (while (>= i 0)
+      (let b (get (at environment* i) k)
         (if (~nil? b)
-            (return (if p (get b p) b)))))))
+            (return (if p (get b p) b))))
+      (-- i))))
 
 (var macro-function (k)
   (getenv k 'macro))
@@ -31,10 +33,9 @@
   (~nil? (symbol-expansion k)))
 
 (var variable? (k)
-  (revstep frame environment*
-    (let b (get frame k)
-      (unless (nil? b)
-        (return (and (list? b) (~nil? b.variable)))))))
+  (let b (first [get _ k]
+           (rev environment*))
+    (and (list? b) (~nil? b.variable))))
 
 (def bound? (x)
   (or (macro? x)

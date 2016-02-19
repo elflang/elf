@@ -387,9 +387,7 @@
   (at l (edge l)))
 
 (def almost (l)
-  (if (str? l)
-      (clip l 0 (edge l))
-    (cut l 0 (edge l))))
+  (cut l 0 (edge l)))
 
 (def rev (l)
   (with l1 (keys l)

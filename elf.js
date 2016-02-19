@@ -630,11 +630,7 @@ last = function (l) {
   return(l[(l.length || 0) - 1]);
 };
 almost = function (l) {
-  if (typeof(l) === "string") {
-    return(clip(l, 0, (l.length || 0) - 1));
-  } else {
-    return(cut(l, 0, (l.length || 0) - 1));
-  }
+  return(cut(l, 0, (l.length || 0) - 1));
 };
 rev = function (l) {
   var l1 = keys(l);

@@ -25,9 +25,12 @@
 
   (mac at (l i)
     (when (and (num? i) (< i 0))
-      (if (list? l) (return `(let l ,l (at l ,i))))
-      (= i `(+ #,l ,i)))
-    (if lua? (assign i (if (num? i) (+ i 1) `(+ ,i 1))))
+      (if (list? l)
+        (return `(let l ,l (at l ,i))))
+      (assign i `(+ #,l ,i)))
+    (when lua?
+      (if (num? i) (++ i)
+        (assign i `(+ ,i 1))))
     `(get ,l ,i))
 
   (mac wipe (place)
@@ -250,7 +253,6 @@
         `(return (obj ,@x)))))
 
   (mac %js forms (when js? `(do ,@forms)))
-
   (mac %lua forms (when lua? `(do ,@forms)))
 
   (mac %compile-time forms
@@ -275,9 +277,13 @@
                 `(or (is (typeof ,x) "undefined") (is ,x null))
               `(let (x ,x) (nil? x)))))
 
-  (defspecial %len (x) (cat "#(" (compile x) ")"))
+  (defspecial %len (x)
+    (cat "#(" (compile x) ")"))
 
-  (mac len (x) `(target js: (or (get ,x 'length) 0) lua: (%len ,x)))
+  (mac len (x)
+    `(target
+       js: (or (get ,x 'length) 0)
+       lua: (%len ,x)))
 
   (mac none? (x) `(is #,x 0))
   (mac some? (x) `(> #,x 0))

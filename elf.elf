@@ -291,8 +291,8 @@
   (mac hd (l) `(at ,l 0))
   (mac tl (l) `(cut ,l 1))
 
-  (mac isa (x kind)
-    `(is (,(if js? 'typeof 'type) ,x) ,kind))
+  (mac isa (x type)
+    `(is (target js: (typeof ,x) lua: (type ,x)) ,type))
 
   (mac fn? (x) `(isa ,x 'function))
   (mac str? (x) `(isa ,x 'string))

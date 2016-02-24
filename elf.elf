@@ -268,19 +268,17 @@
   (mac use modules `(do ,@(xform modules `(var ,_ (require ',_)))))
 
   (mac nil? (x)
-    `(target
-       lua: (is ,x nil)
-       js: ,(if (list? x)
-                `(let (x ,x) (nil? x))
-              `(or (is (typeof ,x) 'undefined) (is ,x null)))))
+    (if lua?
+       `(is ,x nil)
+        (list? x)
+       `(let x ,x (nil? x))
+      `(or (is (typeof ,x) 'undefined)
+           (is ,x null))))
 
   (defspecial %len (x)
     (cat "#(" (compile x) ")"))
 
-  (mac len (x)
-    `(target
-       js: (or (get ,x 'length) 0)
-       lua: (%len ,x)))
+  (mac len (x) (if lua? `(%len ,x) `(or (get ,x 'length) 0)))
 
   (mac edge (x) `(- #,x 1))
   (mac one? (x) `(is #,x 1))

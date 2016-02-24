@@ -153,24 +153,24 @@ local function setup()
           local lh = l[1]
           local rh = l[2]
           local _id59 = not( type(lh) == "table")
-          local _e14
+          local _e15
           if _id59 then
-            _e14 = _id59
+            _e15 = _id59
           else
             local _e8 = lh[1]
-            local _e15
+            local _e16
             if "at" == _e8 then
-              _e15 = true
+              _e16 = true
             else
-              local _e16
+              local _e17
               if "get" == _e8 then
-                _e16 = true
+                _e17 = true
               end
-              _e15 = _e16
+              _e16 = _e17
             end
-            _e14 = _e15
+            _e15 = _e16
           end
-          if _e14 then
+          if _e15 then
             return({"assign", lh, rh})
           else
             local vars = {}
@@ -330,28 +330,28 @@ local function setup()
     local l = uniq("l")
     local n = uniq("n")
     local i = uniq("i")
-    local _e17
+    local _e18
     if not( type(x) == "table") then
-      _e17 = {i, x}
+      _e18 = {i, x}
     else
-      local _e18
+      local _e19
       if #(x) > 1 then
-        _e18 = x
+        _e19 = x
       else
-        _e18 = {i, x[1]}
+        _e19 = {i, x[1]}
       end
-      _e17 = _e18
+      _e18 = _e19
     end
-    local _id52 = _e17
+    local _id52 = _e18
     local k = _id52[1]
     local v = _id52[2]
-    local _e19
+    local _e20
     if target42 == "lua" then
-      _e19 = body
+      _e20 = body
     else
-      _e19 = {join({"let", k, {"if", {"numeric?", k}, {"parseInt", k}, k}}, body)}
+      _e20 = {join({"let", k, {"if", {"numeric?", k}, {"parseInt", k}, k}}, body)}
     end
-    return({"let", {l, lst, k, "nil"}, {"%for", l, k, join({"let", {v, {"get", l, k}}}, _e19)}})
+    return({"let", {l, lst, k, "nil"}, {"%for", l, k, join({"let", {v, {"get", l, k}}}, _e20)}})
   end})
   setenv("set-of", {_stash = true, macro = function (...)
     local xs = unstash({...})
@@ -524,8 +524,8 @@ function cut(x, from, upto)
   end
   local l = {}
   local j = 0
-  local to = min(#(x), upto)
   local i = max(0, from)
+  local to = min(#(x), upto)
   while i < to do
     l[j + 1] = x[i + 1]
     i = i + 1
@@ -560,11 +560,11 @@ function char(s, n)
   return(clip(s, n, n + 1))
 end
 function code(s, n)
-  local _e20
+  local _e21
   if n then
-    _e20 = n + 1
+    _e21 = n + 1
   end
-  return(string.byte(s, _e20))
+  return(string.byte(s, _e21))
 end
 function chr(c)
   return(string.char(c))
@@ -771,11 +771,11 @@ function unstash(args)
   end
 end
 function search(s, pattern, start)
-  local _e21
+  local _e22
   if start then
-    _e21 = start + 1
+    _e22 = start + 1
   end
-  local start = _e21
+  local start = _e22
   local i = string.find(s, pattern, start, true)
   return(i and i - 1)
 end
@@ -871,25 +871,26 @@ function escape(s)
   local i = 0
   while i < #(s) do
     local c = char(s, i)
-    local _e22
-    if c == "\n" then
-      _e22 = "\\n"
+    local _e12 = c
+    local _e23
+    if "\n" == _e12 then
+      _e23 = "\\n"
     else
-      local _e23
-      if c == "\"" then
-        _e23 = "\\\""
+      local _e24
+      if "\"" == _e12 then
+        _e24 = "\\\""
       else
-        local _e24
-        if c == "\\" then
-          _e24 = "\\\\"
+        local _e25
+        if "\\" == _e12 then
+          _e25 = "\\\\"
         else
-          _e24 = c
+          _e25 = c
         end
-        _e23 = _e24
+        _e24 = _e25
       end
-      _e22 = _e23
+      _e23 = _e24
     end
-    local c1 = _e22
+    local c1 = _e23
     s1 = s1 .. c1
     i = i + 1
   end
@@ -984,13 +985,13 @@ function setenv(k, ...)
   local _r169 = unstash({...})
   local _keys = cut(_r169, 0)
   if type(k) == "string" then
-    local _e25
+    local _e26
     if _keys.toplevel then
-      _e25 = environment42[1]
+      _e26 = environment42[1]
     else
-      _e25 = last(environment42)
+      _e26 = last(environment42)
     end
-    local frame = _e25
+    local frame = _e26
     local entry = frame[k] or {}
     local _l18 = _keys
     local _k = nil

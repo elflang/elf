@@ -308,8 +308,8 @@
 (def cut (x (o from 0) (o upto #x))
   (with l ()
     (var j 0)
-    (var to (min #x upto))
     (var i (max 0 from))
+    (var to (min #x upto))
     (while (< i to)
       (= (at l j) (at x i))
       (++ i)
@@ -401,7 +401,8 @@
 (def pair (l)
   (with l1 ()
     (for i #l
-      (add l1 (list (at l i) (at l (+ i 1))))
+      (add l1 (list (at l i) 
+                    (at l (+ i 1))))
       (++ i))))
 
 (def sort (l f)
@@ -509,9 +510,10 @@
   (let s1 "\""
     (for i #s
       (let (c (char s i)
-            c1 (if (is c "\n") "\\n"
-                   (is c "\"") "\\\""
-                   (is c "\\") "\\\\"
+            c1 (case c
+                 "\n" "\\n"
+                 "\"" "\\\""
+                 "\\" "\\\\"
                  c))
         (cat! s1 c1)))
     (cat s1 "\"")))

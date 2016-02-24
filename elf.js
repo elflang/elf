@@ -474,17 +474,17 @@ var setup = function () {
   setenv("edge", {_stash: true, macro: function (x) {
     return(["-", ["len", x], 1]);
   }});
-  setenv("some?", {_stash: true, macro: function (x) {
-    return([">", ["len", x], 0]);
-  }});
-  setenv("none?", {_stash: true, macro: function (x) {
-    return(["is", ["len", x], 0]);
-  }});
   setenv("one?", {_stash: true, macro: function (x) {
     return(["is", ["len", x], 1]);
   }});
   setenv("two?", {_stash: true, macro: function (x) {
     return(["is", ["len", x], 2]);
+  }});
+  setenv("some?", {_stash: true, macro: function (x) {
+    return([">", ["len", x], 0]);
+  }});
+  setenv("none?", {_stash: true, macro: function (x) {
+    return(["is", ["len", x], 0]);
   }});
   setenv("hd", {_stash: true, macro: function (l) {
     return(["at", l, 0]);
@@ -910,17 +910,17 @@ _43 = function () {
     return(_0 + _1);
   }, xs) || 0);
 };
-_ = function () {
-  var xs = unstash(Array.prototype.slice.call(arguments, 0));
-  return(reduce(function (_0, _1) {
-    return(_1 - _0);
-  }, rev(xs)) || 0);
-};
 _42 = function () {
   var xs = unstash(Array.prototype.slice.call(arguments, 0));
   return(reduce(function (_0, _1) {
     return(_0 * _1);
   }, xs) || 1);
+};
+_ = function () {
+  var xs = unstash(Array.prototype.slice.call(arguments, 0));
+  return(reduce(function (_0, _1) {
+    return(_1 - _0);
+  }, rev(xs)) || 0);
 };
 _47 = function () {
   var xs = unstash(Array.prototype.slice.call(arguments, 0));

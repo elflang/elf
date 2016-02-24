@@ -270,9 +270,9 @@
   (mac nil? (x)
     `(target
        lua: (is ,x nil)
-       js: ,(if (list? x) `(let (x ,x) (nil? x))
-              `(or (is (typeof ,x) 'undefined)
-                   (is ,x null)))))
+       js: ,(if (list? x)
+                `(let (x ,x) (nil? x))
+              `(or (is (typeof ,x) 'undefined) (is ,x null)))))
 
   (defspecial %len (x)
     (cat "#(" (compile x) ")"))
@@ -283,10 +283,10 @@
        lua: (%len ,x)))
 
   (mac edge (x) `(- #,x 1))
-  (mac some? (x) `(> #,x 0))
-  (mac none? (x) `(is #,x 0))
   (mac one? (x) `(is #,x 1))
   (mac two? (x) `(is #,x 2))
+  (mac some? (x) `(> #,x 0))
+  (mac none? (x) `(is #,x 0))
 
   (mac hd (l) `(at ,l 0))
   (mac tl (l) `(cut ,l 1))
@@ -491,8 +491,8 @@
 
 (def cat xs (or (reduce [cat _0 _1] xs) ""))
 (def + xs (or (reduce [+ _0 _1] xs) 0))
-(def - xs (or (reduce [- _1 _0] (rev xs)) 0))
 (def * xs (or (reduce [* _0 _1] xs) 1))
+(def - xs (or (reduce [- _1 _0] (rev xs)) 0))
 (def / xs (or (reduce [/ _1 _0] (rev xs)) 1))
 (def % xs (or (reduce [% _1 _0] (rev xs)) 1))
 

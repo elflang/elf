@@ -12,15 +12,11 @@
     (assign environment*.-1 environment*.0))
 
   (defsym t true)
-
   (defsym js? (is target* 'js))
   (defsym lua? (is target* 'lua))
 
-  (mac %js forms
-    (if js? `(do ,@forms)))
-
-  (mac %lua forms
-    (if lua? `(do ,@forms)))
+  (mac %js forms (if js? `(do ,@forms)))
+  (mac %lua forms (if lua? `(do ,@forms)))
 
   (mac quote (form)
     (quoted form))
@@ -236,7 +232,6 @@
       `(obj ,@l)))
 
   (mac language () `',target*)
-
   (mac target clauses (get clauses target*))
 
   (mac join! (a rest: bs) `(= ,a (join ,a ,@bs)))
@@ -275,10 +270,9 @@
       `(or (is (typeof ,x) 'undefined)
            (is ,x null))))
 
-  (defspecial %len (x)
-    (cat "#(" (compile x) ")"))
+  (defspecial %len (x) (cat "#(" (compile x) ")"))
 
-  (mac len (x) (if lua? `(%len ,x) `(or (get ,x 'length) 0)))
+  (mac len (x) `(target lua: (%len ,x) js: (or (get ,x 'length) 0)))
 
   (mac edge (x) `(- #,x 1))
   (mac one? (x) `(is #,x 1))
@@ -289,8 +283,7 @@
   (mac hd (l) `(at ,l 0))
   (mac tl (l) `(cut ,l 1))
 
-  (mac isa (x type)
-    `(is (target js: (typeof ,x) lua: (type ,x)) ,type))
+  (mac isa (x y) `(is ((target js: typeof lua: type) ,x) ,y))
 
   (mac fn? (x) `(isa ,x 'function))
   (mac str? (x) `(isa ,x 'string))

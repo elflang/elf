@@ -465,11 +465,10 @@ var setup = function () {
     return("#(" + compile(x) + ")");
   }});
   setenv("len", {_stash: true, macro: function (x) {
-    if (target42 === "lua") {
-      return(["%len", x]);
-    } else {
-      return(["or", ["get", x, ["quote", "length"]], 0]);
-    }
+    var _x421 = ["target"];
+    _x421.lua = ["%len", x];
+    _x421.js = ["or", ["get", x, ["quote", "length"]], 0];
+    return(_x421);
   }});
   setenv("edge", {_stash: true, macro: function (x) {
     return(["-", ["len", x], 1]);
@@ -492,11 +491,11 @@ var setup = function () {
   setenv("tl", {_stash: true, macro: function (l) {
     return(["cut", l, 1]);
   }});
-  setenv("isa", {_stash: true, macro: function (x, type) {
-    var _x453 = ["target"];
-    _x453.lua = ["type", x];
-    _x453.js = ["typeof", x];
-    return(["is", _x453, type]);
+  setenv("isa", {_stash: true, macro: function (x, y) {
+    var _x455 = ["target"];
+    _x455.lua = "type";
+    _x455.js = "typeof";
+    return(["is", [_x455, x], y]);
   }});
   setenv("fn?", {_stash: true, macro: function (x) {
     return(["isa", x, ["quote", "function"]]);

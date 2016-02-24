@@ -444,11 +444,10 @@ local function setup()
     return("#(" .. compile(x) .. ")")
   end})
   setenv("len", {_stash = true, macro = function (x)
-    if target42 == "lua" then
-      return({"%len", x})
-    else
-      return({"or", {"get", x, {"quote", "length"}}, 0})
-    end
+    local _x455 = {"target"}
+    _x455.lua = {"%len", x}
+    _x455.js = {"or", {"get", x, {"quote", "length"}}, 0}
+    return(_x455)
   end})
   setenv("edge", {_stash = true, macro = function (x)
     return({"-", {"len", x}, 1})
@@ -471,11 +470,11 @@ local function setup()
   setenv("tl", {_stash = true, macro = function (l)
     return({"cut", l, 1})
   end})
-  setenv("isa", {_stash = true, macro = function (x, type)
-    local _x487 = {"target"}
-    _x487.lua = {"type", x}
-    _x487.js = {"typeof", x}
-    return({"is", _x487, type})
+  setenv("isa", {_stash = true, macro = function (x, y)
+    local _x489 = {"target"}
+    _x489.lua = "type"
+    _x489.js = "typeof"
+    return({"is", {_x489, x}, y})
   end})
   setenv("fn?", {_stash = true, macro = function (x)
     return({"isa", x, {"quote", "function"}})

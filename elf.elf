@@ -16,8 +16,11 @@
   (defsym js? (is target* 'js))
   (defsym lua? (is target* 'lua))
 
-  (mac %js forms (if js? `(do ,@forms)))
-  (mac %lua forms (if lua? `(do ,@forms)))
+  (mac %js forms
+    (if js? `(do ,@forms)))
+
+  (mac %lua forms
+    (if lua? `(do ,@forms)))
 
   (mac quote (form)
     (quoted form))
@@ -177,8 +180,10 @@
         `(do ,@(macroexpand body)))))
 
   (mac w/uniq (names rest: body)
+    (if (atom? names)
+        (= names (list names)))
     `(let ,(apply join
-             (xform (listify names)
+             (xform names
                `(,_ (uniq ',_))))
        ,@body))
 
@@ -232,20 +237,13 @@
 
   (mac language () `',target*)
 
-  (mac target clauses
-    (get clauses target*))
+  (mac target clauses (get clauses target*))
 
-  (mac join! (a rest: bs)
-    `(= ,a (join ,a ,@bs)))
+  (mac join! (a rest: bs) `(= ,a (join ,a ,@bs)))
+  (mac cat!  (a rest: bs) `(= ,a (cat  ,a ,@bs)))
 
-  (mac cat! (a rest: bs)
-    `(= ,a (cat ,a ,@bs)))
-
-  (mac ++ (n by)
-    `(= ,n (+ ,n ,(or by 1))))
-
-  (mac -- (n by)
-    `(= ,n (- ,n ,(or by 1))))
+  (mac ++ (n by) `(= ,n (+ ,n ,(or by 1))))
+  (mac -- (n by) `(= ,n (- ,n ,(or by 1))))
 
   (mac export names
     (if js? `(do ,@(xform names `(= (get exports ',_) ,_)))
@@ -273,7 +271,7 @@
     `(target
        lua: (is ,x nil)
        js: ,(if (atom? x)
-                `(or (is (typeof ,x) "undefined") (is ,x null))
+                `(or (is (typeof ,x) 'undefined) (is ,x null))
               `(let (x ,x) (nil? x)))))
 
   (defspecial %len (x)
@@ -284,37 +282,24 @@
        js: (or (get ,x 'length) 0)
        lua: (%len ,x)))
 
-  (mac edge (x) `(- #,x 1))
+  (mac edge  (x) `(-  #,x 1))
   (mac none? (x) `(is #,x 0))
-  (mac some? (x) `(> #,x 0))
-  (mac one? (x) `(is #,x 1))
-  (mac two? (x) `(is #,x 2))
+  (mac some? (x) `(>  #,x 0))
+  (mac one?  (x) `(is #,x 1))
+  (mac two?  (x) `(is #,x 2))
 
   (mac hd (l) `(at ,l 0))
   (mac tl (l) `(cut ,l 1))
 
-  ;; When a function and a macro share the same name, e.g. FOO, the
-  ;; macro takes priority: (foo ...) will expand the macro.  To call
-  ;; the function, write ((do foo) ...)
+  (mac isa (x kind)
+    `(is ((target js: typeof lua: type) ,x) ,kind))
 
-  (mac type (x) `(target js: (typeof ,x) lua: ((do type) ,x)))
-
-  (mac isa (x kind) `(is (type ,x) ,kind))
-
-  (mac str? (x) `(isa ,x 'string))
-  (mac num? (x) `(isa ,x 'number))
+  (mac str?  (x) `(isa ,x 'string))
+  (mac num?  (x) `(isa ,x 'number))
   (mac bool? (x) `(isa ,x 'boolean))
-  (mac fn? (x) `(isa ,x 'function))
+  (mac fn?   (x) `(isa ,x 'function))
   (mac list? (x) `(isa ,x (target js: 'object lua: 'table)))
   (mac atom? (x) `(~list? ,x))
-
-  ;; Protects macro arguments from multiple evaluation.  The specified
-  ;; arg will be evaluated exactly once.
-
-  (mac listify (l)
-    (if (list? l) (return `(let l ,l (listify l))))
-    `(if (list? ,l) ,l
-       (list ,l)))
 
   nil)
 

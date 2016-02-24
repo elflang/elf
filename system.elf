@@ -43,7 +43,7 @@
   (w/mac w/file (var path rest: body)
     `(call-w/file
        (fn (,var) ,@body)
-       (io.open ,@(listify path)))
+       (io.open ,@(if (list? path) path (list path))))
 
     (var read-file (path)
       (w/file f path

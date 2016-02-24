@@ -282,22 +282,22 @@
        js: (or (get ,x 'length) 0)
        lua: (%len ,x)))
 
-  (mac edge  (x) `(-  #,x 1))
+  (mac edge (x) `(- #,x 1))
+  (mac some? (x) `(> #,x 0))
   (mac none? (x) `(is #,x 0))
-  (mac some? (x) `(>  #,x 0))
-  (mac one?  (x) `(is #,x 1))
-  (mac two?  (x) `(is #,x 2))
+  (mac one? (x) `(is #,x 1))
+  (mac two? (x) `(is #,x 2))
 
   (mac hd (l) `(at ,l 0))
   (mac tl (l) `(cut ,l 1))
 
   (mac isa (x kind)
-    `(is ((target js: typeof lua: type) ,x) ,kind))
+    `(is (,(if js? 'typeof 'type) ,x) ,kind))
 
-  (mac str?  (x) `(isa ,x 'string))
-  (mac num?  (x) `(isa ,x 'number))
+  (mac fn? (x) `(isa ,x 'function))
+  (mac str? (x) `(isa ,x 'string))
+  (mac num? (x) `(isa ,x 'number))
   (mac bool? (x) `(isa ,x 'boolean))
-  (mac fn?   (x) `(isa ,x 'function))
   (mac list? (x) `(isa ,x (target js: 'object lua: 'table)))
   (mac atom? (x) `(~list? ,x))
 

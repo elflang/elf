@@ -314,7 +314,7 @@ local function setup()
   setenv("for", {_stash = true, macro = function (i, n, ...)
     local _r62 = unstash({...})
     local body = cut(_r62, 0)
-    return({"let", {i, 0}, join({"while", {"<", i, n}}, body, {{"++", i}})})
+    return({"let", i, 0, join({"while", {"<", i, n}}, body, {{"++", i}})})
   end})
   setenv("step", {_stash = true, macro = function (v, l, ...)
     local _r64 = unstash({...})
@@ -440,14 +440,20 @@ local function setup()
       end
     end
   end})
+  setenv("hd", {_stash = true, macro = function (l)
+    return({"at", l, 0})
+  end})
+  setenv("tl", {_stash = true, macro = function (l)
+    return({"cut", l, 1})
+  end})
   setenv("%len", {_stash = true, special = function (x)
     return("#(" .. compile(x) .. ")")
   end})
   setenv("len", {_stash = true, macro = function (x)
-    local _x455 = {"target"}
-    _x455.lua = {"%len", x}
-    _x455.js = {"or", {"get", x, {"quote", "length"}}, 0}
-    return(_x455)
+    local _x457 = {"target"}
+    _x457.lua = {"%len", x}
+    _x457.js = {"or", {"get", x, {"quote", "length"}}, 0}
+    return(_x457)
   end})
   setenv("edge", {_stash = true, macro = function (x)
     return({"-", {"len", x}, 1})
@@ -464,43 +470,37 @@ local function setup()
   setenv("none?", {_stash = true, macro = function (x)
     return({"is", {"len", x}, 0})
   end})
-  setenv("hd", {_stash = true, macro = function (l)
-    return({"at", l, 0})
-  end})
-  setenv("tl", {_stash = true, macro = function (l)
-    return({"cut", l, 1})
-  end})
   setenv("isa", {_stash = true, macro = function (x, y)
-    local _x489 = {"target"}
-    _x489.lua = "type"
-    _x489.js = "typeof"
-    return({"is", {_x489, x}, y})
-  end})
-  setenv("fn?", {_stash = true, macro = function (x)
-    return({"isa", x, {"quote", "function"}})
-  end})
-  setenv("str?", {_stash = true, macro = function (x)
-    return({"isa", x, {"quote", "string"}})
-  end})
-  setenv("num?", {_stash = true, macro = function (x)
-    return({"isa", x, {"quote", "number"}})
-  end})
-  setenv("bool?", {_stash = true, macro = function (x)
-    return({"isa", x, {"quote", "boolean"}})
+    local _x487 = {"target"}
+    _x487.lua = "type"
+    _x487.js = "typeof"
+    return({"is", {_x487, x}, y})
   end})
   setenv("list?", {_stash = true, macro = function (x)
-    local _x511 = {"target"}
-    _x511.lua = {"quote", "table"}
-    _x511.js = {"quote", "object"}
-    return({"isa", x, _x511})
+    local _x493 = {"target"}
+    _x493.lua = {"quote", "table"}
+    _x493.js = {"quote", "object"}
+    return({"isa", x, _x493})
   end})
   setenv("atom?", {_stash = true, macro = function (x)
     return({"~list?", x})
   end})
+  setenv("bool?", {_stash = true, macro = function (x)
+    return({"isa", x, {"quote", "boolean"}})
+  end})
+  setenv("num?", {_stash = true, macro = function (x)
+    return({"isa", x, {"quote", "number"}})
+  end})
+  setenv("str?", {_stash = true, macro = function (x)
+    return({"isa", x, {"quote", "string"}})
+  end})
+  setenv("fn?", {_stash = true, macro = function (x)
+    return({"isa", x, {"quote", "function"}})
+  end})
   return(nil)
 end
-if _x516 == nil then
-  _x516 = true
+if _x514 == nil then
+  _x514 = true
   environment42 = {{}}
   target42 = "lua"
 end
@@ -651,11 +651,11 @@ function find(f, l)
   end
 end
 function first(f, l)
-  local _x519 = l
-  local _n11 = #(_x519)
+  local _x517 = l
+  local _n11 = #(_x517)
   local _i11 = 0
   while _i11 < _n11 do
-    local x = _x519[_i11 + 1]
+    local x = _x517[_i11 + 1]
     local y = f(x)
     if y then
       return(y)
@@ -684,11 +684,11 @@ function sort(l, f)
 end
 function map(f, x)
   local l = {}
-  local _x521 = x
-  local _n12 = #(_x521)
+  local _x519 = x
+  local _n12 = #(_x519)
   local _i12 = 0
   while _i12 < _n12 do
-    local v = _x521[_i12 + 1]
+    local v = _x519[_i12 + 1]
     local y = f(v)
     if not( y == nil) then
       add(l, y)

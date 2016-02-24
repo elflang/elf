@@ -321,7 +321,7 @@ var setup = function () {
   setenv("for", {_stash: true, macro: function (i, n) {
     var _r62 = unstash(Array.prototype.slice.call(arguments, 2));
     var body = cut(_r62, 0);
-    return(["let", [i, 0], join(["while", ["<", i, n]], body, [["++", i]])]);
+    return(["let", i, 0, join(["while", ["<", i, n]], body, [["++", i]])]);
   }});
   setenv("step", {_stash: true, macro: function (v, l) {
     var _r64 = unstash(Array.prototype.slice.call(arguments, 2));
@@ -461,14 +461,20 @@ var setup = function () {
       }
     }
   }});
+  setenv("hd", {_stash: true, macro: function (l) {
+    return(["at", l, 0]);
+  }});
+  setenv("tl", {_stash: true, macro: function (l) {
+    return(["cut", l, 1]);
+  }});
   setenv("%len", {_stash: true, special: function (x) {
     return("#(" + compile(x) + ")");
   }});
   setenv("len", {_stash: true, macro: function (x) {
-    var _x421 = ["target"];
-    _x421.lua = ["%len", x];
-    _x421.js = ["or", ["get", x, ["quote", "length"]], 0];
-    return(_x421);
+    var _x423 = ["target"];
+    _x423.lua = ["%len", x];
+    _x423.js = ["or", ["get", x, ["quote", "length"]], 0];
+    return(_x423);
   }});
   setenv("edge", {_stash: true, macro: function (x) {
     return(["-", ["len", x], 1]);
@@ -485,43 +491,37 @@ var setup = function () {
   setenv("none?", {_stash: true, macro: function (x) {
     return(["is", ["len", x], 0]);
   }});
-  setenv("hd", {_stash: true, macro: function (l) {
-    return(["at", l, 0]);
-  }});
-  setenv("tl", {_stash: true, macro: function (l) {
-    return(["cut", l, 1]);
-  }});
   setenv("isa", {_stash: true, macro: function (x, y) {
-    var _x455 = ["target"];
-    _x455.lua = "type";
-    _x455.js = "typeof";
-    return(["is", [_x455, x], y]);
-  }});
-  setenv("fn?", {_stash: true, macro: function (x) {
-    return(["isa", x, ["quote", "function"]]);
-  }});
-  setenv("str?", {_stash: true, macro: function (x) {
-    return(["isa", x, ["quote", "string"]]);
-  }});
-  setenv("num?", {_stash: true, macro: function (x) {
-    return(["isa", x, ["quote", "number"]]);
-  }});
-  setenv("bool?", {_stash: true, macro: function (x) {
-    return(["isa", x, ["quote", "boolean"]]);
+    var _x453 = ["target"];
+    _x453.lua = "type";
+    _x453.js = "typeof";
+    return(["is", [_x453, x], y]);
   }});
   setenv("list?", {_stash: true, macro: function (x) {
-    var _x477 = ["target"];
-    _x477.lua = ["quote", "table"];
-    _x477.js = ["quote", "object"];
-    return(["isa", x, _x477]);
+    var _x459 = ["target"];
+    _x459.lua = ["quote", "table"];
+    _x459.js = ["quote", "object"];
+    return(["isa", x, _x459]);
   }});
   setenv("atom?", {_stash: true, macro: function (x) {
     return(["~list?", x]);
   }});
+  setenv("bool?", {_stash: true, macro: function (x) {
+    return(["isa", x, ["quote", "boolean"]]);
+  }});
+  setenv("num?", {_stash: true, macro: function (x) {
+    return(["isa", x, ["quote", "number"]]);
+  }});
+  setenv("str?", {_stash: true, macro: function (x) {
+    return(["isa", x, ["quote", "string"]]);
+  }});
+  setenv("fn?", {_stash: true, macro: function (x) {
+    return(["isa", x, ["quote", "function"]]);
+  }});
   return(undefined);
 };
-if (typeof(_x482) === "undefined" || _x482 === null) {
-  _x482 = true;
+if (typeof(_x480) === "undefined" || _x480 === null) {
+  _x480 = true;
   environment42 = [{}];
   target42 = "js";
 }
@@ -704,11 +704,11 @@ find = function (f, l) {
   }
 };
 first = function (f, l) {
-  var _x484 = l;
-  var _n11 = _x484.length || 0;
+  var _x482 = l;
+  var _n11 = _x482.length || 0;
   var _i11 = 0;
   while (_i11 < _n11) {
-    var x = _x484[_i11];
+    var x = _x482[_i11];
     var y = f(x);
     if (y) {
       return(y);
@@ -746,11 +746,11 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var l = [];
-  var _x486 = x;
-  var _n12 = _x486.length || 0;
+  var _x484 = x;
+  var _n12 = _x484.length || 0;
   var _i12 = 0;
   while (_i12 < _n12) {
-    var v = _x486[_i12];
+    var v = _x484[_i12];
     var y = f(v);
     if (!( typeof(y) === "undefined" || y === null)) {
       add(l, y);

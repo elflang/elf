@@ -189,20 +189,19 @@
   (mac guard (expr)
     (if js? `([%try (list t ,expr)])
       (w/uniq (x msg trace)
-        `(let (,x nil
-               ,msg nil
-               ,trace nil)
+        `(let (,x nil ,msg nil ,trace nil)
            (if (xpcall
                 [= ,x ,expr]
-                [do
-                  (= ,msg (clip _ (+ (search _ ": ") 2)))
-                  (= ,trace (debug.traceback))])
+                [do (= ,msg (clip _ (+ (search _ ": ") 2)))
+                    (= ,trace (debug.traceback))])
                (list t ,x)
              (list false ,msg ,trace))))))
 
   (mac for (i n rest: body)
-    `(let (,i 0)
-       (while (< ,i ,n) ,@body (++ ,i))))
+    `(let ,i 0
+       (while (< ,i ,n)
+         ,@body
+         (++ ,i))))
 
   (mac step (v l rest: body)
     (w/uniq (x n i)
@@ -214,15 +213,13 @@
   (mac each (x lst rest: body)
     (w/uniq (l n i)
       (let ((k v) (if (atom? x) (list i x)
-                    (if (> #x 1) x
-                        (list i (hd x)))))
+                      (> #x 1) x
+                    (list i (hd x))))
         `(let (,l ,lst ,k nil)
            (%for ,l ,k
              (let (,v (get ,l ,k))
                ,@(if lua? body
-                     `((let ,k (if (numeric? ,k)
-                                   (parseInt ,k)
-                                 ,k)
+                     `((let ,k (if (numeric? ,k) (parseInt ,k) ,k)
                          ,@body)))))))))
 
   (mac set-of xs
@@ -241,7 +238,8 @@
   (mac -- (n by) `(= ,n (- ,n ,(or by 1))))
 
   (mac export names
-    (if js? `(do ,@(xform names `(= (get exports ',_) ,_)))
+    (if js? `(do ,@(xform names
+                     `(= (get exports ',_) ,_)))
       (let x (obj)
         (each k names
           (= (get x k) k))
@@ -270,6 +268,9 @@
       `(or (is (typeof ,x) 'undefined)
            (is ,x null))))
 
+  (mac hd (l) `(at ,l 0))
+  (mac tl (l) `(cut ,l 1))
+
   (defspecial %len (x) (cat "#(" (compile x) ")"))
 
   (mac len (x) `(target lua: (%len ,x) js: (or (get ,x 'length) 0)))
@@ -280,17 +281,13 @@
   (mac some? (x) `(> #,x 0))
   (mac none? (x) `(is #,x 0))
 
-  (mac hd (l) `(at ,l 0))
-  (mac tl (l) `(cut ,l 1))
-
   (mac isa (x y) `(is ((target js: typeof lua: type) ,x) ,y))
-
-  (mac fn? (x) `(isa ,x 'function))
-  (mac str? (x) `(isa ,x 'string))
-  (mac num? (x) `(isa ,x 'number))
-  (mac bool? (x) `(isa ,x 'boolean))
   (mac list? (x) `(isa ,x (target js: 'object lua: 'table)))
   (mac atom? (x) `(~list? ,x))
+  (mac bool? (x) `(isa ,x 'boolean))
+  (mac num? (x) `(isa ,x 'number))
+  (mac str? (x) `(isa ,x 'string))
+  (mac fn? (x) `(isa ,x 'function))
 
   nil)
 
@@ -301,11 +298,8 @@
 (def nan (/ 0 0))
 (def inf (/ 1 0))
 
-(def nan? (n)
-  (~is n n))
-
-(def inf? (n)
-  (or (is n inf) (is n -inf)))
+(def nan? (n) (~is n n))
+(def inf? (n) (or (is n inf) (is n -inf)))
 
 (def clip (s from upto)
   (%js (s.substring from upto))

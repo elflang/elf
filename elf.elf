@@ -103,8 +103,7 @@
       2 (let ((lh rh) l)
           (if (or (atom? lh) (case (hd lh) 'at t 'get t))
               `(assign ,lh ,rh)
-              (let (vars ()
-                    forms (bind lh rh vars))
+              (let (vars () forms (bind lh rh vars))
                 `(do ,@(xform vars
                          `(var ,_))
                      ,@(map (fn ((id val)) `(= ,id ,val))
@@ -366,8 +365,9 @@
       (add l1 (at l (- n i))))))
 
 (def reduce (f x)
-  (if (none? x) nil
-      (one? x) (hd x)
+  (case #x
+    0 nil
+    1 (hd x)
     (f (hd x) (reduce f (tl x)))))
 
 (def join ls

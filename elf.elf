@@ -270,9 +270,9 @@
   (mac nil? (x)
     `(target
        lua: (is ,x nil)
-       js: ,(if (atom? x)
-                `(or (is (typeof ,x) 'undefined) (is ,x null))
-              `(let (x ,x) (nil? x)))))
+       js: ,(if (list? x) `(let (x ,x) (nil? x))
+              `(or (is (typeof ,x) 'undefined)
+                   (is ,x null)))))
 
   (defspecial %len (x)
     (cat "#(" (compile x) ")"))

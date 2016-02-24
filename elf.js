@@ -454,10 +454,10 @@ var setup = function () {
     var _x410 = ["target"];
     _x410.lua = ["is", x, "nil"];
     var _e25;
-    if (!( typeof(x) === "object")) {
-      _e25 = ["or", ["is", ["typeof", x], ["quote", "undefined"]], ["is", x, "null"]];
-    } else {
+    if (typeof(x) === "object") {
       _e25 = ["let", ["x", x], ["nil?", "x"]];
+    } else {
+      _e25 = ["or", ["is", ["typeof", x], ["quote", "undefined"]], ["is", x, "null"]];
     }
     _x410.js = _e25;
     return(_x410);

@@ -433,10 +433,10 @@ local function setup()
     local _x444 = {"target"}
     _x444.lua = {"is", x, "nil"}
     local _e22
-    if not( type(x) == "table") then
-      _e22 = {"or", {"is", {"typeof", x}, {"quote", "undefined"}}, {"is", x, "null"}}
-    else
+    if type(x) == "table" then
       _e22 = {"let", {"x", x}, {"nil?", "x"}}
+    else
+      _e22 = {"or", {"is", {"typeof", x}, {"quote", "undefined"}}, {"is", x, "null"}}
     end
     _x444.js = _e22
     return(_x444)

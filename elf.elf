@@ -507,16 +507,16 @@
 (%js (var tostring (x) (x.toString)))
 
 (def escape (s)
-  (let s1 "\""
-    (for i #s
-      (let (c (char s i)
-            c1 (case c
-                 "\n" "\\n"
-                 "\"" "\\\""
-                 "\\" "\\\\"
-                 c))
-        (cat! s1 c1)))
-    (cat s1 "\"")))
+  (var s1 "\"")
+  (for i #s
+    (var c (char s i))
+    (cat! s1
+      (case c
+        "\n" "\\n"
+        "\"" "\\\""
+        "\\" "\\\\"
+        c)))
+  (cat s1 "\""))
 
 (def str (x stack)
   (if (nil? x) "nil"

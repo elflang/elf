@@ -891,8 +891,7 @@ function escape(s)
       end
       _e24 = _e25
     end
-    local c1 = _e24
-    s1 = s1 .. c1
+    s1 = s1 .. _e24
     i = i + 1
   end
   return(s1 .. "\"")

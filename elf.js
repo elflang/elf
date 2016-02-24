@@ -991,8 +991,7 @@ escape = function (s) {
       }
       _e36 = _e37;
     }
-    var c1 = _e36;
-    s1 = s1 + c1;
+    s1 = s1 + _e36;
     i = i + 1;
   }
   return(s1 + "\"");

@@ -2187,6 +2187,19 @@ add(tests, ["while", function () {
     return("failed: expected " + str(19) + ", was " + str(i));
   } else {
     passed = passed + 1;
+  }
+  while (true) {
+    i = i + 1;
+    var j = i;
+    if (!( j < 21)) {
+      break;
+    }
+  }
+  if (! equal63(21, i)) {
+    failed = failed + 1;
+    return("failed: expected " + str(21) + ", was " + str(i));
+  } else {
+    passed = passed + 1;
     return(passed);
   }
 }]);

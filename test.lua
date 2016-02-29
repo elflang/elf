@@ -2189,6 +2189,19 @@ add(tests, {"while", function ()
     return("failed: expected " .. str(19) .. ", was " .. str(i))
   else
     passed = passed + 1
+  end
+  while true do
+    i = i + 1
+    local j = i
+    if not( j < 21) then
+      break
+    end
+  end
+  if not equal63(21, i) then
+    failed = failed + 1
+    return("failed: expected " .. str(21) .. ", was " .. str(i))
+  else
+    passed = passed + 1
     return(passed)
   end
 end})

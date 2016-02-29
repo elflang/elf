@@ -403,7 +403,9 @@ c"
               (break)
             (++ i)))
       (eq nil a)
-      (eq 19 i))))
+      (eq 19 i))
+    (while (< (with j (++ i)) 21))
+    (eq 21 i)))
 
 (deftest for
   (let l ()

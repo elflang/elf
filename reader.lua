@@ -1,10 +1,10 @@
-setenv("defreader", {_stash = true, macro = function (_x6, ...)
+setenv("defreader", stash33({macro = function (_x6, ...)
   local char = _x6[1]
   local s = _x6[2]
   local _r1 = unstash({...})
   local body = cut(_r1, 0)
   return({"=", {"get", "read-table", char}, join({"fn", {s}}, body)})
-end})
+end}))
 local delimiters = {["("] = true, [")"] = true, [";"] = true, ["]"] = true, ["\n"] = true, ["["] = true}
 local whitespace = {[" "] = true, ["\n"] = true, ["\t"] = true}
 local function stream(str, more)
@@ -259,7 +259,7 @@ function ontree(f, l, ...)
       local _i = nil
       for _i in next, _l do
         local x = _l[_i]
-        local _y = ontree(f, x, {_stash = true, skip = skip})
+        local _y = ontree(f, x, stash33({skip = skip}))
         if _y then
           return(_y)
         end
@@ -270,7 +270,7 @@ end
 function hd_is63(l, val)
   return(type(l) == "table" and l[1] == val)
 end
-setenv("%fn", {_stash = true, macro = function (body)
+setenv("%fn", stash33({macro = function (body)
   local n = -1
   local l = {}
   local any63 = nil
@@ -286,14 +286,14 @@ setenv("%fn", {_stash = true, macro = function (body)
       end
       return(nil)
     end
-  end, body, {_stash = true, skip = function (_)
+  end, body, stash33({skip = function (_)
     return(hd_is63(_, "%fn"))
-  end})
+  end}))
   if any63 and #(l) == 0 then
     add(l, "_")
   end
   return({"fn", l, body})
-end})
+end}))
 read_table["["] = function (s)
   local x = read_list(s, "]")
   if x == s.more then

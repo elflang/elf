@@ -4,9 +4,9 @@ local compiler = require("compiler")
 local passed = 0
 local failed = 0
 local tests = {}
-setenv("test", {_stash = true, macro = function (x, msg)
+setenv("test", stash33({macro = function (x, msg)
   return({"if", {"not", x}, {"do", {"=", "failed", {"+", "failed", 1}}, {"return", msg}}, {"++", "passed"}})
-end})
+end}))
 local function equal63(a, b)
   if not( type(a) == "table") then
     return(a == b)
@@ -14,14 +14,14 @@ local function equal63(a, b)
     return(str(a) == str(b))
   end
 end
-setenv("eq", {_stash = true, macro = function (a, b)
+setenv("eq", stash33({macro = function (a, b)
   return({"test", {"equal?", a, b}, {"cat", "\"failed: expected \"", {"str", a}, "\", was \"", {"str", b}}})
-end})
-setenv("deftest", {_stash = true, macro = function (name, ...)
+end}))
+setenv("deftest", stash33({macro = function (name, ...)
   local _r6 = unstash({...})
   local body = cut(_r6, 0)
   return({"add", "tests", {"list", {"quote", name}, {"%fn", join({"do"}, body)}}})
-end})
+end}))
 function run_tests()
   local _l = tests
   local _i = nil
@@ -1672,8 +1672,8 @@ end})
 add(tests, {"wipe", function ()
   local _x521 = {}
   _x521.b = true
-  _x521.c = true
   _x521.a = true
+  _x521.c = true
   local x = _x521
   x.a = nil
   if not equal63(nil, x.a) then
@@ -2373,8 +2373,8 @@ add(tests, {"get-=", function ()
 end})
 add(tests, {"each", function ()
   local _x566 = {1, 2, 3}
-  _x566.b = false
   _x566.a = true
+  _x566.b = false
   local l = _x566
   local a = 0
   local b = 0
@@ -3149,8 +3149,8 @@ local zzap = 100
 local _zzop = 10
 local _zzap = _zzop + 10
 local _x644 = {1, 2, 3}
-_x644.b = 20
 _x644.a = 10
+_x644.b = 20
 local _id9 = _x644
 local zza = _id9[1]
 local zzb = _id9[2]
@@ -3519,7 +3519,7 @@ add(tests, {"w/sym", function ()
   end
 end})
 add(tests, {"defsym", function ()
-  setenv("zzz", {_stash = true, symbol = 42})
+  setenv("zzz", stash33({symbol = 42}))
   if not equal63(42, 42) then
     failed = failed + 1
     return("failed: expected " .. str(42) .. ", was " .. str(42))
@@ -4070,21 +4070,21 @@ add(tests, {"map", function (_)
     passed = passed + 1
   end
   local _x787 = {}
-  _x787.b = false
   _x787.a = true
+  _x787.b = false
   local _x788 = {}
-  _x788.b = false
   _x788.a = true
+  _x788.b = false
   if not equal63(_x787, map(function (_)
     return(_)
   end, _x788)) then
     failed = failed + 1
     local _x789 = {}
-    _x789.b = false
     _x789.a = true
+    _x789.b = false
     local _x790 = {}
-    _x790.b = false
     _x790.a = true
+    _x790.b = false
     return("failed: expected " .. str(_x789) .. ", was " .. str(map(function (_)
       return(_)
     end, _x790)))
@@ -4105,15 +4105,15 @@ add(tests, {"map", function (_)
   local _x795 = {2, 4, 6}
   _x795.b = 8
   local _x796 = {1, 2, 3, 4, 5, 6}
-  _x796.b = 8
   _x796.a = 7
+  _x796.b = 8
   if not equal63(_x795, map(evens, _x796)) then
     failed = failed + 1
     local _x797 = {2, 4, 6}
     _x797.b = 8
     local _x798 = {1, 2, 3, 4, 5, 6}
-    _x798.b = 8
     _x798.a = 7
+    _x798.b = 8
     return("failed: expected " .. str(_x797) .. ", was " .. str(map(evens, _x798)))
   else
     passed = passed + 1
@@ -4178,19 +4178,19 @@ add(tests, {"cut", function ()
     passed = passed + 1
   end
   local _x828 = {}
-  _x828.b = 2
   _x828.a = true
+  _x828.b = 2
   local _x829 = {}
-  _x829.b = 2
   _x829.a = true
+  _x829.b = 2
   if not equal63(_x828, cut(_x829)) then
     failed = failed + 1
     local _x830 = {}
-    _x830.b = 2
     _x830.a = true
+    _x830.b = 2
     local _x831 = {}
-    _x831.b = 2
     _x831.a = true
+    _x831.b = 2
     return("failed: expected " .. str(_x830) .. ", was " .. str(cut(_x831)))
   else
     passed = passed + 1
@@ -4437,15 +4437,15 @@ add(tests, {"keep", function ()
   local _x899 = {2, 4, 6}
   _x899.b = 8
   local _x900 = {1, 2, 3, 4, 5, 6}
-  _x900.b = 8
   _x900.a = 7
+  _x900.b = 8
   if not equal63(_x899, keep(even63, _x900)) then
     failed = failed + 1
     local _x901 = {2, 4, 6}
     _x901.b = 8
     local _x902 = {1, 2, 3, 4, 5, 6}
-    _x902.b = 8
     _x902.a = 7
+    _x902.b = 8
     return("failed: expected " .. str(_x901) .. ", was " .. str(keep(even63, _x902)))
   else
     passed = passed + 1
@@ -4924,13 +4924,13 @@ add(tests, {"parameters", function ()
     local _r215 = unstash({...})
     local foo = _r215.foo
     return(foo)
-  end)({_stash = true, foo = 42})) then
+  end)(stash33({foo = 42}))) then
     failed = failed + 1
     return("failed: expected " .. str(42) .. ", was " .. str((function (...)
       local _r216 = unstash({...})
       local foo = _r216.foo
       return(foo)
-    end)({_stash = true, foo = 42})))
+    end)(stash33({foo = 42}))))
   else
     passed = passed + 1
   end
@@ -4958,11 +4958,11 @@ add(tests, {"parameters", function ()
   end
   local _x1038 = {}
   _x1038.foo = 42
-  if not equal63({10, 20, 42}, _f2(10, _x1038, {_stash = true, bar = 20})) then
+  if not equal63({10, 20, 42}, _f2(10, _x1038, stash33({bar = 20}))) then
     failed = failed + 1
     local _x1040 = {}
     _x1040.foo = 42
-    return("failed: expected " .. str({10, 20, 42}) .. ", was " .. str(_f2(10, _x1040, {_stash = true, bar = 20})))
+    return("failed: expected " .. str({10, 20, 42}) .. ", was " .. str(_f2(10, _x1040, stash33({bar = 20}))))
   else
     passed = passed + 1
   end

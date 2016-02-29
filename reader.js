@@ -1,10 +1,10 @@
-setenv("defreader", {_stash: true, macro: function (_x6) {
+setenv("defreader", stash33({macro: function (_x6) {
   var char = _x6[0];
   var s = _x6[1];
   var _r1 = unstash(Array.prototype.slice.call(arguments, 1));
   var body = cut(_r1, 0);
   return(["=", ["get", "read-table", char], join(["fn", [s]], body)]);
-}});
+}}));
 var delimiters = {"(": true, ")": true, ";": true, "]": true, "\n": true, "[": true};
 var whitespace = {" ": true, "\n": true, "\t": true};
 var stream = function (str, more) {
@@ -266,7 +266,7 @@ ontree = function (f, l) {
           _e2 = _i;
         }
         var __i = _e2;
-        var _y = ontree(f, x, {_stash: true, skip: skip});
+        var _y = ontree(f, x, stash33({skip: skip}));
         if (_y) {
           return(_y);
         }
@@ -277,7 +277,7 @@ ontree = function (f, l) {
 hd_is63 = function (l, val) {
   return(typeof(l) === "object" && l[0] === val);
 };
-setenv("%fn", {_stash: true, macro: function (body) {
+setenv("%fn", stash33({macro: function (body) {
   var n = -1;
   var l = [];
   var any63 = undefined;
@@ -293,14 +293,14 @@ setenv("%fn", {_stash: true, macro: function (body) {
       }
       return(undefined);
     }
-  }, body, {_stash: true, skip: function (_) {
+  }, body, stash33({skip: function (_) {
     return(hd_is63(_, "%fn"));
-  }});
+  }}));
   if (any63 && (l.length || 0) === 0) {
     add(l, "_");
   }
   return(["fn", l, body]);
-}});
+}}));
 read_table["["] = function (s) {
   var x = read_list(s, "]");
   if (x === s.more) {

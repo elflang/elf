@@ -46,7 +46,7 @@ compile_file = function (path) {
   var s = reader.stream(system["read-file"](path));
   var body = reader["read-all"](s);
   var form = compiler.expand(join(["do"], body));
-  return(compiler.compile(form, {_stash: true, stmt: true}));
+  return(compiler.compile(form, stash33({stmt: true})));
 };
 load = function (path) {
   return(compiler.run(compile_file(path)));

@@ -292,7 +292,8 @@
 
 (once
   (def environment* (list (obj)))
-  (def target* (language)))
+  (def target* (language))
+  (def keys*))
 
 (def nan (/ 0 0))
 (def inf (/ 1 0))
@@ -436,25 +437,16 @@
     (return false))
   t)
 
-(def stash (args)
-  (when (keys? args)
-    (let p ()
-      (each (k v) args
-        (unless (num? k)
-          (= (get p k) v)))
-      (= p._stash t)
-      (add args p)))
-  args)
+(def stash! (args)
+  (= keys* args)
+  nil)
 
 (def unstash (args)
-  (if (none? args) ()
-    (let l (last args)
-      (if (and (list? l) l._stash)
-          (with args1 (almost args)
-            (each (k v) l
-              (unless (is k '_stash)
-                (= (get args1 k) v))))
-        args))))
+  (when keys*
+    (each (k v) keys*
+      (= (get args k) v))
+    (= keys* nil))
+  args)
 
 (def search (s pattern start)
   (%js
@@ -547,9 +539,9 @@
 (%lua (var values (or unpack table.unpack)))
 
 (def apply (f args)
-  (let args (stash args)
-    (%js (f.apply f args))
-    (%lua (f (values args)))))
+  (stash! (keys args))
+  (%js (f.apply f args))
+  (%lua (f (values args))))
 
 (def toplevel? ()
   (one? environment*))

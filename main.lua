@@ -60,7 +60,7 @@ function compile_file(path)
   local s = reader.stream(system["read-file"](path))
   local body = reader["read-all"](s)
   local form = compiler.expand(join({"do"}, body))
-  return(compiler.compile(form, {_stash = true, stmt = true}))
+  return(compiler.compile(form, stash33({stmt = true})))
 end
 function load(path)
   return(compiler.run(compile_file(path)))

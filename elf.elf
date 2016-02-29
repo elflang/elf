@@ -519,22 +519,20 @@
       (bool? x) (if x "t" "false")
       (str? x) (escape x)
       (fn? x) "fn"
-      (list? x)
-      (if (and stack (in? x stack)) "circular"
-        (let (s "(" sp "" fs () xs () ks ())
-          (= stack (or stack ()))
-          (add stack x)
-          (each (k v) x
-            (if (num? k) (= (get xs k) (str v stack))
-                (fn? v) (add fs k)
-              (do (add ks (cat k ":"))
-                  (add ks (str v stack)))))
-          (drop stack)
-          (each v (join (sort fs) xs ks)
-            (cat! s sp v)
-            (= sp " "))
-          (cat s  ")")))
-    (escape (tostring x))))
+      (target js: false lua: (~isa x 'table)) (escape (tostring x))
+      (and stack (in? x stack)) "circular"
+    (let (s "(" sp "" fs () xs () ks () stack (or stack ()))
+      (add stack x)
+      (each (k v) x
+        (if (num? k) (= (get xs k) (str v stack))
+            (fn? v) (add fs k)
+          (do (add ks (cat k ":"))
+              (add ks (str v stack)))))
+      (drop stack)
+      (each v (join (sort fs) xs ks)
+        (cat! s sp v)
+        (= sp " "))
+      (cat s  ")"))))
 
 (%lua (var values (or unpack table.unpack)))
 

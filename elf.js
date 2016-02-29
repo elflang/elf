@@ -998,7 +998,9 @@ str = function (x, stack) {
                 if (typeof(x) === "function") {
                   return("fn");
                 } else {
-                  if (typeof(x) === "object") {
+                  if (false) {
+                    return(escape(tostring(x)));
+                  } else {
                     if (stack && in63(x, stack)) {
                       return("circular");
                     } else {
@@ -1007,8 +1009,8 @@ str = function (x, stack) {
                       var fs = [];
                       var xs = [];
                       var ks = [];
-                      stack = stack || [];
-                      add(stack, x);
+                      var _stack = stack || [];
+                      add(_stack, x);
                       var _l15 = x;
                       var k = undefined;
                       for (k in _l15) {
@@ -1021,17 +1023,17 @@ str = function (x, stack) {
                         }
                         var _k8 = _e38;
                         if (typeof(_k8) === "number") {
-                          xs[_k8] = str(v, stack);
+                          xs[_k8] = str(v, _stack);
                         } else {
                           if (typeof(v) === "function") {
                             add(fs, _k8);
                           } else {
                             add(ks, _k8 + ":");
-                            add(ks, str(v, stack));
+                            add(ks, str(v, _stack));
                           }
                         }
                       }
-                      drop(stack);
+                      drop(_stack);
                       var _l16 = join(sort(fs), xs, ks);
                       var _i17 = undefined;
                       for (_i17 in _l16) {
@@ -1048,8 +1050,6 @@ str = function (x, stack) {
                       }
                       return(s + ")");
                     }
-                  } else {
-                    return(escape(tostring(x)));
                   }
                 }
               }

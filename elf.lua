@@ -905,7 +905,9 @@ function str(x, stack)
                 if type(x) == "function" then
                   return("fn")
                 else
-                  if type(x) == "table" then
+                  if not( type(x) == "table") then
+                    return(escape(tostring(x)))
+                  else
                     if stack and in63(x, stack) then
                       return("circular")
                     else
@@ -914,24 +916,24 @@ function str(x, stack)
                       local fs = {}
                       local xs = {}
                       local ks = {}
-                      stack = stack or {}
-                      add(stack, x)
+                      local _stack = stack or {}
+                      add(_stack, x)
                       local _l15 = x
                       local k = nil
                       for k in next, _l15 do
                         local v = _l15[k]
                         if type(k) == "number" then
-                          xs[k] = str(v, stack)
+                          xs[k] = str(v, _stack)
                         else
                           if type(v) == "function" then
                             add(fs, k)
                           else
                             add(ks, k .. ":")
-                            add(ks, str(v, stack))
+                            add(ks, str(v, _stack))
                           end
                         end
                       end
-                      drop(stack)
+                      drop(_stack)
                       local _l16 = join(sort(fs), xs, ks)
                       local _i17 = nil
                       for _i17 in next, _l16 do
@@ -941,8 +943,6 @@ function str(x, stack)
                       end
                       return(s .. ")")
                     end
-                  else
-                    return(escape(tostring(x)))
                   end
                 end
               end

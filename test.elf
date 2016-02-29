@@ -341,7 +341,7 @@ c"
 (deftest do
   (let a 17
     (do (= a 10)
-	(eq 10 a))
+        (eq 10 a))
     (eq 10 (do a))
     (let b (do (= a 2) (+ a 5))
       (eq a 2)
@@ -350,7 +350,11 @@ c"
         (do (= a 20)
             (eq 20 a)))
     (eq 20 (do (= a 10)
-                  (do (= a 20) a)))))
+                  (do (= a 20) a)))
+    (eq 42 ((fn () (return (if t (return 42) 2)))))
+    (eq 42 ((fn () (with x 1 (return (if t 42 x))))))
+    (eq 42 ((fn () (with x 42 (while (if t (break)))))))
+    (eq 42 ((fn () (with x 42 (while (if t (do (break) (= a 1))))))))))
 
 (deftest if
   (eq 'a (macroexpand '(if a)))
@@ -405,6 +409,8 @@ c"
       (eq nil a)
       (eq 19 i))
     (while (< (with j (++ i)) 21))
+    (eq 21 i)
+    (while (if false (++ i)))
     (eq 21 i)))
 
 (deftest for

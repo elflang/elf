@@ -1011,6 +1011,11 @@ setenv("do", stash33({tr = true, special = function (...)
   while _i12 < _n12 do
     local x = _x135[_i12 + 1]
     s = s .. compile(x, stash33({stmt = true}))
+    if not not( type(x) == "table") then
+      if x[1] == "return" or x[1] == "break" then
+        break
+      end
+    end
     _i12 = _i12 + 1
   end
   return(s)

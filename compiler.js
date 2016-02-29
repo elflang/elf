@@ -1063,6 +1063,11 @@ setenv("do", stash33({tr: true, special: function () {
   while (_i12 < _n12) {
     var x = _x132[_i12];
     s = s + compile(x, stash33({stmt: true}));
+    if (! !( typeof(x) === "object")) {
+      if (x[0] === "return" || x[0] === "break") {
+        break;
+      }
+    }
     _i12 = _i12 + 1;
   }
   return(s);

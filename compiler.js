@@ -853,7 +853,7 @@ var literal63 = function (form) {
   return(!( typeof(form) === "object") || form[0] === "%array" || form[0] === "%object");
 };
 var standalone63 = function (form) {
-  return(typeof(form) === "object" && ! infix63(form[0]) && ! literal63(form) && !( "get" === form[0]));
+  return(typeof(form) === "object" && ! infix63(form[0]) && ! literal63(form) && !( "get" === form[0]) || id_literal63(form));
 };
 var lower_do = function (args, hoist, stmt63, tail63) {
   var _x98 = almost(args);

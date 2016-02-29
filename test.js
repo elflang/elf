@@ -1540,6 +1540,16 @@ add(tests, ["id", function () {
     return("failed: expected " + str(30) + ", was " + str(f()));
   } else {
     passed = passed + 1;
+  }
+  var x = 0;
+  x = x + 1;
+  x = x + 1;
+  var y = x;
+  if (! equal63(2, y)) {
+    failed = failed + 1;
+    return("failed: expected " + str(2) + ", was " + str(y));
+  } else {
+    passed = passed + 1;
     return(passed);
   }
 }]);

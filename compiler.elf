@@ -428,10 +428,11 @@
       (is (hd form) '%object)))
 
 (var standalone? (form)
-  (and (list? form)
-       (~infix? (hd form))
-       (~literal? form)
-       (~is 'get (hd form))))
+  (or (and (list? form)
+           (~infix? (hd form))
+           (~literal? form)
+           (~is 'get (hd form)))
+      (id-literal? form)))
 
 (var lower-do (args hoist stmt? tail?)
   (step x (almost args)

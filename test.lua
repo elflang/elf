@@ -1542,6 +1542,16 @@ add(tests, {"id", function ()
     return("failed: expected " .. str(30) .. ", was " .. str(f()))
   else
     passed = passed + 1
+  end
+  local x = 0
+  x = x + 1
+  x = x + 1
+  local y = x
+  if not equal63(2, y) then
+    failed = failed + 1
+    return("failed: expected " .. str(2) .. ", was " .. str(y))
+  else
+    passed = passed + 1
     return(passed)
   end
 end})

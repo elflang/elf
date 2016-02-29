@@ -794,7 +794,7 @@ local function literal63(form)
   return(not( type(form) == "table") or form[1] == "%array" or form[1] == "%object")
 end
 local function standalone63(form)
-  return(type(form) == "table" and not infix63(form[1]) and not literal63(form) and not( "get" == form[1]))
+  return(type(form) == "table" and not infix63(form[1]) and not literal63(form) and not( "get" == form[1]) or id_literal63(form))
 end
 local function lower_do(args, hoist, stmt63, tail63)
   local _x100 = almost(args)

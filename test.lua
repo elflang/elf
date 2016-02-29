@@ -356,20 +356,20 @@ add(tests, {"bool", function ()
   end
 end})
 add(tests, {"short", function ()
-  local _id48 = true
+  local _id50 = true
   local _e7
-  if _id48 then
-    _e7 = _id48
+  if _id50 then
+    _e7 = _id50
   else
     error("bad")
     _e7 = nil
   end
   if not equal63(true, _e7) then
     failed = failed + 1
-    local _id49 = true
+    local _id51 = true
     local _e8
-    if _id49 then
-      _e8 = _id49
+    if _id51 then
+      _e8 = _id51
     else
       error("bad")
       _e8 = nil
@@ -378,43 +378,43 @@ add(tests, {"short", function ()
   else
     passed = passed + 1
   end
-  local _id50 = false
+  local _id52 = false
   local _e9
-  if _id50 then
+  if _id52 then
     error("bad")
     _e9 = nil
   else
-    _e9 = _id50
+    _e9 = _id52
   end
   if not equal63(false, _e9) then
     failed = failed + 1
-    local _id51 = false
+    local _id53 = false
     local _e10
-    if _id51 then
+    if _id53 then
       error("bad")
       _e10 = nil
     else
-      _e10 = _id51
+      _e10 = _id53
     end
     return("failed: expected " .. str(false) .. ", was " .. str(_e10))
   else
     passed = passed + 1
   end
   local a = true
-  local _id52 = true
+  local _id54 = true
   local _e11
-  if _id52 then
-    _e11 = _id52
+  if _id54 then
+    _e11 = _id54
   else
     a = false
     _e11 = false
   end
   if not equal63(true, _e11) then
     failed = failed + 1
-    local _id53 = true
+    local _id55 = true
     local _e12
-    if _id53 then
-      _e12 = _id53
+    if _id55 then
+      _e12 = _id55
     else
       a = false
       _e12 = false
@@ -429,23 +429,23 @@ add(tests, {"short", function ()
   else
     passed = passed + 1
   end
-  local _id54 = false
+  local _id56 = false
   local _e13
-  if _id54 then
+  if _id56 then
     a = false
     _e13 = true
   else
-    _e13 = _id54
+    _e13 = _id56
   end
   if not equal63(false, _e13) then
     failed = failed + 1
-    local _id55 = false
+    local _id57 = false
     local _e14
-    if _id55 then
+    if _id57 then
       a = false
       _e14 = true
     else
-      _e14 = _id55
+      _e14 = _id57
     end
     return("failed: expected " .. str(false) .. ", was " .. str(_e14))
   else
@@ -459,10 +459,10 @@ add(tests, {"short", function ()
   end
   local b = true
   b = false
-  local _id56 = false
+  local _id58 = false
   local _e15
-  if _id56 then
-    _e15 = _id56
+  if _id58 then
+    _e15 = _id58
   else
     b = true
     _e15 = b
@@ -470,10 +470,10 @@ add(tests, {"short", function ()
   if not equal63(true, _e15) then
     failed = failed + 1
     b = false
-    local _id57 = false
+    local _id59 = false
     local _e16
-    if _id57 then
-      _e16 = _id57
+    if _id59 then
+      _e16 = _id59
     else
       b = true
       _e16 = b
@@ -489,10 +489,10 @@ add(tests, {"short", function ()
     passed = passed + 1
   end
   b = true
-  local _id58 = b
+  local _id60 = b
   local _e17
-  if _id58 then
-    _e17 = _id58
+  if _id60 then
+    _e17 = _id60
   else
     b = true
     _e17 = b
@@ -500,10 +500,10 @@ add(tests, {"short", function ()
   if not equal63(true, _e17) then
     failed = failed + 1
     b = true
-    local _id59 = b
+    local _id61 = b
     local _e18
-    if _id59 then
-      _e18 = _id59
+    if _id61 then
+      _e18 = _id61
     else
       b = true
       _e18 = b
@@ -519,24 +519,24 @@ add(tests, {"short", function ()
     passed = passed + 1
   end
   b = false
-  local _id60 = true
+  local _id62 = true
   local _e19
-  if _id60 then
+  if _id62 then
     b = true
     _e19 = b
   else
-    _e19 = _id60
+    _e19 = _id62
   end
   if not equal63(true, _e19) then
     failed = failed + 1
     b = false
-    local _id61 = true
+    local _id63 = true
     local _e20
-    if _id61 then
+    if _id63 then
       b = true
       _e20 = b
     else
-      _e20 = _id61
+      _e20 = _id63
     end
     return("failed: expected " .. str(true) .. ", was " .. str(_e20))
   else
@@ -549,24 +549,24 @@ add(tests, {"short", function ()
     passed = passed + 1
   end
   b = false
-  local _id62 = b
+  local _id64 = b
   local _e21
-  if _id62 then
+  if _id64 then
     b = true
     _e21 = b
   else
-    _e21 = _id62
+    _e21 = _id64
   end
   if not equal63(false, _e21) then
     failed = failed + 1
     b = false
-    local _id63 = b
+    local _id65 = b
     local _e22
-    if _id63 then
+    if _id65 then
       b = true
       _e22 = b
     else
-      _e22 = _id63
+      _e22 = _id65
     end
     return("failed: expected " .. str(false) .. ", was " .. str(_e22))
   else
@@ -4980,6 +4980,32 @@ add(tests, {"parameters", function ()
   else
     passed = passed + 1
   end
+  local l = {}
+  local function f(...)
+    local _r222 = unstash({...})
+    local a = _r222.a
+    add(l, a)
+    return(a)
+  end
+  local function g(a, b, ...)
+    local _r223 = unstash({...})
+    local c = _r223.c
+    add(l, {a, b, c})
+    return(c)
+  end
+  local x = f(stash33({a = g(f(stash33({a = 10})), f(stash33({a = 20})), stash33({c = f(stash33({a = 42}))}))}))
+  if not equal63(42, x) then
+    failed = failed + 1
+    return("failed: expected " .. str(42) .. ", was " .. str(x))
+  else
+    passed = passed + 1
+  end
+  if not equal63({10, 20, 42, {10, 20, 42}, 42}, l) then
+    failed = failed + 1
+    return("failed: expected " .. str({10, 20, 42, {10, 20, 42}, 42}) .. ", was " .. str(l))
+  else
+    passed = passed + 1
+  end
   local _f3 = function (...)
     local args = unstash({...})
     return(args)
@@ -4992,7 +5018,7 @@ add(tests, {"parameters", function ()
     return(passed)
   end
 end})
-if _x1046 == nil then
-  _x1046 = true
+if _x1053 == nil then
+  _x1053 = true
   run_tests()
 end

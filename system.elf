@@ -33,25 +33,17 @@
 
 (%lua
 
-  (var call-w/file (f file)
-    (let |h,e| file
-      (unless h
-        (error e))
-      (with x (f h)
-        (h.close h))))
+  (var read-file (path)
+    (let |f,e| (io.open path)
+      (unless f (error e))
+      (with s (f.read f "*a")
+        (f.close f))))
 
-  (w/mac w/file (var path rest: body)
-    `(call-w/file
-       (fn (,var) ,@body)
-       (io.open ,@(if (list? path) path (list path))))
-
-    (var read-file (path)
-      (w/file f path
-        (f.read f '*a)))
-
-    (var write-file (path data)
-      (w/file f (path 'w)
-        (f.write f data))))
+  (var write-file (path data)
+    (let |f,e| (io.open path "w")
+      (unless f (error e))
+      (with s (f.write f data)
+        (f.close f))))
 
   (var file-exists? (path)
     (let f (io.open path)

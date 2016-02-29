@@ -18,9 +18,11 @@ local function write_file(path, data)
   end, io.open(path, "w")))
 end
 local function file_exists63(path)
-  return(call_w47file(function (f)
-    return(not( f == nil))
-  end, io.open(path)))
+  local f = io.open(path)
+  if not( f == nil) then
+    f.close(f)
+  end
+  return(not( f == nil))
 end
 local path_separator = char(_G.package.config, 0)
 local function get_environment_variable(name)

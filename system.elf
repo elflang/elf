@@ -51,11 +51,12 @@
 
     (var write-file (path data)
       (w/file f (path 'w)
-        (f.write f data)))
+        (f.write f data))))
 
-    (var file-exists? (path)
-      (w/file f path
-        (~nil? f))))
+  (var file-exists? (path)
+    (let f (io.open path)
+      (if (~nil? f) (f.close f))
+      (~nil? f)))
 
   (var path-separator (char _G.package.config 0))
 

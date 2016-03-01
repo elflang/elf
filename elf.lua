@@ -686,21 +686,23 @@ function sort(l, f)
 end
 function map(f, x)
   local l = {}
-  local i = 0
-  while i < #(x) do
-    local v = x[i + 1]
-    local y = f(v, i)
+  local _x519 = x
+  local _n12 = #(_x519)
+  local _i12 = 0
+  while _i12 < _n12 do
+    local v = _x519[_i12 + 1]
+    local y = f(v)
     if not( y == nil) then
       add(l, y)
     end
-    i = i + 1
+    _i12 = _i12 + 1
   end
   local _l11 = x
   local k = nil
   for k in next, _l11 do
     local v = _l11[k]
     if not( type(k) == "number") then
-      local y = f(v, k)
+      local y = f(v)
       if not( y == nil) then
         l[k] = y
       end
@@ -728,9 +730,9 @@ function keys63(l)
 end
 function empty63(l)
   local _l13 = l
-  local _i14 = nil
-  for _i14 in next, _l13 do
-    local x = _l13[_i14]
+  local _i15 = nil
+  for _i15 in next, _l13 do
+    local x = _l13[_i15]
     return(false)
   end
   return(true)
@@ -935,9 +937,9 @@ function str(x, stack)
                       end
                       drop(_stack)
                       local _l16 = join(sort(fs), xs, ks)
-                      local _i17 = nil
-                      for _i17 in next, _l16 do
-                        local v = _l16[_i17]
+                      local _i18 = nil
+                      for _i18 in next, _l16 do
+                        local v = _l16[_i18]
                         s = s .. sp .. v
                         sp = " "
                       end

@@ -748,14 +748,16 @@ sort = function (l, f) {
 };
 map = function (f, x) {
   var l = [];
-  var i = 0;
-  while (i < (x.length || 0)) {
-    var v = x[i];
-    var y = f(v, i);
+  var _x484 = x;
+  var _n12 = _x484.length || 0;
+  var _i12 = 0;
+  while (_i12 < _n12) {
+    var v = _x484[_i12];
+    var y = f(v);
     if (!( typeof(y) === "undefined" || y === null)) {
       add(l, y);
     }
-    i = i + 1;
+    _i12 = _i12 + 1;
   }
   var _l11 = x;
   var k = undefined;
@@ -769,7 +771,7 @@ map = function (f, x) {
     }
     var _k5 = _e31;
     if (!( typeof(_k5) === "number")) {
-      var y = f(v, _k5);
+      var y = f(v);
       if (!( typeof(y) === "undefined" || y === null)) {
         l[_k5] = y;
       }
@@ -804,16 +806,16 @@ keys63 = function (l) {
 };
 empty63 = function (l) {
   var _l13 = l;
-  var _i14 = undefined;
-  for (_i14 in _l13) {
-    var x = _l13[_i14];
+  var _i15 = undefined;
+  for (_i15 in _l13) {
+    var x = _l13[_i15];
     var _e33;
-    if (numeric63(_i14)) {
-      _e33 = parseInt(_i14);
+    if (numeric63(_i15)) {
+      _e33 = parseInt(_i15);
     } else {
-      _e33 = _i14;
+      _e33 = _i15;
     }
-    var __i14 = _e33;
+    var __i15 = _e33;
     return(false);
   }
   return(true);
@@ -1035,16 +1037,16 @@ str = function (x, stack) {
                       }
                       drop(_stack);
                       var _l16 = join(sort(fs), xs, ks);
-                      var _i17 = undefined;
-                      for (_i17 in _l16) {
-                        var v = _l16[_i17];
+                      var _i18 = undefined;
+                      for (_i18 in _l16) {
+                        var v = _l16[_i18];
                         var _e39;
-                        if (numeric63(_i17)) {
-                          _e39 = parseInt(_i17);
+                        if (numeric63(_i18)) {
+                          _e39 = parseInt(_i18);
                         } else {
-                          _e39 = _i17;
+                          _e39 = _i18;
                         }
-                        var __i17 = _e39;
+                        var __i18 = _e39;
                         s = s + sp + v;
                         sp = " ";
                       }

@@ -424,7 +424,10 @@ expand_if = function (_x62) {
     }
   }
 };
-indent_level42 = 0;
+if (typeof(_x66) === "undefined" || _x66 === null) {
+  _x66 = true;
+  indent_level42 = 0;
+}
 indentation = function () {
   var s = "";
   var i = 0;
@@ -492,44 +495,44 @@ mapo = function (f, l) {
   }
   return(o);
 };
-var _x75 = [];
 var _x76 = [];
-_x76.lua = "not";
-_x76.js = "!";
-_x75["not"] = _x76;
 var _x77 = [];
-_x77["/"] = true;
-_x77["*"] = true;
-_x77["%"] = true;
+_x77.lua = "not";
+_x77.js = "!";
+_x76["not"] = _x77;
 var _x78 = [];
-_x78["+"] = true;
-_x78["-"] = true;
+_x78["/"] = true;
+_x78["*"] = true;
+_x78["%"] = true;
 var _x79 = [];
+_x79["+"] = true;
+_x79["-"] = true;
 var _x80 = [];
-_x80.lua = "..";
-_x80.js = "+";
-_x79.cat = _x80;
 var _x81 = [];
-_x81["<="] = true;
-_x81[">="] = true;
-_x81["<"] = true;
-_x81[">"] = true;
+_x81.lua = "..";
+_x81.js = "+";
+_x80.cat = _x81;
 var _x82 = [];
+_x82["<="] = true;
+_x82[">="] = true;
+_x82["<"] = true;
+_x82[">"] = true;
 var _x83 = [];
-_x83.lua = "==";
-_x83.js = "===";
-_x82.is = _x83;
 var _x84 = [];
+_x84.lua = "==";
+_x84.js = "===";
+_x83.is = _x84;
 var _x85 = [];
-_x85.lua = "and";
-_x85.js = "&&";
-_x84["and"] = _x85;
 var _x86 = [];
+_x86.lua = "and";
+_x86.js = "&&";
+_x85["and"] = _x86;
 var _x87 = [];
-_x87.lua = "or";
-_x87.js = "||";
-_x86["or"] = _x87;
-var infix = [_x75, _x77, _x78, _x79, _x81, _x82, _x84, _x86];
+var _x88 = [];
+_x88.lua = "or";
+_x88.js = "||";
+_x87["or"] = _x88;
+var infix = [_x76, _x78, _x79, _x80, _x82, _x83, _x85, _x87];
 var unary63 = function (form) {
   return((form.length || 0) === 2 && in63(form[0], ["not", "-"]));
 };
@@ -569,17 +572,17 @@ var getop = function (op) {
   }, infix));
 };
 var infix63 = function (x) {
-  var _x89 = getop(x);
-  return(!( typeof(_x89) === "undefined" || _x89 === null));
+  var _x90 = getop(x);
+  return(!( typeof(_x90) === "undefined" || _x90 === null));
 };
 var compile_args = function (args) {
   var s = "(";
   var c = "";
-  var _x90 = args;
-  var _n9 = _x90.length || 0;
+  var _x91 = args;
+  var _n9 = _x91.length || 0;
   var _i9 = 0;
   while (_i9 < _n9) {
-    var x = _x90[_i9];
+    var x = _x91[_i9];
     s = s + c + compile(x);
     c = ", ";
     _i9 = _i9 + 1;
@@ -765,9 +768,9 @@ compile_function = function (args, body) {
   var _id15 = _e26;
   var _args = compile_args(args);
   indent_level42 = indent_level42 + 1;
-  var _x93 = compile(body, stash33({stmt: true}));
+  var _x94 = compile(body, stash33({stmt: true}));
   indent_level42 = indent_level42 - 1;
-  var _body = _x93;
+  var _body = _x94;
   var ind = indentation();
   var _e27;
   if (prefix) {
@@ -856,11 +859,11 @@ var standalone63 = function (form) {
   return(typeof(form) === "object" && ! infix63(form[0]) && ! literal63(form) && !( "get" === form[0]) || id_literal63(form));
 };
 var lower_do = function (args, hoist, stmt63, tail63) {
-  var _x98 = almost(args);
-  var _n10 = _x98.length || 0;
+  var _x99 = almost(args);
+  var _n10 = _x99.length || 0;
   var _i10 = 0;
   while (_i10 < _n10) {
-    var x = _x98[_i10];
+    var x = _x99[_i10];
     var e = lower(x, hoist, stmt63);
     if (standalone63(e)) {
       add(hoist, e);
@@ -1043,13 +1046,17 @@ lower = function (form, hoist, stmt63, tail63) {
 var expand = function (form) {
   return(lower(macroexpand(form)));
 };
-global.require = require;
-var run = eval;
-_37result = undefined;
+if (typeof(_x130) === "undefined" || _x130 === null) {
+  _x130 = true;
+  global.require = require;
+  run_js = eval;
+}
+var run = run_js;
 eval = function (form) {
   var previous = target42;
   target42 = "js";
-  var code = compile(expand(["=", "%result", form]));
+  _37result = undefined;
+  var code = compile(expand(["assign", "%result", form]));
   target42 = previous;
   run(code);
   return(_37result);
@@ -1057,11 +1064,11 @@ eval = function (form) {
 setenv("do", stash33({tr: true, special: function () {
   var forms = unstash(Array.prototype.slice.call(arguments, 0));
   var s = "";
-  var _x132 = forms;
-  var _n12 = _x132.length || 0;
+  var _x134 = forms;
+  var _n12 = _x134.length || 0;
   var _i12 = 0;
   while (_i12 < _n12) {
-    var x = _x132[_i12];
+    var x = _x134[_i12];
     s = s + compile(x, stash33({stmt: true}));
     if (! !( typeof(x) === "object")) {
       if (x[0] === "return" || x[0] === "break") {
@@ -1075,15 +1082,15 @@ setenv("do", stash33({tr: true, special: function () {
 setenv("%if", stash33({tr: true, special: function (cond, cons, alt) {
   var _cond1 = compile(cond);
   indent_level42 = indent_level42 + 1;
-  var _x135 = compile(cons, stash33({stmt: true}));
+  var _x137 = compile(cons, stash33({stmt: true}));
   indent_level42 = indent_level42 - 1;
-  var _cons1 = _x135;
+  var _cons1 = _x137;
   var _e36;
   if (alt) {
     indent_level42 = indent_level42 + 1;
-    var _x136 = compile(alt, stash33({stmt: true}));
+    var _x138 = compile(alt, stash33({stmt: true}));
     indent_level42 = indent_level42 - 1;
-    _e36 = _x136;
+    _e36 = _x138;
   }
   var _alt1 = _e36;
   var ind = indentation();
@@ -1109,9 +1116,9 @@ setenv("%if", stash33({tr: true, special: function (cond, cons, alt) {
 setenv("while", stash33({tr: true, special: function (cond, form) {
   var _cond3 = compile(cond);
   indent_level42 = indent_level42 + 1;
-  var _x138 = compile(form, stash33({stmt: true}));
+  var _x140 = compile(form, stash33({stmt: true}));
   indent_level42 = indent_level42 - 1;
-  var body = _x138;
+  var body = _x140;
   var ind = indentation();
   if (target42 === "js") {
     return(ind + "while (" + _cond3 + ") {\n" + body + ind + "}\n");
@@ -1123,9 +1130,9 @@ setenv("%for", stash33({tr: true, special: function (l, k, form) {
   var _l8 = compile(l);
   var ind = indentation();
   indent_level42 = indent_level42 + 1;
-  var _x140 = compile(form, stash33({stmt: true}));
+  var _x142 = compile(form, stash33({stmt: true}));
   indent_level42 = indent_level42 - 1;
-  var body = _x140;
+  var body = _x142;
   if (target42 === "lua") {
     return(ind + "for " + k + " in next, " + _l8 + " do\n" + body + ind + "end\n");
   } else {
@@ -1136,14 +1143,14 @@ setenv("%try", stash33({tr: true, special: function (form) {
   var e = uniq("e");
   var ind = indentation();
   indent_level42 = indent_level42 + 1;
-  var _x147 = compile(form, stash33({stmt: true}));
+  var _x149 = compile(form, stash33({stmt: true}));
   indent_level42 = indent_level42 - 1;
-  var body = _x147;
+  var body = _x149;
   var hf = ["return", ["%array", false, ["get", e, "\"message\""], ["get", e, "\"stack\""]]];
   indent_level42 = indent_level42 + 1;
-  var _x152 = compile(hf, stash33({stmt: true}));
+  var _x154 = compile(hf, stash33({stmt: true}));
   indent_level42 = indent_level42 - 1;
-  var h = _x152;
+  var h = _x154;
   return(ind + "try {\n" + body + ind + "}\n" + ind + "catch (" + e + ") {\n" + h + ind + "}\n");
 }, stmt: true}));
 setenv("%delete", stash33({special: function (place) {
@@ -1178,8 +1185,8 @@ setenv("return", stash33({special: function (x) {
   } else {
     _e37 = "return(" + compile(x) + ")";
   }
-  var _x162 = _e37;
-  return(indentation() + _x162);
+  var _x164 = _e37;
+  return(indentation() + _x164);
 }, stmt: true}));
 setenv("new", stash33({special: function (x) {
   return("new " + compile(x));

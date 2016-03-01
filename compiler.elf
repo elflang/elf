@@ -212,7 +212,8 @@
   (if (~nil? b) `((%if ,a ,b ,@(expand-if c)))
       (~nil? a) (list a)))
 
-(def indent-level* 0)
+(once
+  (def indent-level* 0))
 
 (def indentation ()
   (with s ""
@@ -548,21 +549,24 @@
 (var expand (form)
   (lower (macroexpand form)))
 
-(%js (= global.require require))
-(%js (var run eval))
+(once
+  (%js (= global.require require))
+  (%js (= run-js eval))
+  (%lua (= run-lua load)))
 
-(%lua (var load1 load))
+(%js
+  (var run run-js))
+
 (%lua
   (var run (code)
-    (let |f,e| (load1 code)
+    (let |f,e| (run-lua code)
       (if f (f) (error (cat e " in " code))))))
-
-(def %result)
 
 (def eval (form)
   (let previous target*
     (= target* (language))
-    (let code (compile (expand `(= %result ,form)))
+    (def %result)
+    (let code (compile (expand `(assign %result ,form)))
       (= target* previous)
       (run code)
       %result)))

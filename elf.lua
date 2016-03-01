@@ -153,24 +153,24 @@ local function setup()
           local lh = l[1]
           local rh = l[2]
           local _id59 = not( type(lh) == "table")
-          local _e16
+          local _e17
           if _id59 then
-            _e16 = _id59
+            _e17 = _id59
           else
             local _e8 = lh[1]
-            local _e17
+            local _e18
             if "at" == _e8 then
-              _e17 = true
+              _e18 = true
             else
-              local _e18
+              local _e19
               if "get" == _e8 then
-                _e18 = true
+                _e19 = true
               end
-              _e17 = _e18
+              _e18 = _e19
             end
-            _e16 = _e17
+            _e17 = _e18
           end
-          if _e16 then
+          if _e17 then
             return({"assign", lh, rh})
           else
             local vars = {}
@@ -319,9 +319,19 @@ local function setup()
   setenv("step", stash33({macro = function (v, l, ...)
     local _r64 = unstash({...})
     local body = cut(_r64, 0)
+    local index = _r64.index
+    local _e20
+    if index == nil then
+      _e20 = uniq("i")
+    else
+      _e20 = index
+    end
+    local i = _e20
+    if i == true then
+      i = "index"
+    end
     local x = uniq("x")
     local n = uniq("n")
-    local i = uniq("i")
     return({"let", {x, l, n, {"len", x}}, {"for", i, n, join({"let", {v, {"at", x, i}}}, body)}})
   end}))
   setenv("each", stash33({macro = function (x, lst, ...)
@@ -330,28 +340,28 @@ local function setup()
     local l = uniq("l")
     local n = uniq("n")
     local i = uniq("i")
-    local _e19
+    local _e21
     if not( type(x) == "table") then
-      _e19 = {i, x}
+      _e21 = {i, x}
     else
-      local _e20
+      local _e22
       if #(x) > 1 then
-        _e20 = x
+        _e22 = x
       else
-        _e20 = {i, x[1]}
+        _e22 = {i, x[1]}
       end
-      _e19 = _e20
+      _e21 = _e22
     end
-    local _id52 = _e19
+    local _id52 = _e21
     local k = _id52[1]
     local v = _id52[2]
-    local _e21
+    local _e23
     if target42 == "lua" then
-      _e21 = body
+      _e23 = body
     else
-      _e21 = {join({"let", k, {"if", {"numeric?", k}, {"parseInt", k}, k}}, body)}
+      _e23 = {join({"let", k, {"if", {"numeric?", k}, {"parseInt", k}, k}}, body)}
     end
-    return({"let", {l, lst, k, "nil"}, {"%for", l, k, join({"let", {v, {"get", l, k}}}, _e21)}})
+    return({"let", {l, lst, k, "nil"}, {"%for", l, k, join({"let", {v, {"get", l, k}}}, _e23)}})
   end}))
   setenv("set-of", stash33({macro = function (...)
     local xs = unstash({...})
@@ -561,11 +571,11 @@ function char(s, n)
   return(clip(s, n, n + 1))
 end
 function code(s, n)
-  local _e22
+  local _e24
   if n then
-    _e22 = n + 1
+    _e24 = n + 1
   end
-  return(string.byte(s, _e22))
+  return(string.byte(s, _e24))
 end
 function chr(c)
   return(string.char(c))
@@ -599,11 +609,11 @@ function rev(l)
   return(l1)
 end
 function reduce(f, x)
-  local _e12 = #(x)
-  if 0 == _e12 then
+  local _e13 = #(x)
+  if 0 == _e13 then
     return(nil)
   else
-    if 1 == _e12 then
+    if 1 == _e13 then
       return(x[1])
     else
       return(f(x[1], reduce(f, cut(x, 1))))
@@ -754,11 +764,11 @@ function unstash(args)
   return(args)
 end
 function search(s, pattern, start)
-  local _e23
+  local _e25
   if start then
-    _e23 = start + 1
+    _e25 = start + 1
   end
-  local start = _e23
+  local start = _e25
   local i = string.find(s, pattern, start, true)
   return(i and i - 1)
 end
@@ -854,26 +864,26 @@ function escape(s)
   local i = 0
   while i < #(s) do
     local c = char(s, i)
-    local _e13 = c
-    local _e24
-    if "\n" == _e13 then
-      _e24 = "\\n"
+    local _e14 = c
+    local _e26
+    if "\n" == _e14 then
+      _e26 = "\\n"
     else
-      local _e25
-      if "\"" == _e13 then
-        _e25 = "\\\""
+      local _e27
+      if "\"" == _e14 then
+        _e27 = "\\\""
       else
-        local _e26
-        if "\\" == _e13 then
-          _e26 = "\\\\"
+        local _e28
+        if "\\" == _e14 then
+          _e28 = "\\\\"
         else
-          _e26 = c
+          _e28 = c
         end
-        _e25 = _e26
+        _e27 = _e28
       end
-      _e24 = _e25
+      _e26 = _e27
     end
-    s1 = s1 .. _e24
+    s1 = s1 .. _e26
     i = i + 1
   end
   return(s1 .. "\"")
@@ -967,13 +977,13 @@ function setenv(k, ...)
   local _r169 = unstash({...})
   local _keys = cut(_r169, 0)
   if type(k) == "string" then
-    local _e27
+    local _e29
     if _keys.toplevel then
-      _e27 = environment42[1]
+      _e29 = environment42[1]
     else
-      _e27 = last(environment42)
+      _e29 = last(environment42)
     end
-    local frame = _e27
+    local frame = _e29
     local entry = frame[k] or {}
     local _l17 = _keys
     local _k = nil

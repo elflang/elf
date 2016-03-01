@@ -202,12 +202,14 @@
          ,@body
          (++ ,i))))
 
-  (mac step (v l rest: body)
-    (w/uniq (x n i)
-      `(let (,x ,l ,n #,x)
-         (for ,i ,n
-           (let (,v (at ,x ,i))
-             ,@body)))))
+  (mac step (v l rest: body :index)
+    (let ((o i (uniq 'i)) index)
+      (if (is i t) (= i 'index))
+      (w/uniq (x n)
+        `(let (,x ,l ,n #,x)
+           (for ,i ,n
+             (let (,v (at ,x ,i))
+               ,@body))))))
 
   (mac each (x lst rest: body)
     (w/uniq (l n i)

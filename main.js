@@ -3,20 +3,24 @@ reader = require("reader");
 compiler = require("compiler");
 system = require("system");
 var eval_print = function (form) {
-  var _id = (function () {
-    try {
-      return([true, compiler.eval(form)]);
+  if (!( typeof(form) === "undefined" || form === null)) {
+    var _id = (function () {
+      try {
+        return([true, compiler.eval(form)]);
+      }
+      catch (_e) {
+        return([false, _e.message, _e.stack]);
+      }
+    })();
+    var ok = _id[0];
+    var x = _id[1];
+    var trace = _id[2];
+    if (! ok) {
+      print(trace);
+      return;
     }
-    catch (_e) {
-      return([false, _e.message, _e.stack]);
-    }
-  })();
-  var ok = _id[0];
-  var x = _id[1];
-  var trace = _id[2];
-  if (! ok) {
-    return(print(trace));
-  } else {
+    thatexpr = form;
+    that = x;
     if (!( typeof(x) === "undefined" || x === null)) {
       return(print(str(x)));
     }

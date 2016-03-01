@@ -3,29 +3,33 @@ reader = require("reader")
 compiler = require("compiler")
 system = require("system")
 local function eval_print(form)
-  local _x3 = nil
-  local _msg1 = nil
-  local _trace1 = nil
-  local _e
-  if xpcall(function ()
-    _x3 = compiler.eval(form)
-    return(_x3)
-  end, function (_)
-    _msg1 = clip(_, search(_, ": ") + 2)
-    _trace1 = debug.traceback()
-    return(_trace1)
-  end) then
-    _e = {true, _x3}
-  else
-    _e = {false, _msg1, _trace1}
-  end
-  local _id = _e
-  local ok = _id[1]
-  local x = _id[2]
-  local trace = _id[3]
-  if not ok then
-    return(print("error: " .. x .. "\n" .. trace))
-  else
+  if not( form == nil) then
+    local _x3 = nil
+    local _msg1 = nil
+    local _trace1 = nil
+    local _e
+    if xpcall(function ()
+      _x3 = compiler.eval(form)
+      return(_x3)
+    end, function (_)
+      _msg1 = clip(_, search(_, ": ") + 2)
+      _trace1 = debug.traceback()
+      return(_trace1)
+    end) then
+      _e = {true, _x3}
+    else
+      _e = {false, _msg1, _trace1}
+    end
+    local _id = _e
+    local ok = _id[1]
+    local x = _id[2]
+    local trace = _id[3]
+    if not ok then
+      print("error: " .. x .. "\n" .. trace)
+      return
+    end
+    thatexpr = form
+    that = x
     if not( x == nil) then
       return(print(str(x)))
     end

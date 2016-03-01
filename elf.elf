@@ -14,6 +14,7 @@
   (defsym t true)
   (defsym js? (is target* 'js))
   (defsym lua? (is target* 'lua))
+  (defsym global* (target lua: _G js: (if (nil? global) window global)))
 
   (mac %js forms (if js? `(do ,@forms)))
   (mac %lua forms (if lua? `(do ,@forms)))

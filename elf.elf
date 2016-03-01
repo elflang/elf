@@ -414,13 +414,13 @@
 
 (def map (f x)
   (with l ()
-    (step v x
-      (let y (f v)
+    (step v x index: i
+      (let y (f v key: i)
         (unless (nil? y)
           (add l y))))
     (each (k v) x
       (unless (num? k)
-        (let y (f v)
+        (let y (f v key: k)
           (unless (nil? y)
             (= (get l k) y)))))))
 

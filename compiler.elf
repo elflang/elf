@@ -486,12 +486,12 @@
 (var lower-while (args hoist)
   (let ((c rest: body) args
         hoist1 ()
-        c1 (lower c hoist1))
+        c (lower c hoist1))
     (add hoist
       (if (none? hoist1)
-          `(while ,c1 ,(lower-body body))
+          `(while ,c ,(lower-body body))
           `(while true (do ,@hoist1
-                           (%if (not ,c1) (break))
+                           (%if (not ,c) (break))
                            ,(lower-body body)))))))
 
 (var lower-for (args hoist)

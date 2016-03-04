@@ -872,12 +872,12 @@ local function lower_while(args, hoist)
   local c = args[1]
   local body = cut(args, 1)
   local hoist1 = {}
-  local c1 = lower(c, hoist1)
+  local _c = lower(c, hoist1)
   local _e27
   if #(hoist1) == 0 then
-    _e27 = {"while", c1, lower_body(body)}
+    _e27 = {"while", _c, lower_body(body)}
   else
-    _e27 = {"while", true, join({"do"}, hoist1, {{"%if", {"not", c1}, {"break"}}, lower_body(body)})}
+    _e27 = {"while", true, join({"do"}, hoist1, {{"%if", {"not", _c}, {"break"}}, lower_body(body)})}
   end
   return(add(hoist, _e27))
 end

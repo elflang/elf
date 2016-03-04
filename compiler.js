@@ -931,12 +931,12 @@ var lower_while = function (args, hoist) {
   var c = args[0];
   var body = cut(args, 1);
   var hoist1 = [];
-  var c1 = lower(c, hoist1);
+  var _c = lower(c, hoist1);
   var _e35;
   if ((hoist1.length || 0) === 0) {
-    _e35 = ["while", c1, lower_body(body)];
+    _e35 = ["while", _c, lower_body(body)];
   } else {
-    _e35 = ["while", true, join(["do"], hoist1, [["%if", ["not", c1], ["break"]], lower_body(body)])];
+    _e35 = ["while", true, join(["do"], hoist1, [["%if", ["not", _c], ["break"]], lower_body(body)])];
   }
   return(add(hoist, _e35));
 };

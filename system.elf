@@ -61,11 +61,7 @@
   (var exit (code)
     (os.exit code))
 
-  (var argv
-    (if (nil? arg) ()
-      (with l ()
-        (for i #arg
-          (add l (at arg i))))))
+  (var argv (if (nil? arg) () (cut arg 0)))
 
   (var shell (cmd)
     (let x (io.popen cmd)
@@ -79,12 +75,14 @@
   (%js (wipe (get require.cache (require.resolve module))))
   (require module))
 
+(var getenv get-environment-variable)
+
 (export read-file
         write-file
         file-exists?
         path-separator
         path-join
-        get-environment-variable
+        getenv get-environment-variable 
         write
         exit
         argv

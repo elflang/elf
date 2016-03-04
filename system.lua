@@ -37,13 +37,7 @@ local _e
 if arg == nil then
   _e = {}
 else
-  local l = {}
-  local i = 0
-  while i < #(arg) do
-    add(l, arg[i + 1])
-    i = i + 1
-  end
-  _e = l
+  _e = cut(arg, 0)
 end
 local argv = _e
 local function shell(cmd)
@@ -60,4 +54,5 @@ local function reload(module)
   package.loaded[module] = nil
   return(require(module))
 end
-return({["write-file"] = write_file, write = write, ["read-file"] = read_file, argv = argv, ["get-environment-variable"] = get_environment_variable, reload = reload, ["path-join"] = path_join, exit = exit, ["path-separator"] = path_separator, shell = shell, ["file-exists?"] = file_exists63})
+local getenv = get_environment_variable
+return({["write-file"] = write_file, write = write, ["path-separator"] = path_separator, ["read-file"] = read_file, argv = argv, ["get-environment-variable"] = get_environment_variable, reload = reload, ["path-join"] = path_join, ["file-exists?"] = file_exists63, exit = exit, shell = shell, getenv = getenv})

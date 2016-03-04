@@ -35,11 +35,13 @@ var reload = function (module) {
   delete require.cache[require.resolve(module)];
   return(require(module));
 };
+var getenv = get_environment_variable;
 exports["read-file"] = read_file;
 exports["write-file"] = write_file;
 exports["file-exists?"] = file_exists63;
 exports["path-separator"] = path_separator;
 exports["path-join"] = path_join;
+exports.getenv = getenv;
 exports["get-environment-variable"] = get_environment_variable;
 exports.write = write;
 exports.exit = exit;

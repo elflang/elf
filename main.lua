@@ -84,8 +84,7 @@ function elf_usage()
   return(system.exit())
 end
 function elf_main()
-  local arg = system.argv[1]
-  if arg == "-h" or arg == "--help" then
+  if in63(system.argv[1], {"-h", "--help"}) then
     elf_usage()
   end
   local pre = {}
@@ -127,11 +126,11 @@ function elf_main()
     end
     i = i + 1
   end
-  local _x7 = pre
-  local _n = #(_x7)
+  local _x8 = pre
+  local _n = #(_x8)
   local _i = 0
   while _i < _n do
-    local file = _x7[_i + 1]
+    local file = _x8[_i + 1]
     run_file(file)
     _i = _i + 1
   end
@@ -153,7 +152,7 @@ function elf_main()
     end
   end
 end
-if _x8 == nil then
-  _x8 = true
+if _x9 == nil then
+  _x9 = true
   elf_main()
 end

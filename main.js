@@ -70,8 +70,7 @@ elf_usage = function () {
   return(system.exit());
 };
 elf_main = function () {
-  var arg = system.argv[0];
-  if (arg === "-h" || arg === "--help") {
+  if (in63(system.argv[0], ["-h", "--help"])) {
     elf_usage();
   }
   var pre = [];
@@ -113,11 +112,11 @@ elf_main = function () {
     }
     i = i + 1;
   }
-  var _x3 = pre;
-  var _n = _x3.length || 0;
+  var _x4 = pre;
+  var _n = _x4.length || 0;
   var _i = 0;
   while (_i < _n) {
-    var file = _x3[_i];
+    var file = _x4[_i];
     run_file(file);
     _i = _i + 1;
   }
@@ -139,7 +138,7 @@ elf_main = function () {
     }
   }
 };
-if (typeof(_x4) === "undefined" || _x4 === null) {
-  _x4 = true;
+if (typeof(_x5) === "undefined" || _x5 === null) {
+  _x5 = true;
   elf_main();
 }

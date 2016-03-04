@@ -64,10 +64,8 @@
   (system.exit))
 
 (def elf-main ()
-  (let arg (hd system.argv)
-    (when (or (is arg "-h")
-              (is arg "--help"))
-      (elf-usage)))
+  (when (in? system.argv.0 '(-h --help))
+    (elf-usage))
   (let (pre ()
         input nil
         output nil

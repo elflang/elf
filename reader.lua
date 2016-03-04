@@ -61,6 +61,9 @@ local function read(s)
   end
 end
 local function read_all(s)
+  if type(s) == "string" then
+    s = stream(s)
+  end
   local l = {}
   while true do
     local form = read(s)

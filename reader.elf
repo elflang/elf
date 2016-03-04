@@ -44,6 +44,7 @@
        s))))
 
 (var read-all (s)
+  (if (str? s) (= s (stream s)))
   (with l ()
     (while t
       (let form (read s)

@@ -61,6 +61,9 @@ var read = function (s) {
   }
 };
 var read_all = function (s) {
+  if (typeof(s) === "string") {
+    s = stream(s);
+  }
   var l = [];
   while (true) {
     var form = read(s);

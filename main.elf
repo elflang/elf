@@ -40,8 +40,14 @@
         (if s (rep1 (cat s "\n"))
           (break))))))
 
-(def compile-string (chars)
-  (var body (reader.read-all chars))
+(var skip-shebang (s)
+  (when s
+    (unless (str-starts? s "#!") (return s))
+    (let i (search s "\n")
+      (if i (clip s (+ i 1)) ""))))
+
+(def compile-string (s)
+  (var body (reader.read-all (skip-shebang s)))
   (var form (compiler.expand `(do ,@body)))
   (compiler.compile form :stmt))
 
@@ -63,9 +69,17 @@
   (print "  -e <expr>\tExpression to evaluate")
   (system.exit))
 
+(var elf-file? (path)
+  (str-ends? path ".elf"))
+
 (def elf-main ()
-  (when (in? system.argv.0 '(-h --help))
-    (elf-usage))
+  (whenlet arg system.argv.0
+    (when (in? arg '(-h --help))
+      (elf-usage))
+    (when (elf-file? arg)
+      (= system.argv (cut system.argv 1))
+      (load arg)
+      (system.exit)))
   (let (pre ()
         input nil
         output nil
@@ -93,6 +107,14 @@
             (if (or (nil? output) (is output "-"))
                 (print code)
               (system.write-file output code)))))))
+
+(def str-starts? (str x)
+  (if (> #x #str) false
+    (is x (clip str 0 #x))))
+
+(def str-ends? (str x)
+  (if (> #x #str) false
+    (is x (clip str (- #str #x)))))
 
 (once
   (elf-main))

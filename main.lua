@@ -60,8 +60,21 @@ local function repl()
     end
   end
 end
-function compile_string(chars)
-  local body = reader["read-all"](chars)
+local function skip_shebang(s)
+  if s then
+    if not str_starts63(s, "#!") then
+      return(s)
+    end
+    local i = search(s, "\n")
+    if i then
+      return(clip(s, i + 1))
+    else
+      return("")
+    end
+  end
+end
+function compile_string(s)
+  local body = reader["read-all"](skip_shebang(s))
   local form = compiler.expand(join({"do"}, body))
   return(compiler.compile(form, stash33({stmt = true})))
 end
@@ -83,9 +96,21 @@ function elf_usage()
   print("  -e <expr>\tExpression to evaluate")
   return(system.exit())
 end
+local function elf_file63(path)
+  return(str_ends63(path, ".elf"))
+end
 function elf_main()
-  if in63(system.argv[1], {"-h", "--help"}) then
-    elf_usage()
+  local _y = system.argv[1]
+  if _y then
+    local arg = _y
+    if in63(arg, {"-h", "--help"}) then
+      elf_usage()
+    end
+    if elf_file63(arg) then
+      system.argv = cut(system.argv, 1)
+      load(arg)
+      system.exit()
+    end
   end
   local pre = {}
   local input = nil
@@ -150,6 +175,20 @@ function elf_main()
     else
       return(system["write-file"](output, code))
     end
+  end
+end
+function str_starts63(str, x)
+  if #(x) > #(str) then
+    return(false)
+  else
+    return(x == clip(str, 0, #(x)))
+  end
+end
+function str_ends63(str, x)
+  if #(x) > #(str) then
+    return(false)
+  else
+    return(x == clip(str, #(str) - #(x)))
   end
 end
 if _x9 == nil then

@@ -46,8 +46,21 @@ var repl = function () {
   _in.setEncoding("utf8");
   return(_in.on("data", rep1));
 };
-compile_string = function (chars) {
-  var body = reader["read-all"](chars);
+var skip_shebang = function (s) {
+  if (s) {
+    if (! str_starts63(s, "#!")) {
+      return(s);
+    }
+    var i = search(s, "\n");
+    if (i) {
+      return(clip(s, i + 1));
+    } else {
+      return("");
+    }
+  }
+};
+compile_string = function (s) {
+  var body = reader["read-all"](skip_shebang(s));
   var form = compiler.expand(join(["do"], body));
   return(compiler.compile(form, stash33({stmt: true})));
 };
@@ -69,9 +82,21 @@ elf_usage = function () {
   print("  -e <expr>\tExpression to evaluate");
   return(system.exit());
 };
+var elf_file63 = function (path) {
+  return(str_ends63(path, ".elf"));
+};
 elf_main = function () {
-  if (in63(system.argv[0], ["-h", "--help"])) {
-    elf_usage();
+  var _y = system.argv[0];
+  if (_y) {
+    var arg = _y;
+    if (in63(arg, ["-h", "--help"])) {
+      elf_usage();
+    }
+    if (elf_file63(arg)) {
+      system.argv = cut(system.argv, 1);
+      load(arg);
+      system.exit();
+    }
   }
   var pre = [];
   var input = undefined;
@@ -136,6 +161,20 @@ elf_main = function () {
     } else {
       return(system["write-file"](output, code));
     }
+  }
+};
+str_starts63 = function (str, x) {
+  if ((x.length || 0) > (str.length || 0)) {
+    return(false);
+  } else {
+    return(x === clip(str, 0, x.length || 0));
+  }
+};
+str_ends63 = function (str, x) {
+  if ((x.length || 0) > (str.length || 0)) {
+    return(false);
+  } else {
+    return(x === clip(str, (str.length || 0) - (x.length || 0)));
   }
 };
 if (typeof(_x5) === "undefined" || _x5 === null) {

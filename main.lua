@@ -191,7 +191,27 @@ function str_ends63(str, x)
     return(x == clip(str, #(str) - #(x)))
   end
 end
-if _x9 == nil then
-  _x9 = true
+function import33(module)
+  local _e1
+  if type(module) == "string" then
+    _e1 = require(module)
+  else
+    _e1 = module
+  end
+  import37 = _e1
+  local e = {"do"}
+  local _l = module
+  local k = nil
+  for k in next, _l do
+    local v = _l[k]
+    add(e, {"def", k, {"get", "import%", {"quote", k}}})
+  end
+  eval(e)
+  local x = import37
+  import37 = nil
+  return(x)
+end
+if _x13 == nil then
+  _x13 = true
   elf_main()
 end

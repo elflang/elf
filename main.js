@@ -8,8 +8,8 @@ var eval_print = function (form) {
       try {
         return([true, compiler.eval(form)]);
       }
-      catch (_e) {
-        return([false, _e.message, _e.stack]);
+      catch (_e2) {
+        return([false, _e2.message, _e2.stack]);
       }
     })();
     var ok = _id[0];
@@ -177,7 +177,34 @@ str_ends63 = function (str, x) {
     return(x === clip(str, (str.length || 0) - (x.length || 0)));
   }
 };
-if (typeof(_x5) === "undefined" || _x5 === null) {
-  _x5 = true;
+import33 = function (module) {
+  var _e;
+  if (typeof(module) === "string") {
+    _e = require(module);
+  } else {
+    _e = module;
+  }
+  import37 = _e;
+  var e = ["do"];
+  var _l = module;
+  var k = undefined;
+  for (k in _l) {
+    var v = _l[k];
+    var _e1;
+    if (numeric63(k)) {
+      _e1 = parseInt(k);
+    } else {
+      _e1 = k;
+    }
+    var _k = _e1;
+    add(e, ["def", _k, ["get", "import%", ["quote", _k]]]);
+  }
+  eval(e);
+  var x = import37;
+  delete import37;
+  return(x);
+};
+if (typeof(_x9) === "undefined" || _x9 === null) {
+  _x9 = true;
   elf_main();
 }

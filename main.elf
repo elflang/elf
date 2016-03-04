@@ -116,6 +116,15 @@
   (if (> #x #str) false
     (is x (clip str (- #str #x)))))
 
+(def import! (module)
+  (= import% (if (str? module) (require module) module))
+  (let e `(do)
+    (each (k v) module
+      (add e `(def ,k (get import% ',k))))
+    (eval e))
+  (with x import%
+    (wipe import%)))
+
 (once
   (elf-main))
 

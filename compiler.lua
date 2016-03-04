@@ -76,6 +76,10 @@ function uniq(x)
     return("_" .. x)
   end
 end
+local function reset()
+  names = {}
+  return(names)
+end
 local function stash42(args)
   if keys63(args) then
     local l = {"%object"}
@@ -662,8 +666,8 @@ local function compile_call(form)
   end
 end
 local function op_delims(parent, child, ...)
-  local _r58 = unstash({...})
-  local right = _r58.right
+  local _r59 = unstash({...})
+  local right = _r59.right
   local _e17
   if right then
     _e17 = precedence(child) >= precedence(parent)
@@ -697,9 +701,9 @@ local function compile_infix(form)
   end
 end
 function compile_function(args, body, ...)
-  local _r60 = unstash({...})
-  local name = _r60.name
-  local prefix = _r60.prefix
+  local _r61 = unstash({...})
+  local name = _r61.name
+  local prefix = _r61.prefix
   local _e18
   if name then
     _e18 = compile(name)
@@ -740,8 +744,8 @@ local function can_return63(form)
   return(not( form == nil) and (not( type(form) == "table") or not( form[1] == "return") and not statement63(form[1])))
 end
 function compile(form, ...)
-  local _r62 = unstash({...})
-  local stmt = _r62.stmt
+  local _r63 = unstash({...})
+  local stmt = _r63.stmt
   if form == nil then
     return("")
   else
@@ -1251,4 +1255,4 @@ setenv("%object", stash33({special = function (...)
   end
   return(s .. "}")
 end}))
-return({run = run, expand = expand, eval = eval, compile = compile})
+return({run = run, expand = expand, reset = reset, eval = eval, compile = compile})

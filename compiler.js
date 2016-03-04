@@ -87,6 +87,10 @@ uniq = function (x) {
     return("_" + x);
   }
 };
+var reset = function () {
+  names = {};
+  return(names);
+};
 var stash42 = function (args) {
   if (keys63(args)) {
     var l = ["%object"];
@@ -721,8 +725,8 @@ var compile_call = function (form) {
   }
 };
 var op_delims = function (parent, child) {
-  var _r58 = unstash(Array.prototype.slice.call(arguments, 2));
-  var right = _r58.right;
+  var _r59 = unstash(Array.prototype.slice.call(arguments, 2));
+  var right = _r59.right;
   var _e25;
   if (right) {
     _e25 = precedence(child) >= precedence(parent);
@@ -756,9 +760,9 @@ var compile_infix = function (form) {
   }
 };
 compile_function = function (args, body) {
-  var _r60 = unstash(Array.prototype.slice.call(arguments, 2));
-  var name = _r60.name;
-  var prefix = _r60.prefix;
+  var _r61 = unstash(Array.prototype.slice.call(arguments, 2));
+  var name = _r61.name;
+  var prefix = _r61.prefix;
   var _e26;
   if (name) {
     _e26 = compile(name);
@@ -799,8 +803,8 @@ var can_return63 = function (form) {
   return(!( typeof(form) === "undefined" || form === null) && (!( typeof(form) === "object") || !( form[0] === "return") && ! statement63(form[0])));
 };
 compile = function (form) {
-  var _r62 = unstash(Array.prototype.slice.call(arguments, 1));
-  var stmt = _r62.stmt;
+  var _r63 = unstash(Array.prototype.slice.call(arguments, 1));
+  var stmt = _r63.stmt;
   if (typeof(form) === "undefined" || form === null) {
     return("");
   } else {
@@ -1322,3 +1326,4 @@ exports.run = run;
 exports.eval = eval;
 exports.expand = expand;
 exports.compile = compile;
+exports.reset = reset;

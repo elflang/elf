@@ -58,7 +58,9 @@
           (++ (get names x))
           (uniq (cat x i)))
       (do (= (get names x) 1)
-          (cat "_" x)))))
+          (cat "_" x))))
+  (var reset ()
+    (= names (obj))))
 
 (var stash* (args)
   (if (keys? args)
@@ -701,4 +703,5 @@
 (export run
         eval
         expand
-        compile)
+        compile
+        reset)

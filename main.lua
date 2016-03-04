@@ -3,6 +3,7 @@ reader = require("reader")
 compiler = require("compiler")
 system = require("system")
 local function eval_print(form)
+  compiler.reset()
   if not( form == nil) then
     local _x3 = nil
     local _msg1 = nil
@@ -74,9 +75,12 @@ local function skip_shebang(s)
   end
 end
 function compile_string(s)
+  compiler.reset()
   local body = reader["read-all"](skip_shebang(s))
   local form = compiler.expand(join({"do"}, body))
-  return(compiler.compile(form, stash33({stmt = true})))
+  local code = compiler.compile(form, stash33({stmt = true}))
+  compiler.reset()
+  return(code)
 end
 function compile_file(path)
   return(compile_string(system["read-file"](path)))

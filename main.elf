@@ -5,6 +5,7 @@
 (lib reader compiler system)
 
 (var eval-print (form)
+  (compiler.reset)
   (unless (nil? form)
     (let ((ok x trace) (guard (compiler.eval form)))
       (unless ok
@@ -47,9 +48,11 @@
       (if i (clip s (+ i 1)) ""))))
 
 (def compile-string (s)
+  (compiler.reset)
   (var body (reader.read-all (skip-shebang s)))
   (var form (compiler.expand `(do ,@body)))
-  (compiler.compile form :stmt))
+  (with code (compiler.compile form :stmt)
+    (compiler.reset)))
 
 (def compile-file (path)
   (compile-string (system.read-file path)))
@@ -107,6 +110,8 @@
             (if (or (nil? output) (is output "-"))
                 (print code)
               (system.write-file output code)))))))
+
+;; Utilities
 
 (def str-starts? (str x)
   (if (> #x #str) false

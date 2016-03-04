@@ -3,6 +3,7 @@ reader = require("reader");
 compiler = require("compiler");
 system = require("system");
 var eval_print = function (form) {
+  compiler.reset();
   if (!( typeof(form) === "undefined" || form === null)) {
     var _id = (function () {
       try {
@@ -60,9 +61,12 @@ var skip_shebang = function (s) {
   }
 };
 compile_string = function (s) {
+  compiler.reset();
   var body = reader["read-all"](skip_shebang(s));
   var form = compiler.expand(join(["do"], body));
-  return(compiler.compile(form, stash33({stmt: true})));
+  var code = compiler.compile(form, stash33({stmt: true}));
+  compiler.reset();
+  return(code);
 };
 compile_file = function (path) {
   return(compile_string(system["read-file"](path)));

@@ -15,7 +15,7 @@ rebuild:
 	@echo ""
 	@make -B
 	@echo ""
-	@make -B
+	@make -B test
 
 clean:
 	@sh -c 'for x in *.js *.lua; do git checkout $$x; done'

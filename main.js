@@ -46,11 +46,13 @@ var repl = function () {
   _in.setEncoding("utf8");
   return(_in.on("data", rep1));
 };
-compile_file = function (path) {
-  var s = reader.stream(system["read-file"](path));
-  var body = reader["read-all"](s);
+compile_string = function (chars) {
+  var body = reader["read-all"](chars);
   var form = compiler.expand(join(["do"], body));
   return(compiler.compile(form, stash33({stmt: true})));
+};
+compile_file = function (path) {
+  return(compile_string(system["read-file"](path)));
 };
 load = function (path) {
   return(compiler.run(compile_file(path)));

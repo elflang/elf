@@ -60,11 +60,13 @@ local function repl()
     end
   end
 end
-function compile_file(path)
-  local s = reader.stream(system["read-file"](path))
-  local body = reader["read-all"](s)
+function compile_string(chars)
+  local body = reader["read-all"](chars)
   local form = compiler.expand(join({"do"}, body))
   return(compiler.compile(form, stash33({stmt = true})))
+end
+function compile_file(path)
+  return(compile_string(system["read-file"](path)))
 end
 function load(path)
   return(compiler.run(compile_file(path)))

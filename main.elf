@@ -40,11 +40,13 @@
         (if s (rep1 (cat s "\n"))
           (break))))))
 
+(def compile-string (chars)
+  (var body (reader.read-all chars))
+  (var form (compiler.expand `(do ,@body)))
+  (compiler.compile form :stmt))
+
 (def compile-file (path)
-  (let (s (reader.stream (system.read-file path))
-        body (reader.read-all s)
-        form (compiler.expand `(do ,@body)))
-    (compiler.compile form :stmt)))
+  (compile-string (system.read-file path)))
 
 (def load (path)
   (compiler.run (compile-file path)))

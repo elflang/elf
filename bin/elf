@@ -6,21 +6,69 @@ cd ..
 home="$(pwd)"
 cd "${dir}"
 
-if [ ! -z "${ELF_HOST}" ]
+case "$1" in
+  *.js.elf)     host=node;;
+  *.node.elf)   host=node;;
+  *.lua.elf)    host=lua;;
+  *.luajit.elf) host=luajit;;
+  *.luvit.elf)  host=luvit;;
+  *.ufo.elf)    host=ufo;;
+esac
+
+if [ -z "$host" ]
 then
-    host="${ELF_HOST}"
-elif luajit -v > /dev/null 2>&1
-then
-    host=luajit
-elif lua -v > /dev/null 2>&1
-then
-    host=lua
-elif node -v > /dev/null 2>&1
-then
-    host=node
-else
-    echo no host found
+  if [ ! -z "${ELF_HOST}" ]
+  then
+      host="${ELF_HOST}"
+  elif luajit -v > /dev/null 2>&1
+  then
+      host=luajit
+  elif lua -v > /dev/null 2>&1
+  then
+      host=lua
+  elif node -v > /dev/null 2>&1
+  then
+      host=node
+  else
+      echo "no host found" && exit 1
+  fi
 fi
+
+case "$host" in
+  luvit*)
+    host="$(which "$host")"
+    if [ -z "$host" ]; then
+      if [ ! -d "${home}/bin/luvit" ]; then
+        read -r -p "luvit not found. Install it to elf/bin/luvit? [y/N] " response
+        if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
+          echo git clone https://github.com/luvit/luvit "${home}/bin/luvit"
+          git clone 'https://github.com/luvit/luvit' "${home}/bin/luvit" && cd "${home}/bin/luvit" && make
+          cd "${dir}"
+        else
+          exit 1
+        fi
+      fi
+      host="${home}/bin/luvit/luvit"
+    fi
+    host="$(readlink -f "$host" 2>/dev/null || readlink "$host" 2>/dev/null || echo "$host")"
+  ;;
+  ufo*)
+    host="$(which "$host")"
+    if [ -z "$host" ]; then
+      if [ ! -d "${home}/bin/ufo" ]; then
+        read -r -p "ufo not found. Install it to elf/bin/ufo? [y/N] " response
+        if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
+          echo git clone https://github.com/malkia/ufo "${home}/bin/ufo"
+          git clone 'https://github.com/malkia/ufo' "${home}/bin/ufo"
+        else
+          exit 1
+        fi
+      fi
+      host="${home}/bin/ufo/luajit"
+    fi
+    host="$(readlink -f "$host" 2>/dev/null || readlink "$host" 2>/dev/null || echo "$host")"
+  ;;
+esac
 
 case "$host" in
     node*)
@@ -28,7 +76,27 @@ case "$host" in
         export NODE_PATH="$NODE_PATH:${home}";;
     *)
         code=main.lua
-        export LUA_PATH="$LUA_PATH;${home}/?.lua;;";;
+        export LUA_PATH="$LUA_PATH;${home}/?.lua";;
 esac
 
-exec ${host} "${home}/${code}" "$@"
+case "$1" in *.elf)
+  path="$(dirname "$1")"
+  if [ ! -z "$path" ]; then
+    if [ -e "${path}/package.json" ]; then
+      if [ ! -z "$(cat "${path}/package.json" | grep "dependencies")" ]; then
+        if [ ! -d "${path}/node_modules" ]; then
+          if [ ! -z "$(which npm)" ]; then
+            echo "cd '${path}' && npm i"
+            cd "${path}" && npm i
+            cd "${dir}"
+          fi
+        fi
+      fi
+    fi
+    export NODE_PATH="$NODE_PATH:${path}/node_modules"
+  fi
+  ;;
+esac
+
+export ELF_HOST="${host}"
+exec "${host}" "${home}/${code}" "$@"

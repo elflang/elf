@@ -5,7 +5,7 @@ setenv("defreader", stash33({macro: function (_x6) {
   var body = cut(_r1, 0);
   return(["=", ["get", "read-table", char], join(["fn", [s]], body)]);
 }}));
-var delimiters = {"(": true, ")": true, ";": true, "]": true, "\n": true, "[": true};
+var delimiters = {"(": true, ")": true, ";": true, "\n": true, "}": true, "]": true, "{": true, "[": true};
 var whitespace = {" ": true, "\n": true, "\t": true};
 var stream = function (str, more) {
   return({more: more, pos: 0, len: str.length || 0, string: str});
@@ -89,10 +89,10 @@ var flag63 = function (atom) {
 var expected = function (s, c) {
   var more = s.more;
   var pos = s.pos;
-  var _id7 = more;
+  var _id8 = more;
   var _e1;
-  if (_id7) {
-    _e1 = _id7;
+  if (_id8) {
+    _e1 = _id8;
   } else {
     throw new Error("Expected " + c + " at " + pos);
     _e1 = undefined;
@@ -314,6 +314,26 @@ read_table["["] = function (s) {
 };
 read_table["]"] = function (s) {
   throw new Error("Unexpected ] at " + s.pos);
+};
+read_table["{"] = function (s) {
+  var x = read_list(s, "}");
+  if (x === s.more) {
+    return(x);
+  } else {
+    var e = x[0];
+    x = cut(x, 1);
+    while ((x.length || 0) > 1) {
+      var op = x[0];
+      var a = x[1];
+      var bs = cut(x, 2);
+      e = [op, e, a];
+      x = bs;
+    }
+    return(read_next(s, e, skip_non_code(s)));
+  }
+};
+read_table["}"] = function (s) {
+  throw new Error("Unexpected } at " + s.pos);
 };
 read_table["\""] = function (s) {
   read_char(s);

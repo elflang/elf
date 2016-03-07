@@ -5,7 +5,7 @@ setenv("defreader", stash33({macro = function (_x6, ...)
   local body = cut(_r1, 0)
   return({"=", {"get", "read-table", char}, join({"fn", {s}}, body)})
 end}))
-local delimiters = {["("] = true, [")"] = true, [";"] = true, ["]"] = true, ["\n"] = true, ["["] = true}
+local delimiters = {["("] = true, [")"] = true, [";"] = true, ["\n"] = true, ["}"] = true, ["]"] = true, ["{"] = true, ["["] = true}
 local whitespace = {[" "] = true, ["\n"] = true, ["\t"] = true}
 local function stream(str, more)
   return({more = more, pos = 0, len = #(str), string = str})
@@ -89,10 +89,10 @@ end
 local function expected(s, c)
   local more = s.more
   local pos = s.pos
-  local _id7 = more
+  local _id8 = more
   local _e1
-  if _id7 then
-    _e1 = _id7
+  if _id8 then
+    _e1 = _id8
   else
     error("Expected " .. c .. " at " .. pos)
     _e1 = nil
@@ -307,6 +307,26 @@ read_table["["] = function (s)
 end
 read_table["]"] = function (s)
   error("Unexpected ] at " .. s.pos)
+end
+read_table["{"] = function (s)
+  local x = read_list(s, "}")
+  if x == s.more then
+    return(x)
+  else
+    local e = x[1]
+    x = cut(x, 1)
+    while #(x) > 1 do
+      local op = x[1]
+      local a = x[2]
+      local bs = cut(x, 2)
+      e = {op, e, a}
+      x = bs
+    end
+    return(read_next(s, e, skip_non_code(s)))
+  end
+end
+read_table["}"] = function (s)
+  error("Unexpected } at " .. s.pos)
 end
 read_table["\""] = function (s)
   read_char(s)

@@ -3,7 +3,7 @@
 (mac defreader ((char s) rest: body)
   `(= (get read-table ,char) (fn (,s) ,@body)))
 
-(var delimiters (set-of "[" "]" "(" ")" ";" "\n"))
+(var delimiters (set-of "(" ")" "[" "]" "{" "}" ";" "\n"))
 (var whitespace (set-of " " "\t" "\n"))
 
 (var stream (str more)
@@ -191,6 +191,20 @@
 
 (defreader ("]" s)
   (error (cat "Unexpected ] at " s.pos)))
+
+(defreader ("{" s)
+  (let x (read-list s "}")
+    (if (is x s.more) x
+      (let e x.0
+        (= x (tl x))
+        (while (> #x 1)
+          (let ((op a rest: bs) x)
+            (= e `(,op ,e ,a))
+            (= x bs)))
+        (read-next s e (skip-non-code s))))))
+
+(defreader ("}" s)
+  (error (cat "Unexpected } at " s.pos)))
 
 (defreader ("\"" s)
   (read-char s)

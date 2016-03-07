@@ -24,8 +24,7 @@
   (let buf ""
     (var rep1 (s)
       (cat! buf s)
-      (let (more ()
-            form (reader.read-string buf more))
+      (let (more () form (reader.read-string buf more))
           (unless (is form more)
             (eval-print form)
             (= buf "")
@@ -43,15 +42,17 @@
 
 (var skip-shebang (s)
   (when s
-    (unless (str-starts? s "#!") (return s))
-    (let i (search s "\n")
-      (if i (clip s (+ i 1)) ""))))
+    (unless (str-starts? s "#!")
+      (return s))
+    (iflet i (search s "\n")
+      (clip s (+ i 1))
+      "")))
 
 (def compile-string (s)
   (compiler.reset)
   (var body (reader.read-all (skip-shebang s)))
   (var form (compiler.expand `(do ,@body)))
-  (with code (compiler.compile form :stmt)
+  (do1 (compiler.compile form :stmt)
     (compiler.reset)))
 
 (def compile-file (path)
@@ -127,7 +128,7 @@
     (each (k v) module
       (add e `(def ,k (get import% ',k))))
     (eval e))
-  (with x import%
+  (do1 import%
     (wipe import%)))
 
 (once

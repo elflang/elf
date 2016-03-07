@@ -3211,76 +3211,72 @@ add(tests, {"with", function ()
   end
 end})
 add(tests, {"whenlet", function ()
-  local _y = "a" == "b"
+  local frips = "a" == "b"
   local _e76
-  if _y then
-    local frips = _y
+  if frips then
     _e76 = 19
   end
   if not equal63(nil, _e76) then
     failed = failed + 1
-    local _y1 = "a" == "b"
+    local _frips = "a" == "b"
     local _e77
-    if _y1 then
-      local frips = _y1
+    if _frips then
       _e77 = 19
     end
     return("failed: expected " .. str(nil) .. ", was " .. str(_e77))
   else
     passed = passed + 1
   end
-  local _y2 = 20
+  local _frips1 = 20
   local _e78
-  if _y2 then
-    local frips = _y2
-    _e78 = frips - 1
+  if _frips1 then
+    _e78 = _frips1 - 1
   end
   if not equal63(19, _e78) then
     failed = failed + 1
-    local _y3 = 20
+    local _frips2 = 20
     local _e79
-    if _y3 then
-      local frips = _y3
-      _e79 = frips - 1
+    if _frips2 then
+      _e79 = _frips2 - 1
     end
     return("failed: expected " .. str(19) .. ", was " .. str(_e79))
   else
     passed = passed + 1
   end
-  local _y4 = {19, 20}
+  local _if = {19, 20}
   local _e80
-  if _y4 then
-    local a = _y4[1]
-    local b = _y4[2]
+  if _if then
+    local a = _if[1]
+    local b = _if[2]
     _e80 = b
   end
   if not equal63(20, _e80) then
     failed = failed + 1
-    local _y5 = {19, 20}
+    local _if1 = {19, 20}
     local _e81
-    if _y5 then
-      local a = _y5[1]
-      local b = _y5[2]
+    if _if1 then
+      local a = _if1[1]
+      local b = _if1[2]
       _e81 = b
     end
     return("failed: expected " .. str(20) .. ", was " .. str(_e81))
   else
     passed = passed + 1
   end
-  local _y6 = nil
+  local _if2 = nil
   local _e82
-  if _y6 then
-    local a = _y6[1]
-    local b = _y6[2]
+  if _if2 then
+    local a = _if2[1]
+    local b = _if2[2]
     _e82 = b
   end
   if not equal63(nil, _e82) then
     failed = failed + 1
-    local _y7 = nil
+    local _if3 = nil
     local _e83
-    if _y7 then
-      local a = _y7[1]
-      local b = _y7[2]
+    if _if3 then
+      local a = _if3[1]
+      local b = _if3[2]
       _e83 = b
     end
     return("failed: expected " .. str(nil) .. ", was " .. str(_e83))

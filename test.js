@@ -3118,76 +3118,72 @@ add(tests, ["with", function () {
   }
 }]);
 add(tests, ["whenlet", function () {
-  var _y = "a" === "b";
+  var frips = "a" === "b";
   var _e67;
-  if (_y) {
-    var frips = _y;
+  if (frips) {
     _e67 = 19;
   }
   if (! equal63(undefined, _e67)) {
     failed = failed + 1;
-    var _y1 = "a" === "b";
+    var _frips = "a" === "b";
     var _e68;
-    if (_y1) {
-      var frips = _y1;
+    if (_frips) {
       _e68 = 19;
     }
     return("failed: expected " + str(undefined) + ", was " + str(_e68));
   } else {
     passed = passed + 1;
   }
-  var _y2 = 20;
+  var _frips1 = 20;
   var _e69;
-  if (_y2) {
-    var frips = _y2;
-    _e69 = frips - 1;
+  if (_frips1) {
+    _e69 = _frips1 - 1;
   }
   if (! equal63(19, _e69)) {
     failed = failed + 1;
-    var _y3 = 20;
+    var _frips2 = 20;
     var _e70;
-    if (_y3) {
-      var frips = _y3;
-      _e70 = frips - 1;
+    if (_frips2) {
+      _e70 = _frips2 - 1;
     }
     return("failed: expected " + str(19) + ", was " + str(_e70));
   } else {
     passed = passed + 1;
   }
-  var _y4 = [19, 20];
+  var _if = [19, 20];
   var _e71;
-  if (_y4) {
-    var a = _y4[0];
-    var b = _y4[1];
+  if (_if) {
+    var a = _if[0];
+    var b = _if[1];
     _e71 = b;
   }
   if (! equal63(20, _e71)) {
     failed = failed + 1;
-    var _y5 = [19, 20];
+    var _if1 = [19, 20];
     var _e72;
-    if (_y5) {
-      var a = _y5[0];
-      var b = _y5[1];
+    if (_if1) {
+      var a = _if1[0];
+      var b = _if1[1];
       _e72 = b;
     }
     return("failed: expected " + str(20) + ", was " + str(_e72));
   } else {
     passed = passed + 1;
   }
-  var _y6 = undefined;
+  var _if2 = undefined;
   var _e73;
-  if (_y6) {
-    var a = _y6[0];
-    var b = _y6[1];
+  if (_if2) {
+    var a = _if2[0];
+    var b = _if2[1];
     _e73 = b;
   }
   if (! equal63(undefined, _e73)) {
     failed = failed + 1;
-    var _y7 = undefined;
+    var _if3 = undefined;
     var _e74;
-    if (_y7) {
-      var a = _y7[0];
-      var b = _y7[1];
+    if (_if3) {
+      var a = _if3[0];
+      var b = _if3[1];
       _e74 = b;
     }
     return("failed: expected " + str(undefined) + ", was " + str(_e74));

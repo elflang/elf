@@ -64,9 +64,9 @@ compile_string = function (s) {
   compiler.reset();
   var body = reader["read-all"](skip_shebang(s));
   var form = compiler.expand(join(["do"], body));
-  var code = compiler.compile(form, stash33({stmt: true}));
+  var _do = compiler.compile(form, stash33({stmt: true}));
   compiler.reset();
-  return(code);
+  return(_do);
 };
 compile_file = function (path) {
   return(compile_string(system["read-file"](path)));
@@ -90,9 +90,8 @@ var elf_file63 = function (path) {
   return(str_ends63(path, ".elf"));
 };
 elf_main = function () {
-  var _y = system.argv[0];
-  if (_y) {
-    var arg = _y;
+  var arg = system.argv[0];
+  if (arg) {
     if (in63(arg, ["-h", "--help"])) {
       elf_usage();
     }
@@ -204,9 +203,9 @@ import33 = function (module) {
     add(e, ["def", _k, ["get", "import%", ["quote", _k]]]);
   }
   eval(e);
-  var x = import37;
+  var _do1 = import37;
   delete import37;
-  return(x);
+  return(_do1);
 };
 if (typeof(_x9) === "undefined" || _x9 === null) {
   _x9 = true;

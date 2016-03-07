@@ -78,9 +78,9 @@ function compile_string(s)
   compiler.reset()
   local body = reader["read-all"](skip_shebang(s))
   local form = compiler.expand(join({"do"}, body))
-  local code = compiler.compile(form, stash33({stmt = true}))
+  local _do = compiler.compile(form, stash33({stmt = true}))
   compiler.reset()
-  return(code)
+  return(_do)
 end
 function compile_file(path)
   return(compile_string(system["read-file"](path)))
@@ -104,9 +104,8 @@ local function elf_file63(path)
   return(str_ends63(path, ".elf"))
 end
 function elf_main()
-  local _y = system.argv[1]
-  if _y then
-    local arg = _y
+  local arg = system.argv[1]
+  if arg then
     if in63(arg, {"-h", "--help"}) then
       elf_usage()
     end
@@ -211,9 +210,9 @@ function import33(module)
     add(e, {"def", k, {"get", "import%", {"quote", k}}})
   end
   eval(e)
-  local x = import37
+  local _do1 = import37
   import37 = nil
-  return(x)
+  return(_do1)
 end
 if _x13 == nil then
   _x13 = true

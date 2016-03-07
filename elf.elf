@@ -102,7 +102,7 @@
       0 nil
       1 `(= ,@l nil)
       2 (let ((lh rh) l)
-          (if (or (atom? lh) (case (hd lh) 'at t 'get t))
+          (if (or (atom? lh) (case (hd lh) 'at t 'get t)) ; setforms?
               `(assign ,lh ,rh)
               (let (vars () forms (bind lh rh vars))
                 `(do ,@(xform vars
@@ -115,12 +115,22 @@
   (mac with (x v rest: body)
     `(let (,x ,v) ,@body ,x))
 
-  (mac whenlet (x v rest: body)
-    (w/uniq y
-      `(let ,y ,v
-         (when ,y
-           (let (,x ,y)
-             ,@body)))))
+  (mac iflet (var expr then rest: rest)
+    (if (atom? var)
+        `(let ,var ,expr
+           (if ,var ,then ,@rest))
+      (let gv (uniq "if")
+        `(let ,gv ,expr
+           (if ,gv (let (,var ,gv) ,then) ,@rest)))))
+
+  (mac whenlet (var expr rest: body)
+    `(iflet ,var ,expr (do ,@body)))
+
+  (mac do1 (x rest: ys)
+    (let g (uniq "do")
+      `(let ,g ,x
+         ,@ys
+         ,g)))
 
   (mac mac (name args rest: body)
     (let form `(setenv ',name macro: (fn ,args ,@body))

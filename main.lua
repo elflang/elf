@@ -1,3 +1,8 @@
+if setfenv then
+  _G._require = require
+  setfenv(1, setmetatable({}, {__newindex = _G, __index = _G}))
+  require = _G._require
+end
 require("elf")
 reader = require("reader")
 compiler = require("compiler")

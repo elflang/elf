@@ -1,5 +1,12 @@
 ;; -*- mode: lisp -*-
 
+;; luvit fix.
+(%lua
+  (when setfenv
+    (assign _G._require require)
+    (setfenv 1 (setmetatable (obj) (obj __newindex: _G __index: _G)))
+    (assign require _G._require)))
+
 (elf)
 
 (lib reader compiler system)

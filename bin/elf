@@ -78,9 +78,12 @@ case "$host" in
         code=main.lua
         export LUA_PATH="$LUA_PATH;${home}/?.lua";;
 esac
+export ELF_HOST="${host}"
 
 case "$1" in *.elf)
-  path="$(dirname "$1")"
+  script="$1"
+  shift 1
+  path="$(dirname "$script")"
   if [ ! -z "$path" ]; then
     if [ -e "${path}/package.json" ]; then
       if [ ! -z "$(cat "${path}/package.json" | grep "dependencies")" ]; then
@@ -95,8 +98,36 @@ case "$1" in *.elf)
     fi
     export NODE_PATH="$NODE_PATH:${path}/node_modules"
   fi
+  base="$(basename "$script" .elf)"
+  case "$base" in
+    *.js)     base="$(basename "$base" .js)";;
+    *.node)   base="$(basename "$base" .node)";;
+    *.lua)    base="$(basename "$base" .lua)";;
+    *.luajit) base="$(basename "$base" .luajit)";;
+    *.luvit)  base="$(basename "$base" .luvit)";;
+    *.ufo)    base="$(basename "$base" .ufo)";;
+  esac
+  base="${path}/${base}"
+  if [ -e "${base}.js" ]; then
+    if [ ! -s "${base}.js" ] || [ "$script" -nt "${base}.js" ]; then
+      "${host}" "${home}/${code}" -c "$script" -o "${base}.js" -t js
+    fi
+    case "$host" in node*)
+      script="${base}.js" ;;
+    esac
+  fi
+  if [ -e "${base}.lua" ]; then
+    if [ ! -s "${base}.lua" ] || [ "$script" -nt "${base}.lua" ]; then
+      "${host}" "${home}/${code}" -c "$script" -o "${base}.lua" -t lua
+    fi
+    case "$host" in
+      node*) ;;
+      *)
+      script="${base}.lua" ;;
+    esac
+  fi
+  exec "${host}" "${home}/${code}" "$script" "$@"
   ;;
 esac
 
-export ELF_HOST="${host}"
 exec "${host}" "${home}/${code}" "$@"

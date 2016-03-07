@@ -78,10 +78,11 @@
   k)
 
 (def bind (lh rh vars)
-  (if (atom? lh) `(,lh ,rh)
-    (is (hd lh) 'o)
-     (let ((_ var val) lh)
-       (list var `(if (nil? ,rh) ,val ,rh)))
+  (if (or (atom? lh) (is lh.0 'at) (is lh.0 'get)) ; setforms?
+      `(,lh ,rh)
+      (is (hd lh) 'o)
+       (let ((_ var val) lh)
+         (list var `(if (nil? ,rh) ,val ,rh)))
     (w/uniq id
       (with bs (list id rh)
         (if (and (atom? (macroexpand rh)) (~ontree [is _ rh] lh))

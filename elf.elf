@@ -102,7 +102,7 @@
       0 nil
       1 `(= ,@l nil)
       2 (let ((lh rh) l)
-          (if (or (atom? lh) (case (hd lh) 'at t 'get t)) ; setforms?
+          (if (or (atom? lh) (is lh.0 'at) (is lh.0 'get)) ; setforms?
               `(assign ,lh ,rh)
               (let (vars () forms (bind lh rh vars))
                 `(do ,@(xform vars

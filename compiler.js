@@ -126,7 +126,7 @@ var bias = function (k) {
   return(k);
 };
 bind = function (lh, rh, vars) {
-  if (!( typeof(lh) === "object")) {
+  if (!( typeof(lh) === "object") || lh[0] === "at" || lh[0] === "get") {
     return([lh, rh]);
   } else {
     if (lh[0] === "o") {

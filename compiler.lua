@@ -108,7 +108,7 @@ local function bias(k)
   return(k)
 end
 function bind(lh, rh, vars)
-  if not( type(lh) == "table") then
+  if not( type(lh) == "table") or lh[1] == "at" or lh[1] == "get" then
     return({lh, rh})
   else
     if lh[1] == "o" then

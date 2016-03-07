@@ -61,7 +61,10 @@
   (var exit (code)
     (os.exit code))
 
-  (var argv (if (nil? arg) () (cut arg 0)))
+  (var argv arg)
+  (if (nil? argv) (= argv (if args (cut args 1))))
+  (if (nil? argv) (= argv ()))
+  (= argv (cut argv 0))
 
   (var shell (cmd)
     (let x (io.popen cmd)

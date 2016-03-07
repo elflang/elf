@@ -33,13 +33,18 @@ end
 local function exit(code)
   return(os.exit(code))
 end
-local _e
-if arg == nil then
-  _e = {}
-else
-  _e = cut(arg, 0)
+local argv = arg
+if argv == nil then
+  local _e
+  if args then
+    _e = cut(args, 1)
+  end
+  argv = _e
 end
-local argv = _e
+if argv == nil then
+  argv = {}
+end
+argv = cut(argv, 0)
 local function shell(cmd)
   local x = io.popen(cmd)
   return(x.read(x, "*a"))

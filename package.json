@@ -1,0 +1,28 @@
+{
+  "name": "elf",
+  "version": "0.1.0",
+  "description": "A self-hosted Lisp for Lua and JavaScript.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": [
+    "bin/elf"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elflang/elf.git"
+  },
+  "keywords": [
+    "elf",
+    "lisp",
+    "lua",
+    "js"
+  ],
+  "author": "L-11 <lelfjior@gmail.com>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/elflang/elf/issues"
+  },
+  "homepage": "https://github.com/elflang/elf#readme"
+}

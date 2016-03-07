@@ -83,6 +83,9 @@
 (var elf-file? (path)
   (str-ends? path ".elf"))
 
+(var script-file? (path)
+  (str-ends? path (cat "." (language))))
+
 (def elf-main ()
   (whenlet arg system.argv.0
     (when (in? arg '(-h --help))
@@ -90,6 +93,10 @@
     (when (elf-file? arg)
       (= system.argv (cut system.argv 1))
       (load arg)
+      (return))
+    (when (script-file? arg)
+      (= system.argv (cut system.argv 1))
+      (run-file arg)
       (return)))
   (let (pre ()
         input nil

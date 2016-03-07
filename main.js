@@ -89,6 +89,9 @@ elf_usage = function () {
 var elf_file63 = function (path) {
   return(str_ends63(path, ".elf"));
 };
+var script_file63 = function (path) {
+  return(str_ends63(path, "." + "js"));
+};
 elf_main = function () {
   var arg = system.argv[0];
   if (arg) {
@@ -98,6 +101,11 @@ elf_main = function () {
     if (elf_file63(arg)) {
       system.argv = cut(system.argv, 1);
       load(arg);
+      return;
+    }
+    if (script_file63(arg)) {
+      system.argv = cut(system.argv, 1);
+      run_file(arg);
       return;
     }
   }

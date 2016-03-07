@@ -108,6 +108,9 @@ end
 local function elf_file63(path)
   return(str_ends63(path, ".elf"))
 end
+local function script_file63(path)
+  return(str_ends63(path, "." .. "lua"))
+end
 function elf_main()
   local arg = system.argv[1]
   if arg then
@@ -117,6 +120,11 @@ function elf_main()
     if elf_file63(arg) then
       system.argv = cut(system.argv, 1)
       load(arg)
+      return
+    end
+    if script_file63(arg) then
+      system.argv = cut(system.argv, 1)
+      run_file(arg)
       return
     end
   end

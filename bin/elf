@@ -22,7 +22,7 @@ else
     echo no host found
 fi
 
-case $host in
+case "$host" in
     node*)
         code=main.js
         export NODE_PATH="$NODE_PATH:${home}";;

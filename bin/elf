@@ -8,21 +8,23 @@ cd ..
 home="$(pwd)"
 cd "${dir}"
 
-case "$1" in
-  *.js.elf)     host=node;;
-  *.node.elf)   host=node;;
-  *.lua.elf)    host=lua;;
-  *.luajit.elf) host=luajit;;
-  *.luvit.elf)  host=luvit;;
-  *.ufo.elf)    host=ufo;;
-esac
+if [ ! -z "${ELF_HOST}" ]
+then
+  host="${ELF_HOST}"
+else
+  case "$1" in
+    *.js.elf)     host=node;;
+    *.node.elf)   host=node;;
+    *.lua.elf)    host=lua;;
+    *.luajit.elf) host=luajit;;
+    *.luvit.elf)  host=luvit;;
+    *.ufo.elf)    host=ufo;;
+  esac
+fi
 
 if [ -z "$host" ]
 then
-  if [ ! -z "${ELF_HOST}" ]
-  then
-      host="${ELF_HOST}"
-  elif luajit -v > /dev/null 2>&1
+  if luajit -v > /dev/null 2>&1
   then
       host=luajit
   elif lua -v > /dev/null 2>&1

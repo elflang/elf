@@ -134,12 +134,12 @@
 
   (mac mac (name args rest: body)
     (let form `(setenv ',name macro: (fn ,args ,@body))
-      (eval form)
+      (compiler.eval form)
       form))
 
   (mac defspecial (name args rest: body)
     (let form `(setenv ',name special: (fn ,args ,@body) ,@(keys body))
-      (eval form)
+      (compiler.eval form)
       form))
 
   (mac defsym (name expansion)
@@ -258,7 +258,7 @@
         `(return (obj ,@x)))))
 
   (mac %compile-time forms
-    (eval `(do ,@forms))
+    (compiler.eval `(do ,@forms))
     nil)
 
   (mac once forms

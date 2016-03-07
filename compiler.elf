@@ -552,8 +552,8 @@
   (lower (macroexpand form)))
 
 (once
-  (%js (= global.require require))
-  (%js (= run-js eval))
+  (%js (unless (nil? global) (= global.require require)))
+  (%js (= run-js (if (nil? global) window.eval global.eval)))
   (%lua (= run-lua load)))
 
 (%js
@@ -564,7 +564,7 @@
     (let |f,e| (run-lua code)
       (if f (f) (error (cat e " in " code))))))
 
-(def eval (form)
+(var eval (form)
   (let previous target*
     (= target* (language))
     (def %result)

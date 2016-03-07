@@ -234,7 +234,7 @@ var setup = function () {
     var _x161 = ["setenv", ["quote", name]];
     _x161.macro = join(["fn", args], body);
     var form = _x161;
-    eval(form);
+    compiler.eval(form);
     return(form);
   }}));
   setenv("defspecial", stash33({macro: function (name, args) {
@@ -243,7 +243,7 @@ var setup = function () {
     var _x168 = ["setenv", ["quote", name]];
     _x168.special = join(["fn", args], body);
     var form = join(_x168, keys(body));
-    eval(form);
+    compiler.eval(form);
     return(form);
   }}));
   setenv("defsym", stash33({macro: function (name, expansion) {
@@ -456,7 +456,7 @@ var setup = function () {
   }}));
   setenv("%compile-time", stash33({macro: function () {
     var forms = unstash(Array.prototype.slice.call(arguments, 0));
-    eval(join(["do"], forms));
+    compiler.eval(join(["do"], forms));
     return(undefined);
   }}));
   setenv("once", stash33({macro: function () {

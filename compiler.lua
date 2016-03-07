@@ -1003,7 +1003,7 @@ local function run(code)
     error(e .. " in " .. code)
   end
 end
-function eval(form)
+local function eval(form)
   local previous = target42
   target42 = "lua"
   _37result = nil

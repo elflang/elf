@@ -90,7 +90,7 @@
     (when (elf-file? arg)
       (= system.argv (cut system.argv 1))
       (load arg)
-      (system.exit)))
+      (return)))
   (let (pre ()
         input nil
         output nil

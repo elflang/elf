@@ -117,7 +117,7 @@ function elf_main()
     if elf_file63(arg) then
       system.argv = cut(system.argv, 1)
       load(arg)
-      system.exit()
+      return
     end
   end
   local pre = {}

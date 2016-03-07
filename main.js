@@ -98,7 +98,7 @@ elf_main = function () {
     if (elf_file63(arg)) {
       system.argv = cut(system.argv, 1);
       load(arg);
-      system.exit();
+      return;
     }
   }
   var pre = [];

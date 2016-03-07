@@ -1,8 +1,15 @@
 #!/bin/sh
 
+if [ ! -z "$VERBOSE" ]; then
+  set -x
+fi
+
 dir="$(pwd)"
-x="$(readlink -f "$0" 2>/dev/null || readlink "$0" 2>/dev/null || echo "$0")"
-case "$x" in ../*) x="$(dirname "$0")/${x}" ;; esac
+x="$(readlink -f "$0" 2>/dev/null || readlink "$0" 2>/dev/null)"
+case "$x" in
+  ../*) x="$(dirname "$0")/${x}" ;;
+     *) x="$0" ;;
+esac
 cd "$(dirname "$x")"
 cd ..
 home="$(pwd)"
@@ -73,17 +80,18 @@ case "$host" in
     host="$(readlink -f "$host" 2>/dev/null || readlink "$host" 2>/dev/null || echo "$host")"
   ;;
 esac
+export ELF_HOST="${host}"
 
 case "$host" in
     node*)
         code=main.js
-        export NODE_PATH="$NODE_PATH:${home}";;
+        export NODE_PATH="$NODE_PATH:${dir}:${home}";;
     *)
         code=main.lua
-        export LUA_PATH="$LUA_PATH;${home}/?.lua";;
+        export LUA_PATH="$LUA_PATH;${dir}/?.lua;${home}/?.lua";;
 esac
-export ELF_HOST="${host}"
 
+rlwrap=""
 if [ -z "$*" ]; then
   if [ -z "${NO_RLWRAP}" ]; then
     if [ -z "$(which rlwrap)" ]; then
@@ -103,59 +111,89 @@ if [ -z "$*" ]; then
         echo "Try installing it with:\n${cmd}"
       fi
     else
-      exec rlwrap -q'"' "${host}" "${home}/${code}"
+      rlwrap='rlwrap -q"'
     fi
   fi
-else
-  case "$1" in *.elf)
-    script="$1"
-    shift 1
-    path="$(dirname "$script")"
-    if [ ! -z "$path" ]; then
-      if [ -e "${path}/package.json" ]; then
-        if [ ! -z "$(cat "${path}/package.json" | grep "dependencies")" ]; then
-          if [ ! -d "${path}/node_modules" ]; then
-            if [ ! -z "$(which npm)" ]; then
-              echo "cd '${path}' && npm i"
-              cd "${path}" && npm i
-              cd "${dir}"
-            fi
+fi
+
+import () {
+  x="$1"
+  if [ ! -z "$x" ]; then
+    if [ -d "${x}" ]; then
+      case "$host" in
+        node*)
+          export NODE_PATH="$NODE_PATH:${x}";;
+        *)
+          export LUA_PATH="$LUA_PATH;${x}/?/?.lua;${x}/?/index.lua"
+      esac
+    fi
+  fi
+}
+
+case "$1" in *.elf)
+  path="$(dirname "$1")"
+  if [ ! -z "$path" ]; then
+    if [ -e "${path}/package.json" ]; then
+      if [ ! -z "$(cat "${path}/package.json" | grep "dependencies")" ]; then
+        if [ ! -d "${path}/node_modules" ]; then
+          if [ ! -z "$(which npm)" ]; then
+            echo "cd '${path}' && npm i"
+            cd "${path}" && npm i
+            cd "${dir}"
           fi
         fi
       fi
-      export NODE_PATH="$NODE_PATH:${path}/node_modules"
     fi
-    base="$(basename "$script" .elf)"
-    case "$base" in
-      *.js)     base="$(basename "$base" .js)";;
-      *.node)   base="$(basename "$base" .node)";;
-      *.lua)    base="$(basename "$base" .lua)";;
-      *.luajit) base="$(basename "$base" .luajit)";;
-      *.luvit)  base="$(basename "$base" .luvit)";;
-      *.ufo)    base="$(basename "$base" .ufo)";;
-    esac
-    base="${path}/${base}"
-    if [ -e "${base}.js" ]; then
-      if [ ! -s "${base}.js" ] || [ "$script" -nt "${base}.js" ]; then
-        "${host}" "${home}/${code}" -c "$script" -o "${base}.js" -t js
-      fi
-      case "$host" in node*)
-        script="${base}.js" ;;
-      esac
-    fi
-    if [ -e "${base}.lua" ]; then
-      if [ ! -s "${base}.lua" ] || [ "$script" -nt "${base}.lua" ]; then
-        "${host}" "${home}/${code}" -c "$script" -o "${base}.lua" -t lua
-      fi
-      case "$host" in
-        node*) ;;
-        *)
-        script="${base}.lua" ;;
-      esac
-    fi
-    exec "${host}" "${home}/${code}" "$script" "$@"
-    ;;
-  esac
-fi
+    import "${path}/node_modules"
+  fi
+  ;;
+esac
 
-exec "${host}" "${home}/${code}" "$@"
+import "${dir}/node_modules"
+import "/usr/local/lib/node_modules"
+import "/usr/lib/node_modules"
+
+case "$host" in
+    node*)
+      export NODE_PATH="$NODE_PATH:${dir}:${home}";;
+    *)
+      export LUA_PATH="$LUA_PATH;${dir}/?.lua;${home}/?.lua";;
+esac
+
+case "$1" in *.elf)
+  script="$1"
+  shift 1
+  base="$(basename "$script" .elf)"
+  case "$base" in
+    *.js)     base="$(basename "$base" .js)";;
+    *.node)   base="$(basename "$base" .node)";;
+    *.lua)    base="$(basename "$base" .lua)";;
+    *.luajit) base="$(basename "$base" .luajit)";;
+    *.luvit)  base="$(basename "$base" .luvit)";;
+    *.ufo)    base="$(basename "$base" .ufo)";;
+  esac
+  path="$(dirname "${script}")"
+  base="${path}/${base}"
+  if [ -e "${base}.js" ]; then
+    if [ ! -s "${base}.js" ] || [ "$script" -nt "${base}.js" ]; then
+      "${host}" "${home}/${code}" -c "$script" -o "${base}.js" -t js
+    fi
+    case "$host" in node*)
+      script="${base}.js" ;;
+    esac
+  fi
+  if [ -e "${base}.lua" ]; then
+    if [ ! -s "${base}.lua" ] || [ "$script" -nt "${base}.lua" ]; then
+      "${host}" "${home}/${code}" -c "$script" -o "${base}.lua" -t lua
+    fi
+    case "$host" in
+      node*) ;;
+      *)
+      script="${base}.lua" ;;
+    esac
+  fi
+  exec "${host}" "${home}/${code}" "$script" "$@"
+  ;;
+esac
+
+exec $rlwrap "${host}" "${home}/${code}" "$@"

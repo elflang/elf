@@ -222,7 +222,7 @@ function import33(module)
     local v = _l[k]
     add(e, {"def", k, {"get", "import%", {"quote", k}}})
   end
-  eval(e)
+  compiler.eval(e)
   local _do1 = import37
   import37 = nil
   return(_do1)

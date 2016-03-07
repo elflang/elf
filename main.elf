@@ -141,7 +141,7 @@
   (let e `(do)
     (each (k v) module
       (add e `(def ,k (get import% ',k))))
-    (eval e))
+    (compiler.eval e))
   (do1 import%
     (wipe import%)))
 

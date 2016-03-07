@@ -210,7 +210,7 @@ import33 = function (module) {
     var _k = _e1;
     add(e, ["def", _k, ["get", "import%", ["quote", _k]]]);
   }
-  eval(e);
+  compiler.eval(e);
   var _do1 = import37;
   delete import37;
   return(_do1);

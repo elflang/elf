@@ -1,4 +1,4 @@
-require("elf");
+require("elf.js");
 var reader = require("reader");
 var compiler = require("compiler");
 var passed = 0;

@@ -268,7 +268,7 @@
          (let ()
            ,@forms))))
 
-  (mac elf () `(require 'elf))
+  (mac elf () `(require (target js: "elf.js" lua: "elf")))
   (mac lib modules `(do ,@(xform modules `(def ,_ (require ',_)))))
   (mac use modules `(do ,@(xform modules `(var ,_ (require ',_)))))
 

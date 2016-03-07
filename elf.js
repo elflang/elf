@@ -447,7 +447,10 @@ var setup = function () {
     return(["when", ["nil?", x], ["=", x, "t"], join(["let", join()], forms)]);
   }}));
   setenv("elf", stash33({macro: function () {
-    return(["require", ["quote", "elf"]]);
+    var _x396 = ["target"];
+    _x396.lua = "\"elf\"";
+    _x396.js = "\"elf.js\"";
+    return(["require", _x396]);
   }}));
   setenv("lib", stash33({macro: function () {
     var modules = unstash(Array.prototype.slice.call(arguments, 0));

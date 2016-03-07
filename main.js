@@ -1,4 +1,4 @@
-require("elf");
+require("elf.js");
 reader = require("reader");
 compiler = require("compiler");
 system = require("system");

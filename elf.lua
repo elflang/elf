@@ -426,7 +426,10 @@ local function setup()
     return({"when", {"nil?", x}, {"=", x, "t"}, join({"let", join()}, forms)})
   end}))
   setenv("elf", stash33({macro = function ()
-    return({"require", {"quote", "elf"}})
+    local _x430 = {"target"}
+    _x430.lua = "\"elf\""
+    _x430.js = "\"elf.js\""
+    return({"require", _x430})
   end}))
   setenv("lib", stash33({macro = function (...)
     local modules = unstash({...})

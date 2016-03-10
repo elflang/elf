@@ -1,4 +1,4 @@
-.PHONY: all rebuild clean test
+.PHONY: all rebuild clean test release
 
 ELF_LUA  ?= luajit
 ELF_NODE ?= node
@@ -33,3 +33,15 @@ test: all test.js test.lua
 	@ELF_HOST=$(ELF_NODE) bin/elf test.js -e 'nil'
 	@echo lua:
 	@ELF_HOST=$(ELF_LUA) bin/elf test.lua -e 'nil'
+
+release:
+	@rm -f elf-0.tar.gz elf-0.zip
+	@mkdir -p elf/bin
+	@cp bin/elf-update elf/bin/
+	@tar cvzf elf-0.tar.gz elf/
+	@zip elf elf
+	@mv elf.zip elf-0.zip
+	@shasum -a 256 elf-0.tar.gz
+	@rm elf/bin/elf-update
+	@rmdir elf/bin
+	@rmdir elf

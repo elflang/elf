@@ -25,7 +25,11 @@ if [ -d "${home}" ]; then
     git clone 'https://github.com/elflang/elf' elf-master
     if [ -d elf-master ]; then
       rm -rf elf-master/.git
+      mv elf-master/bin/elf elf-master/bin/elf.tmp
+      mv elf-master/bin/elf-update elf-master/bin/elf-update.tmp
       cp -v -a -f elf-master/ "${home}/"
+      mv -f "${home}/bin/elf-update.tmp" "${home}/bin/elf-update"
+      mv -f "${home}/bin/elf.tmp" "${home}/bin/elf"
     fi
     rm -rf elf-master
     cd "${prev}"

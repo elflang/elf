@@ -5,10 +5,9 @@ if [ ! -z "$VERBOSE" ]; then
 fi
 
 dir="$(pwd)"
-x="$(readlink -f "$0" 2>/dev/null || readlink "$0" 2>/dev/null)"
+x="$(readlink -f "$0" 2>/dev/null || readlink "$0" 2>/dev/null || echo "$0")"
 case "$x" in
   ../*) x="$(dirname "$0")/${x}" ;;
-     *) x="$0" ;;
 esac
 home="$(cd "$(dirname "$x")" && cd .. && echo "$(pwd)")"
 if [ ! -d "${home}" ]; then

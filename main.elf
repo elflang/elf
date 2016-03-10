@@ -81,7 +81,11 @@
   (system.exit))
 
 (var elf-file? (path)
-  (str-ends? path ".elf"))
+  (or (str-ends? path ".elf")
+      (and (system.file-exists? path)
+           (whenlet s (system.read-file path)
+             (let bang (clip s 0 (search s "\n"))
+               (and (str-starts? bang "#!") (search bang "elf")))))))
 
 (var script-file? (path)
   (str-ends? path (cat "." (language))))

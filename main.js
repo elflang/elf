@@ -9,8 +9,8 @@ var eval_print = function (form) {
       try {
         return([true, compiler.eval(form)]);
       }
-      catch (_e2) {
-        return([false, _e2.message, _e2.stack]);
+      catch (_e9) {
+        return([false, _e9.message, _e9.stack]);
       }
     })();
     var ok = _id[0];
@@ -87,7 +87,27 @@ elf_usage = function () {
   return(system.exit());
 };
 var elf_file63 = function (path) {
-  return(str_ends63(path, ".elf"));
+  var _id2 = str_ends63(path, ".elf");
+  var _e3;
+  if (_id2) {
+    _e3 = _id2;
+  } else {
+    var _id3 = system["file-exists?"](path);
+    var _e5;
+    if (_id3) {
+      var s = system["read-file"](path);
+      var _e6;
+      if (s) {
+        var bang = clip(s, 0, search(s, "\n"));
+        _e6 = str_starts63(bang, "#!") && search(bang, "elf");
+      }
+      _e5 = _e6;
+    } else {
+      _e5 = _id3;
+    }
+    _e3 = _e5;
+  }
+  return(_e3);
 };
 var script_file63 = function (path) {
   return(str_ends63(path, "." + "js"));
@@ -189,25 +209,25 @@ str_ends63 = function (str, x) {
   }
 };
 import33 = function (module) {
-  var _e;
+  var _e7;
   if (typeof(module) === "string") {
-    _e = require(module);
+    _e7 = require(module);
   } else {
-    _e = module;
+    _e7 = module;
   }
-  import37 = _e;
+  import37 = _e7;
   var e = ["do"];
   var _l = module;
   var k = undefined;
   for (k in _l) {
     var v = _l[k];
-    var _e1;
+    var _e8;
     if (numeric63(k)) {
-      _e1 = parseInt(k);
+      _e8 = parseInt(k);
     } else {
-      _e1 = k;
+      _e8 = k;
     }
-    var _k = _e1;
+    var _k = _e8;
     add(e, ["def", _k, ["get", "import%", ["quote", _k]]]);
   }
   compiler.eval(e);

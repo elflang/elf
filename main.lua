@@ -106,7 +106,27 @@ function elf_usage()
   return(system.exit())
 end
 local function elf_file63(path)
-  return(str_ends63(path, ".elf"))
+  local _id2 = str_ends63(path, ".elf")
+  local _e4
+  if _id2 then
+    _e4 = _id2
+  else
+    local _id3 = system["file-exists?"](path)
+    local _e6
+    if _id3 then
+      local s = system["read-file"](path)
+      local _e7
+      if s then
+        local bang = clip(s, 0, search(s, "\n"))
+        _e7 = str_starts63(bang, "#!") and search(bang, "elf")
+      end
+      _e6 = _e7
+    else
+      _e6 = _id3
+    end
+    _e4 = _e6
+  end
+  return(_e4)
 end
 local function script_file63(path)
   return(str_ends63(path, "." .. "lua"))
@@ -208,13 +228,13 @@ function str_ends63(str, x)
   end
 end
 function import33(module)
-  local _e1
+  local _e8
   if type(module) == "string" then
-    _e1 = require(module)
+    _e8 = require(module)
   else
-    _e1 = module
+    _e8 = module
   end
-  import37 = _e1
+  import37 = _e8
   local e = {"do"}
   local _l = module
   local k = nil

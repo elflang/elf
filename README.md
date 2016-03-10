@@ -1,6 +1,102 @@
 Elf
 =
-Elf is a very small, self-hosted Lisp for Lua and JavaScript. It provides a flexible compilation environment with an extensible reader, macros, and extensible special forms, but otherwise attempts to match the target runtime environment as closely as possible. You can get started by running `bin/elf` on a machine with Node.js, Lua, or LuaJIT installed.
+Elf is a small, self-hosted Lisp for Lua and JavaScript. It provides a flexible compilation environment with an extensible reader, macros, and extensible special forms, but otherwise attempts to match the target runtime environment as closely as possible. You can get started by running `bin/elf` on a machine with Node.js, Lua, or LuaJIT installed.
+## Install
+You can install Elf using npm, Homebrew, or git. Once Elf is installed, `elf update` will overwrite Elf with the latest version.
+### via Node
+```
+npm i elf -g
+elf eg
+elf eg express
+elf eg notch
+```
+### via Homebrew
+```
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew update
+brew install luajit lua rlwrap
+brew install elflang/elf/elf 
+elf eg
+elf eg notch
+```
+### Unix and BSD
+Install the prerequisites:
+```
+# Ubuntu
+sudo apt-get install luajit rlwrap
+# RHEL
+sudo yum install luajit rlwrap
+# FreeBSD
+pkg install luajit
+pkg install rlwrap
+```
+Then install Elf using Git.
+### via Git
+```
+git clone https://github.com/elflang/elf ~/elf
+cd ~/elf
+# Run some demos
+bin/elf eg
+bin/elf eg notch
+```
+To install Elf globally, you can add `~/elf/bin` to your PATH:
+```
+cd ~/elf
+echo 'export PATH="${PATH}:${HOME}/elf/bin"' >> ~/.bash_profile"
+. ~/.bash_profile
+```
+Or you can symlink `~/elf/bin/elf` into a directory on your PATH:
+```
+mkdir -p ~/bin
+echo 'export PATH="${PATH}:${HOME}/bin"' >> ~/.bash_profile"
+. ~/.bash_profile
+cd ~/elf
+ln -s "$(pwd)/bin/elf" ~/bin/
+```
+One benefit of doing a global installation is that you can write executable Elf scripts:
+```
+cat <<'end' >./answer
+#!/usr/bin/env elf
+(print 42)
+end
+chmod +x ./answer
+./answer
+```
+## Demos
+Run `elf eg` to get a list of runnable examples. You can run one of them using `elf eg [name]`. The rest of the arguments will be passed to the program.
+```
+git clone https://github.com/elflang/elf
+cd elf
+
+# See which demos are available
+bin/elf eg
+
+# "Hello, world!"
+bin/elf eg hello.elf
+bin/elf eg hello.elf a b c
+bin/elf eg hello.elf ~/*
+
+# A program similar to `/bin/cat`
+bin/elf eg cat *.elf
+
+# Express.js demo (requires node)
+bin/elf eg express
+
+# Luvit demo (prompts to install luvit)
+bin/elf eg luvit
+y
+
+# Game engine demo (prompts to install ufo framework; worth the wait)
+bin/elf eg notch
+y
+```
+## Troubleshooting
+You can see debug output by setting `VERBOSE=1`:
+```
+VERBOSE=1 elf eg hello
+```
+To transform a list of questions into a list of answers, send them to `lelfjior@gmail.com`.
+# Tutorial
 ## Introduction
 Every piece of code in Elf is an expression, and expressions can be evaluated to give values. Elf has a few kinds of expressions that evaluate to themselves:
 ```

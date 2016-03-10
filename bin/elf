@@ -10,10 +10,18 @@ case "$x" in
   ../*) x="$(dirname "$0")/${x}" ;;
      *) x="$0" ;;
 esac
-cd "$(dirname "$x")"
-cd ..
-home="$(pwd)"
+home="$(cd "$(dirname "$x")" && cd .. && echo "$(pwd)")"
+if [ ! -d "${home}" ]; then
+  echo "elf dir not found" && exit 1
+fi
 cd "${dir}"
+
+if [ "$1" = "update" ]; then
+  if [ -e "${home}/bin/elf-update" ]; then
+    exec /bin/sh "${home}/bin/elf-update"
+    exit 0
+  fi
+fi
 
 if [ ! -z "${ELF_HOST}" ]
 then

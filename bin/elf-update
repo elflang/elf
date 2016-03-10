@@ -1,0 +1,39 @@
+#!/bin/sh
+
+if [ ! -z "$VERBOSE" ]; then
+  set -x
+fi
+
+dir="$(pwd)"
+x="$(readlink -f "$0" 2>/dev/null || readlink "$0" 2>/dev/null)"
+case "$x" in
+  ../*) x="$(dirname "$0")/${x}" ;;
+     *) x="$0" ;;
+esac
+home="$(cd "$(dirname "$x")" && cd .. && echo "$(pwd)")"
+if [ ! -d "${home}" ]; then
+  echo "elf dir not found" && exit 1
+fi
+cd "${dir}"
+
+cd /tmp
+
+if [ -d "${home}" ]; then
+  d="$(mktemp -d "elf-XXXXXXXX")"
+  prev="$(pwd)"
+  cd "${d}"
+  if [ "$?" = "0" ]; then
+    git clone 'https://github.com/elflang/elf' elf-master
+    if [ -d elf-master ]; then
+      rm -rf elf-master/.git
+      cp -v -a elf-master/ "${home}/"
+    fi
+    rm -rf elf-master
+    cd "${prev}"
+    if [ "$?" = "0" ]; then
+      if [ -d "${d}" ]; then
+        rm -rf "${d}"
+      fi
+    fi
+  fi
+fi

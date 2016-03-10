@@ -17,14 +17,80 @@ home="$(cd "$(dirname "$x")" && cd .. && echo "$(pwd)")"
 if [ ! -d "${home}" ]; then
   echo "elf dir not found" && exit 1
 fi
+elf="${home}/bin/elf"
 cd "${dir}"
 
-if [ "$1" = "update" ]; then
-  if [ -e "${home}/bin/elf-update" ]; then
+case "$1" in
+  path|home|root)
+    echo "${home}"
+    exit 0
+  ;;
+
+  which)
+    echo "${elf}"
+    exit 0
+  ;;
+
+  version|--version|-v)
+    v="$(cat "${home}/package.json" | grep version)"
+    if [ ! -z "$(which sed)" ]; then
+      v="$(echo "$v" | sed -n -e 's/^.*"\([0-9.]*\)".*/\1/p')"
+    fi
+    echo "$v"
+    exit 0
+  ;;
+
+  examples|example|eg|ex)
+    xs="$(cd "${home}" && find . -type f | grep examples | grep "elf$" | grep -v '/\.' | awk '{print substr($0,3)}')"
+    if [ ! -z "$2" ]; then
+      x="$(echo "${xs}" | grep "$2")"
+      n="$(echo "$x" | wc -l | sed -e 's/ //g')"
+      if [ "$n" = "1" ] && [ ! -z "$x" ]; then
+        shift 1
+        shift 1
+        exec "${elf}" "${home}/${x}" "$@"
+        exit 0
+      fi
+      case "$n" in
+        "0")
+          echo "No such example '$2'"
+          echo "You can run \`elf eg\` to see a list of examples"
+          exit 1
+        ;;
+        *)
+          echo "# Which of these did you want to run?"
+          echo "$x"
+          exit 1
+        ;;
+      esac
+    else
+      cat<<end
+# You can use \`elf eg foo\` to run an example program whose name contains "foo"
+
+$(echo "$xs" | xargs -n 1 -I{} echo " bin/elf {}")
+
+# Express.js demo
+elf eg express
+
+# Game engine demo
+elf eg notch
+
+# Luvit demo
+elf eg http-client
+end
+      exit 0
+    fi
+  ;;
+
+  update)
+    if [ ! -e "${home}/bin/elf-update" ]; then
+      echo "${home}/bin/elf-update not found"
+      exit 1
+    fi
     exec /bin/sh "${home}/bin/elf-update"
     exit 0
-  fi
-fi
+  ;;
+esac
 
 if [ ! -z "${ELF_HOST}" ]
 then
@@ -44,15 +110,19 @@ if [ -z "$host" ]
 then
   if luajit -v > /dev/null 2>&1
   then
-      host=luajit
+    host=luajit
   elif lua -v > /dev/null 2>&1
   then
-      host=lua
+    host=lua
   elif node -v > /dev/null 2>&1
   then
-      host=node
+    host=node
   else
-      echo "no host found" && exit 1
+    echo "no host found"
+    echo "install luajit, lua, or node, e.g."
+    echo "  brew install luajit"
+    echo "  sudo apt-get install luajit"
+    exit 1
   fi
 fi
 

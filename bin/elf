@@ -1,14 +1,17 @@
 #!/bin/sh
 
 if [ ! -z "$VERBOSE" ]; then
+  echo "$@"
+  printf "%s is '%s'\n" "\$*" "$*"
+  printf "%s is '%s'\n" "\$0" "$0"
+  printf "%s is '%s'\n" "pwd" "$(pwd)"
   set -x
 fi
 
 dir="$(pwd)"
-x="$(readlink -f "$0" 2>/dev/null || readlink "$0" 2>/dev/null)"
+x="$(readlink -f "$0" 2>/dev/null || readlink "$0" 2>/dev/null || echo "$0")"
 case "$x" in
   ../*) x="$(dirname "$0")/${x}" ;;
-     *) x="$0" ;;
 esac
 home="$(cd "$(dirname "$x")" && cd .. && echo "$(pwd)")"
 if [ ! -d "${home}" ]; then

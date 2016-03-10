@@ -57,9 +57,12 @@ case "$host" in
   luvit*)
     host="$(which "$host")"
     if [ -z "$host" ]; then
-      if [ ! -d "${home}/bin/luvit" ]; then
+      luvit="${home}/bin/luvit"
+      luvit="$(readlink -f "$luvit" 2>/dev/null || readlink "$luvit" 2>/dev/null || echo "$luvit")"
+      if [ ! -d "$luvit" ]; then
         read -r -p "luvit not found. Install it to '${home}/bin/luvit'? [y/N] " response
-        if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        if [ "$response" = "y" ]; then
+          rm -f "${home}/bin/luvit"
           echo git clone https://github.com/luvit/luvit "${home}/bin/luvit"
           git clone 'https://github.com/luvit/luvit' "${home}/bin/luvit" && cd "${home}/bin/luvit" && make
           cd "${dir}"
@@ -74,9 +77,12 @@ case "$host" in
   ufo*)
     host="$(which "$host")"
     if [ -z "$host" ]; then
-      if [ ! -d "${home}/bin/ufo" ]; then
+      ufo="${home}/bin/ufo"
+      ufo="$(readlink -f "$ufo" 2>/dev/null || readlink "$ufo" 2>/dev/null || echo "$ufo")"
+      if [ ! -d "$ufo" ]; then
         read -r -p "ufo not found. Install it to '${home}/bin/ufo'? [y/N] " response
-        if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        if [ "$response" = "y" ]; then
+          rm -f "${home}/bin/ufo"
           echo git clone https://github.com/malkia/ufo "${home}/bin/ufo"
           git clone 'https://github.com/malkia/ufo' "${home}/bin/ufo"
         else
@@ -86,17 +92,29 @@ case "$host" in
       host="${home}/bin/ufo/luajit"
     fi
     host="$(readlink -f "$host" 2>/dev/null || readlink "$host" 2>/dev/null || echo "$host")"
+    # add ufo's precompiled libraries to the shared library search path
+    x="$host"
+    x="$(dirname "$x")"
+    x="$(cd "$x" && echo "$(pwd)")"
+    libpath="$x"
+    if [ ! -z "${libpath}" ]; then
+      export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${dir}:${libpath}"
+      export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${dir}:${libpath}"
+    fi
   ;;
 esac
-export ELF_HOST="${host}"
+
+if [ -z "$host" ]; then
+  echo "no host found" && exit 1
+fi
 
 case "$host" in
     node*)
         code=main.js
-        export NODE_PATH="$NODE_PATH:${dir}:${home}";;
+        export NODE_PATH="${NODE_PATH}:${dir}:${home}";;
     *)
         code=main.lua
-        export LUA_PATH="$LUA_PATH;${dir}/?.lua;${home}/?.lua";;
+        export LUA_PATH="${LUA_PATH};${dir}/?.lua;${home}/?.lua";;
 esac
 
 rlwrap=""
@@ -204,4 +222,5 @@ case "$1" in *.elf)
   ;;
 esac
 
+export ELF_HOST="${host}"
 exec $rlwrap "${host}" "${home}/${code}" "$@"

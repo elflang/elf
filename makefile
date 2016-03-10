@@ -18,7 +18,7 @@ rebuild:
 	@make -B test
 
 clean:
-	@sh -c 'for x in *.js *.lua; do git checkout $$x; done'
+	@sh -c 'for x in *.js *.lua; do git checkout $$x; done || exit 0'
 
 %.js : %.elf
 	@echo $@
@@ -45,3 +45,4 @@ release:
 	@rm elf/bin/elf-update
 	@rmdir elf/bin
 	@rmdir elf
+	@ls -1 elf-0.*

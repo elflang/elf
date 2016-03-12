@@ -11,7 +11,11 @@ fi
 dir="$(pwd)"
 x="$(readlink -f "$0" 2>/dev/null || readlink "$0" 2>/dev/null || echo "$0")"
 case "$x" in
-  ../*) x="$(dirname "$0")/${x}" ;;
+  ../*)
+  case "$0" in
+    ../*) ;;
+       *) x="$(dirname "$0")/${x}" ;;
+  esac
 esac
 home="$(cd "$(dirname "$x")" && cd .. && echo "$(pwd)")"
 if [ ! -d "${home}" ]; then

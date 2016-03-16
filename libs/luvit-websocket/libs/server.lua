@@ -56,11 +56,11 @@ function decodeMessage(buf)
     length = bytes[2] - 128
     bytes[2] = nil
     offset = 2
-  elseif bytes[2] == 126 then
+  elseif bytes[2]-128 == 126 then
     length = tonumber(string.format("%x%x", bytes[3], bytes[4]), 16)
     bytes[2] = nil    bytes[3] = nil    bytes[4] = nil
     offset = 2 + 2
-  elseif bytes[2] == 127 then
+  elseif bytes[2]-128 == 127 then
     length = tonumber(string.format("%x%x%x%x%x%x%x%x", bytes[3], bytes[4], bytes[5], bytes[6], bytes[7], bytes[8], bytes[9], bytes[10]), 16)
     bytes[2] = nil  bytes[3] = nil  bytes[4] = nil  bytes[5] = nil    bytes[6] = nil    bytes[7] = nil  bytes[8] = nil    bytes[9] = nil    bytes[10] = nil
     offset = 2 + 8
@@ -118,7 +118,7 @@ return function(port)
 
   this.clients = {}
 
-  net.createServer(function (client)
+  this.server = net.createServer(function (client)
     client._startup = true
     client._buffer = ""
     client:on("data", function(c)
@@ -183,6 +183,10 @@ return function(port)
         c = client._buffer
       end
 
+      if this.verbose then
+        print("Websocket Server received " .. #c  .. " bytes")
+      end
+
       if c:sub(1, 3) == "GET" and string.find(c, "\r\n\r\n", 0, true) then -- Handshake
         local lines = c:split('\r\n')
         local title = lines[1]
@@ -216,7 +220,7 @@ return function(port)
         end
 
       elseif client._startup == false then
-        local message, v = decodeMessage(c)
+        local message, v = decodeMessage(c, this.debug)
         if message == 2 then
           this:call("disconnect", {client})
           this.clients[client.id or 0] = nil
@@ -229,7 +233,9 @@ return function(port)
         end
       end
     end)
-  end):listen(port)
+  end)
+
+  this.server:listen(port)
 
   print("WebSocket Server listening on port " .. port)
 

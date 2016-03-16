@@ -54,10 +54,12 @@
       (in.setEncoding 'utf8)
       (in.on 'data rep1)))
   (%lua
-    (while t
-      (let s (io.read)
-        (if s (rep1 (cat s "\n"))
-          (break))))))
+    (if process
+        (process.stdin.on process.stdin 'data rep1)
+      (while t
+        (let s (io.read)
+          (if s (rep1 (cat s "\n"))
+            (break)))))))
 
 (var skip-shebang (s)
   (when s

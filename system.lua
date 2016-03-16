@@ -36,8 +36,17 @@ local path_separator = char(_G.package.config or "/", 0)
 local function get_environment_variable(name)
   return(os.getenv(name))
 end
-local function write(x)
-  return(io.write(x))
+local write
+if uv then
+  write = function (_)
+    uv.write(process.stdout.handle, _)
+    return(nil)
+  end
+else
+  write = function (_)
+    io.write(_)
+    return(nil)
+  end
 end
 local function exit(code)
   return(os.exit(code))

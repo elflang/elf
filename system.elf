@@ -63,8 +63,10 @@
   (var get-environment-variable (name)
     (os.getenv name))
 
-  (var write (x)
-    (io.write x))
+  (var write)
+  (if uv
+    (= write [do (uv.write process.stdout.handle _) nil])
+    (= write [do (io.write _) nil]))
 
   (var exit (code)
     (os.exit code))

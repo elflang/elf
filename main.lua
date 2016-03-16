@@ -82,12 +82,16 @@ local function repl()
     end
   end
   system.write("> ")
-  while true do
-    local s = io.read()
-    if s then
-      rep1(s .. "\n")
-    else
-      break
+  if process then
+    return(process.stdin.on(process.stdin, "data", rep1))
+  else
+    while true do
+      local s = io.read()
+      if s then
+        rep1(s .. "\n")
+      else
+        break
+      end
     end
   end
 end

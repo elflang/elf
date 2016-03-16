@@ -227,7 +227,7 @@ import () {
         node*)
           export NODE_PATH="$NODE_PATH:${x}";;
         *)
-          export LUA_PATH="$LUA_PATH;${x}/?/?.lua;${x}/?/index.lua"
+          export LUA_PATH="$LUA_PATH;${x}/?/?.lua;${x}/?/init.lua"
       esac
     fi
   fi
@@ -258,10 +258,12 @@ import "/usr/lib/node_modules"
 
 case "$host" in
     node*)
-      export NODE_PATH="$NODE_PATH:${dir}:${home}";;
+      export NODE_PATH="$NODE_PATH:${dir}:${home}:${home}/libs";;
     *)
-      export LUA_PATH="$LUA_PATH;${dir}/?.lua;${home}/?.lua";;
+      export LUA_PATH="$LUA_PATH;${dir}/?.lua;${home}/?.lua;${home}/libs/?.lua";;
 esac
+export ELF_HOST="${host}"
+export ELF_HOME="${home}"
 
 case "$1" in *.elf)
   script="$1"
@@ -299,5 +301,4 @@ case "$1" in *.elf)
   ;;
 esac
 
-export ELF_HOST="${host}"
 exec $rlwrap ${host} "${home}/${code}" "$@"

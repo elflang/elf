@@ -1,0 +1,55 @@
+{
+  "name": "luvit-websocket",
+  "version": "0.0.1",
+  "description": "WebSocket API for luvit",
+  "keywords": [
+    "luvit",
+    "utils",
+    "api",
+    "websocket",
+    "socket"
+  ],
+  "homepage": "http://b42.in/",
+  "bugs": {
+    "url": "https://github.com/b42-coding/luvit-websocket/issues",
+    "email": "admin@i-zed.net"
+  },
+  "author": {
+    "name": "Niklas Kühtmann",
+    "email": "admin@i-zed.net",
+    "url": "http://i-zed.net/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b42-coding/luvit-websocket.git"
+  },
+  "main": "init.lua",
+  "scripts": {
+    "start": "luvit init.lua",
+    "test": "luvit test/init.lua"
+  },
+  "license": "APACHE2",
+  "dependencies": {},
+  "gitHead": "d6390a37def512b92c17dfce9774537a5d89754c",
+  "_id": "luvit-websocket@0.0.1",
+  "_shasum": "1464ea54af0b25e275878f1e6212eb210e2fb8e6",
+  "_from": "luvit-websocket@*",
+  "_npmVersion": "1.4.23",
+  "_npmUser": {
+    "name": "ized",
+    "email": "admin@i-zed.net"
+  },
+  "maintainers": [
+    {
+      "name": "ized",
+      "email": "admin@i-zed.net"
+    }
+  ],
+  "dist": {
+    "shasum": "1464ea54af0b25e275878f1e6212eb210e2fb8e6",
+    "tarball": "http://registry.npmjs.org/luvit-websocket/-/luvit-websocket-0.0.1.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/luvit-websocket/-/luvit-websocket-0.0.1.tgz",
+  "readme": "ERROR: No README data found!"
+}

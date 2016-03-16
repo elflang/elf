@@ -295,9 +295,9 @@ case "$1" in *.elf)
       script="${base}.lua" ;;
     esac
   fi
-  exec "${host}" "${home}/${code}" "$script" "$@"
+  exec ${host} "${home}/${code}" "$script" "$@"
   ;;
 esac
 
 export ELF_HOST="${host}"
-exec $rlwrap "${host}" "${home}/${code}" "$@"
+exec $rlwrap ${host} "${home}/${code}" "$@"

@@ -144,7 +144,7 @@
                 (print code)
               (system.write-file output code)))))))
 
-;; Utilities
+;; utilities
 
 (def str-starts? (str x)
   (if (> #x #str) false

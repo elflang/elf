@@ -54,7 +54,7 @@ var eval_print = function (form) {
 var rep = function (s) {
   return(eval_print(reader["read-string"](s)));
 };
-var repl = function () {
+repl = function () {
   var buf = "";
   var rep1 = function (s) {
     buf = buf + s;

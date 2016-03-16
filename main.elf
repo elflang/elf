@@ -39,7 +39,7 @@
 (var rep (s)
   (eval-print (reader.read-string s)))
 
-(var repl ()
+(def repl ()
   (let buf ""
     (var rep1 (s)
       (cat! buf s)

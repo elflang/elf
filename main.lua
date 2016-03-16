@@ -69,7 +69,7 @@ end
 local function rep(s)
   return(eval_print(reader["read-string"](s)))
 end
-local function repl()
+function repl()
   local buf = ""
   local function rep1(s)
     buf = buf .. s

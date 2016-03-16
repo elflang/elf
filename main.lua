@@ -1,28 +1,53 @@
 if setfenv then
   _G._require = require
   setfenv(1, setmetatable({}, {__newindex = _G, __index = _G}))
+  luvit63 = not( require == _G._require)
   require = _G._require
 end
 require("elf")
 reader = require("reader")
 compiler = require("compiler")
 system = require("system")
+local function to_string(l)
+  local s = ""
+  local sep
+  local _x = l
+  local _n = #(_x)
+  local _i = 0
+  while _i < _n do
+    local x = _x[_i + 1]
+    if sep then
+      s = s .. sep
+    else
+      sep = " "
+    end
+    s = s .. str(x)
+    _i = _i + 1
+  end
+  return(s)
+end
+if pp == nil then
+  function pp(...)
+    local xs = unstash({...})
+    return(print(to_string(xs)))
+  end
+end
 local function eval_print(form)
   compiler.reset()
   if not( form == nil) then
-    local _x3 = nil
+    local _x5 = nil
     local _msg1 = nil
     local _trace1 = nil
     local _e
     if xpcall(function ()
-      _x3 = compiler.eval(form)
-      return(_x3)
+      _x5 = compiler.eval(form)
+      return(_x5)
     end, function (_)
       _msg1 = clip(_, search(_, ": ") + 2)
       _trace1 = debug.traceback()
       return(_trace1)
     end) then
-      _e = {true, _x3}
+      _e = {true, _x5}
     else
       _e = {false, _msg1, _trace1}
     end
@@ -37,7 +62,7 @@ local function eval_print(form)
     thatexpr = form
     that = x
     if not( x == nil) then
-      return(print(str(x)))
+      return(pp(x))
     end
   end
 end
@@ -187,13 +212,13 @@ function elf_main()
     end
     i = i + 1
   end
-  local _x8 = pre
-  local _n = #(_x8)
-  local _i = 0
-  while _i < _n do
-    local file = _x8[_i + 1]
+  local _x10 = pre
+  local _n1 = #(_x10)
+  local _i1 = 0
+  while _i1 < _n1 do
+    local file = _x10[_i1 + 1]
     run_file(file)
-    _i = _i + 1
+    _i1 = _i1 + 1
   end
   if input == nil then
     if expr then
@@ -247,7 +272,7 @@ function import33(module)
   import37 = nil
   return(_do1)
 end
-if _x13 == nil then
-  _x13 = true
+if _x15 == nil then
+  _x15 = true
   elf_main()
 end

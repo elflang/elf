@@ -5,11 +5,23 @@
   (when setfenv
     (assign _G._require require)
     (setfenv 1 (setmetatable (obj) (obj __newindex: _G __index: _G)))
+    (assign luvit? (~is require _G._require))
     (assign require _G._require)))
 
 (elf)
 
 (lib reader compiler system)
+
+(var to-string (l)
+  (with s ""
+    (var sep)
+    (step x l
+      (if sep (cat! s sep) (= sep " "))
+      (cat! s (str x)))))
+
+(when (nil? pp)
+  (def pp xs
+    (print (to-string xs))))
 
 (var eval-print (form)
   (compiler.reset)
@@ -22,7 +34,7 @@
       (def thatexpr form)
       (def that x)
       (unless (nil? x)
-        (print (str x))))))
+        (pp x)))))
 
 (var rep (s)
   (eval-print (reader.read-string s)))

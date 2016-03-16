@@ -2,6 +2,30 @@ require("elf.js");
 reader = require("reader");
 compiler = require("compiler");
 system = require("system");
+var to_string = function (l) {
+  var s = "";
+  var sep;
+  var _x = l;
+  var _n = _x.length || 0;
+  var _i = 0;
+  while (_i < _n) {
+    var x = _x[_i];
+    if (sep) {
+      s = s + sep;
+    } else {
+      sep = " ";
+    }
+    s = s + str(x);
+    _i = _i + 1;
+  }
+  return(s);
+};
+if (typeof(pp) === "undefined" || pp === null) {
+  pp = function () {
+    var xs = unstash(Array.prototype.slice.call(arguments, 0));
+    return(print(to_string(xs)));
+  };
+}
 var eval_print = function (form) {
   compiler.reset();
   if (!( typeof(form) === "undefined" || form === null)) {
@@ -23,7 +47,7 @@ var eval_print = function (form) {
     thatexpr = form;
     that = x;
     if (!( typeof(x) === "undefined" || x === null)) {
-      return(print(str(x)));
+      return(pp(x));
     }
   }
 };
@@ -168,13 +192,13 @@ elf_main = function () {
     }
     i = i + 1;
   }
-  var _x4 = pre;
-  var _n = _x4.length || 0;
-  var _i = 0;
-  while (_i < _n) {
-    var file = _x4[_i];
+  var _x5 = pre;
+  var _n1 = _x5.length || 0;
+  var _i1 = 0;
+  while (_i1 < _n1) {
+    var file = _x5[_i1];
     run_file(file);
-    _i = _i + 1;
+    _i1 = _i1 + 1;
   }
   if (typeof(input) === "undefined" || input === null) {
     if (expr) {
@@ -235,7 +259,7 @@ import33 = function (module) {
   delete import37;
   return(_do1);
 };
-if (typeof(_x9) === "undefined" || _x9 === null) {
-  _x9 = true;
+if (typeof(_x10) === "undefined" || _x10 === null) {
+  _x10 = true;
   elf_main();
 }

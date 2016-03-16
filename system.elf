@@ -33,6 +33,14 @@
 
 (%lua
 
+  (when luvit?
+    (def uv (require 'uv))
+    (def luvi (require 'luvi))
+    (def pp (require 'pretty-print).prettyPrint)
+    (def utils (require 'utils))
+    (def luvit-require (path file)
+      (require 'require)(path)(file)))
+
   (var read-file (path)
     (let |f,e| (io.open path)
       (unless f (error e))
@@ -50,7 +58,7 @@
       (if (~nil? f) (f.close f))
       (~nil? f)))
 
-  (var path-separator (char _G.package.config 0))
+  (var path-separator (char (or _G.package.config "/") 0))
 
   (var get-environment-variable (name)
     (os.getenv name))

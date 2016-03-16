@@ -1,3 +1,12 @@
+if luvit63 then
+  uv = require("uv")
+  luvi = require("luvi")
+  pp = require("pretty-print").prettyPrint
+  utils = require("utils")
+  function luvit_require(path, file)
+    return(require("require")(path)(file))
+  end
+end
 local function read_file(path)
   local f,e = io.open(path)
   if not f then
@@ -23,7 +32,7 @@ local function file_exists63(path)
   end
   return(not( f == nil))
 end
-local path_separator = char(_G.package.config, 0)
+local path_separator = char(_G.package.config or "/", 0)
 local function get_environment_variable(name)
   return(os.getenv(name))
 end

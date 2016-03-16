@@ -1,0 +1,15 @@
+#!/usr/bin/env elf
+
+(var ws require("luvit-websocket").createServer(31820))
+
+(ws.on ws "connect"
+  [pp "Connected:" _])
+
+(ws.on ws "disconnect"
+  [pp "Disconnected:" _])
+
+(ws.on ws "data"
+  (fn (client data)
+    (pp "Data:" client data)))
+
+

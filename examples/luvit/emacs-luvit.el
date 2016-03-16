@@ -27,7 +27,7 @@
   ;(message "ws frame: %S" string)
   (condition-case err
     (reply (eval-string string))
-    (reply err)))
+    (error (reply (list "error" err)))))
 
 (setq ws--client
   (websocket-open (format "ws://localhost:%d" ws--port)

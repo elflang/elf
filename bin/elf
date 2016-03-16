@@ -258,9 +258,9 @@ import "/usr/lib/node_modules"
 
 case "$host" in
     node*)
-      export NODE_PATH="$NODE_PATH:${dir}:${home}:${home}/libs";;
+      export NODE_PATH="$NODE_PATH:${dir}:${home}:${home}/lib";;
     *)
-      export LUA_PATH="$LUA_PATH;${dir}/?.lua;${home}/?.lua;${home}/libs/?.lua";;
+      export LUA_PATH="$LUA_PATH;${dir}/?.lua;${home}/?.lua;${home}/lib/?.lua";;
 esac
 export ELF_HOST="${host}"
 export ELF_HOME="${home}"

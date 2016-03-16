@@ -126,10 +126,17 @@ var parse_index = function (a, b) {
     return(["at", b, n]);
   }
 };
-var parse_access = function (str) {
-  return(reduce(parse_index, rev(split(str, "."))));
+var parse_access = function (str, prev) {
+  var _e2;
+  if (prev) {
+    _e2 = [prev];
+  } else {
+    _e2 = [];
+  }
+  var parts = _e2;
+  return(reduce(parse_index, rev(join(parts, split(str, ".")))));
 };
-var read_atom = function (s) {
+var read_atom = function (s, basic63) {
   var str = "";
   var dot63 = false;
   while (true) {
@@ -160,14 +167,18 @@ var read_atom = function (s) {
             if (str === "-inf") {
               return(-inf);
             } else {
-              var n = maybe_number(str);
-              if (real63(n)) {
-                return(n);
+              if (basic63) {
+                return(str);
               } else {
-                if (dot63 && valid_access63(str)) {
-                  return(parse_access(str));
+                var n = maybe_number(str);
+                if (real63(n)) {
+                  return(n);
                 } else {
-                  return(str);
+                  if (dot63 && valid_access63(str)) {
+                    return(parse_access(str));
+                  } else {
+                    return(str);
+                  }
                 }
               }
             }
@@ -216,11 +227,11 @@ var read_next = function (s, prev, ws63) {
     if (! peek_char(s)) {
       return(s.more || eof);
     } else {
-      var x = read_atom(s);
+      var x = read_atom(s, true);
       if (x === eof || x === s.more) {
         return(x);
       } else {
-        return(read_next(s, parse_index(x, prev)));
+        return(read_next(s, parse_access(x, prev)));
       }
     }
   } else {
@@ -228,11 +239,11 @@ var read_next = function (s, prev, ws63) {
       if (ws63) {
         return(prev);
       } else {
-        var _x15 = read_list(s, ")");
-        if (_x15 === s.more) {
-          return(_x15);
+        var _x16 = read_list(s, ")");
+        if (_x16 === s.more) {
+          return(_x16);
         } else {
-          return(read_next(s, join([prev], _x15), skip_non_code(s)));
+          return(read_next(s, join([prev], _x16), skip_non_code(s)));
         }
       }
     } else {
@@ -262,13 +273,13 @@ ontree = function (f, l) {
       var _i = undefined;
       for (_i in _l) {
         var x = _l[_i];
-        var _e2;
+        var _e3;
         if (numeric63(_i)) {
-          _e2 = parseInt(_i);
+          _e3 = parseInt(_i);
         } else {
-          _e2 = _i;
+          _e3 = _i;
         }
-        var __i = _e2;
+        var __i = _e3;
         var _y = ontree(f, x, stash33({skip: skip}));
         if (_y) {
           return(_y);

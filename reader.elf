@@ -93,10 +93,11 @@
         `(get ,b (quote ,a))
       `(at ,b ,n))))
 
-(var parse-access (str)
-  (reduce parse-index (rev (split str "."))))
+(var parse-access (str prev)
+  (let parts (if prev (list prev) ())
+    (reduce parse-index (rev (join parts (split str "."))))))
 
-(var read-atom (s)
+(var read-atom (s basic?)
   (let (str "" dot? false)
     (while t
       (let c (peek-char s)
@@ -110,6 +111,7 @@
         (is str "-nan") nan
         (is str "inf") inf
         (is str "-inf") -inf
+        basic? str
       (let n (maybe-number str)
         (if (real? n) n
             (and dot? (valid-access? str))
@@ -139,9 +141,11 @@
             (skip-non-code s)
             (if (~peek-char s)
                 (or s.more eof)
-              (let x (read-atom s)
+                ; when reading e.g. "(list '(a b) 'c).0.1", the t
+                ; parameter avoids parsing "0.1" as a number.
+              (let x (read-atom s t)
                 (if (or (is x eof) (is x s.more)) x
-                  (read-next s (parse-index x prev))))))
+                  (read-next s (parse-access x prev))))))
     "(" (if ws? prev
           (let x (read-list s ")")
             (if (is x s.more) x

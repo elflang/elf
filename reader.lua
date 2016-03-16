@@ -126,10 +126,17 @@ local function parse_index(a, b)
     return({"at", b, n})
   end
 end
-local function parse_access(str)
-  return(reduce(parse_index, rev(split(str, "."))))
+local function parse_access(str, prev)
+  local _e2
+  if prev then
+    _e2 = {prev}
+  else
+    _e2 = {}
+  end
+  local parts = _e2
+  return(reduce(parse_index, rev(join(parts, split(str, ".")))))
 end
-local function read_atom(s)
+local function read_atom(s, basic63)
   local str = ""
   local dot63 = false
   while true do
@@ -160,14 +167,18 @@ local function read_atom(s)
             if str == "-inf" then
               return(-inf)
             else
-              local n = maybe_number(str)
-              if real63(n) then
-                return(n)
+              if basic63 then
+                return(str)
               else
-                if dot63 and valid_access63(str) then
-                  return(parse_access(str))
+                local n = maybe_number(str)
+                if real63(n) then
+                  return(n)
                 else
-                  return(str)
+                  if dot63 and valid_access63(str) then
+                    return(parse_access(str))
+                  else
+                    return(str)
+                  end
                 end
               end
             end
@@ -216,11 +227,11 @@ local function read_next(s, prev, ws63)
     if not peek_char(s) then
       return(s.more or eof)
     else
-      local x = read_atom(s)
+      local x = read_atom(s, true)
       if x == eof or x == s.more then
         return(x)
       else
-        return(read_next(s, parse_index(x, prev)))
+        return(read_next(s, parse_access(x, prev)))
       end
     end
   else
@@ -228,11 +239,11 @@ local function read_next(s, prev, ws63)
       if ws63 then
         return(prev)
       else
-        local _x16 = read_list(s, ")")
-        if _x16 == s.more then
-          return(_x16)
+        local _x17 = read_list(s, ")")
+        if _x17 == s.more then
+          return(_x17)
         else
-          return(read_next(s, join({prev}, _x16), skip_non_code(s)))
+          return(read_next(s, join({prev}, _x17), skip_non_code(s)))
         end
       end
     else

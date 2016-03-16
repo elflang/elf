@@ -1,4 +1,4 @@
-local path = luvi.path.join(system.getenv("ELF_HOME"), "libs", "luvit-websocket", "libs")
+local path = luvi.path.join(system.getenv("ELF_HOME"), "lib", "luvit-websocket", "libs")
 local r = require("require")(path)
 return {
   createServer = r("server"),

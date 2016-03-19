@@ -5,8 +5,8 @@ setenv("defreader", stash33({macro: function (_x6) {
   var body = cut(_r1, 0);
   return(["=", ["get", "read-table", char], join(["fn", [s]], body)]);
 }}));
-var delimiters = {"(": true, ")": true, ";": true, "\n": true, "}": true, "]": true, "{": true, "[": true};
-var whitespace = {" ": true, "\n": true, "\t": true};
+var delimiters = {"\r": true, ";": true, "{": true, "(": true, ")": true, "}": true, "]": true, "\n": true, "[": true};
+var whitespace = {"\r": true, " ": true, "\n": true, "\t": true};
 var stream = function (str, more) {
   return({more: more, pos: 0, len: str.length || 0, string: str});
 };

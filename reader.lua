@@ -5,8 +5,8 @@ setenv("defreader", stash33({macro = function (_x6, ...)
   local body = cut(_r1, 0)
   return({"=", {"get", "read-table", char}, join({"fn", {s}}, body)})
 end}))
-local delimiters = {["("] = true, [")"] = true, [";"] = true, ["\n"] = true, ["}"] = true, ["]"] = true, ["{"] = true, ["["] = true}
-local whitespace = {[" "] = true, ["\n"] = true, ["\t"] = true}
+local delimiters = {["\r"] = true, [";"] = true, ["{"] = true, ["("] = true, [")"] = true, ["}"] = true, ["]"] = true, ["\n"] = true, ["["] = true}
+local whitespace = {["\r"] = true, [" "] = true, ["\n"] = true, ["\t"] = true}
 local function stream(str, more)
   return({more = more, pos = 0, len = #(str), string = str})
 end

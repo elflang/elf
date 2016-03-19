@@ -3,8 +3,8 @@
 (mac defreader ((char s) rest: body)
   `(= (get read-table ,char) (fn (,s) ,@body)))
 
-(var delimiters (set-of "(" ")" "[" "]" "{" "}" ";" "\n"))
-(var whitespace (set-of " " "\t" "\n"))
+(var delimiters (set-of "(" ")" "[" "]" "{" "}" ";" "\r" "\n"))
+(var whitespace (set-of " " "\t" "\r" "\n"))
 
 (var stream (str more)
   (obj pos: 0 string: str len: #str more: more))

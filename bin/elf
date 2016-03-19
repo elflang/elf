@@ -141,7 +141,8 @@ case "$host" in
         if [ "$response" = "y" ]; then
           rm -f "${home}/bin/luvit"
           echo git clone https://github.com/luvit/luvit "${home}/bin/luvit"
-          git clone 'https://github.com/luvit/luvit' "${home}/bin/luvit" && cd "${home}/bin/luvit" && make
+          # git clone 'https://github.com/luvit/luvit' "${home}/bin/luvit"
+          mkdir -p "${home}/bin/luvit" && cd "${home}/bin/luvit" && /bin/sh "${home}/bin/vendor/get-lit.sh" && "${home}/bin/luvit/lit" make 'lit://luvit/luvit'
           cd "${dir}"
         else
           exit 1

@@ -993,7 +993,7 @@ local function expand(form)
 end
 if _x132 == nil then
   _x132 = true
-  run_lua = load
+  run_lua = loadstring
 end
 local function run(code)
   local f,e = run_lua(code)

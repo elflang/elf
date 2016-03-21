@@ -555,7 +555,7 @@
 (once
   (%js (unless (nil? global) (= global.require require)))
   (%js (= run-js (if (nil? global) window.eval global.eval)))
-  (%lua (= run-lua load)))
+  (%lua (= run-lua loadstring)))
 
 (%js
   (var run run-js))

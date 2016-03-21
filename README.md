@@ -72,12 +72,12 @@ cd elf
 bin/elf eg
 
 # "Hello, world!"
-bin/elf eg hello.elf
-bin/elf eg hello.elf a b c
-bin/elf eg hello.elf ~/*
+bin/elf eg hello.e
+bin/elf eg hello.e a b c
+bin/elf eg hello.e ~/*
 
 # A program similar to `/bin/cat`
-bin/elf eg cat *.elf
+bin/elf eg cat *.e
 
 # Express.js demo (requires node)
 bin/elf eg express

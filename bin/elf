@@ -45,7 +45,7 @@ case "$1" in
   ;;
 
   examples|example|eg|ex)
-    xs="$(cd "${home}" && find . -type f | grep examples | grep "elf$" | grep -v '/\.' | awk '{print substr($0,3)}')"
+    xs="$(cd "${home}" && find . -type f | grep examples | grep '\.e$' | grep -v '/\.' | awk '{print substr($0,3)}')"
     if [ ! -z "$2" ]; then
       x="$(echo "${xs}" | grep "$2")"
       n="$(echo "$x" | wc -l | sed -e 's/ //g')"
@@ -101,12 +101,12 @@ then
   host="${ELF_HOST}"
 else
   case "$1" in
-    *.js.elf)     host=node;;
-    *.node.elf)   host=node;;
-    *.lua.elf)    host=lua;;
-    *.luajit.elf) host=luajit;;
-    *.luvit.elf)  host=luvit;;
-    *.ufo.elf)    host=ufo;;
+    *.js.e)     host=node;;
+    *.node.e)   host=node;;
+    *.lua.e)    host=lua;;
+    *.luajit.e) host=luajit;;
+    *.luvit.e)  host=luvit;;
+    *.ufo.e)    host=ufo;;
   esac
 fi
 
@@ -234,7 +234,7 @@ import () {
   fi
 }
 
-case "$1" in *.elf)
+case "$1" in *.e)
   path="$(dirname "$1")"
   if [ ! -z "$path" ]; then
     if [ -e "${path}/package.json" ]; then
@@ -266,10 +266,10 @@ esac
 export ELF_HOST="${host}"
 export ELF_HOME="${home}"
 
-case "$1" in *.elf)
+case "$1" in *.e)
   script="$1"
   shift 1
-  base="$(basename "$script" .elf)"
+  base="$(basename "$script" .e)"
   case "$base" in
     *.js)     base="$(basename "$base" .js)";;
     *.node)   base="$(basename "$base" .node)";;

@@ -135,7 +135,7 @@ function elf_usage()
   return(system.exit())
 end
 local function elf_file63(path)
-  local _id2 = str_ends63(path, ".elf")
+  local _id2 = str_ends63(path, ".e")
   local _e4
   if _id2 then
     _e4 = _id2

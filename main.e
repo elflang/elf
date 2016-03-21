@@ -95,7 +95,7 @@
   (system.exit))
 
 (var elf-file? (path)
-  (or (str-ends? path ".elf")
+  (or (str-ends? path ".e")
       (and (system.file-exists? path)
            (whenlet s (system.read-file path)
              (let bang (clip s 0 (search s "\n"))

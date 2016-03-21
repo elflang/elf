@@ -20,11 +20,11 @@ rebuild:
 clean:
 	@sh -c 'for x in *.js *.lua; do git checkout $$x; done || exit 0'
 
-%.js : %.elf
+%.js : %.e
 	@echo $@
 	@$(ELF) -c $< -o $@ -t js
 
-%.lua : %.elf
+%.lua : %.e
 	@echo $@
 	@$(ELF) -c $< -o $@ -t lua
 

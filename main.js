@@ -111,7 +111,7 @@ elf_usage = function () {
   return(system.exit());
 };
 var elf_file63 = function (path) {
-  var _id2 = str_ends63(path, ".elf");
+  var _id2 = str_ends63(path, ".e");
   var _e3;
   if (_id2) {
     _e3 = _id2;

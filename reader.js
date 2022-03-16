@@ -5,14 +5,14 @@ setenv("defreader", stash33({macro: function (_x6) {
   var body = cut(_r1, 0);
   return(["=", ["get", "read-table", char], join(["fn", [s]], body)]);
 }}));
-var delimiters = {"\r": true, ";": true, "{": true, "(": true, ")": true, "}": true, "]": true, "\n": true, "[": true};
-var whitespace = {"\r": true, " ": true, "\n": true, "\t": true};
+var delimiters = {"[": true, ")": true, "}": true, ";": true, "(": true, "\n": true, "\r": true, "{": true, "]": true};
+var whitespace = {"\t": true, "\r": true, " ": true, "\n": true};
 var stream = function (str, more) {
-  return({more: more, pos: 0, len: str.length || 0, string: str});
+  return({len: str.length || 0, pos: 0, more: more, string: str});
 };
 var peek_char = function (s) {
-  var pos = s.pos;
   var _len = s.len;
+  var pos = s.pos;
   var string = s.string;
   if (pos < _len) {
     return(char(string, pos));
@@ -87,8 +87,8 @@ var flag63 = function (atom) {
   return(typeof(atom) === "string" && (atom.length || 0) > 1 && char(atom, 0) === ":");
 };
 var expected = function (s, c) {
-  var more = s.more;
   var pos = s.pos;
+  var more = s.more;
   var _id8 = more;
   var _e1;
   if (_id8) {

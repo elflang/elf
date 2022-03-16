@@ -78,4 +78,4 @@ local function reload(module)
   return(require(module))
 end
 local getenv = get_environment_variable
-return({["write-file"] = write_file, write = write, ["path-separator"] = path_separator, ["read-file"] = read_file, argv = argv, ["get-environment-variable"] = get_environment_variable, reload = reload, ["path-join"] = path_join, ["file-exists?"] = file_exists63, exit = exit, shell = shell, getenv = getenv})
+return({["path-join"] = path_join, ["get-environment-variable"] = get_environment_variable, ["file-exists?"] = file_exists63, ["path-separator"] = path_separator, reload = reload, ["read-file"] = read_file, exit = exit, shell = shell, argv = argv, write = write, ["write-file"] = write_file, getenv = getenv})

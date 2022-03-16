@@ -427,8 +427,8 @@ local function setup()
   end}))
   setenv("elf", stash33({macro = function ()
     local _x430 = {"target"}
-    _x430.lua = "\"elf\""
     _x430.js = "\"elf.js\""
+    _x430.lua = "\"elf\""
     return({"require", _x430})
   end}))
   setenv("lib", stash33({macro = function (...)
@@ -486,14 +486,14 @@ local function setup()
   end}))
   setenv("isa", stash33({macro = function (x, y)
     local _x506 = {"target"}
-    _x506.lua = "type"
     _x506.js = "typeof"
+    _x506.lua = "type"
     return({"is", {_x506, x}, y})
   end}))
   setenv("list?", stash33({macro = function (x)
     local _x512 = {"target"}
-    _x512.lua = {"quote", "table"}
     _x512.js = {"quote", "object"}
+    _x512.lua = {"quote", "table"}
     return({"isa", x, _x512})
   end}))
   setenv("atom?", stash33({macro = function (x)

@@ -448,8 +448,8 @@ var setup = function () {
   }}));
   setenv("elf", stash33({macro: function () {
     var _x396 = ["target"];
-    _x396.lua = "\"elf\"";
     _x396.js = "\"elf.js\"";
+    _x396.lua = "\"elf\"";
     return(["require", _x396]);
   }}));
   setenv("lib", stash33({macro: function () {
@@ -507,14 +507,14 @@ var setup = function () {
   }}));
   setenv("isa", stash33({macro: function (x, y) {
     var _x470 = ["target"];
-    _x470.lua = "type";
     _x470.js = "typeof";
+    _x470.lua = "type";
     return(["is", [_x470, x], y]);
   }}));
   setenv("list?", stash33({macro: function (x) {
     var _x476 = ["target"];
-    _x476.lua = ["quote", "table"];
     _x476.js = ["quote", "object"];
+    _x476.lua = ["quote", "table"];
     return(["isa", x, _x476]);
   }}));
   setenv("atom?", stash33({macro: function (x) {

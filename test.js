@@ -1679,8 +1679,8 @@ add(tests, ["=", function () {
 }]);
 add(tests, ["wipe", function () {
   var _x515 = [];
-  _x515.b = true;
   _x515.a = true;
+  _x515.b = true;
   _x515.c = true;
   var x = _x515;
   delete x.a;

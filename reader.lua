@@ -5,14 +5,14 @@ setenv("defreader", stash33({macro = function (_x6, ...)
   local body = cut(_r1, 0)
   return({"=", {"get", "read-table", char}, join({"fn", {s}}, body)})
 end}))
-local delimiters = {["\r"] = true, [";"] = true, ["{"] = true, ["("] = true, [")"] = true, ["}"] = true, ["]"] = true, ["\n"] = true, ["["] = true}
-local whitespace = {["\r"] = true, [" "] = true, ["\n"] = true, ["\t"] = true}
+local delimiters = {["["] = true, [")"] = true, ["}"] = true, [";"] = true, ["("] = true, ["\n"] = true, ["\r"] = true, ["{"] = true, ["]"] = true}
+local whitespace = {["\t"] = true, ["\r"] = true, [" "] = true, ["\n"] = true}
 local function stream(str, more)
-  return({more = more, pos = 0, len = #(str), string = str})
+  return({len = #(str), pos = 0, more = more, string = str})
 end
 local function peek_char(s)
-  local pos = s.pos
   local _len = s.len
+  local pos = s.pos
   local string = s.string
   if pos < _len then
     return(char(string, pos))
@@ -87,8 +87,8 @@ local function flag63(atom)
   return(type(atom) == "string" and #(atom) > 1 and char(atom, 0) == ":")
 end
 local function expected(s, c)
-  local more = s.more
   local pos = s.pos
+  local more = s.more
   local _id8 = more
   local _e1
   if _id8 then

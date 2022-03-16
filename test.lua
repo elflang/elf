@@ -1681,8 +1681,8 @@ add(tests, {"=", function ()
 end})
 add(tests, {"wipe", function ()
   local _x521 = {}
-  _x521.b = true
   _x521.a = true
+  _x521.b = true
   _x521.c = true
   local x = _x521
   x.a = nil

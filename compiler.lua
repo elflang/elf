@@ -399,7 +399,7 @@ setenv("w/indent", stash33({macro = function (form)
   local x = uniq("x")
   return({"do", {"++", "indent-level*"}, {"with", x, form, {"--", "indent-level*"}}})
 end}))
-local reserved = {["else"] = true, ["<"] = true, ["true"] = true, ["/"] = true, ["end"] = true, ["typeof"] = true, ["break"] = true, ["import"] = true, ["="] = true, ["or"] = true, ["try"] = true, ["catch"] = true, ["with"] = true, ["until"] = true, ["false"] = true, ["repeat"] = true, ["-"] = true, ["function"] = true, ["switch"] = true, ["=="] = true, ["and"] = true, ["for"] = true, ["if"] = true, ["do"] = true, ["<="] = true, ["local"] = true, ["return"] = true, ["debugger"] = true, ["nil"] = true, ["then"] = true, [">="] = true, ["case"] = true, ["delete"] = true, ["elseif"] = true, ["+"] = true, ["not"] = true, ["void"] = true, ["var"] = true, ["%"] = true, ["in"] = true, ["continue"] = true, ["throw"] = true, ["new"] = true, ["finally"] = true, ["this"] = true, ["while"] = true, ["instanceof"] = true, ["default"] = true, ["*"] = true, [">"] = true}
+local reserved = {["for"] = true, ["-"] = true, ["false"] = true, ["repeat"] = true, ["%"] = true, ["else"] = true, ["case"] = true, ["if"] = true, ["in"] = true, ["<"] = true, ["try"] = true, ["nil"] = true, ["this"] = true, ["or"] = true, ["typeof"] = true, ["var"] = true, ["do"] = true, ["return"] = true, ["*"] = true, ["<="] = true, ["and"] = true, ["with"] = true, ["break"] = true, ["delete"] = true, ["end"] = true, ["="] = true, ["finally"] = true, ["+"] = true, ["default"] = true, ["local"] = true, [">"] = true, ["while"] = true, [">="] = true, ["void"] = true, ["function"] = true, ["switch"] = true, ["throw"] = true, ["catch"] = true, ["continue"] = true, ["until"] = true, ["=="] = true, ["elseif"] = true, ["not"] = true, ["true"] = true, ["import"] = true, ["new"] = true, ["/"] = true, ["then"] = true, ["debugger"] = true, ["instanceof"] = true}
 function reserved63(x)
   return(reserved[x])
 end
@@ -448,40 +448,40 @@ function mapo(f, l)
 end
 local _x76 = {}
 local _x77 = {}
-_x77.lua = "not"
 _x77.js = "!"
+_x77.lua = "not"
 _x76["not"] = _x77
 local _x78 = {}
-_x78["/"] = true
 _x78["*"] = true
 _x78["%"] = true
+_x78["/"] = true
 local _x79 = {}
 _x79["+"] = true
 _x79["-"] = true
 local _x80 = {}
 local _x81 = {}
-_x81.lua = ".."
 _x81.js = "+"
+_x81.lua = ".."
 _x80.cat = _x81
 local _x82 = {}
+_x82["<"] = true
 _x82["<="] = true
 _x82[">="] = true
-_x82["<"] = true
 _x82[">"] = true
 local _x83 = {}
 local _x84 = {}
-_x84.lua = "=="
 _x84.js = "==="
+_x84.lua = "=="
 _x83.is = _x84
 local _x85 = {}
 local _x86 = {}
-_x86.lua = "and"
 _x86.js = "&&"
+_x86.lua = "and"
 _x85["and"] = _x86
 local _x87 = {}
 local _x88 = {}
-_x88.lua = "or"
 _x88.js = "||"
+_x88.lua = "or"
 _x87["or"] = _x88
 local infix = {_x76, _x78, _x79, _x80, _x82, _x83, _x85, _x87}
 local function unary63(form)
@@ -1255,4 +1255,4 @@ setenv("%object", stash33({special = function (...)
   end
   return(s .. "}")
 end}))
-return({run = run, expand = expand, reset = reset, eval = eval, compile = compile})
+return({expand = expand, compile = compile, eval = eval, reset = reset, run = run})

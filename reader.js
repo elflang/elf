@@ -147,6 +147,9 @@ var read_atom = function (s, basic63) {
     if (c === ".") {
       dot63 = true;
     }
+    if (c === "\\") {
+      read_char(s);
+    }
     str = str + read_char(s);
   }
   if (str === "true") {

@@ -147,6 +147,9 @@ local function read_atom(s, basic63)
     if c == "." then
       dot63 = true
     end
+    if c == "\\" then
+      read_char(s)
+    end
     str = str .. read_char(s)
   end
   if str == "true" then

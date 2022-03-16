@@ -104,6 +104,7 @@
         (when (or (not c) (get whitespace c) (get delimiters c))
           (break))
         (if (is c ".") (= dot? t))
+        (if (is c "\\") (read-char s))
         (cat! str (read-char s))))
     (if (is str "true") t
         (is str "false") false

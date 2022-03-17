@@ -235,8 +235,8 @@
           "break" "case" "catch" "continue" "debugger"
           "default" "delete" "do" "else" "finally" "for"
           "function" "if" "import" "in" "instanceof" "new"
-          "return" "switch" "this" "throw" "try" "typeof"
-          "var" "void" "with"
+          "return" "switch" "throw" "try" "typeof" "var"
+          "void" "with"
           ;; lua
           "and" "end" "in" "repeat" "while" "break" "false"
           "local" "return" "do" "for" "nil" "then" "else"

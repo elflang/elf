@@ -445,7 +445,7 @@ setenv("w/indent", stash33({macro: function (form) {
   var x = uniq("x");
   return(["do", ["++", "indent-level*"], ["with", x, form, ["--", "indent-level*"]]]);
 }}));
-var reserved = {"for": true, "-": true, "false": true, "repeat": true, "%": true, "else": true, "case": true, "if": true, "in": true, "<": true, "try": true, "nil": true, "this": true, "or": true, "typeof": true, "var": true, "do": true, "return": true, "*": true, "<=": true, "and": true, "with": true, "break": true, "delete": true, "end": true, "=": true, "finally": true, "+": true, "default": true, "local": true, ">": true, "while": true, ">=": true, "void": true, "function": true, "switch": true, "throw": true, "catch": true, "continue": true, "until": true, "==": true, "elseif": true, "not": true, "true": true, "import": true, "new": true, "/": true, "then": true, "debugger": true, "instanceof": true};
+var reserved = {"for": true, "-": true, "/": true, "repeat": true, "%": true, "else": true, "and": true, "do": true, "or": true, "<": true, "try": true, "in": true, "case": true, "typeof": true, "var": true, "import": true, "default": true, "new": true, "<=": true, "false": true, "with": true, "break": true, "delete": true, "nil": true, "=": true, "finally": true, "+": true, "return": true, "void": true, ">": true, "function": true, ">=": true, "local": true, "==": true, "while": true, "throw": true, "catch": true, "continue": true, "until": true, "switch": true, "elseif": true, "not": true, "true": true, "if": true, "debugger": true, "*": true, "then": true, "end": true, "instanceof": true};
 reserved63 = function (x) {
   return(reserved[x]);
 };

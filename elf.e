@@ -531,7 +531,7 @@
       (bool? x) (if x "t" "false")
       (str? x) (escape x)
       (fn? x) "fn"
-      (target js: false lua: (~isa x 'table)) (escape (tostring x))
+      (~isa x (target js: 'object lua: 'table)) (escape (tostring x))
       (and stack (in? x stack)) "circular"
     (let (s "(" sp "" fs () xs () ks () stack (or stack ()))
       (add stack x)

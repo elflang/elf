@@ -1014,7 +1014,7 @@ str = function (x, stack) {
                 if (typeof(x) === "function") {
                   return("fn");
                 } else {
-                  if (false) {
+                  if (!( typeof(x) === "object")) {
                     return(escape(tostring(x)));
                   } else {
                     if (stack && in63(x, stack)) {

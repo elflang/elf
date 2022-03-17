@@ -286,9 +286,9 @@
 (var unary? (form)
   (and (two? form) (in? (hd form) '(not -))))
 
-(var index (k)
+(def index (k)
   (%js k)
-  (%lua (when (num? k) (- k 1))))
+  (%lua (if (num? k) (- k 1) k)))
 
 (var precedence (form)
   (unless (or (atom? form) (unary? form))
@@ -302,8 +302,11 @@
             (~nil? x) (get x target*))]
         infix))
 
-(var infix? (x)
+(def infix? (x)
   (~nil? (getop x)))
+
+(def infix-operator? (x)
+  (and (~nil? x) (list? x) (infix? (hd x))))
 
 (var compile-args (args)
   (let (s "(" c "")
@@ -426,16 +429,14 @@
 (var lower-body (body tail?)
   (lower-statement `(do ,@body) tail?))
 
-(var literal? (form)
+(def literal? (form)
   (or (atom? form)
-      (is (hd form) '%array)
-      (is (hd form) '%object)))
+      (getenv (hd form) 'literal)))
 
-(var standalone? (form)
+(def standalone? (form)
   (or (and (list? form)
            (~infix? (hd form))
-           (~literal? form)
-           (~is 'get (hd form)))
+           (~literal? form))
       (id-literal? form)))
 
 (var lower-do (args hoist stmt? tail?)
@@ -669,17 +670,18 @@
         rh (compile (if (nil? rh) 'nil rh)))
     (cat (indentation) lh " = " rh)))
 
-(defspecial get (l k)
-  (let (l (compile l)
-	k1 (compile k))
-    (when (and lua? (is (char l 0) "{"))
-      (= l (cat "(" l ")")))
+(defspecial get (l k) :literal
+  (let (l1 (compile l)
+        k1 (compile k))
+    (when (or (and lua? (is (char l1 0) "{"))
+              (infix-operator? l))
+      (= l1 (cat "(" l1 ")")))
     (if (and (string-literal? k)
              (valid-id? (inner k)))
-        (cat l "." (inner k))
-      (cat l "[" k1 "]"))))
+        (cat l1 "." (inner k))
+      (cat l1 "[" k1 "]"))))
 
-(defspecial %array forms
+(defspecial %array forms :literal
   (let (open (if lua? "{" "[")
 	close (if lua? "}" "]")
 	s "" c "")
@@ -689,7 +691,7 @@
         (= c ", ")))
     (cat open s close)))
 
-(defspecial %object forms
+(defspecial %object forms :literal
   (let (s "{" c ""
         sep (if lua? " = " ": "))
     (each (k v) (pair forms)

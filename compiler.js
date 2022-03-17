@@ -540,7 +540,7 @@ var infix = [_x76, _x78, _x79, _x80, _x82, _x83, _x85, _x87];
 var unary63 = function (form) {
   return((form.length || 0) === 2 && in63(form[0], ["not", "-"]));
 };
-var index = function (k) {
+index = function (k) {
   return(k);
 };
 var precedence = function (form) {
@@ -575,9 +575,12 @@ var getop = function (op) {
     }
   }, infix));
 };
-var infix63 = function (x) {
+infix63 = function (x) {
   var _x90 = getop(x);
   return(!( typeof(_x90) === "undefined" || _x90 === null));
+};
+infix_operator63 = function (x) {
+  return(!( typeof(x) === "undefined" || x === null) && typeof(x) === "object" && infix63(x[0]));
 };
 var compile_args = function (args) {
   var s = "(";
@@ -725,8 +728,8 @@ var compile_call = function (form) {
   }
 };
 var op_delims = function (parent, child) {
-  var _r59 = unstash(Array.prototype.slice.call(arguments, 2));
-  var right = _r59.right;
+  var _r60 = unstash(Array.prototype.slice.call(arguments, 2));
+  var right = _r60.right;
   var _e26;
   if (right) {
     _e26 = precedence(child) >= precedence(parent);
@@ -760,9 +763,9 @@ var compile_infix = function (form) {
   }
 };
 compile_function = function (args, body) {
-  var _r61 = unstash(Array.prototype.slice.call(arguments, 2));
-  var name = _r61.name;
-  var prefix = _r61.prefix;
+  var _r62 = unstash(Array.prototype.slice.call(arguments, 2));
+  var name = _r62.name;
+  var prefix = _r62.prefix;
   var _e27;
   if (name) {
     _e27 = compile(name);
@@ -803,8 +806,8 @@ var can_return63 = function (form) {
   return(!( typeof(form) === "undefined" || form === null) && (!( typeof(form) === "object") || !( form[0] === "return") && ! statement63(form[0])));
 };
 compile = function (form) {
-  var _r63 = unstash(Array.prototype.slice.call(arguments, 1));
-  var stmt = _r63.stmt;
+  var _r64 = unstash(Array.prototype.slice.call(arguments, 1));
+  var stmt = _r64.stmt;
   if (typeof(form) === "undefined" || form === null) {
     return("");
   } else {
@@ -856,11 +859,11 @@ var lower_statement = function (form, tail63) {
 var lower_body = function (body, tail63) {
   return(lower_statement(join(["do"], body), tail63));
 };
-var literal63 = function (form) {
-  return(!( typeof(form) === "object") || form[0] === "%array" || form[0] === "%object");
+literal63 = function (form) {
+  return(!( typeof(form) === "object") || getenv(form[0], "literal"));
 };
-var standalone63 = function (form) {
-  return(typeof(form) === "object" && ! infix63(form[0]) && ! literal63(form) && !( "get" === form[0]) || id_literal63(form));
+standalone63 = function (form) {
+  return(typeof(form) === "object" && ! infix63(form[0]) && ! literal63(form) || id_literal63(form));
 };
 var lower_do = function (args, hoist, stmt63, tail63) {
   var _x99 = almost(args);
@@ -1248,17 +1251,17 @@ setenv("assign", stash33({special: function (lh, rh) {
   return(indentation() + _lh1 + " = " + _rh1);
 }, stmt: true}));
 setenv("get", stash33({special: function (l, k) {
-  var _l10 = compile(l);
+  var l1 = compile(l);
   var k1 = compile(k);
-  if (target42 === "lua" && char(_l10, 0) === "{") {
-    _l10 = "(" + _l10 + ")";
+  if (target42 === "lua" && char(l1, 0) === "{" || infix_operator63(l)) {
+    l1 = "(" + l1 + ")";
   }
   if (string_literal63(k) && valid_id63(inner(k))) {
-    return(_l10 + "." + inner(k));
+    return(l1 + "." + inner(k));
   } else {
-    return(_l10 + "[" + k1 + "]");
+    return(l1 + "[" + k1 + "]");
   }
-}}));
+}, literal: true}));
 setenv("%array", stash33({special: function () {
   var forms = unstash(Array.prototype.slice.call(arguments, 0));
   var _e44;
@@ -1277,10 +1280,10 @@ setenv("%array", stash33({special: function () {
   var close = _e45;
   var s = "";
   var c = "";
-  var _l12 = forms;
+  var _l10 = forms;
   var k = undefined;
-  for (k in _l12) {
-    var v = _l12[k];
+  for (k in _l10) {
+    var v = _l10[k];
     var _e46;
     if (numeric63(k)) {
       _e46 = parseInt(k);
@@ -1294,7 +1297,7 @@ setenv("%array", stash33({special: function () {
     }
   }
   return(open + s + close);
-}}));
+}, literal: true}));
 setenv("%object", stash33({special: function () {
   var forms = unstash(Array.prototype.slice.call(arguments, 0));
   var s = "{";
@@ -1306,10 +1309,10 @@ setenv("%object", stash33({special: function () {
     _e47 = ": ";
   }
   var sep = _e47;
-  var _l14 = pair(forms);
+  var _l12 = pair(forms);
   var k = undefined;
-  for (k in _l14) {
-    var v = _l14[k];
+  for (k in _l12) {
+    var v = _l12[k];
     var _e48;
     if (numeric63(k)) {
       _e48 = parseInt(k);
@@ -1329,7 +1332,7 @@ setenv("%object", stash33({special: function () {
     }
   }
   return(s + "}");
-}}));
+}, literal: true}));
 setenv("%unpack", stash33({special: function (x) {
   var _e49;
   if (target42 === "lua") {

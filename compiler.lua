@@ -487,9 +487,11 @@ local infix = {_x76, _x78, _x79, _x80, _x82, _x83, _x85, _x87}
 local function unary63(form)
   return(#(form) == 2 and in63(form[1], {"not", "-"}))
 end
-local function index(k)
+function index(k)
   if type(k) == "number" then
     return(k - 1)
+  else
+    return(k)
   end
 end
 local function precedence(form)
@@ -517,8 +519,11 @@ local function getop(op)
     end
   end, infix))
 end
-local function infix63(x)
+function infix63(x)
   return(not( getop(x) == nil))
+end
+function infix_operator63(x)
+  return(not( x == nil) and type(x) == "table" and infix63(x[1]))
 end
 local function compile_args(args)
   local s = "("
@@ -666,8 +671,8 @@ local function compile_call(form)
   end
 end
 local function op_delims(parent, child, ...)
-  local _r59 = unstash({...})
-  local right = _r59.right
+  local _r60 = unstash({...})
+  local right = _r60.right
   local _e18
   if right then
     _e18 = precedence(child) >= precedence(parent)
@@ -701,9 +706,9 @@ local function compile_infix(form)
   end
 end
 function compile_function(args, body, ...)
-  local _r61 = unstash({...})
-  local name = _r61.name
-  local prefix = _r61.prefix
+  local _r62 = unstash({...})
+  local name = _r62.name
+  local prefix = _r62.prefix
   local _e19
   if name then
     _e19 = compile(name)
@@ -744,8 +749,8 @@ local function can_return63(form)
   return(not( form == nil) and (not( type(form) == "table") or not( form[1] == "return") and not statement63(form[1])))
 end
 function compile(form, ...)
-  local _r63 = unstash({...})
-  local stmt = _r63.stmt
+  local _r64 = unstash({...})
+  local stmt = _r64.stmt
   if form == nil then
     return("")
   else
@@ -797,11 +802,11 @@ end
 local function lower_body(body, tail63)
   return(lower_statement(join({"do"}, body), tail63))
 end
-local function literal63(form)
-  return(not( type(form) == "table") or form[1] == "%array" or form[1] == "%object")
+function literal63(form)
+  return(not( type(form) == "table") or getenv(form[1], "literal"))
 end
-local function standalone63(form)
-  return(type(form) == "table" and not infix63(form[1]) and not literal63(form) and not( "get" == form[1]) or id_literal63(form))
+function standalone63(form)
+  return(type(form) == "table" and not infix63(form[1]) and not literal63(form) or id_literal63(form))
 end
 local function lower_do(args, hoist, stmt63, tail63)
   local _x101 = almost(args)
@@ -1187,17 +1192,17 @@ setenv("assign", stash33({special = function (lh, rh)
   return(indentation() .. _lh1 .. " = " .. _rh1)
 end, stmt = true}))
 setenv("get", stash33({special = function (l, k)
-  local _l10 = compile(l)
+  local l1 = compile(l)
   local k1 = compile(k)
-  if target42 == "lua" and char(_l10, 0) == "{" then
-    _l10 = "(" .. _l10 .. ")"
+  if target42 == "lua" and char(l1, 0) == "{" or infix_operator63(l) then
+    l1 = "(" .. l1 .. ")"
   end
   if string_literal63(k) and valid_id63(inner(k)) then
-    return(_l10 .. "." .. inner(k))
+    return(l1 .. "." .. inner(k))
   else
-    return(_l10 .. "[" .. k1 .. "]")
+    return(l1 .. "[" .. k1 .. "]")
   end
-end}))
+end, literal = true}))
 setenv("%array", stash33({special = function (...)
   local forms = unstash({...})
   local _e35
@@ -1216,17 +1221,17 @@ setenv("%array", stash33({special = function (...)
   local close = _e36
   local s = ""
   local c = ""
-  local _l12 = forms
+  local _l10 = forms
   local k = nil
-  for k in next, _l12 do
-    local v = _l12[k]
+  for k in next, _l10 do
+    local v = _l10[k]
     if type(k) == "number" then
       s = s .. c .. compile(v)
       c = ", "
     end
   end
   return(open .. s .. close)
-end}))
+end, literal = true}))
 setenv("%object", stash33({special = function (...)
   local forms = unstash({...})
   local s = "{"
@@ -1238,10 +1243,10 @@ setenv("%object", stash33({special = function (...)
     _e37 = ": "
   end
   local sep = _e37
-  local _l14 = pair(forms)
+  local _l12 = pair(forms)
   local k = nil
-  for k in next, _l14 do
-    local v = _l14[k]
+  for k in next, _l12 do
+    local v = _l12[k]
     if type(k) == "number" then
       local _id30 = v
       local _k2 = _id30[1]
@@ -1254,7 +1259,7 @@ setenv("%object", stash33({special = function (...)
     end
   end
   return(s .. "}")
-end}))
+end, literal = true}))
 setenv("%unpack", stash33({special = function (x)
   local _e38
   if target42 == "lua" then

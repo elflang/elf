@@ -939,7 +939,7 @@ function str(x, stack)
                       for k in next, _l15 do
                         local v = _l15[k]
                         if type(k) == "number" then
-                          xs[k] = str(v, _stack)
+                          xs[k + 1] = str(v, _stack)
                         else
                           if type(v) == "function" then
                             add(fs, k)

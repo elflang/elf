@@ -536,7 +536,7 @@
     (let (s "(" sp "" fs () xs () ks () stack (or stack ()))
       (add stack x)
       (each (k v) x
-        (if (num? k) (= (get xs k) (str v stack))
+        (if (num? k) (= (at xs k) (str v stack))
             (fn? v) (add fs k)
           (do (add ks (cat k ":"))
               (add ks (str v stack)))))

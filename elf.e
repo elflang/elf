@@ -546,12 +546,11 @@
         (= sp " "))
       (cat s  ")"))))
 
-(%lua (var %unpack (or unpack table.unpack)))
+(%lua (= table.unpack (or table.unpack unpack)))
 
 (def apply (f args)
   (stash! (keys args))
-  (%js (f.apply f args))
-  (%lua (f (%unpack args))))
+  (f (%unpack args)))
 
 (def toplevel? ()
   (one? environment*))

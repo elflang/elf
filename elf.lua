@@ -969,10 +969,10 @@ function str(x, stack)
     end
   end
 end
-local _37unpack = unpack or table.unpack
+table.unpack = table.unpack or unpack
 function apply(f, args)
   stash33(keys(args))
-  return(f(_37unpack(args)))
+  return(f(table.unpack(args)))
 end
 function toplevel63()
   return(#(environment42) == 1)

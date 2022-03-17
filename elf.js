@@ -1078,7 +1078,7 @@ str = function (x, stack) {
 };
 apply = function (f, args) {
   stash33(keys(args));
-  return(f.apply(f, args));
+  return(f(...(args)));
 };
 toplevel63 = function () {
   return((environment42.length || 0) === 1);

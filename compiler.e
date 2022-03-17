@@ -701,6 +701,10 @@
           (= c ", "))))
     (cat s "}")))
 
+(defspecial %unpack (x)
+  (let s (if lua? "table.unpack" "...")
+    (cat s "(" (compile x) ")")))
+
 (export run
         eval
         expand

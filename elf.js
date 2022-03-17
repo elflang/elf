@@ -953,7 +953,7 @@ numeric63 = function (s) {
   }
   return(true);
 };
-var tostring = function (x) {
+tostring = function (x) {
   return(x.toString());
 };
 escape = function (s) {

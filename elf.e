@@ -508,7 +508,7 @@
         (return false))))
   t)
 
-(%js (var tostring (x) (x.toString)))
+(%js (def tostring (x) (x.toString)))
 
 (def escape (s)
   (var s1 "\"")

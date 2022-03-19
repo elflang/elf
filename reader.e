@@ -248,10 +248,6 @@
 	  (wrap s 'unquote-splicing))
     (wrap s 'unquote)))
 
-(defreader ("#" s)
-  (read-char s)
-  (wrap s 'len))
-
 (export stream
         read
         read-all

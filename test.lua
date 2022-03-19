@@ -4,17 +4,20 @@ local compiler = require("compiler")
 local passed = 0
 local failed = 0
 local tests = {}
-setenv("test", stash33({["macro"] = function (x, msg)
+local function test__macro(x, msg)
   return {"if", {"not", x}, {"do", {"=", "failed", {"+", "failed", 1}}, {"return", msg}}, {"++", "passed"}}
-end}))
-setenv("eq", stash33({["macro"] = function (a, b)
+end
+setenv("test", stash33({["macro"] = test__macro}))
+local function eq__macro(a, b)
   return {"test", {"equal?", a, b}, {"cat", "\"failed: expected \"", {"str", a}, "\", was \"", {"str", b}}}
-end}))
-setenv("deftest", stash33({["macro"] = function (name, ...)
+end
+setenv("eq", stash33({["macro"] = eq__macro}))
+local function deftest__macro(name, ...)
   local _r5 = unstash({...})
   local body = cut(_r5, 0)
   return {"add", "tests", {"list", {"quote", name}, {"%fn", join({"do"}, body)}}}
-end}))
+end
+setenv("deftest", stash33({["macro"] = deftest__macro}))
 local function equal63(a, b)
   if not( type(a) == "table") then
     return a == b
@@ -3660,7 +3663,7 @@ add(tests, {"w/sym", function ()
   end
 end})
 add(tests, {"defsym", function ()
-  setenv("zzz", stash33({["symbol"] = 42}))
+  setenv("zzz", stash33({["symbol"] = 42, ["eval"] = true}))
   if not equal63(42, 42) then
     failed = failed + 1
     return "failed: expected " .. str(42) .. ", was " .. str(42)

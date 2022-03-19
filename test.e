@@ -154,8 +154,8 @@
   (eq 12 (do (get but zz) 12)))
 
 (deftest string
-  (eq 3 #"foo")
-  (eq 3 #"\"a\"")
+  (eq 3 (len "foo"))
+  (eq 3 (len "\"a\""))
   (eq 'a "a")
   (eq "a" (char "bar" 1))
   (let s "a
@@ -165,8 +165,8 @@ b"
 b
 c"
     (eq 5 #s))
-  (eq 3 #"a\nb")
-  (eq 3 #"a\\b"))
+  (eq 3 (len "a\nb"))
+  (eq 3 (len "a\\b")))
 
 (deftest quote
   (eq 7 (quote 7))
@@ -189,8 +189,8 @@ c"
   (eq '(a) (list 'a))
   (eq '(a) (quote (a)))
   (eq '(()) (list (list)))
-  (eq 0 #(list))
-  (eq 2 #(list 1 2))
+  (eq 0 (len (list)))
+  (eq 2 (len (list 1 2)))
   (eq '(1 2 3) (list 1 2 3))
   (eq 17 (get (list foo: 17) 'foo))
   (eq 17 (get (list 1 foo: 17) 'foo))
@@ -672,8 +672,7 @@ c"
       (eq 20 b))))
 
 (deftest defsym
-  (during-compilation
-    (defsym zzz 42))
+  (defsym zzz 42 :eval)
   (eq zzz 42))
 
 (deftest macros-and-symbols

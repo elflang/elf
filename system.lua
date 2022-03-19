@@ -78,4 +78,4 @@ local function reload(module)
   return require(module)
 end
 local getenv = get_environment_variable
-return {["path-join"] = path_join, ["get-environment-variable"] = get_environment_variable, ["file-exists?"] = file_exists63, ["path-separator"] = path_separator, ["reload"] = reload, ["read-file"] = read_file, ["exit"] = exit, ["shell"] = shell, ["argv"] = argv, ["write"] = write, ["write-file"] = write_file, ["getenv"] = getenv}
+return {["path-join"] = path_join, ["get-environment-variable"] = get_environment_variable, ["read-file"] = read_file, ["path-separator"] = path_separator, ["file-exists?"] = file_exists63, ["reload"] = reload, ["exit"] = exit, ["shell"] = shell, ["argv"] = argv, ["write"] = write, ["write-file"] = write_file, ["getenv"] = getenv}

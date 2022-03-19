@@ -31,7 +31,7 @@
     (when (and (num? i) (< i 0))
       (if (list? l)
         (return `(let l ,l (at l ,i))))
-      (assign i `(+ #,l ,i)))
+      (assign i `(+ (len ,l) ,i)))
     (when lua?
       (if (num? i) (++ i)
         (assign i `(+ ,i 1))))
@@ -134,14 +134,23 @@
          ,@ys
          ,g)))
 
+  (mac %define (kind name x eval: (o self-evaluating?) rest: body)
+    (let (label (cat name "--" kind)
+          expansion (if (none? body) `',x `(fn name: ,label ,x ,@body))
+          form `(setenv ',name ,@(%object kind expansion) ,@(keys body)))
+      (if self-evaluating? `(during-compilation ,form) form)))
+
   (mac mac (name args rest: body)
-    `(setenv ',name macro: (fn ,args ,@body) ,@(keys body)))
+    `(%define macro ,name ,args ,@body))
 
   (mac defspecial (name args rest: body)
-    `(setenv ',name special: (fn ,args ,@body) ,@(keys body)))
+    `(%define special ,name ,args ,@body))
+
+  (mac deftransformer (name form rest: body)
+    `(%define transformer ,name (,form) ,@body))
 
   (mac defsym (name expansion rest: props)
-    `(setenv ',name symbol: ',expansion ,@(keys props)))
+    `(%define symbol ,name ,expansion ,@(keys props)))
 
   (mac var (name x rest: body)
     (setenv name :variable)
@@ -192,8 +201,11 @@
                `(,_ (uniq ',_))))
        ,@body))
 
-  (mac fn (args rest: body)
-    `(%function ,@(bind* args body)))
+  (mac fn (args name: name rest: body)
+    (if (nil? name)
+        `(%function ,@(bind* args body))
+      `(do (%local-function ,name ,@(bind* args body))
+           ,name)))
 
   (mac guard (expr)
     (if js? `([%try (list t ,expr)])
@@ -216,7 +228,7 @@
     (let ((o i (uniq 'i)) index)
       (if (is i t) (= i 'index))
       (w/uniq (x n)
-        `(let (,x ,l ,n #,x)
+        `(let (,x ,l ,n (len ,x))
            (for ,i ,n
              (let (,v (at ,x ,i))
                ,@body))))))
@@ -282,11 +294,11 @@
 
   (mac len (x) `(target lua: (%len ,x) js: (or (get ,x 'length) 0)))
 
-  (mac edge (x) `(- #,x 1))
-  (mac one? (x) `(is #,x 1))
-  (mac two? (x) `(is #,x 2))
-  (mac some? (x) `(> #,x 0))
-  (mac none? (x) `(is #,x 0))
+  (mac edge (x) `(- (len ,x) 1))
+  (mac one? (x) `(is (len ,x) 1))
+  (mac two? (x) `(is (len ,x) 2))
+  (mac some? (x) `(> (len ,x) 0))
+  (mac none? (x) `(is (len ,x) 0))
 
   (mac isa (x y) `(is ((target js: typeof lua: type) ,x) ,y))
   (mac list? (x) `(isa ,x (target js: 'object lua: 'table)))
@@ -296,12 +308,54 @@
   (mac str? (x) `(isa ,x 'string))
   (mac fn? (x) `(isa ,x 'function))
 
+  (deftransformer compose ((compose rest: fns) rest: body)
+    (if (none? fns) (macroexpand `(do ,@body))
+        (one? fns) (macroexpand `(,@fns ,@body))
+      (macroexpand `((,compose ,@(almost fns)) (,(last fns) ,@body)))))
+
+  (deftransformer complement ((complement form) rest: body)
+    (if (hd? form 'complement)
+        (macroexpand `(,(at form 1) ,@body))
+      (macroexpand `(not (,form ,@body)))))
+
+  (deftransformer expansion ((expansion) form)
+    form)
+
   nil)
 
 (once
   (def environment* (list (obj)))
   (def target* (language))
   (def keys*))
+
+(def id (a b)
+  (is a b))
+
+(def no (x)
+  (or (nil? x) (id x false)))
+
+(def yes (x)
+  (not (no x)))
+
+(def obj? (x)
+  (and (~nil? x) (list? x)))
+
+(def hd? (l x)
+  (and (obj? l)
+       (if (fn? x) (x (hd l))
+           (nil? x) (hd l)
+         (is (hd l) x))))
+
+(def complement (f)
+  (fn args (no (apply f args))))
+
+(def idfn (x)
+  x)
+
+(def compose ((o f idfn) rest: fs)
+  (if (none? fs) f
+    (let g (apply compose fs)
+      (fn args (f (apply g args))))))
 
 (def nan (/ 0 0))
 (def inf (/ 1 0))

@@ -11,6 +11,12 @@
             (return (if p (get b p) b))))
       (-- i))))
 
+(var transformer-function (k)
+  (getenv k 'transformer))
+
+(var transformer? (k)
+  (~nil? (transformer-function k)))
+
 (var macro-function (k)
   (getenv k 'macro))
 
@@ -81,7 +87,7 @@
   (if (or (atom? lh) (is lh.0 'at) (is lh.0 'get)) ; setforms?
       `(,lh ,rh)
       (is (hd lh) 'o)
-       (let ((_ var val) lh)
+       (let ((_ var (o val 'nil)) lh)
          (list var `(if (nil? ,rh) ,val ,rh)))
     (w/uniq id
       (with bs (list id rh)
@@ -137,32 +143,68 @@
        (is (hd x) 'unquote-splicing)))
 
 (var expand-local ((x name value))
-  `(%local ,name ,(macroexpand value)))
+  `(%local ,(macroexpand name) ,(macroexpand value)))
 
 (var expand-function ((x args rest: body))
   (w/bindings (args)
-    `(%function ,args ,@(macroexpand body))))
+    `(%function ,args ,@(map macroexpand body))))
 
 (var expand-definition ((x name args rest: body))
   (w/bindings (args)
-    `(,x ,name ,args ,@(macroexpand body))))
+    `(,x ,(macroexpand name) ,args ,@(map macroexpand body))))
 
-(var expand-macro ((name rest: body))
-  (macroexpand (apply (macro-function name) body)))
+(var expand-macro (form)
+  (macroexpand (expand1 form)))
+
+(def expand1 ((name rest: body))
+  (apply (macro-function name) body))
+
+(var expand-transformer (form)
+  ((transformer-function (hd (hd form))) form))
+
+(def expand-complement? (form)
+  (and (str? form)
+       (str-starts? form "~")
+       (~is form "~")))
+
+(def expand-complement (form)
+  `(complement ,(expand-atom (clip form 1))))
+
+(def expand-len? (form)
+  (and (str? form)
+       (str-starts? form "#")
+       (~is form "#")))
+
+(def expand-len (form)
+  `(len ,(expand-atom (clip form 1))))
+
+(def expand-atom-functions*
+  (list
+    (list symbol? symbol-expansion)
+    (list expand-complement? expand-complement)
+    (list expand-len? expand-len)
+    ))
+
+(def expand-atom (form)
+  (step (predicate expander) expand-atom-functions*
+    (when (predicate form)
+      (return (macroexpand (expander form)))))
+  form)
 
 (def macroexpand (form)
-  (if (symbol? form)
-      (macroexpand (symbol-expansion form))
-      (atom? form) form
-    (let x (hd form)
-      (if (is x '%local) (expand-local form)
+  (if (~obj? form) (expand-atom form)
+      (none? form) (map macroexpand form)
+    (let (x (macroexpand (hd form))
+          args (tl form)
+          form `(,x ,@args))
+      (if (is x nil) (map macroexpand args)
+          (is x '%local) (expand-local form)
           (is x '%function) (expand-function form)
           (is x '%global-function) (expand-definition form)
           (is x '%local-function) (expand-definition form)
-          (and (str? x) (is (char x 0) "~"))
-          (macroexpand `(not (,(clip x 1) ,@(tl form))))
-	  (macro? x) (expand-macro form)
-        (map macroexpand form)))))
+          (macro? x) (expand-macro form)
+          (hd? x transformer?) (expand-transformer form)
+        `(,x ,@(map macroexpand args))))))
 
 (var quasiquote-list (form depth)
   (let xs (list '(list))

@@ -4,17 +4,20 @@ var compiler = require("compiler");
 var passed = 0;
 var failed = 0;
 var tests = [];
-setenv("test", stash33({["macro"]: function (x, msg) {
+var test__macro = function (x, msg) {
   return ["if", ["not", x], ["do", ["=", "failed", ["+", "failed", 1]], ["return", msg]], ["++", "passed"]];
-}}));
-setenv("eq", stash33({["macro"]: function (a, b) {
+};
+setenv("test", stash33({["macro"]: test__macro}));
+var eq__macro = function (a, b) {
   return ["test", ["equal?", a, b], ["cat", "\"failed: expected \"", ["str", a], "\", was \"", ["str", b]]];
-}}));
-setenv("deftest", stash33({["macro"]: function (name) {
+};
+setenv("eq", stash33({["macro"]: eq__macro}));
+var deftest__macro = function (name) {
   var _r5 = unstash(Array.prototype.slice.call(arguments, 1));
   var body = cut(_r5, 0);
   return ["add", "tests", ["list", ["quote", name], ["%fn", join(["do"], body)]]];
-}}));
+};
+setenv("deftest", stash33({["macro"]: deftest__macro}));
 var equal63 = function (a, b) {
   if (!( typeof(a) === "object")) {
     return a === b;
@@ -3567,7 +3570,7 @@ add(tests, ["w/sym", function () {
   }
 }]);
 add(tests, ["defsym", function () {
-  setenv("zzz", stash33({["symbol"]: 42}));
+  setenv("zzz", stash33({["symbol"]: 42, ["eval"]: true}));
   if (! equal63(42, 42)) {
     failed = failed + 1;
     return "failed: expected " + str(42) + ", was " + str(42);

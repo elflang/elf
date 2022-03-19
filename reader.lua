@@ -1,11 +1,12 @@
-setenv("defreader", stash33({["macro"] = function (_x, ...)
+local function defreader__macro(_x, ...)
   local char = _x[1]
   local s = _x[2]
   local _r = unstash({...})
   local body = cut(_r, 0)
   return {"=", {"get", "read-table", char}, join({"fn", {s}}, body)}
-end}))
-local delimiters = {["["] = true, [")"] = true, ["}"] = true, [";"] = true, ["("] = true, ["\n"] = true, ["\r"] = true, ["{"] = true, ["]"] = true}
+end
+setenv("defreader", stash33({["macro"] = defreader__macro}))
+local delimiters = {["["] = true, [")"] = true, ["}"] = true, [";"] = true, ["]"] = true, ["\n"] = true, ["\r"] = true, ["{"] = true, ["("] = true}
 local whitespace = {["\t"] = true, ["\r"] = true, [" "] = true, ["\n"] = true}
 local function stream(str, more)
   return {["len"] = #(str), ["pos"] = 0, ["more"] = more, ["string"] = str}
@@ -287,7 +288,7 @@ end
 function hd_is63(l, val)
   return type(l) == "table" and l[1] == val
 end
-setenv("%fn", stash33({["macro"] = function (body)
+local function _37fn__macro(body)
   local n = -1
   local l = {}
   local any63 = nil
@@ -310,7 +311,8 @@ setenv("%fn", stash33({["macro"] = function (body)
     add(l, "_")
   end
   return {"fn", l, body}
-end}))
+end
+setenv("%fn", stash33({["macro"] = _37fn__macro}))
 read_table["["] = function (s)
   local x = read_list(s, "]")
   if x == s.more then
@@ -397,9 +399,5 @@ read_table[","] = function (s)
   else
     return wrap(s, "unquote")
   end
-end
-read_table["#"] = function (s)
-  read_char(s)
-  return wrap(s, "len")
 end
 return {["read-string"] = read_string, ["read-all"] = read_all, ["read"] = read, ["read-table"] = read_table, ["stream"] = stream}

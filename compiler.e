@@ -640,7 +640,7 @@
 (defspecial return (x) :stmt
   (let x (if (nil? x)
              "return"
-           (cat "return(" (compile x) ")"))
+           (cat "return " (compile x)))
     (cat (indentation) x)))
 
 (defspecial new (x)

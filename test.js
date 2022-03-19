@@ -5,22 +5,22 @@ var passed = 0;
 var failed = 0;
 var tests = [];
 setenv("test", stash33({["macro"]: function (x, msg) {
-  return(["if", ["not", x], ["do", ["=", "failed", ["+", "failed", 1]], ["return", msg]], ["++", "passed"]]);
+  return ["if", ["not", x], ["do", ["=", "failed", ["+", "failed", 1]], ["return", msg]], ["++", "passed"]];
 }}));
 var equal63 = function (a, b) {
   if (!( typeof(a) === "object")) {
-    return(a === b);
+    return a === b;
   } else {
-    return(str(a) === str(b));
+    return str(a) === str(b);
   }
 };
 setenv("eq", stash33({["macro"]: function (a, b) {
-  return(["test", ["equal?", a, b], ["cat", "\"failed: expected \"", ["str", a], "\", was \"", ["str", b]]]);
+  return ["test", ["equal?", a, b], ["cat", "\"failed: expected \"", ["str", a], "\", was \"", ["str", b]]];
 }}));
 setenv("deftest", stash33({["macro"]: function (name) {
   var _r6 = unstash(Array.prototype.slice.call(arguments, 1));
   var body = cut(_r6, 0);
-  return(["add", "tests", ["list", ["quote", name], ["%fn", join(["do"], body)]]]);
+  return ["add", "tests", ["list", ["quote", name], ["%fn", join(["do"], body)]]];
 }}));
 run_tests = function () {
   var _l = tests;
@@ -41,316 +41,316 @@ run_tests = function () {
       print(" " + name + " " + result);
     }
   }
-  return(print(" " + passed + " passed, " + failed + " failed"));
+  return print(" " + passed + " passed, " + failed + " failed");
 };
 add(tests, ["reader", function () {
   var read = reader["read-string"];
   if (! equal63(undefined, read(""))) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(read("")));
+    return "failed: expected " + str(undefined) + ", was " + str(read(""));
   } else {
     passed = passed + 1;
   }
   if (! equal63("nil", read("nil"))) {
     failed = failed + 1;
-    return("failed: expected " + str("nil") + ", was " + str(read("nil")));
+    return "failed: expected " + str("nil") + ", was " + str(read("nil"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(17, read("17"))) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str(read("17")));
+    return "failed: expected " + str(17) + ", was " + str(read("17"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(0.015, read("1.5e-2"))) {
     failed = failed + 1;
-    return("failed: expected " + str(0.015) + ", was " + str(read("1.5e-2")));
+    return "failed: expected " + str(0.015) + ", was " + str(read("1.5e-2"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, read("true"))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(read("true")));
+    return "failed: expected " + str(true) + ", was " + str(read("true"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(! true, read("false"))) {
     failed = failed + 1;
-    return("failed: expected " + str(! true) + ", was " + str(read("false")));
+    return "failed: expected " + str(! true) + ", was " + str(read("false"));
   } else {
     passed = passed + 1;
   }
   if (! equal63("hi", read("hi"))) {
     failed = failed + 1;
-    return("failed: expected " + str("hi") + ", was " + str(read("hi")));
+    return "failed: expected " + str("hi") + ", was " + str(read("hi"));
   } else {
     passed = passed + 1;
   }
   if (! equal63("\"hi\"", read("\"hi\""))) {
     failed = failed + 1;
-    return("failed: expected " + str("\"hi\"") + ", was " + str(read("\"hi\"")));
+    return "failed: expected " + str("\"hi\"") + ", was " + str(read("\"hi\""));
   } else {
     passed = passed + 1;
   }
   if (! equal63("|hi|", read("|hi|"))) {
     failed = failed + 1;
-    return("failed: expected " + str("|hi|") + ", was " + str(read("|hi|")));
+    return "failed: expected " + str("|hi|") + ", was " + str(read("|hi|"));
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, 2], read("(1 2)"))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2]) + ", was " + str(read("(1 2)")));
+    return "failed: expected " + str([1, 2]) + ", was " + str(read("(1 2)"));
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, ["a"]], read("(1 (a))"))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, ["a"]]) + ", was " + str(read("(1 (a))")));
+    return "failed: expected " + str([1, ["a"]]) + ", was " + str(read("(1 (a))"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["quote", "a"], read("'a"))) {
     failed = failed + 1;
-    return("failed: expected " + str(["quote", "a"]) + ", was " + str(read("'a")));
+    return "failed: expected " + str(["quote", "a"]) + ", was " + str(read("'a"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["quasiquote", "a"], read("`a"))) {
     failed = failed + 1;
-    return("failed: expected " + str(["quasiquote", "a"]) + ", was " + str(read("`a")));
+    return "failed: expected " + str(["quasiquote", "a"]) + ", was " + str(read("`a"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["quasiquote", ["unquote", "a"]], read("`,a"))) {
     failed = failed + 1;
-    return("failed: expected " + str(["quasiquote", ["unquote", "a"]]) + ", was " + str(read("`,a")));
+    return "failed: expected " + str(["quasiquote", ["unquote", "a"]]) + ", was " + str(read("`,a"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["quasiquote", ["unquote-splicing", "a"]], read("`,@a"))) {
     failed = failed + 1;
-    return("failed: expected " + str(["quasiquote", ["unquote-splicing", "a"]]) + ", was " + str(read("`,@a")));
+    return "failed: expected " + str(["quasiquote", ["unquote-splicing", "a"]]) + ", was " + str(read("`,@a"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, read("(1 2 a: 7)").length || 0)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(read("(1 2 a: 7)").length || 0));
+    return "failed: expected " + str(2) + ", was " + str(read("(1 2 a: 7)").length || 0);
   } else {
     passed = passed + 1;
   }
   if (! equal63(7, read("(1 2 a: 7)").a)) {
     failed = failed + 1;
-    return("failed: expected " + str(7) + ", was " + str(read("(1 2 a: 7)").a));
+    return "failed: expected " + str(7) + ", was " + str(read("(1 2 a: 7)").a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, read("(:a)").a)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(read("(:a)").a));
+    return "failed: expected " + str(true) + ", was " + str(read("(:a)").a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(1, - -1)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(- -1));
+    return "failed: expected " + str(1) + ", was " + str(- -1);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, nan63(read("nan")))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(nan63(read("nan"))));
+    return "failed: expected " + str(true) + ", was " + str(nan63(read("nan")));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, nan63(read("-nan")))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(nan63(read("-nan"))));
+    return "failed: expected " + str(true) + ", was " + str(nan63(read("-nan")));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, inf63(read("inf")))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(inf63(read("inf"))));
+    return "failed: expected " + str(true) + ", was " + str(inf63(read("inf")));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, inf63(read("-inf")))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(inf63(read("-inf"))));
+    return "failed: expected " + str(true) + ", was " + str(inf63(read("-inf")));
   } else {
     passed = passed + 1;
   }
   if (! equal63("0?", read("0?"))) {
     failed = failed + 1;
-    return("failed: expected " + str("0?") + ", was " + str(read("0?")));
+    return "failed: expected " + str("0?") + ", was " + str(read("0?"));
   } else {
     passed = passed + 1;
   }
   if (! equal63("0!", read("0!"))) {
     failed = failed + 1;
-    return("failed: expected " + str("0!") + ", was " + str(read("0!")));
+    return "failed: expected " + str("0!") + ", was " + str(read("0!"));
   } else {
     passed = passed + 1;
   }
   if (! equal63("0.", read("0."))) {
     failed = failed + 1;
-    return("failed: expected " + str("0.") + ", was " + str(read("0.")));
+    return "failed: expected " + str("0.") + ", was " + str(read("0."));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["read-more", function () {
   var read = reader["read-string"];
   if (! equal63(17, read("17", true))) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str(read("17", true)));
+    return "failed: expected " + str(17) + ", was " + str(read("17", true));
   } else {
     passed = passed + 1;
   }
   var more = [];
   if (! equal63(more, read("(open", more))) {
     failed = failed + 1;
-    return("failed: expected " + str(more) + ", was " + str(read("(open", more)));
+    return "failed: expected " + str(more) + ", was " + str(read("(open", more));
   } else {
     passed = passed + 1;
   }
   if (! equal63(more, read("\"unterminated ", more))) {
     failed = failed + 1;
-    return("failed: expected " + str(more) + ", was " + str(read("\"unterminated ", more)));
+    return "failed: expected " + str(more) + ", was " + str(read("\"unterminated ", more));
   } else {
     passed = passed + 1;
   }
   if (! equal63(more, read("|identifier", more))) {
     failed = failed + 1;
-    return("failed: expected " + str(more) + ", was " + str(read("|identifier", more)));
+    return "failed: expected " + str(more) + ", was " + str(read("|identifier", more));
   } else {
     passed = passed + 1;
   }
   if (! equal63(more, read("'(a b c", more))) {
     failed = failed + 1;
-    return("failed: expected " + str(more) + ", was " + str(read("'(a b c", more)));
+    return "failed: expected " + str(more) + ", was " + str(read("'(a b c", more));
   } else {
     passed = passed + 1;
   }
   if (! equal63(more, read("`(a b c", more))) {
     failed = failed + 1;
-    return("failed: expected " + str(more) + ", was " + str(read("`(a b c", more)));
+    return "failed: expected " + str(more) + ", was " + str(read("`(a b c", more));
   } else {
     passed = passed + 1;
   }
   if (! equal63(more, read("`(a b ,(z", more))) {
     failed = failed + 1;
-    return("failed: expected " + str(more) + ", was " + str(read("`(a b ,(z", more)));
+    return "failed: expected " + str(more) + ", was " + str(read("`(a b ,(z", more));
   } else {
     passed = passed + 1;
   }
   if (! equal63(more, read("`\"biz", more))) {
     failed = failed + 1;
-    return("failed: expected " + str(more) + ", was " + str(read("`\"biz", more)));
+    return "failed: expected " + str(more) + ", was " + str(read("`\"biz", more));
   } else {
     passed = passed + 1;
   }
   if (! equal63(more, read("'\"boz", more))) {
     failed = failed + 1;
-    return("failed: expected " + str(more) + ", was " + str(read("'\"boz", more)));
+    return "failed: expected " + str(more) + ", was " + str(read("'\"boz", more));
   } else {
     passed = passed + 1;
   }
   var _id3 = (function () {
     try {
-      return([true, read("(open")]);
+      return [true, read("(open")];
     }
     catch (_e75) {
-      return([false, _e75.message, _e75.stack]);
+      return [false, _e75.message, _e75.stack];
     }
   })();
   var ok = _id3[0];
   var msg = _id3[1];
   if (! equal63(false, ok)) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(ok));
+    return "failed: expected " + str(false) + ", was " + str(ok);
   } else {
     passed = passed + 1;
   }
   if (! equal63("Expected ) at 5", msg)) {
     failed = failed + 1;
-    return("failed: expected " + str("Expected ) at 5") + ", was " + str(msg));
+    return "failed: expected " + str("Expected ) at 5") + ", was " + str(msg);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["bool", function () {
   if (! equal63(true, true || false)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(true || false));
+    return "failed: expected " + str(true) + ", was " + str(true || false);
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, false || false)) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(false || false));
+    return "failed: expected " + str(false) + ", was " + str(false || false);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, false || false || true)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(false || false || true));
+    return "failed: expected " + str(true) + ", was " + str(false || false || true);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, ! false)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(! false));
+    return "failed: expected " + str(true) + ", was " + str(! false);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, !( false && true))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(!( false && true)));
+    return "failed: expected " + str(true) + ", was " + str(!( false && true));
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, !( false || true))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(!( false || true)));
+    return "failed: expected " + str(false) + ", was " + str(!( false || true));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, !( false && true))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(!( false && true)));
+    return "failed: expected " + str(true) + ", was " + str(!( false && true));
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, !( false || true))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(!( false || true)));
+    return "failed: expected " + str(false) + ", was " + str(!( false || true));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, true && true)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(true && true));
+    return "failed: expected " + str(true) + ", was " + str(true && true);
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, true && false)) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(true && false));
+    return "failed: expected " + str(false) + ", was " + str(true && false);
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, true && true && false)) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(true && true && false));
+    return "failed: expected " + str(false) + ", was " + str(true && true && false);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["short", function () {
@@ -372,7 +372,7 @@ add(tests, ["short", function () {
       throw new Error("bad");
       _e8 = undefined;
     }
-    return("failed: expected " + str(true) + ", was " + str(_e8));
+    return "failed: expected " + str(true) + ", was " + str(_e8);
   } else {
     passed = passed + 1;
   }
@@ -394,7 +394,7 @@ add(tests, ["short", function () {
     } else {
       _e10 = _id61;
     }
-    return("failed: expected " + str(false) + ", was " + str(_e10));
+    return "failed: expected " + str(false) + ", was " + str(_e10);
   } else {
     passed = passed + 1;
   }
@@ -417,13 +417,13 @@ add(tests, ["short", function () {
       a = false;
       _e12 = false;
     }
-    return("failed: expected " + str(true) + ", was " + str(_e12));
+    return "failed: expected " + str(true) + ", was " + str(_e12);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(a));
+    return "failed: expected " + str(true) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
@@ -445,13 +445,13 @@ add(tests, ["short", function () {
     } else {
       _e14 = _id65;
     }
-    return("failed: expected " + str(false) + ", was " + str(_e14));
+    return "failed: expected " + str(false) + ", was " + str(_e14);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(a));
+    return "failed: expected " + str(true) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
@@ -476,13 +476,13 @@ add(tests, ["short", function () {
       b = true;
       _e16 = b;
     }
-    return("failed: expected " + str(true) + ", was " + str(_e16));
+    return "failed: expected " + str(true) + ", was " + str(_e16);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, b)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(b));
+    return "failed: expected " + str(true) + ", was " + str(b);
   } else {
     passed = passed + 1;
   }
@@ -506,13 +506,13 @@ add(tests, ["short", function () {
       b = true;
       _e18 = b;
     }
-    return("failed: expected " + str(true) + ", was " + str(_e18));
+    return "failed: expected " + str(true) + ", was " + str(_e18);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, b)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(b));
+    return "failed: expected " + str(true) + ", was " + str(b);
   } else {
     passed = passed + 1;
   }
@@ -536,13 +536,13 @@ add(tests, ["short", function () {
     } else {
       _e20 = _id71;
     }
-    return("failed: expected " + str(true) + ", was " + str(_e20));
+    return "failed: expected " + str(true) + ", was " + str(_e20);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, b)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(b));
+    return "failed: expected " + str(true) + ", was " + str(b);
   } else {
     passed = passed + 1;
   }
@@ -566,200 +566,200 @@ add(tests, ["short", function () {
     } else {
       _e22 = _id73;
     }
-    return("failed: expected " + str(false) + ", was " + str(_e22));
+    return "failed: expected " + str(false) + ", was " + str(_e22);
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, b)) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(b));
+    return "failed: expected " + str(false) + ", was " + str(b);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["numeric", function () {
   if (! equal63(4, 2 + 2)) {
     failed = failed + 1;
-    return("failed: expected " + str(4) + ", was " + str(2 + 2));
+    return "failed: expected " + str(4) + ", was " + str(2 + 2);
   } else {
     passed = passed + 1;
   }
   if (! equal63(4, apply(_43, [2, 2]))) {
     failed = failed + 1;
-    return("failed: expected " + str(4) + ", was " + str(apply(_43, [2, 2])));
+    return "failed: expected " + str(4) + ", was " + str(apply(_43, [2, 2]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(0, apply(_43, []))) {
     failed = failed + 1;
-    return("failed: expected " + str(0) + ", was " + str(apply(_43, [])));
+    return "failed: expected " + str(0) + ", was " + str(apply(_43, []));
   } else {
     passed = passed + 1;
   }
   if (! equal63(18, 18)) {
     failed = failed + 1;
-    return("failed: expected " + str(18) + ", was " + str(18));
+    return "failed: expected " + str(18) + ", was " + str(18);
   } else {
     passed = passed + 1;
   }
   if (! equal63(4, 7 - 3)) {
     failed = failed + 1;
-    return("failed: expected " + str(4) + ", was " + str(7 - 3));
+    return "failed: expected " + str(4) + ", was " + str(7 - 3);
   } else {
     passed = passed + 1;
   }
   if (! equal63(4, apply(_, [7, 3]))) {
     failed = failed + 1;
-    return("failed: expected " + str(4) + ", was " + str(apply(_, [7, 3])));
+    return "failed: expected " + str(4) + ", was " + str(apply(_, [7, 3]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(0, apply(_, []))) {
     failed = failed + 1;
-    return("failed: expected " + str(0) + ", was " + str(apply(_, [])));
+    return "failed: expected " + str(0) + ", was " + str(apply(_, []));
   } else {
     passed = passed + 1;
   }
   if (! equal63(5, 10 / 2)) {
     failed = failed + 1;
-    return("failed: expected " + str(5) + ", was " + str(10 / 2));
+    return "failed: expected " + str(5) + ", was " + str(10 / 2);
   } else {
     passed = passed + 1;
   }
   if (! equal63(5, apply(_47, [10, 2]))) {
     failed = failed + 1;
-    return("failed: expected " + str(5) + ", was " + str(apply(_47, [10, 2])));
+    return "failed: expected " + str(5) + ", was " + str(apply(_47, [10, 2]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(1, apply(_47, []))) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(apply(_47, [])));
+    return "failed: expected " + str(1) + ", was " + str(apply(_47, []));
   } else {
     passed = passed + 1;
   }
   if (! equal63(6, 2 * 3)) {
     failed = failed + 1;
-    return("failed: expected " + str(6) + ", was " + str(2 * 3));
+    return "failed: expected " + str(6) + ", was " + str(2 * 3);
   } else {
     passed = passed + 1;
   }
   if (! equal63(6, apply(_42, [2, 3]))) {
     failed = failed + 1;
-    return("failed: expected " + str(6) + ", was " + str(apply(_42, [2, 3])));
+    return "failed: expected " + str(6) + ", was " + str(apply(_42, [2, 3]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(1, apply(_42, []))) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(apply(_42, [])));
+    return "failed: expected " + str(1) + ", was " + str(apply(_42, []));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, 2.01 > 2)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(2.01 > 2));
+    return "failed: expected " + str(true) + ", was " + str(2.01 > 2);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, 5 >= 5)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(5 >= 5));
+    return "failed: expected " + str(true) + ", was " + str(5 >= 5);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, 2100 > 2000)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(2100 > 2000));
+    return "failed: expected " + str(true) + ", was " + str(2100 > 2000);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, 0.002 < 0.0021)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(0.002 < 0.0021));
+    return "failed: expected " + str(true) + ", was " + str(0.002 < 0.0021);
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, 2 < 2)) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(2 < 2));
+    return "failed: expected " + str(false) + ", was " + str(2 < 2);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, 2 <= 2)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(2 <= 2));
+    return "failed: expected " + str(true) + ", was " + str(2 <= 2);
   } else {
     passed = passed + 1;
   }
   if (! equal63(-7, - 7)) {
     failed = failed + 1;
-    return("failed: expected " + str(-7) + ", was " + str(- 7));
+    return "failed: expected " + str(-7) + ", was " + str(- 7);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["math", function () {
   if (! equal63(3, max(1, 3))) {
     failed = failed + 1;
-    return("failed: expected " + str(3) + ", was " + str(max(1, 3)));
+    return "failed: expected " + str(3) + ", was " + str(max(1, 3));
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, min(2, 7))) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(min(2, 7)));
+    return "failed: expected " + str(2) + ", was " + str(min(2, 7));
   } else {
     passed = passed + 1;
   }
   var n = random();
   if (! equal63(true, n > 0 && n < 1)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(n > 0 && n < 1));
+    return "failed: expected " + str(true) + ", was " + str(n > 0 && n < 1);
   } else {
     passed = passed + 1;
   }
   if (! equal63(4, floor(4.78))) {
     failed = failed + 1;
-    return("failed: expected " + str(4) + ", was " + str(floor(4.78)));
+    return "failed: expected " + str(4) + ", was " + str(floor(4.78));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["precedence", function () {
   if (! equal63(-3, -( 1 + 2))) {
     failed = failed + 1;
-    return("failed: expected " + str(-3) + ", was " + str(-( 1 + 2)));
+    return "failed: expected " + str(-3) + ", was " + str(-( 1 + 2));
   } else {
     passed = passed + 1;
   }
   if (! equal63(10, 12 - (1 + 1))) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(12 - (1 + 1)));
+    return "failed: expected " + str(10) + ", was " + str(12 - (1 + 1));
   } else {
     passed = passed + 1;
   }
   if (! equal63(11, 12 - 1 * 1)) {
     failed = failed + 1;
-    return("failed: expected " + str(11) + ", was " + str(12 - 1 * 1));
+    return "failed: expected " + str(11) + ", was " + str(12 - 1 * 1);
   } else {
     passed = passed + 1;
   }
   if (! equal63(10, 4 / 2 + 8)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(4 / 2 + 8));
+    return "failed: expected " + str(10) + ", was " + str(4 / 2 + 8);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["standalone", function () {
   if (! equal63(10, 10)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(10));
+    return "failed: expected " + str(10) + ", was " + str(10);
   } else {
     passed = passed + 1;
   }
@@ -768,204 +768,204 @@ add(tests, ["standalone", function () {
   if (! equal63(9, 9)) {
     failed = failed + 1;
     x = 10;
-    return("failed: expected " + str(9) + ", was " + str(9));
+    return "failed: expected " + str(9) + ", was " + str(9);
   } else {
     passed = passed + 1;
   }
   if (! equal63(10, x)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(x));
+    return "failed: expected " + str(10) + ", was " + str(x);
   } else {
     passed = passed + 1;
   }
   if (! equal63(12, 12)) {
     failed = failed + 1;
-    return("failed: expected " + str(12) + ", was " + str(12));
+    return "failed: expected " + str(12) + ", was " + str(12);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["string", function () {
   if (! equal63(3, "foo".length || 0)) {
     failed = failed + 1;
-    return("failed: expected " + str(3) + ", was " + str("foo".length || 0));
+    return "failed: expected " + str(3) + ", was " + str("foo".length || 0);
   } else {
     passed = passed + 1;
   }
   if (! equal63(3, "\"a\"".length || 0)) {
     failed = failed + 1;
-    return("failed: expected " + str(3) + ", was " + str("\"a\"".length || 0));
+    return "failed: expected " + str(3) + ", was " + str("\"a\"".length || 0);
   } else {
     passed = passed + 1;
   }
   if (! equal63("a", "a")) {
     failed = failed + 1;
-    return("failed: expected " + str("a") + ", was " + str("a"));
+    return "failed: expected " + str("a") + ", was " + str("a");
   } else {
     passed = passed + 1;
   }
   if (! equal63("a", char("bar", 1))) {
     failed = failed + 1;
-    return("failed: expected " + str("a") + ", was " + str(char("bar", 1)));
+    return "failed: expected " + str("a") + ", was " + str(char("bar", 1));
   } else {
     passed = passed + 1;
   }
   var s = "a\nb";
   if (! equal63(3, s.length || 0)) {
     failed = failed + 1;
-    return("failed: expected " + str(3) + ", was " + str(s.length || 0));
+    return "failed: expected " + str(3) + ", was " + str(s.length || 0);
   } else {
     passed = passed + 1;
   }
   var _s = "a\nb\nc";
   if (! equal63(5, _s.length || 0)) {
     failed = failed + 1;
-    return("failed: expected " + str(5) + ", was " + str(_s.length || 0));
+    return "failed: expected " + str(5) + ", was " + str(_s.length || 0);
   } else {
     passed = passed + 1;
   }
   if (! equal63(3, "a\nb".length || 0)) {
     failed = failed + 1;
-    return("failed: expected " + str(3) + ", was " + str("a\nb".length || 0));
+    return "failed: expected " + str(3) + ", was " + str("a\nb".length || 0);
   } else {
     passed = passed + 1;
   }
   if (! equal63(3, "a\\b".length || 0)) {
     failed = failed + 1;
-    return("failed: expected " + str(3) + ", was " + str("a\\b".length || 0));
+    return "failed: expected " + str(3) + ", was " + str("a\\b".length || 0);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["quote", function () {
   if (! equal63(7, 7)) {
     failed = failed + 1;
-    return("failed: expected " + str(7) + ", was " + str(7));
+    return "failed: expected " + str(7) + ", was " + str(7);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, true)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(true));
+    return "failed: expected " + str(true) + ", was " + str(true);
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, false)) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(false));
+    return "failed: expected " + str(false) + ", was " + str(false);
   } else {
     passed = passed + 1;
   }
   if (! equal63("a", "a")) {
     failed = failed + 1;
-    return("failed: expected " + str("a") + ", was " + str("a"));
+    return "failed: expected " + str("a") + ", was " + str("a");
   } else {
     passed = passed + 1;
   }
   if (! equal63(["quote", "a"], ["quote", "a"])) {
     failed = failed + 1;
-    return("failed: expected " + str(["quote", "a"]) + ", was " + str(["quote", "a"]));
+    return "failed: expected " + str(["quote", "a"]) + ", was " + str(["quote", "a"]);
   } else {
     passed = passed + 1;
   }
   if (! equal63("\"a\"", "\"a\"")) {
     failed = failed + 1;
-    return("failed: expected " + str("\"a\"") + ", was " + str("\"a\""));
+    return "failed: expected " + str("\"a\"") + ", was " + str("\"a\"");
   } else {
     passed = passed + 1;
   }
   if (! equal63("\"\\n\"", "\"\\n\"")) {
     failed = failed + 1;
-    return("failed: expected " + str("\"\\n\"") + ", was " + str("\"\\n\""));
+    return "failed: expected " + str("\"\\n\"") + ", was " + str("\"\\n\"");
   } else {
     passed = passed + 1;
   }
   if (! equal63("\"\\\\\"", "\"\\\\\"")) {
     failed = failed + 1;
-    return("failed: expected " + str("\"\\\\\"") + ", was " + str("\"\\\\\""));
+    return "failed: expected " + str("\"\\\\\"") + ", was " + str("\"\\\\\"");
   } else {
     passed = passed + 1;
   }
   if (! equal63(["quote", "\"a\""], ["quote", "\"a\""])) {
     failed = failed + 1;
-    return("failed: expected " + str(["quote", "\"a\""]) + ", was " + str(["quote", "\"a\""]));
+    return "failed: expected " + str(["quote", "\"a\""]) + ", was " + str(["quote", "\"a\""]);
   } else {
     passed = passed + 1;
   }
   if (! equal63("|(|", "|(|")) {
     failed = failed + 1;
-    return("failed: expected " + str("|(|") + ", was " + str("|(|"));
+    return "failed: expected " + str("|(|") + ", was " + str("|(|");
   } else {
     passed = passed + 1;
   }
   if (! equal63("unquote", "unquote")) {
     failed = failed + 1;
-    return("failed: expected " + str("unquote") + ", was " + str("unquote"));
+    return "failed: expected " + str("unquote") + ", was " + str("unquote");
   } else {
     passed = passed + 1;
   }
   if (! equal63(["unquote"], ["unquote"])) {
     failed = failed + 1;
-    return("failed: expected " + str(["unquote"]) + ", was " + str(["unquote"]));
+    return "failed: expected " + str(["unquote"]) + ", was " + str(["unquote"]);
   } else {
     passed = passed + 1;
   }
   if (! equal63(["unquote", "a"], ["unquote", "a"])) {
     failed = failed + 1;
-    return("failed: expected " + str(["unquote", "a"]) + ", was " + str(["unquote", "a"]));
+    return "failed: expected " + str(["unquote", "a"]) + ", was " + str(["unquote", "a"]);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["list", function () {
   if (! equal63([], [])) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str([]));
+    return "failed: expected " + str([]) + ", was " + str([]);
   } else {
     passed = passed + 1;
   }
   if (! equal63([], [])) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str([]));
+    return "failed: expected " + str([]) + ", was " + str([]);
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a"], ["a"])) {
     failed = failed + 1;
-    return("failed: expected " + str(["a"]) + ", was " + str(["a"]));
+    return "failed: expected " + str(["a"]) + ", was " + str(["a"]);
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a"], ["a"])) {
     failed = failed + 1;
-    return("failed: expected " + str(["a"]) + ", was " + str(["a"]));
+    return "failed: expected " + str(["a"]) + ", was " + str(["a"]);
   } else {
     passed = passed + 1;
   }
   if (! equal63([[]], [[]])) {
     failed = failed + 1;
-    return("failed: expected " + str([[]]) + ", was " + str([[]]));
+    return "failed: expected " + str([[]]) + ", was " + str([[]]);
   } else {
     passed = passed + 1;
   }
   if (! equal63(0, [].length || 0)) {
     failed = failed + 1;
-    return("failed: expected " + str(0) + ", was " + str([].length || 0));
+    return "failed: expected " + str(0) + ", was " + str([].length || 0);
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, [1, 2].length || 0)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str([1, 2].length || 0));
+    return "failed: expected " + str(2) + ", was " + str([1, 2].length || 0);
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, 2, 3], [1, 2, 3])) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, 3]) + ", was " + str([1, 2, 3]));
+    return "failed: expected " + str([1, 2, 3]) + ", was " + str([1, 2, 3]);
   } else {
     passed = passed + 1;
   }
@@ -975,7 +975,7 @@ add(tests, ["list", function () {
     failed = failed + 1;
     var _x123 = [];
     _x123.foo = 17;
-    return("failed: expected " + str(17) + ", was " + str(_x123.foo));
+    return "failed: expected " + str(17) + ", was " + str(_x123.foo);
   } else {
     passed = passed + 1;
   }
@@ -985,7 +985,7 @@ add(tests, ["list", function () {
     failed = failed + 1;
     var _x125 = [1];
     _x125.foo = 17;
-    return("failed: expected " + str(17) + ", was " + str(_x125.foo));
+    return "failed: expected " + str(17) + ", was " + str(_x125.foo);
   } else {
     passed = passed + 1;
   }
@@ -995,7 +995,7 @@ add(tests, ["list", function () {
     failed = failed + 1;
     var _x127 = [];
     _x127.foo = true;
-    return("failed: expected " + str(true) + ", was " + str(_x127.foo));
+    return "failed: expected " + str(true) + ", was " + str(_x127.foo);
   } else {
     passed = passed + 1;
   }
@@ -1005,7 +1005,7 @@ add(tests, ["list", function () {
     failed = failed + 1;
     var _x129 = [];
     _x129.foo = true;
-    return("failed: expected " + str(true) + ", was " + str(_x129.foo));
+    return "failed: expected " + str(true) + ", was " + str(_x129.foo);
   } else {
     passed = passed + 1;
   }
@@ -1015,7 +1015,7 @@ add(tests, ["list", function () {
     failed = failed + 1;
     var _x133 = [];
     _x133.foo = true;
-    return("failed: expected " + str(true) + ", was " + str([_x133][0].foo));
+    return "failed: expected " + str(true) + ", was " + str([_x133][0].foo);
   } else {
     passed = passed + 1;
   }
@@ -1029,7 +1029,7 @@ add(tests, ["list", function () {
     _x136.a = true;
     var _x137 = [];
     _x137.a = true;
-    return("failed: expected " + str(_x136) + ", was " + str(_x137));
+    return "failed: expected " + str(_x136) + ", was " + str(_x137);
   } else {
     passed = passed + 1;
   }
@@ -1043,7 +1043,7 @@ add(tests, ["list", function () {
     _x140.b = false;
     var _x141 = [];
     _x141.b = false;
-    return("failed: expected " + str(_x140) + ", was " + str(_x141));
+    return "failed: expected " + str(_x140) + ", was " + str(_x141);
   } else {
     passed = passed + 1;
   }
@@ -1057,170 +1057,170 @@ add(tests, ["list", function () {
     _x144.c = 0;
     var _x145 = [];
     _x145.c = 0;
-    return("failed: expected " + str(_x144) + ", was " + str(_x145));
+    return "failed: expected " + str(_x144) + ", was " + str(_x145);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["quasiquote", function () {
   if (! equal63("a", "a")) {
     failed = failed + 1;
-    return("failed: expected " + str("a") + ", was " + str("a"));
+    return "failed: expected " + str("a") + ", was " + str("a");
   } else {
     passed = passed + 1;
   }
   if (! equal63("a", "a")) {
     failed = failed + 1;
-    return("failed: expected " + str("a") + ", was " + str("a"));
+    return "failed: expected " + str("a") + ", was " + str("a");
   } else {
     passed = passed + 1;
   }
   if (! equal63([], join())) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(join()));
+    return "failed: expected " + str([]) + ", was " + str(join());
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, 2)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(2));
+    return "failed: expected " + str(2) + ", was " + str(2);
   } else {
     passed = passed + 1;
   }
   if (! equal63(undefined, undefined)) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(undefined));
+    return "failed: expected " + str(undefined) + ", was " + str(undefined);
   } else {
     passed = passed + 1;
   }
   var a = 42;
   if (! equal63(42, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(a));
+    return "failed: expected " + str(42) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(42, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(a));
+    return "failed: expected " + str(42) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(["quasiquote", ["unquote", "a"]], ["quasiquote", ["unquote", "a"]])) {
     failed = failed + 1;
-    return("failed: expected " + str(["quasiquote", ["unquote", "a"]]) + ", was " + str(["quasiquote", ["unquote", "a"]]));
+    return "failed: expected " + str(["quasiquote", ["unquote", "a"]]) + ", was " + str(["quasiquote", ["unquote", "a"]]);
   } else {
     passed = passed + 1;
   }
   if (! equal63(["quasiquote", ["unquote", 42]], ["quasiquote", ["unquote", a]])) {
     failed = failed + 1;
-    return("failed: expected " + str(["quasiquote", ["unquote", 42]]) + ", was " + str(["quasiquote", ["unquote", a]]));
+    return "failed: expected " + str(["quasiquote", ["unquote", 42]]) + ", was " + str(["quasiquote", ["unquote", a]]);
   } else {
     passed = passed + 1;
   }
   if (! equal63(["quasiquote", ["quasiquote", ["unquote", ["unquote", "a"]]]], ["quasiquote", ["quasiquote", ["unquote", ["unquote", "a"]]]])) {
     failed = failed + 1;
-    return("failed: expected " + str(["quasiquote", ["quasiquote", ["unquote", ["unquote", "a"]]]]) + ", was " + str(["quasiquote", ["quasiquote", ["unquote", ["unquote", "a"]]]]));
+    return "failed: expected " + str(["quasiquote", ["quasiquote", ["unquote", ["unquote", "a"]]]]) + ", was " + str(["quasiquote", ["quasiquote", ["unquote", ["unquote", "a"]]]]);
   } else {
     passed = passed + 1;
   }
   if (! equal63(["quasiquote", ["quasiquote", ["unquote", ["unquote", 42]]]], ["quasiquote", ["quasiquote", ["unquote", ["unquote", a]]]])) {
     failed = failed + 1;
-    return("failed: expected " + str(["quasiquote", ["quasiquote", ["unquote", ["unquote", 42]]]]) + ", was " + str(["quasiquote", ["quasiquote", ["unquote", ["unquote", a]]]]));
+    return "failed: expected " + str(["quasiquote", ["quasiquote", ["unquote", ["unquote", 42]]]]) + ", was " + str(["quasiquote", ["quasiquote", ["unquote", ["unquote", a]]]]);
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a", ["quasiquote", ["b", ["unquote", "c"]]]], ["a", ["quasiquote", ["b", ["unquote", "c"]]]])) {
     failed = failed + 1;
-    return("failed: expected " + str(["a", ["quasiquote", ["b", ["unquote", "c"]]]]) + ", was " + str(["a", ["quasiquote", ["b", ["unquote", "c"]]]]));
+    return "failed: expected " + str(["a", ["quasiquote", ["b", ["unquote", "c"]]]]) + ", was " + str(["a", ["quasiquote", ["b", ["unquote", "c"]]]]);
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a", ["quasiquote", ["b", ["unquote", 42]]]], ["a", ["quasiquote", ["b", ["unquote", a]]]])) {
     failed = failed + 1;
-    return("failed: expected " + str(["a", ["quasiquote", ["b", ["unquote", 42]]]]) + ", was " + str(["a", ["quasiquote", ["b", ["unquote", a]]]]));
+    return "failed: expected " + str(["a", ["quasiquote", ["b", ["unquote", 42]]]]) + ", was " + str(["a", ["quasiquote", ["b", ["unquote", a]]]]);
   } else {
     passed = passed + 1;
   }
   var b = "c";
   if (! equal63(["quote", "c"], ["quote", b])) {
     failed = failed + 1;
-    return("failed: expected " + str(["quote", "c"]) + ", was " + str(["quote", b]));
+    return "failed: expected " + str(["quote", "c"]) + ", was " + str(["quote", b]);
   } else {
     passed = passed + 1;
   }
   if (! equal63([42], [a])) {
     failed = failed + 1;
-    return("failed: expected " + str([42]) + ", was " + str([a]));
+    return "failed: expected " + str([42]) + ", was " + str([a]);
   } else {
     passed = passed + 1;
   }
   if (! equal63([[42]], [[a]])) {
     failed = failed + 1;
-    return("failed: expected " + str([[42]]) + ", was " + str([[a]]));
+    return "failed: expected " + str([[42]]) + ", was " + str([[a]]);
   } else {
     passed = passed + 1;
   }
   if (! equal63([41, [42]], [41, [a]])) {
     failed = failed + 1;
-    return("failed: expected " + str([41, [42]]) + ", was " + str([41, [a]]));
+    return "failed: expected " + str([41, [42]]) + ", was " + str([41, [a]]);
   } else {
     passed = passed + 1;
   }
   var c = [1, 2, 3];
   if (! equal63([[1, 2, 3]], [c])) {
     failed = failed + 1;
-    return("failed: expected " + str([[1, 2, 3]]) + ", was " + str([c]));
+    return "failed: expected " + str([[1, 2, 3]]) + ", was " + str([c]);
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, 2, 3], c)) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, 3]) + ", was " + str(c));
+    return "failed: expected " + str([1, 2, 3]) + ", was " + str(c);
   } else {
     passed = passed + 1;
   }
   if (! equal63([0, 1, 2, 3], join([0], c))) {
     failed = failed + 1;
-    return("failed: expected " + str([0, 1, 2, 3]) + ", was " + str(join([0], c)));
+    return "failed: expected " + str([0, 1, 2, 3]) + ", was " + str(join([0], c));
   } else {
     passed = passed + 1;
   }
   if (! equal63([0, 1, 2, 3, 4], join([0], c, [4]))) {
     failed = failed + 1;
-    return("failed: expected " + str([0, 1, 2, 3, 4]) + ", was " + str(join([0], c, [4])));
+    return "failed: expected " + str([0, 1, 2, 3, 4]) + ", was " + str(join([0], c, [4]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([0, [1, 2, 3], 4], [0, c, 4])) {
     failed = failed + 1;
-    return("failed: expected " + str([0, [1, 2, 3], 4]) + ", was " + str([0, c, 4]));
+    return "failed: expected " + str([0, [1, 2, 3], 4]) + ", was " + str([0, c, 4]);
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, 2, 3, 1, 2, 3], join(c, c))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, 3, 1, 2, 3]) + ", was " + str(join(c, c)));
+    return "failed: expected " + str([1, 2, 3, 1, 2, 3]) + ", was " + str(join(c, c));
   } else {
     passed = passed + 1;
   }
   if (! equal63([[1, 2, 3], 1, 2, 3], join([c], c))) {
     failed = failed + 1;
-    return("failed: expected " + str([[1, 2, 3], 1, 2, 3]) + ", was " + str(join([c], c)));
+    return "failed: expected " + str([[1, 2, 3], 1, 2, 3]) + ", was " + str(join([c], c));
   } else {
     passed = passed + 1;
   }
   var _a = 42;
   if (! equal63(["quasiquote", [["unquote-splicing", ["list", "a"]]]], ["quasiquote", [["unquote-splicing", ["list", "a"]]]])) {
     failed = failed + 1;
-    return("failed: expected " + str(["quasiquote", [["unquote-splicing", ["list", "a"]]]]) + ", was " + str(["quasiquote", [["unquote-splicing", ["list", "a"]]]]));
+    return "failed: expected " + str(["quasiquote", [["unquote-splicing", ["list", "a"]]]]) + ", was " + str(["quasiquote", [["unquote-splicing", ["list", "a"]]]]);
   } else {
     passed = passed + 1;
   }
   if (! equal63(["quasiquote", [["unquote-splicing", ["list", 42]]]], ["quasiquote", [["unquote-splicing", ["list", _a]]]])) {
     failed = failed + 1;
-    return("failed: expected " + str(["quasiquote", [["unquote-splicing", ["list", 42]]]]) + ", was " + str(["quasiquote", [["unquote-splicing", ["list", _a]]]]));
+    return "failed: expected " + str(["quasiquote", [["unquote-splicing", ["list", 42]]]]) + ", was " + str(["quasiquote", [["unquote-splicing", ["list", _a]]]]);
   } else {
     passed = passed + 1;
   }
@@ -1230,7 +1230,7 @@ add(tests, ["quasiquote", function () {
     failed = failed + 1;
     var _x317 = [];
     _x317.foo = true;
-    return("failed: expected " + str(true) + ", was " + str(_x317.foo));
+    return "failed: expected " + str(true) + ", was " + str(_x317.foo);
   } else {
     passed = passed + 1;
   }
@@ -1246,7 +1246,7 @@ add(tests, ["quasiquote", function () {
     failed = failed + 1;
     var _x321 = [];
     _x321.foo = _a1;
-    return("failed: expected " + str(17) + ", was " + str(_x321.foo));
+    return "failed: expected " + str(17) + ", was " + str(_x321.foo);
   } else {
     passed = passed + 1;
   }
@@ -1256,7 +1256,7 @@ add(tests, ["quasiquote", function () {
     failed = failed + 1;
     var _x323 = [];
     _x323.foo = _a1;
-    return("failed: expected " + str(2) + ", was " + str(join(_x323, b).length || 0));
+    return "failed: expected " + str(2) + ", was " + str(join(_x323, b).length || 0);
   } else {
     passed = passed + 1;
   }
@@ -1266,7 +1266,7 @@ add(tests, ["quasiquote", function () {
     failed = failed + 1;
     var _x325 = [];
     _x325.foo = _a1;
-    return("failed: expected " + str(17) + ", was " + str(_x325.foo));
+    return "failed: expected " + str(17) + ", was " + str(_x325.foo);
   } else {
     passed = passed + 1;
   }
@@ -1276,7 +1276,7 @@ add(tests, ["quasiquote", function () {
     failed = failed + 1;
     var _x328 = [1];
     _x328.a = 10;
-    return("failed: expected " + str(_x328) + ", was " + str(join([1], _c)));
+    return "failed: expected " + str(_x328) + ", was " + str(join([1], _c));
   } else {
     passed = passed + 1;
   }
@@ -1286,7 +1286,7 @@ add(tests, ["quasiquote", function () {
     failed = failed + 1;
     var _x332 = [1];
     _x332.a = 10;
-    return("failed: expected " + str(_x332) + ", was " + str(join([1], d)));
+    return "failed: expected " + str(_x332) + ", was " + str(join([1], d));
   } else {
     passed = passed + 1;
   }
@@ -1296,7 +1296,7 @@ add(tests, ["quasiquote", function () {
     failed = failed + 1;
     var _x337 = [];
     _x337.foo = true;
-    return("failed: expected " + str(true) + ", was " + str([_x337][0].foo));
+    return "failed: expected " + str(true) + ", was " + str([_x337][0].foo);
   } else {
     passed = passed + 1;
   }
@@ -1306,7 +1306,7 @@ add(tests, ["quasiquote", function () {
     failed = failed + 1;
     var _x341 = [];
     _x341.foo = true;
-    return("failed: expected " + str(true) + ", was " + str([_x341][0].foo));
+    return "failed: expected " + str(true) + ", was " + str([_x341][0].foo);
   } else {
     passed = passed + 1;
   }
@@ -1316,7 +1316,7 @@ add(tests, ["quasiquote", function () {
     failed = failed + 1;
     var _x343 = [];
     _x343.foo = true;
-    return("failed: expected " + str(true) + ", was " + str(_x343.foo));
+    return "failed: expected " + str(true) + ", was " + str(_x343.foo);
   } else {
     passed = passed + 1;
   }
@@ -1326,166 +1326,166 @@ add(tests, ["quasiquote", function () {
     failed = failed + 1;
     var _x347 = [];
     _x347.foo = true;
-    return("failed: expected " + str(true) + ", was " + str(join([1, 2, 3], _x347).foo));
+    return "failed: expected " + str(true) + ", was " + str(join([1, 2, 3], _x347).foo);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, {["foo"]: true}.foo)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str({["foo"]: true}.foo));
+    return "failed: expected " + str(true) + ", was " + str({["foo"]: true}.foo);
   } else {
     passed = passed + 1;
   }
   if (! equal63(17, {["bar"]: 17}.bar)) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str({["bar"]: 17}.bar));
+    return "failed: expected " + str(17) + ", was " + str({["bar"]: 17}.bar);
   } else {
     passed = passed + 1;
   }
   if (! equal63(17, {["baz"]: function () {
-    return(17);
+    return 17;
   }}.baz())) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str({["baz"]: function () {
-      return(17);
-    }}.baz()));
+    return "failed: expected " + str(17) + ", was " + str({["baz"]: function () {
+      return 17;
+    }}.baz());
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["quasiexpand", function () {
   if (! equal63("a", macroexpand("a"))) {
     failed = failed + 1;
-    return("failed: expected " + str("a") + ", was " + str(macroexpand("a")));
+    return "failed: expected " + str("a") + ", was " + str(macroexpand("a"));
   } else {
     passed = passed + 1;
   }
   if (! equal63([17], macroexpand([17]))) {
     failed = failed + 1;
-    return("failed: expected " + str([17]) + ", was " + str(macroexpand([17])));
+    return "failed: expected " + str([17]) + ", was " + str(macroexpand([17]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, "z"], macroexpand([1, "z"]))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, "z"]) + ", was " + str(macroexpand([1, "z"])));
+    return "failed: expected " + str([1, "z"]) + ", was " + str(macroexpand([1, "z"]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["%array", 1, "\"z\""], macroexpand(["quasiquote", [1, "z"]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["%array", 1, "\"z\""]) + ", was " + str(macroexpand(["quasiquote", [1, "z"]])));
+    return "failed: expected " + str(["%array", 1, "\"z\""]) + ", was " + str(macroexpand(["quasiquote", [1, "z"]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["%array", 1, "z"], macroexpand(["quasiquote", [["unquote", 1], ["unquote", "z"]]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["%array", 1, "z"]) + ", was " + str(macroexpand(["quasiquote", [["unquote", 1], ["unquote", "z"]]])));
+    return "failed: expected " + str(["%array", 1, "z"]) + ", was " + str(macroexpand(["quasiquote", [["unquote", 1], ["unquote", "z"]]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63("z", macroexpand(["quasiquote", [["unquote-splicing", "z"]]]))) {
     failed = failed + 1;
-    return("failed: expected " + str("z") + ", was " + str(macroexpand(["quasiquote", [["unquote-splicing", "z"]]])));
+    return "failed: expected " + str("z") + ", was " + str(macroexpand(["quasiquote", [["unquote-splicing", "z"]]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["join", ["%array", 1], "z"], macroexpand(["quasiquote", [["unquote", 1], ["unquote-splicing", "z"]]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["join", ["%array", 1], "z"]) + ", was " + str(macroexpand(["quasiquote", [["unquote", 1], ["unquote-splicing", "z"]]])));
+    return "failed: expected " + str(["join", ["%array", 1], "z"]) + ", was " + str(macroexpand(["quasiquote", [["unquote", 1], ["unquote-splicing", "z"]]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["join", ["%array", 1], "x", "y"], macroexpand(["quasiquote", [["unquote", 1], ["unquote-splicing", "x"], ["unquote-splicing", "y"]]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["join", ["%array", 1], "x", "y"]) + ", was " + str(macroexpand(["quasiquote", [["unquote", 1], ["unquote-splicing", "x"], ["unquote-splicing", "y"]]])));
+    return "failed: expected " + str(["join", ["%array", 1], "x", "y"]) + ", was " + str(macroexpand(["quasiquote", [["unquote", 1], ["unquote-splicing", "x"], ["unquote-splicing", "y"]]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["join", ["%array", 1], "z", ["%array", 2]], macroexpand(["quasiquote", [["unquote", 1], ["unquote-splicing", "z"], ["unquote", 2]]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["join", ["%array", 1], "z", ["%array", 2]]) + ", was " + str(macroexpand(["quasiquote", [["unquote", 1], ["unquote-splicing", "z"], ["unquote", 2]]])));
+    return "failed: expected " + str(["join", ["%array", 1], "z", ["%array", 2]]) + ", was " + str(macroexpand(["quasiquote", [["unquote", 1], ["unquote-splicing", "z"], ["unquote", 2]]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["join", ["%array", 1], "z", ["%array", "\"a\""]], macroexpand(["quasiquote", [["unquote", 1], ["unquote-splicing", "z"], "a"]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["join", ["%array", 1], "z", ["%array", "\"a\""]]) + ", was " + str(macroexpand(["quasiquote", [["unquote", 1], ["unquote-splicing", "z"], "a"]])));
+    return "failed: expected " + str(["join", ["%array", 1], "z", ["%array", "\"a\""]]) + ", was " + str(macroexpand(["quasiquote", [["unquote", 1], ["unquote-splicing", "z"], "a"]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63("\"x\"", macroexpand(["quasiquote", "x"]))) {
     failed = failed + 1;
-    return("failed: expected " + str("\"x\"") + ", was " + str(macroexpand(["quasiquote", "x"])));
+    return "failed: expected " + str("\"x\"") + ", was " + str(macroexpand(["quasiquote", "x"]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["%array", "\"quasiquote\"", "\"x\""], macroexpand(["quasiquote", ["quasiquote", "x"]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["%array", "\"quasiquote\"", "\"x\""]) + ", was " + str(macroexpand(["quasiquote", ["quasiquote", "x"]])));
+    return "failed: expected " + str(["%array", "\"quasiquote\"", "\"x\""]) + ", was " + str(macroexpand(["quasiquote", ["quasiquote", "x"]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["%array", "\"quasiquote\"", ["%array", "\"quasiquote\"", "\"x\""]], macroexpand(["quasiquote", ["quasiquote", ["quasiquote", "x"]]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["%array", "\"quasiquote\"", ["%array", "\"quasiquote\"", "\"x\""]]) + ", was " + str(macroexpand(["quasiquote", ["quasiquote", ["quasiquote", "x"]]])));
+    return "failed: expected " + str(["%array", "\"quasiquote\"", ["%array", "\"quasiquote\"", "\"x\""]]) + ", was " + str(macroexpand(["quasiquote", ["quasiquote", ["quasiquote", "x"]]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63("x", macroexpand(["quasiquote", ["unquote", "x"]]))) {
     failed = failed + 1;
-    return("failed: expected " + str("x") + ", was " + str(macroexpand(["quasiquote", ["unquote", "x"]])));
+    return "failed: expected " + str("x") + ", was " + str(macroexpand(["quasiquote", ["unquote", "x"]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["%array", "\"quote\"", "x"], macroexpand(["quasiquote", ["quote", ["unquote", "x"]]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["%array", "\"quote\"", "x"]) + ", was " + str(macroexpand(["quasiquote", ["quote", ["unquote", "x"]]])));
+    return "failed: expected " + str(["%array", "\"quote\"", "x"]) + ", was " + str(macroexpand(["quasiquote", ["quote", ["unquote", "x"]]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["%array", "\"quasiquote\"", ["%array", "\"x\""]], macroexpand(["quasiquote", ["quasiquote", ["x"]]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["%array", "\"quasiquote\"", ["%array", "\"x\""]]) + ", was " + str(macroexpand(["quasiquote", ["quasiquote", ["x"]]])));
+    return "failed: expected " + str(["%array", "\"quasiquote\"", ["%array", "\"x\""]]) + ", was " + str(macroexpand(["quasiquote", ["quasiquote", ["x"]]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["%array", "\"quasiquote\"", ["%array", "\"unquote\"", "\"a\""]], macroexpand(["quasiquote", ["quasiquote", ["unquote", "a"]]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["%array", "\"quasiquote\"", ["%array", "\"unquote\"", "\"a\""]]) + ", was " + str(macroexpand(["quasiquote", ["quasiquote", ["unquote", "a"]]])));
+    return "failed: expected " + str(["%array", "\"quasiquote\"", ["%array", "\"unquote\"", "\"a\""]]) + ", was " + str(macroexpand(["quasiquote", ["quasiquote", ["unquote", "a"]]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["%array", "\"quasiquote\"", ["%array", ["%array", "\"unquote\"", "\"x\""]]], macroexpand(["quasiquote", ["quasiquote", [["unquote", "x"]]]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["%array", "\"quasiquote\"", ["%array", ["%array", "\"unquote\"", "\"x\""]]]) + ", was " + str(macroexpand(["quasiquote", ["quasiquote", [["unquote", "x"]]]])));
+    return "failed: expected " + str(["%array", "\"quasiquote\"", ["%array", ["%array", "\"unquote\"", "\"x\""]]]) + ", was " + str(macroexpand(["quasiquote", ["quasiquote", [["unquote", "x"]]]]));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["calls", function () {
   var f = function () {
-    return(42);
+    return 42;
   };
   var l = [f];
   var o = {["f"]: f};
   if (! equal63(42, f())) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(f()));
+    return "failed: expected " + str(42) + ", was " + str(f());
   } else {
     passed = passed + 1;
   }
   if (! equal63(42, l[0]())) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(l[0]()));
+    return "failed: expected " + str(42) + ", was " + str(l[0]());
   } else {
     passed = passed + 1;
   }
   if (! equal63(42, o.f())) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(o.f()));
+    return "failed: expected " + str(42) + ", was " + str(o.f());
   } else {
     passed = passed + 1;
   }
@@ -1493,51 +1493,51 @@ add(tests, ["calls", function () {
     return;
   })())) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str((function () {
+    return "failed: expected " + str(undefined) + ", was " + str((function () {
       return;
-    })()));
+    })());
   } else {
     passed = passed + 1;
   }
   if (! equal63(10, (function (_) {
-    return(_ - 2);
+    return _ - 2;
   })(12))) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str((function (_) {
-      return(_ - 2);
-    })(12)));
+    return "failed: expected " + str(10) + ", was " + str((function (_) {
+      return _ - 2;
+    })(12));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["id", function () {
   var a = 10;
   var b = {["x"]: 20};
   var f = function () {
-    return(30);
+    return 30;
   };
   if (! equal63(10, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(a));
+    return "failed: expected " + str(10) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(10, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(a));
+    return "failed: expected " + str(10) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(20, b.x)) {
     failed = failed + 1;
-    return("failed: expected " + str(20) + ", was " + str(b.x));
+    return "failed: expected " + str(20) + ", was " + str(b.x);
   } else {
     passed = passed + 1;
   }
   if (! equal63(30, f())) {
     failed = failed + 1;
-    return("failed: expected " + str(30) + ", was " + str(f()));
+    return "failed: expected " + str(30) + ", was " + str(f());
   } else {
     passed = passed + 1;
   }
@@ -1547,10 +1547,10 @@ add(tests, ["id", function () {
   var y = x;
   if (! equal63(2, y)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(y));
+    return "failed: expected " + str(2) + ", was " + str(y);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["names", function () {
@@ -1561,34 +1561,34 @@ add(tests, ["names", function () {
   var _break = 4;
   if (! equal63(0, a33)) {
     failed = failed + 1;
-    return("failed: expected " + str(0) + ", was " + str(a33));
+    return "failed: expected " + str(0) + ", was " + str(a33);
   } else {
     passed = passed + 1;
   }
   if (! equal63(1, b63)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(b63));
+    return "failed: expected " + str(1) + ", was " + str(b63);
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, _37)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(_37));
+    return "failed: expected " + str(2) + ", was " + str(_37);
   } else {
     passed = passed + 1;
   }
   if (! equal63(3, _4242)) {
     failed = failed + 1;
-    return("failed: expected " + str(3) + ", was " + str(_4242));
+    return "failed: expected " + str(3) + ", was " + str(_4242);
   } else {
     passed = passed + 1;
   }
   if (! equal63(4, _break)) {
     failed = failed + 1;
-    return("failed: expected " + str(4) + ", was " + str(_break));
+    return "failed: expected " + str(4) + ", was " + str(_break);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["assign", function () {
@@ -1596,7 +1596,7 @@ add(tests, ["assign", function () {
   a = "bar";
   if (! equal63("bar", a)) {
     failed = failed + 1;
-    return("failed: expected " + str("bar") + ", was " + str(a));
+    return "failed: expected " + str("bar") + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
@@ -1604,30 +1604,30 @@ add(tests, ["assign", function () {
   var x = a;
   if (! equal63(10, x)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(x));
+    return "failed: expected " + str(10) + ", was " + str(x);
   } else {
     passed = passed + 1;
   }
   if (! equal63(10, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(a));
+    return "failed: expected " + str(10) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   a = false;
   if (! equal63(false, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(a));
+    return "failed: expected " + str(false) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   a = undefined;
   if (! equal63(undefined, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(a));
+    return "failed: expected " + str(undefined) + ", was " + str(a);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["=", function () {
@@ -1637,13 +1637,13 @@ add(tests, ["=", function () {
   b = "bar";
   if (! equal63("foo", a)) {
     failed = failed + 1;
-    return("failed: expected " + str("foo") + ", was " + str(a));
+    return "failed: expected " + str("foo") + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63("bar", b)) {
     failed = failed + 1;
-    return("failed: expected " + str("bar") + ", was " + str(b));
+    return "failed: expected " + str("bar") + ", was " + str(b);
   } else {
     passed = passed + 1;
   }
@@ -1651,30 +1651,30 @@ add(tests, ["=", function () {
   var x = a;
   if (! equal63(10, x)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(x));
+    return "failed: expected " + str(10) + ", was " + str(x);
   } else {
     passed = passed + 1;
   }
   if (! equal63(10, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(a));
+    return "failed: expected " + str(10) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   a = false;
   if (! equal63(false, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(a));
+    return "failed: expected " + str(false) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   a = undefined;
   if (! equal63(undefined, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(a));
+    return "failed: expected " + str(undefined) + ", was " + str(a);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["wipe", function () {
@@ -1686,42 +1686,42 @@ add(tests, ["wipe", function () {
   delete x.a;
   if (! equal63(undefined, x.a)) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(x.a));
+    return "failed: expected " + str(undefined) + ", was " + str(x.a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, x.b)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(x.b));
+    return "failed: expected " + str(true) + ", was " + str(x.b);
   } else {
     passed = passed + 1;
   }
   delete x.c;
   if (! equal63(undefined, x.c)) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(x.c));
+    return "failed: expected " + str(undefined) + ", was " + str(x.c);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, x.b)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(x.b));
+    return "failed: expected " + str(true) + ", was " + str(x.b);
   } else {
     passed = passed + 1;
   }
   delete x.b;
   if (! equal63(undefined, x.b)) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(x.b));
+    return "failed: expected " + str(undefined) + ", was " + str(x.b);
   } else {
     passed = passed + 1;
   }
   if (! equal63([], x)) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(x));
+    return "failed: expected " + str([]) + ", was " + str(x);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["do", function () {
@@ -1729,13 +1729,13 @@ add(tests, ["do", function () {
   a = 10;
   if (! equal63(10, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(a));
+    return "failed: expected " + str(10) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(10, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(a));
+    return "failed: expected " + str(10) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
@@ -1743,13 +1743,13 @@ add(tests, ["do", function () {
   var b = a + 5;
   if (! equal63(a, 2)) {
     failed = failed + 1;
-    return("failed: expected " + str(a) + ", was " + str(2));
+    return "failed: expected " + str(a) + ", was " + str(2);
   } else {
     passed = passed + 1;
   }
   if (! equal63(b, 7)) {
     failed = failed + 1;
-    return("failed: expected " + str(b) + ", was " + str(7));
+    return "failed: expected " + str(b) + ", was " + str(7);
   } else {
     passed = passed + 1;
   }
@@ -1757,7 +1757,7 @@ add(tests, ["do", function () {
   a = 20;
   if (! equal63(20, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(20) + ", was " + str(a));
+    return "failed: expected " + str(20) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
@@ -1767,29 +1767,29 @@ add(tests, ["do", function () {
     failed = failed + 1;
     a = 10;
     a = 20;
-    return("failed: expected " + str(20) + ", was " + str(a));
+    return "failed: expected " + str(20) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(42, (function () {
     var _e23;
     if (true) {
-      return(42);
+      return 42;
     } else {
       _e23 = 2;
     }
-    return(_e23);
+    return _e23;
   })())) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str((function () {
+    return "failed: expected " + str(42) + ", was " + str((function () {
       var _e24;
       if (true) {
-        return(42);
+        return 42;
       } else {
         _e24 = 2;
       }
-      return(_e24);
-    })()));
+      return _e24;
+    })());
   } else {
     passed = passed + 1;
   }
@@ -1801,10 +1801,10 @@ add(tests, ["do", function () {
     } else {
       _e25 = x;
     }
-    return(_e25);
+    return _e25;
   })())) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str((function () {
+    return "failed: expected " + str(42) + ", was " + str((function () {
       var x = 1;
       var _e26;
       if (true) {
@@ -1812,8 +1812,8 @@ add(tests, ["do", function () {
       } else {
         _e26 = x;
       }
-      return(_e26);
-    })()));
+      return _e26;
+    })());
   } else {
     passed = passed + 1;
   }
@@ -1828,10 +1828,10 @@ add(tests, ["do", function () {
         break;
       }
     }
-    return(x);
+    return x;
   })())) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str((function () {
+    return "failed: expected " + str(42) + ", was " + str((function () {
       var x = 42;
       while (true) {
         var _e28;
@@ -1842,8 +1842,8 @@ add(tests, ["do", function () {
           break;
         }
       }
-      return(x);
-    })()));
+      return x;
+    })());
   } else {
     passed = passed + 1;
   }
@@ -1858,10 +1858,10 @@ add(tests, ["do", function () {
         break;
       }
     }
-    return(x);
+    return x;
   })())) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str((function () {
+    return "failed: expected " + str(42) + ", was " + str((function () {
       var x = 42;
       while (true) {
         var _e30;
@@ -1872,55 +1872,55 @@ add(tests, ["do", function () {
           break;
         }
       }
-      return(x);
-    })()));
+      return x;
+    })());
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["if", function () {
   if (! equal63("a", macroexpand(["if", "a"]))) {
     failed = failed + 1;
-    return("failed: expected " + str("a") + ", was " + str(macroexpand(["if", "a"])));
+    return "failed: expected " + str("a") + ", was " + str(macroexpand(["if", "a"]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["%if", "a", "b"], macroexpand(["if", "a", "b"]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["%if", "a", "b"]) + ", was " + str(macroexpand(["if", "a", "b"])));
+    return "failed: expected " + str(["%if", "a", "b"]) + ", was " + str(macroexpand(["if", "a", "b"]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["%if", "a", "b", "c"], macroexpand(["if", "a", "b", "c"]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["%if", "a", "b", "c"]) + ", was " + str(macroexpand(["if", "a", "b", "c"])));
+    return "failed: expected " + str(["%if", "a", "b", "c"]) + ", was " + str(macroexpand(["if", "a", "b", "c"]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["%if", "a", "b", ["%if", "c", "d"]], macroexpand(["if", "a", "b", "c", "d"]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["%if", "a", "b", ["%if", "c", "d"]]) + ", was " + str(macroexpand(["if", "a", "b", "c", "d"])));
+    return "failed: expected " + str(["%if", "a", "b", ["%if", "c", "d"]]) + ", was " + str(macroexpand(["if", "a", "b", "c", "d"]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["%if", "a", "b", ["%if", "c", "d", "e"]], macroexpand(["if", "a", "b", "c", "d", "e"]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["%if", "a", "b", ["%if", "c", "d", "e"]]) + ", was " + str(macroexpand(["if", "a", "b", "c", "d", "e"])));
+    return "failed: expected " + str(["%if", "a", "b", ["%if", "c", "d", "e"]]) + ", was " + str(macroexpand(["if", "a", "b", "c", "d", "e"]));
   } else {
     passed = passed + 1;
   }
   if (true) {
     if (! equal63(true, true)) {
       failed = failed + 1;
-      return("failed: expected " + str(true) + ", was " + str(true));
+      return "failed: expected " + str(true) + ", was " + str(true);
     } else {
       passed = passed + 1;
     }
   } else {
     if (! equal63(true, false)) {
       failed = failed + 1;
-      return("failed: expected " + str(true) + ", was " + str(false));
+      return "failed: expected " + str(true) + ", was " + str(false);
     } else {
       passed = passed + 1;
     }
@@ -1928,7 +1928,7 @@ add(tests, ["if", function () {
   if (false) {
     if (! equal63(true, false)) {
       failed = failed + 1;
-      return("failed: expected " + str(true) + ", was " + str(false));
+      return "failed: expected " + str(true) + ", was " + str(false);
     } else {
       passed = passed + 1;
     }
@@ -1936,14 +1936,14 @@ add(tests, ["if", function () {
     if (false) {
       if (! equal63(false, true)) {
         failed = failed + 1;
-        return("failed: expected " + str(false) + ", was " + str(true));
+        return "failed: expected " + str(false) + ", was " + str(true);
       } else {
         passed = passed + 1;
       }
     } else {
       if (! equal63(true, true)) {
         failed = failed + 1;
-        return("failed: expected " + str(true) + ", was " + str(true));
+        return "failed: expected " + str(true) + ", was " + str(true);
       } else {
         passed = passed + 1;
       }
@@ -1952,7 +1952,7 @@ add(tests, ["if", function () {
   if (false) {
     if (! equal63(true, false)) {
       failed = failed + 1;
-      return("failed: expected " + str(true) + ", was " + str(false));
+      return "failed: expected " + str(true) + ", was " + str(false);
     } else {
       passed = passed + 1;
     }
@@ -1960,7 +1960,7 @@ add(tests, ["if", function () {
     if (false) {
       if (! equal63(false, true)) {
         failed = failed + 1;
-        return("failed: expected " + str(false) + ", was " + str(true));
+        return "failed: expected " + str(false) + ", was " + str(true);
       } else {
         passed = passed + 1;
       }
@@ -1968,14 +1968,14 @@ add(tests, ["if", function () {
       if (false) {
         if (! equal63(false, true)) {
           failed = failed + 1;
-          return("failed: expected " + str(false) + ", was " + str(true));
+          return "failed: expected " + str(false) + ", was " + str(true);
         } else {
           passed = passed + 1;
         }
       } else {
         if (! equal63(true, true)) {
           failed = failed + 1;
-          return("failed: expected " + str(true) + ", was " + str(true));
+          return "failed: expected " + str(true) + ", was " + str(true);
         } else {
           passed = passed + 1;
         }
@@ -1985,7 +1985,7 @@ add(tests, ["if", function () {
   if (false) {
     if (! equal63(true, false)) {
       failed = failed + 1;
-      return("failed: expected " + str(true) + ", was " + str(false));
+      return "failed: expected " + str(true) + ", was " + str(false);
     } else {
       passed = passed + 1;
     }
@@ -1993,7 +1993,7 @@ add(tests, ["if", function () {
     if (true) {
       if (! equal63(true, true)) {
         failed = failed + 1;
-        return("failed: expected " + str(true) + ", was " + str(true));
+        return "failed: expected " + str(true) + ", was " + str(true);
       } else {
         passed = passed + 1;
       }
@@ -2001,14 +2001,14 @@ add(tests, ["if", function () {
       if (false) {
         if (! equal63(false, true)) {
           failed = failed + 1;
-          return("failed: expected " + str(false) + ", was " + str(true));
+          return "failed: expected " + str(false) + ", was " + str(true);
         } else {
           passed = passed + 1;
         }
       } else {
         if (! equal63(true, true)) {
           failed = failed + 1;
-          return("failed: expected " + str(true) + ", was " + str(true));
+          return "failed: expected " + str(true) + ", was " + str(true);
         } else {
           passed = passed + 1;
         }
@@ -2029,7 +2029,7 @@ add(tests, ["if", function () {
     } else {
       _e32 = 2;
     }
-    return("failed: expected " + str(1) + ", was " + str(_e32));
+    return "failed: expected " + str(1) + ", was " + str(_e32);
   } else {
     passed = passed + 1;
   }
@@ -2049,7 +2049,7 @@ add(tests, ["if", function () {
     } else {
       _e34 = 2;
     }
-    return("failed: expected " + str(1) + ", was " + str(_e34));
+    return "failed: expected " + str(1) + ", was " + str(_e34);
   } else {
     passed = passed + 1;
   }
@@ -2069,7 +2069,7 @@ add(tests, ["if", function () {
     } else {
       _e36 = 2;
     }
-    return("failed: expected " + str(1) + ", was " + str(_e36));
+    return "failed: expected " + str(1) + ", was " + str(_e36);
   } else {
     passed = passed + 1;
   }
@@ -2089,7 +2089,7 @@ add(tests, ["if", function () {
       var _a6 = 1;
       _e38 = _a6;
     }
-    return("failed: expected " + str(1) + ", was " + str(_e38));
+    return "failed: expected " + str(1) + ", was " + str(_e38);
   } else {
     passed = passed + 1;
   }
@@ -2117,7 +2117,7 @@ add(tests, ["if", function () {
       }
       _e41 = _e42;
     }
-    return("failed: expected " + str(1) + ", was " + str(_e41));
+    return "failed: expected " + str(1) + ", was " + str(_e41);
   } else {
     passed = passed + 1;
   }
@@ -2149,10 +2149,10 @@ add(tests, ["if", function () {
       }
       _e45 = _e46;
     }
-    return("failed: expected " + str(1) + ", was " + str(_e45));
+    return "failed: expected " + str(1) + ", was " + str(_e45);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["case", function () {
@@ -2185,7 +2185,7 @@ add(tests, ["case", function () {
       }
       _e49 = _e50;
     }
-    return("failed: expected " + str(2) + ", was " + str(_e49));
+    return "failed: expected " + str(2) + ", was " + str(_e49);
   } else {
     passed = passed + 1;
   }
@@ -2206,7 +2206,7 @@ add(tests, ["case", function () {
     } else {
       _e52 = 10;
     }
-    return("failed: expected " + str(9) + ", was " + str(_e52));
+    return "failed: expected " + str(9) + ", was " + str(_e52);
   } else {
     passed = passed + 1;
   }
@@ -2238,10 +2238,10 @@ add(tests, ["case", function () {
       }
       _e55 = _e56;
     }
-    return("failed: expected " + str(7) + ", was " + str(_e55));
+    return "failed: expected " + str(7) + ", was " + str(_e55);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["while", function () {
@@ -2255,7 +2255,7 @@ add(tests, ["while", function () {
   }
   if (! equal63(3, i)) {
     failed = failed + 1;
-    return("failed: expected " + str(3) + ", was " + str(i));
+    return "failed: expected " + str(3) + ", was " + str(i);
   } else {
     passed = passed + 1;
   }
@@ -2264,7 +2264,7 @@ add(tests, ["while", function () {
   }
   if (! equal63(10, i)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(i));
+    return "failed: expected " + str(10) + ", was " + str(i);
   } else {
     passed = passed + 1;
   }
@@ -2274,13 +2274,13 @@ add(tests, ["while", function () {
   var a;
   if (! equal63(undefined, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(a));
+    return "failed: expected " + str(undefined) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(15, i)) {
     failed = failed + 1;
-    return("failed: expected " + str(15) + ", was " + str(i));
+    return "failed: expected " + str(15) + ", was " + str(i);
   } else {
     passed = passed + 1;
   }
@@ -2294,13 +2294,13 @@ add(tests, ["while", function () {
   var b;
   if (! equal63(undefined, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(a));
+    return "failed: expected " + str(undefined) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(19, i)) {
     failed = failed + 1;
-    return("failed: expected " + str(19) + ", was " + str(i));
+    return "failed: expected " + str(19) + ", was " + str(i);
   } else {
     passed = passed + 1;
   }
@@ -2313,7 +2313,7 @@ add(tests, ["while", function () {
   }
   if (! equal63(21, i)) {
     failed = failed + 1;
-    return("failed: expected " + str(21) + ", was " + str(i));
+    return "failed: expected " + str(21) + ", was " + str(i);
   } else {
     passed = passed + 1;
   }
@@ -2329,10 +2329,10 @@ add(tests, ["while", function () {
   }
   if (! equal63(21, i)) {
     failed = failed + 1;
-    return("failed: expected " + str(21) + ", was " + str(i));
+    return "failed: expected " + str(21) + ", was " + str(i);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["for", function () {
@@ -2344,7 +2344,7 @@ add(tests, ["for", function () {
   }
   if (! equal63([0, 1, 2, 3, 4], l)) {
     failed = failed + 1;
-    return("failed: expected " + str([0, 1, 2, 3, 4]) + ", was " + str(l));
+    return "failed: expected " + str([0, 1, 2, 3, 4]) + ", was " + str(l);
   } else {
     passed = passed + 1;
   }
@@ -2362,43 +2362,43 @@ add(tests, ["for", function () {
       add(_l2, i);
       i = i + 1;
     }
-    return("failed: expected " + str([0, 1]) + ", was " + str(_l2));
+    return "failed: expected " + str([0, 1]) + ", was " + str(_l2);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["table", function () {
   if (! equal63(10, {["a"]: 10}.a)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str({["a"]: 10}.a));
+    return "failed: expected " + str(10) + ", was " + str({["a"]: 10}.a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, {["a"]: true}.a)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str({["a"]: true}.a));
+    return "failed: expected " + str(true) + ", was " + str({["a"]: true}.a);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["empty", function () {
   if (! equal63(true, empty63([]))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(empty63([])));
+    return "failed: expected " + str(true) + ", was " + str(empty63([]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, empty63({}))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(empty63({})));
+    return "failed: expected " + str(true) + ", was " + str(empty63({}));
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, empty63([1]))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(empty63([1])));
+    return "failed: expected " + str(false) + ", was " + str(empty63([1]));
   } else {
     passed = passed + 1;
   }
@@ -2408,13 +2408,13 @@ add(tests, ["empty", function () {
     failed = failed + 1;
     var _x553 = [];
     _x553.a = true;
-    return("failed: expected " + str(false) + ", was " + str(empty63(_x553)));
+    return "failed: expected " + str(false) + ", was " + str(empty63(_x553));
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, empty63({["a"]: true}))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(empty63({["a"]: true})));
+    return "failed: expected " + str(false) + ", was " + str(empty63({["a"]: true}));
   } else {
     passed = passed + 1;
   }
@@ -2424,58 +2424,58 @@ add(tests, ["empty", function () {
     failed = failed + 1;
     var _x555 = [];
     _x555.b = false;
-    return("failed: expected " + str(false) + ", was " + str(empty63(_x555)));
+    return "failed: expected " + str(false) + ", was " + str(empty63(_x555));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["at", function () {
   var l = ["a", "b", "c", "d"];
   if (! equal63("a", l[0])) {
     failed = failed + 1;
-    return("failed: expected " + str("a") + ", was " + str(l[0]));
+    return "failed: expected " + str("a") + ", was " + str(l[0]);
   } else {
     passed = passed + 1;
   }
   if (! equal63("a", l[0])) {
     failed = failed + 1;
-    return("failed: expected " + str("a") + ", was " + str(l[0]));
+    return "failed: expected " + str("a") + ", was " + str(l[0]);
   } else {
     passed = passed + 1;
   }
   if (! equal63("b", l[1])) {
     failed = failed + 1;
-    return("failed: expected " + str("b") + ", was " + str(l[1]));
+    return "failed: expected " + str("b") + ", was " + str(l[1]);
   } else {
     passed = passed + 1;
   }
   if (! equal63("d", l[(l.length || 0) + -1])) {
     failed = failed + 1;
-    return("failed: expected " + str("d") + ", was " + str(l[(l.length || 0) + -1]));
+    return "failed: expected " + str("d") + ", was " + str(l[(l.length || 0) + -1]);
   } else {
     passed = passed + 1;
   }
   if (! equal63("c", l[(l.length || 0) + -2])) {
     failed = failed + 1;
-    return("failed: expected " + str("c") + ", was " + str(l[(l.length || 0) + -2]));
+    return "failed: expected " + str("c") + ", was " + str(l[(l.length || 0) + -2]);
   } else {
     passed = passed + 1;
   }
   l[0] = 9;
   if (! equal63(9, l[0])) {
     failed = failed + 1;
-    return("failed: expected " + str(9) + ", was " + str(l[0]));
+    return "failed: expected " + str(9) + ", was " + str(l[0]);
   } else {
     passed = passed + 1;
   }
   l[3] = 10;
   if (! equal63(10, l[3])) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(l[3]));
+    return "failed: expected " + str(10) + ", was " + str(l[3]);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["get-=", function () {
@@ -2483,35 +2483,35 @@ add(tests, ["get-=", function () {
   l.foo = "bar";
   if (! equal63("bar", l.foo)) {
     failed = failed + 1;
-    return("failed: expected " + str("bar") + ", was " + str(l.foo));
+    return "failed: expected " + str("bar") + ", was " + str(l.foo);
   } else {
     passed = passed + 1;
   }
   if (! equal63("bar", l.foo)) {
     failed = failed + 1;
-    return("failed: expected " + str("bar") + ", was " + str(l.foo));
+    return "failed: expected " + str("bar") + ", was " + str(l.foo);
   } else {
     passed = passed + 1;
   }
   if (! equal63("bar", l.foo)) {
     failed = failed + 1;
-    return("failed: expected " + str("bar") + ", was " + str(l.foo));
+    return "failed: expected " + str("bar") + ", was " + str(l.foo);
   } else {
     passed = passed + 1;
   }
   var k = "foo";
   if (! equal63("bar", l[k])) {
     failed = failed + 1;
-    return("failed: expected " + str("bar") + ", was " + str(l[k]));
+    return "failed: expected " + str("bar") + ", was " + str(l[k]);
   } else {
     passed = passed + 1;
   }
   if (! equal63("bar", l["f" + "oo"])) {
     failed = failed + 1;
-    return("failed: expected " + str("bar") + ", was " + str(l["f" + "oo"]));
+    return "failed: expected " + str("bar") + ", was " + str(l["f" + "oo"]);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["each", function () {
@@ -2540,13 +2540,13 @@ add(tests, ["each", function () {
   }
   if (! equal63(3, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(3) + ", was " + str(a));
+    return "failed: expected " + str(3) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, b)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(b));
+    return "failed: expected " + str(2) + ", was " + str(b);
   } else {
     passed = passed + 1;
   }
@@ -2566,7 +2566,7 @@ add(tests, ["each", function () {
   }
   if (! equal63(5, _a11)) {
     failed = failed + 1;
-    return("failed: expected " + str(5) + ", was " + str(_a11));
+    return "failed: expected " + str(5) + ", was " + str(_a11);
   } else {
     passed = passed + 1;
   }
@@ -2586,7 +2586,7 @@ add(tests, ["each", function () {
     var __i3 = _e60;
     if (! equal63(false, !( typeof(x) === "object"))) {
       failed = failed + 1;
-      return("failed: expected " + str(false) + ", was " + str(!( typeof(x) === "object")));
+      return "failed: expected " + str(false) + ", was " + str(!( typeof(x) === "object"));
     } else {
       passed = passed + 1;
     }
@@ -2604,7 +2604,7 @@ add(tests, ["each", function () {
     var __i4 = _e61;
     if (! equal63(false, !( typeof(x) === "object"))) {
       failed = failed + 1;
-      return("failed: expected " + str(false) + ", was " + str(!( typeof(x) === "object")));
+      return "failed: expected " + str(false) + ", was " + str(!( typeof(x) === "object"));
     } else {
       passed = passed + 1;
     }
@@ -2623,7 +2623,7 @@ add(tests, ["each", function () {
     var __i5 = _e62;
     if (! equal63(true, typeof(x) === "number")) {
       failed = failed + 1;
-      return("failed: expected " + str(true) + ", was " + str(typeof(x) === "number"));
+      return "failed: expected " + str(true) + ", was " + str(typeof(x) === "number");
     } else {
       passed = passed + 1;
     }
@@ -2631,99 +2631,99 @@ add(tests, ["each", function () {
 }]);
 add(tests, ["fn", function (_) {
   var f = function (_) {
-    return(_ + 10);
+    return _ + 10;
   };
   if (! equal63(20, f(10))) {
     failed = failed + 1;
-    return("failed: expected " + str(20) + ", was " + str(f(10)));
+    return "failed: expected " + str(20) + ", was " + str(f(10));
   } else {
     passed = passed + 1;
   }
   if (! equal63(30, f(20))) {
     failed = failed + 1;
-    return("failed: expected " + str(30) + ", was " + str(f(20)));
+    return "failed: expected " + str(30) + ", was " + str(f(20));
   } else {
     passed = passed + 1;
   }
   if (! equal63(40, (function (_) {
-    return(_ + 10);
+    return _ + 10;
   })(30))) {
     failed = failed + 1;
-    return("failed: expected " + str(40) + ", was " + str((function (_) {
-      return(_ + 10);
-    })(30)));
+    return "failed: expected " + str(40) + ", was " + str((function (_) {
+      return _ + 10;
+    })(30));
   } else {
     passed = passed + 1;
   }
   if (! equal63([2, 3, 4], map(function (_) {
-    return(_ + 1);
+    return _ + 1;
   }, [1, 2, 3]))) {
     failed = failed + 1;
-    return("failed: expected " + str([2, 3, 4]) + ", was " + str(map(function (_) {
-      return(_ + 1);
-    }, [1, 2, 3])));
+    return "failed: expected " + str([2, 3, 4]) + ", was " + str(map(function (_) {
+      return _ + 1;
+    }, [1, 2, 3]));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["define", function () {
   var x = 20;
   var f = function () {
-    return(42);
+    return 42;
   };
   if (! equal63(20, x)) {
     failed = failed + 1;
-    return("failed: expected " + str(20) + ", was " + str(x));
+    return "failed: expected " + str(20) + ", was " + str(x);
   } else {
     passed = passed + 1;
   }
   if (! equal63(42, f())) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(f()));
+    return "failed: expected " + str(42) + ", was " + str(f());
   } else {
     passed = passed + 1;
   }
   (function () {
     var f = function () {
-      return(38);
+      return 38;
     };
     if (! equal63(38, f())) {
       failed = failed + 1;
-      return("failed: expected " + str(38) + ", was " + str(f()));
+      return "failed: expected " + str(38) + ", was " + str(f());
     } else {
       passed = passed + 1;
-      return(passed);
+      return passed;
     }
   })();
   if (! equal63(42, f())) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(f()));
+    return "failed: expected " + str(42) + ", was " + str(f());
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["return", function () {
   var a = (function () {
-    return(17);
+    return 17;
   })();
   if (! equal63(17, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str(a));
+    return "failed: expected " + str(17) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   var _a12 = (function () {
     if (true) {
-      return(10);
+      return 10;
     } else {
-      return(20);
+      return 20;
     }
   })();
   if (! equal63(10, _a12)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(_a12));
+    return "failed: expected " + str(10) + ", was " + str(_a12);
   } else {
     passed = passed + 1;
   }
@@ -2734,69 +2734,69 @@ add(tests, ["return", function () {
   })();
   if (! equal63(undefined, _a13)) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(_a13));
+    return "failed: expected " + str(undefined) + ", was " + str(_a13);
   } else {
     passed = passed + 1;
   }
   var _a14 = 11;
   var b = (function () {
     _a14 = _a14 + 1;
-    return(_a14);
+    return _a14;
   })();
   if (! equal63(12, b)) {
     failed = failed + 1;
-    return("failed: expected " + str(12) + ", was " + str(b));
+    return "failed: expected " + str(12) + ", was " + str(b);
   } else {
     passed = passed + 1;
   }
   if (! equal63(12, _a14)) {
     failed = failed + 1;
-    return("failed: expected " + str(12) + ", was " + str(_a14));
+    return "failed: expected " + str(12) + ", was " + str(_a14);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["guard", function () {
   if (! equal63([true, 42], cut((function () {
     try {
-      return([true, 42]);
+      return [true, 42];
     }
     catch (_e76) {
-      return([false, _e76.message, _e76.stack]);
+      return [false, _e76.message, _e76.stack];
     }
   })(), 0, 2))) {
     failed = failed + 1;
-    return("failed: expected " + str([true, 42]) + ", was " + str(cut((function () {
+    return "failed: expected " + str([true, 42]) + ", was " + str(cut((function () {
       try {
-        return([true, 42]);
+        return [true, 42];
       }
       catch (_e77) {
-        return([false, _e77.message, _e77.stack]);
+        return [false, _e77.message, _e77.stack];
       }
-    })(), 0, 2)));
+    })(), 0, 2));
   } else {
     passed = passed + 1;
   }
   if (! equal63([false, "foo"], cut((function () {
     try {
       throw new Error("foo");
-      return([true]);
+      return [true];
     }
     catch (_e78) {
-      return([false, _e78.message, _e78.stack]);
+      return [false, _e78.message, _e78.stack];
     }
   })(), 0, 2))) {
     failed = failed + 1;
-    return("failed: expected " + str([false, "foo"]) + ", was " + str(cut((function () {
+    return "failed: expected " + str([false, "foo"]) + ", was " + str(cut((function () {
       try {
         throw new Error("foo");
-        return([true]);
+        return [true];
       }
       catch (_e79) {
-        return([false, _e79.message, _e79.stack]);
+        return [false, _e79.message, _e79.stack];
       }
-    })(), 0, 2)));
+    })(), 0, 2));
   } else {
     passed = passed + 1;
   }
@@ -2804,23 +2804,23 @@ add(tests, ["guard", function () {
     try {
       throw new Error("foo");
       throw new Error("baz");
-      return([true]);
+      return [true];
     }
     catch (_e80) {
-      return([false, _e80.message, _e80.stack]);
+      return [false, _e80.message, _e80.stack];
     }
   })(), 0, 2))) {
     failed = failed + 1;
-    return("failed: expected " + str([false, "foo"]) + ", was " + str(cut((function () {
+    return "failed: expected " + str([false, "foo"]) + ", was " + str(cut((function () {
       try {
         throw new Error("foo");
         throw new Error("baz");
-        return([true]);
+        return [true];
       }
       catch (_e81) {
-        return([false, _e81.message, _e81.stack]);
+        return [false, _e81.message, _e81.stack];
       }
-    })(), 0, 2)));
+    })(), 0, 2));
   } else {
     passed = passed + 1;
   }
@@ -2829,38 +2829,38 @@ add(tests, ["guard", function () {
       cut((function () {
         try {
           throw new Error("foo");
-          return([true]);
+          return [true];
         }
         catch (_e83) {
-          return([false, _e83.message, _e83.stack]);
+          return [false, _e83.message, _e83.stack];
         }
       })(), 0, 2);
       throw new Error("baz");
-      return([true]);
+      return [true];
     }
     catch (_e82) {
-      return([false, _e82.message, _e82.stack]);
+      return [false, _e82.message, _e82.stack];
     }
   })(), 0, 2))) {
     failed = failed + 1;
-    return("failed: expected " + str([false, "baz"]) + ", was " + str(cut((function () {
+    return "failed: expected " + str([false, "baz"]) + ", was " + str(cut((function () {
       try {
         cut((function () {
           try {
             throw new Error("foo");
-            return([true]);
+            return [true];
           }
           catch (_e85) {
-            return([false, _e85.message, _e85.stack]);
+            return [false, _e85.message, _e85.stack];
           }
         })(), 0, 2);
         throw new Error("baz");
-        return([true]);
+        return [true];
       }
       catch (_e84) {
-        return([false, _e84.message, _e84.stack]);
+        return [false, _e84.message, _e84.stack];
       }
-    })(), 0, 2)));
+    })(), 0, 2));
   } else {
     passed = passed + 1;
   }
@@ -2873,14 +2873,14 @@ add(tests, ["guard", function () {
         throw new Error("baz");
         _e63 = undefined;
       }
-      return([true, _e63]);
+      return [true, _e63];
     }
     catch (_e86) {
-      return([false, _e86.message, _e86.stack]);
+      return [false, _e86.message, _e86.stack];
     }
   })(), 0, 2))) {
     failed = failed + 1;
-    return("failed: expected " + str([true, 42]) + ", was " + str(cut((function () {
+    return "failed: expected " + str([true, 42]) + ", was " + str(cut((function () {
       try {
         var _e64;
         if (true) {
@@ -2889,12 +2889,12 @@ add(tests, ["guard", function () {
           throw new Error("baz");
           _e64 = undefined;
         }
-        return([true, _e64]);
+        return [true, _e64];
       }
       catch (_e87) {
-        return([false, _e87.message, _e87.stack]);
+        return [false, _e87.message, _e87.stack];
       }
-    })(), 0, 2)));
+    })(), 0, 2));
   } else {
     passed = passed + 1;
   }
@@ -2907,14 +2907,14 @@ add(tests, ["guard", function () {
         throw new Error("baz");
         _e65 = undefined;
       }
-      return([true, _e65]);
+      return [true, _e65];
     }
     catch (_e88) {
-      return([false, _e88.message, _e88.stack]);
+      return [false, _e88.message, _e88.stack];
     }
   })(), 0, 2))) {
     failed = failed + 1;
-    return("failed: expected " + str([false, "baz"]) + ", was " + str(cut((function () {
+    return "failed: expected " + str([false, "baz"]) + ", was " + str(cut((function () {
       try {
         var _e66;
         if (false) {
@@ -2923,29 +2923,29 @@ add(tests, ["guard", function () {
           throw new Error("baz");
           _e66 = undefined;
         }
-        return([true, _e66]);
+        return [true, _e66];
       }
       catch (_e89) {
-        return([false, _e89.message, _e89.stack]);
+        return [false, _e89.message, _e89.stack];
       }
-    })(), 0, 2)));
+    })(), 0, 2));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["let", function () {
   var a = 10;
   if (! equal63(10, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(a));
+    return "failed: expected " + str(10) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   var _a15 = 10;
   if (! equal63(10, _a15)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(_a15));
+    return "failed: expected " + str(10) + ", was " + str(_a15);
   } else {
     passed = passed + 1;
   }
@@ -2953,33 +2953,33 @@ add(tests, ["let", function () {
   var b = 12;
   if (! equal63(11, _a16)) {
     failed = failed + 1;
-    return("failed: expected " + str(11) + ", was " + str(_a16));
+    return "failed: expected " + str(11) + ", was " + str(_a16);
   } else {
     passed = passed + 1;
   }
   if (! equal63(12, b)) {
     failed = failed + 1;
-    return("failed: expected " + str(12) + ", was " + str(b));
+    return "failed: expected " + str(12) + ", was " + str(b);
   } else {
     passed = passed + 1;
   }
   var _a17 = 1;
   if (! equal63(1, _a17)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(_a17));
+    return "failed: expected " + str(1) + ", was " + str(_a17);
   } else {
     passed = passed + 1;
   }
   var _a18 = 2;
   if (! equal63(2, _a18)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(_a18));
+    return "failed: expected " + str(2) + ", was " + str(_a18);
   } else {
     passed = passed + 1;
   }
   if (! equal63(1, _a17)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(_a17));
+    return "failed: expected " + str(1) + ", was " + str(_a17);
   } else {
     passed = passed + 1;
   }
@@ -2988,46 +2988,46 @@ add(tests, ["let", function () {
   var _a21 = 3;
   if (! equal63(_a21, 3)) {
     failed = failed + 1;
-    return("failed: expected " + str(_a21) + ", was " + str(3));
+    return "failed: expected " + str(_a21) + ", was " + str(3);
   } else {
     passed = passed + 1;
   }
   if (! equal63(_a20, 2)) {
     failed = failed + 1;
-    return("failed: expected " + str(_a20) + ", was " + str(2));
+    return "failed: expected " + str(_a20) + ", was " + str(2);
   } else {
     passed = passed + 1;
   }
   if (! equal63(_a19, 1)) {
     failed = failed + 1;
-    return("failed: expected " + str(_a19) + ", was " + str(1));
+    return "failed: expected " + str(_a19) + ", was " + str(1);
   } else {
     passed = passed + 1;
   }
   var _a22 = 20;
   if (! equal63(20, _a22)) {
     failed = failed + 1;
-    return("failed: expected " + str(20) + ", was " + str(_a22));
+    return "failed: expected " + str(20) + ", was " + str(_a22);
   } else {
     passed = passed + 1;
   }
   var _a23 = _a22 + 7;
   if (! equal63(27, _a23)) {
     failed = failed + 1;
-    return("failed: expected " + str(27) + ", was " + str(_a23));
+    return "failed: expected " + str(27) + ", was " + str(_a23);
   } else {
     passed = passed + 1;
   }
   var _a24 = _a22 + 10;
   if (! equal63(30, _a24)) {
     failed = failed + 1;
-    return("failed: expected " + str(30) + ", was " + str(_a24));
+    return "failed: expected " + str(30) + ", was " + str(_a24);
   } else {
     passed = passed + 1;
   }
   if (! equal63(20, _a22)) {
     failed = failed + 1;
-    return("failed: expected " + str(20) + ", was " + str(_a22));
+    return "failed: expected " + str(20) + ", was " + str(_a22);
   } else {
     passed = passed + 1;
   }
@@ -3035,7 +3035,7 @@ add(tests, ["let", function () {
   if (! equal63(10, _a25)) {
     failed = failed + 1;
     var _a26 = 10;
-    return("failed: expected " + str(10) + ", was " + str(_a26));
+    return "failed: expected " + str(10) + ", was " + str(_a26);
   } else {
     passed = passed + 1;
   }
@@ -3043,7 +3043,7 @@ add(tests, ["let", function () {
   var _a27 = b;
   if (! equal63(12, _a27)) {
     failed = failed + 1;
-    return("failed: expected " + str(12) + ", was " + str(_a27));
+    return "failed: expected " + str(12) + ", was " + str(_a27);
   } else {
     passed = passed + 1;
   }
@@ -3051,7 +3051,7 @@ add(tests, ["let", function () {
   var _a28 = _a29;
   if (! equal63(10, _a28)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(_a28));
+    return "failed: expected " + str(10) + ", was " + str(_a28);
   } else {
     passed = passed + 1;
   }
@@ -3060,49 +3060,49 @@ add(tests, ["let", function () {
   var _a30 = _a31 + 2 + 3;
   if (! equal63(_a30, 15)) {
     failed = failed + 1;
-    return("failed: expected " + str(_a30) + ", was " + str(15));
+    return "failed: expected " + str(_a30) + ", was " + str(15);
   } else {
     passed = passed + 1;
   }
   (function (_) {
     if (! equal63(20, _)) {
       failed = failed + 1;
-      return("failed: expected " + str(20) + ", was " + str(_));
+      return "failed: expected " + str(20) + ", was " + str(_);
     } else {
       passed = passed + 1;
     }
     var __ = 21;
     if (! equal63(21, __)) {
       failed = failed + 1;
-      return("failed: expected " + str(21) + ", was " + str(__));
+      return "failed: expected " + str(21) + ", was " + str(__);
     } else {
       passed = passed + 1;
     }
     if (! equal63(20, _)) {
       failed = failed + 1;
-      return("failed: expected " + str(20) + ", was " + str(_));
+      return "failed: expected " + str(20) + ", was " + str(_);
     } else {
       passed = passed + 1;
-      return(passed);
+      return passed;
     }
   })(20);
   var q = 9;
-  return((function () {
+  return (function () {
     var _q = 10;
     if (! equal63(10, _q)) {
       failed = failed + 1;
-      return("failed: expected " + str(10) + ", was " + str(_q));
+      return "failed: expected " + str(10) + ", was " + str(_q);
     } else {
       passed = passed + 1;
     }
     if (! equal63(9, q)) {
       failed = failed + 1;
-      return("failed: expected " + str(9) + ", was " + str(q));
+      return "failed: expected " + str(9) + ", was " + str(q);
     } else {
       passed = passed + 1;
-      return(passed);
+      return passed;
     }
-  })());
+  })();
 }]);
 add(tests, ["with", function () {
   var x = 9;
@@ -3111,10 +3111,10 @@ add(tests, ["with", function () {
     failed = failed + 1;
     var _x605 = 9;
     _x605 = _x605 + 1;
-    return("failed: expected " + str(10) + ", was " + str(_x605));
+    return "failed: expected " + str(10) + ", was " + str(_x605);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["whenlet", function () {
@@ -3130,7 +3130,7 @@ add(tests, ["whenlet", function () {
     if (_frips) {
       _e68 = 19;
     }
-    return("failed: expected " + str(undefined) + ", was " + str(_e68));
+    return "failed: expected " + str(undefined) + ", was " + str(_e68);
   } else {
     passed = passed + 1;
   }
@@ -3146,7 +3146,7 @@ add(tests, ["whenlet", function () {
     if (_frips2) {
       _e70 = _frips2 - 1;
     }
-    return("failed: expected " + str(19) + ", was " + str(_e70));
+    return "failed: expected " + str(19) + ", was " + str(_e70);
   } else {
     passed = passed + 1;
   }
@@ -3166,7 +3166,7 @@ add(tests, ["whenlet", function () {
       var b = _if1[1];
       _e72 = b;
     }
-    return("failed: expected " + str(20) + ", was " + str(_e72));
+    return "failed: expected " + str(20) + ", was " + str(_e72);
   } else {
     passed = passed + 1;
   }
@@ -3186,10 +3186,10 @@ add(tests, ["whenlet", function () {
       var b = _if3[1];
       _e74 = b;
     }
-    return("failed: expected " + str(undefined) + ", was " + str(_e74));
+    return "failed: expected " + str(undefined) + ", was " + str(_e74);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 var zzop = 99;
@@ -3205,43 +3205,43 @@ var zzb = _id9[1];
 add(tests, ["let-toplevel1", function () {
   if (! equal63(10, _zzop)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(_zzop));
+    return "failed: expected " + str(10) + ", was " + str(_zzop);
   } else {
     passed = passed + 1;
   }
   if (! equal63(20, _zzap)) {
     failed = failed + 1;
-    return("failed: expected " + str(20) + ", was " + str(_zzap));
+    return "failed: expected " + str(20) + ", was " + str(_zzap);
   } else {
     passed = passed + 1;
   }
   if (! equal63(1, zza)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(zza));
+    return "failed: expected " + str(1) + ", was " + str(zza);
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, zzb)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(zzb));
+    return "failed: expected " + str(2) + ", was " + str(zzb);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["let-toplevel", function () {
   if (! equal63(99, zzop)) {
     failed = failed + 1;
-    return("failed: expected " + str(99) + ", was " + str(zzop));
+    return "failed: expected " + str(99) + ", was " + str(zzop);
   } else {
     passed = passed + 1;
   }
   if (! equal63(100, zzap)) {
     failed = failed + 1;
-    return("failed: expected " + str(100) + ", was " + str(zzap));
+    return "failed: expected " + str(100) + ", was " + str(zzap);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["reserved", function () {
@@ -3267,14 +3267,14 @@ add(tests, ["reserved", function () {
     passed = passed + 1;
   }
   var _var = function (_if, _end, _return) {
-    return(_if + _end + _return);
+    return _if + _end + _return;
   };
   if (! equal63(6, _var(1, 2, 3))) {
     failed = failed + 1;
-    return("failed: expected " + str(6) + ", was " + str(_var(1, 2, 3)));
+    return "failed: expected " + str(6) + ", was " + str(_var(1, 2, 3));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["destructuring", function () {
@@ -3284,19 +3284,19 @@ add(tests, ["destructuring", function () {
   var c = _id10[2];
   if (! equal63(1, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(a));
+    return "failed: expected " + str(1) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, b)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(b));
+    return "failed: expected " + str(2) + ", was " + str(b);
   } else {
     passed = passed + 1;
   }
   if (! equal63(3, c)) {
     failed = failed + 1;
-    return("failed: expected " + str(3) + ", was " + str(c));
+    return "failed: expected " + str(3) + ", was " + str(c);
   } else {
     passed = passed + 1;
   }
@@ -3309,25 +3309,25 @@ add(tests, ["destructuring", function () {
   var z = _id12[2];
   if (! equal63(1, w)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(w));
+    return "failed: expected " + str(1) + ", was " + str(w);
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, x)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(x));
+    return "failed: expected " + str(2) + ", was " + str(x);
   } else {
     passed = passed + 1;
   }
   if (! equal63(3, y)) {
     failed = failed + 1;
-    return("failed: expected " + str(3) + ", was " + str(y));
+    return "failed: expected " + str(3) + ", was " + str(y);
   } else {
     passed = passed + 1;
   }
   if (! equal63(4, z)) {
     failed = failed + 1;
-    return("failed: expected " + str(4) + ", was " + str(z));
+    return "failed: expected " + str(4) + ", was " + str(z);
   } else {
     passed = passed + 1;
   }
@@ -3337,7 +3337,7 @@ add(tests, ["destructuring", function () {
   var c = cut(_id14, 2);
   if (! equal63([3, 4], c)) {
     failed = failed + 1;
-    return("failed: expected " + str([3, 4]) + ", was " + str(c));
+    return "failed: expected " + str([3, 4]) + ", was " + str(c);
   } else {
     passed = passed + 1;
   }
@@ -3349,13 +3349,13 @@ add(tests, ["destructuring", function () {
   var z = cut(_id15, 2);
   if (! equal63([3, 4], y)) {
     failed = failed + 1;
-    return("failed: expected " + str([3, 4]) + ", was " + str(y));
+    return "failed: expected " + str([3, 4]) + ", was " + str(y);
   } else {
     passed = passed + 1;
   }
   if (! equal63([5, 6, 7], z)) {
     failed = failed + 1;
-    return("failed: expected " + str([5, 6, 7]) + ", was " + str(z));
+    return "failed: expected " + str([5, 6, 7]) + ", was " + str(z);
   } else {
     passed = passed + 1;
   }
@@ -3363,7 +3363,7 @@ add(tests, ["destructuring", function () {
   var foo = _id17.foo;
   if (! equal63(99, foo)) {
     failed = failed + 1;
-    return("failed: expected " + str(99) + ", was " + str(foo));
+    return "failed: expected " + str(99) + ", was " + str(foo);
   } else {
     passed = passed + 1;
   }
@@ -3373,7 +3373,7 @@ add(tests, ["destructuring", function () {
   var foo = _id18.foo;
   if (! equal63(99, foo)) {
     failed = failed + 1;
-    return("failed: expected " + str(99) + ", was " + str(foo));
+    return "failed: expected " + str(99) + ", was " + str(foo);
   } else {
     passed = passed + 1;
   }
@@ -3381,7 +3381,7 @@ add(tests, ["destructuring", function () {
   var a = _id19.foo;
   if (! equal63(99, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(99) + ", was " + str(a));
+    return "failed: expected " + str(99) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
@@ -3391,13 +3391,13 @@ add(tests, ["destructuring", function () {
   var b = _id21[1];
   if (! equal63(98, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(98) + ", was " + str(a));
+    return "failed: expected " + str(98) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(99, b)) {
     failed = failed + 1;
-    return("failed: expected " + str(99) + ", was " + str(b));
+    return "failed: expected " + str(99) + ", was " + str(b);
   } else {
     passed = passed + 1;
   }
@@ -3409,13 +3409,13 @@ add(tests, ["destructuring", function () {
   var baz = _id23.baz;
   if (! equal63(42, foo)) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(foo));
+    return "failed: expected " + str(42) + ", was " + str(foo);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, baz)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(baz));
+    return "failed: expected " + str(true) + ", was " + str(baz);
   } else {
     passed = passed + 1;
   }
@@ -3431,25 +3431,25 @@ add(tests, ["destructuring", function () {
   var bar = _id24.bar;
   if (! equal63(10, a)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str(a));
+    return "failed: expected " + str(10) + ", was " + str(a);
   } else {
     passed = passed + 1;
   }
   if (! equal63(20, b)) {
     failed = failed + 1;
-    return("failed: expected " + str(20) + ", was " + str(b));
+    return "failed: expected " + str(20) + ", was " + str(b);
   } else {
     passed = passed + 1;
   }
   if (! equal63(17, foo)) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str(foo));
+    return "failed: expected " + str(17) + ", was " + str(foo);
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, 2, 3], bar)) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, 3]) + ", was " + str(bar));
+    return "failed: expected " + str([1, 2, 3]) + ", was " + str(bar);
   } else {
     passed = passed + 1;
   }
@@ -3460,226 +3460,226 @@ add(tests, ["destructuring", function () {
   var zz = cut(_id26, 2);
   if (! equal63(1, xx)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(xx));
+    return "failed: expected " + str(1) + ", was " + str(xx);
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, _yy)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(_yy));
+    return "failed: expected " + str(2) + ", was " + str(_yy);
   } else {
     passed = passed + 1;
   }
   if (! equal63([3], zz)) {
     failed = failed + 1;
-    return("failed: expected " + str([3]) + ", was " + str(zz));
+    return "failed: expected " + str([3]) + ", was " + str(zz);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["w/mac", function () {
   if (! equal63(17, 17)) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str(17));
+    return "failed: expected " + str(17) + ", was " + str(17);
   } else {
     passed = passed + 1;
   }
   if (! equal63(42, 32 + 10)) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(32 + 10));
+    return "failed: expected " + str(42) + ", was " + str(32 + 10);
   } else {
     passed = passed + 1;
   }
   if (! equal63(1, 1)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(1));
+    return "failed: expected " + str(1) + ", was " + str(1);
   } else {
     passed = passed + 1;
   }
   if (! equal63(17, 17)) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str(17));
+    return "failed: expected " + str(17) + ", was " + str(17);
   } else {
     passed = passed + 1;
   }
   var b = function () {
-    return(20);
+    return 20;
   };
   if (! equal63(18, 18)) {
     failed = failed + 1;
-    return("failed: expected " + str(18) + ", was " + str(18));
+    return "failed: expected " + str(18) + ", was " + str(18);
   } else {
     passed = passed + 1;
   }
   if (! equal63(20, b())) {
     failed = failed + 1;
-    return("failed: expected " + str(20) + ", was " + str(b()));
+    return "failed: expected " + str(20) + ", was " + str(b());
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, 1 + 1)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(1 + 1));
+    return "failed: expected " + str(2) + ", was " + str(1 + 1);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["w/sym", function () {
   if (! equal63(17, 17)) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str(17));
+    return "failed: expected " + str(17) + ", was " + str(17);
   } else {
     passed = passed + 1;
   }
   if (! equal63(17, 10 + 7)) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str(10 + 7));
+    return "failed: expected " + str(17) + ", was " + str(10 + 7);
   } else {
     passed = passed + 1;
   }
   if (! equal63(1, 1)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(1));
+    return "failed: expected " + str(1) + ", was " + str(1);
   } else {
     passed = passed + 1;
   }
   if (! equal63(17, 17)) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str(17));
+    return "failed: expected " + str(17) + ", was " + str(17);
   } else {
     passed = passed + 1;
   }
   var b = 20;
   if (! equal63(18, 18)) {
     failed = failed + 1;
-    return("failed: expected " + str(18) + ", was " + str(18));
+    return "failed: expected " + str(18) + ", was " + str(18);
   } else {
     passed = passed + 1;
   }
   if (! equal63(20, b)) {
     failed = failed + 1;
-    return("failed: expected " + str(20) + ", was " + str(b));
+    return "failed: expected " + str(20) + ", was " + str(b);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["defsym", function () {
   setenv("zzz", stash33({["symbol"]: 42}));
   if (! equal63(42, 42)) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(42));
+    return "failed: expected " + str(42) + ", was " + str(42);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["macros-and-symbols", function () {
   if (! equal63(2, 2)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(2));
+    return "failed: expected " + str(2) + ", was " + str(2);
   } else {
     passed = passed + 1;
   }
   if (! equal63(1, 1)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(1));
+    return "failed: expected " + str(1) + ", was " + str(1);
   } else {
     passed = passed + 1;
   }
   if (! equal63(1, 1)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(1));
+    return "failed: expected " + str(1) + ", was " + str(1);
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, 2)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(2));
+    return "failed: expected " + str(2) + ", was " + str(2);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["macros-and-let", function () {
   var a = 10;
   if (! equal63(a, 10)) {
     failed = failed + 1;
-    return("failed: expected " + str(a) + ", was " + str(10));
+    return "failed: expected " + str(a) + ", was " + str(10);
   } else {
     passed = passed + 1;
   }
   if (! equal63(12, 12)) {
     failed = failed + 1;
-    return("failed: expected " + str(12) + ", was " + str(12));
+    return "failed: expected " + str(12) + ", was " + str(12);
   } else {
     passed = passed + 1;
   }
   if (! equal63(a, 10)) {
     failed = failed + 1;
-    return("failed: expected " + str(a) + ", was " + str(10));
+    return "failed: expected " + str(a) + ", was " + str(10);
   } else {
     passed = passed + 1;
   }
   var b = 20;
   if (! equal63(b, 20)) {
     failed = failed + 1;
-    return("failed: expected " + str(b) + ", was " + str(20));
+    return "failed: expected " + str(b) + ", was " + str(20);
   } else {
     passed = passed + 1;
   }
   if (! equal63(22, 22)) {
     failed = failed + 1;
-    return("failed: expected " + str(22) + ", was " + str(22));
+    return "failed: expected " + str(22) + ", was " + str(22);
   } else {
     passed = passed + 1;
   }
   if (! equal63(b, 20)) {
     failed = failed + 1;
-    return("failed: expected " + str(b) + ", was " + str(20));
+    return "failed: expected " + str(b) + ", was " + str(20);
   } else {
     passed = passed + 1;
   }
   if (! equal63(30, 30)) {
     failed = failed + 1;
-    return("failed: expected " + str(30) + ", was " + str(30));
+    return "failed: expected " + str(30) + ", was " + str(30);
   } else {
     passed = passed + 1;
   }
   var _c1 = 32;
   if (! equal63(32, _c1)) {
     failed = failed + 1;
-    return("failed: expected " + str(32) + ", was " + str(_c1));
+    return "failed: expected " + str(32) + ", was " + str(_c1);
   } else {
     passed = passed + 1;
   }
   if (! equal63(30, 30)) {
     failed = failed + 1;
-    return("failed: expected " + str(30) + ", was " + str(30));
+    return "failed: expected " + str(30) + ", was " + str(30);
   } else {
     passed = passed + 1;
   }
   if (! equal63(40, 40)) {
     failed = failed + 1;
-    return("failed: expected " + str(40) + ", was " + str(40));
+    return "failed: expected " + str(40) + ", was " + str(40);
   } else {
     passed = passed + 1;
   }
   var _d = 42;
   if (! equal63(42, _d)) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(_d));
+    return "failed: expected " + str(42) + ", was " + str(_d);
   } else {
     passed = passed + 1;
   }
   if (! equal63(40, 40)) {
     failed = failed + 1;
-    return("failed: expected " + str(40) + ", was " + str(40));
+    return "failed: expected " + str(40) + ", was " + str(40);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["w/uniq", function () {
@@ -3687,77 +3687,77 @@ add(tests, ["w/uniq", function () {
   var chap = uniq("chap");
   if (! equal63("_ham", ham)) {
     failed = failed + 1;
-    return("failed: expected " + str("_ham") + ", was " + str(ham));
+    return "failed: expected " + str("_ham") + ", was " + str(ham);
   } else {
     passed = passed + 1;
   }
   if (! equal63("_chap", chap)) {
     failed = failed + 1;
-    return("failed: expected " + str("_chap") + ", was " + str(chap));
+    return "failed: expected " + str("_chap") + ", was " + str(chap);
   } else {
     passed = passed + 1;
   }
   var _ham = uniq("ham");
   if (! equal63("_ham1", _ham)) {
     failed = failed + 1;
-    return("failed: expected " + str("_ham1") + ", was " + str(_ham));
+    return "failed: expected " + str("_ham1") + ", was " + str(_ham);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["literals", function () {
   if (! equal63(true, true)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(true));
+    return "failed: expected " + str(true) + ", was " + str(true);
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, false)) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(false));
+    return "failed: expected " + str(false) + ", was " + str(false);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, -inf < -10000000000)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(-inf < -10000000000));
+    return "failed: expected " + str(true) + ", was " + str(-inf < -10000000000);
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, inf < -10000000000)) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(inf < -10000000000));
+    return "failed: expected " + str(false) + ", was " + str(inf < -10000000000);
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, nan === nan)) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(nan === nan));
+    return "failed: expected " + str(false) + ", was " + str(nan === nan);
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, nan63(nan))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(nan63(nan)));
+    return "failed: expected " + str(true) + ", was " + str(nan63(nan));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, nan63(nan * 20))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(nan63(nan * 20)));
+    return "failed: expected " + str(true) + ", was " + str(nan63(nan * 20));
   } else {
     passed = passed + 1;
   }
   if (! equal63(-inf, - inf)) {
     failed = failed + 1;
-    return("failed: expected " + str(-inf) + ", was " + str(- inf));
+    return "failed: expected " + str(-inf) + ", was " + str(- inf);
   } else {
     passed = passed + 1;
   }
   if (! equal63(inf, - -inf)) {
     failed = failed + 1;
-    return("failed: expected " + str(inf) + ", was " + str(- -inf));
+    return "failed: expected " + str(inf) + ", was " + str(- -inf);
   } else {
     passed = passed + 1;
   }
@@ -3767,28 +3767,28 @@ add(tests, ["literals", function () {
   var _NaN = "b";
   if (! equal63(Inf, 1)) {
     failed = failed + 1;
-    return("failed: expected " + str(Inf) + ", was " + str(1));
+    return "failed: expected " + str(Inf) + ", was " + str(1);
   } else {
     passed = passed + 1;
   }
   if (! equal63(NaN, 2)) {
     failed = failed + 1;
-    return("failed: expected " + str(NaN) + ", was " + str(2));
+    return "failed: expected " + str(NaN) + ", was " + str(2);
   } else {
     passed = passed + 1;
   }
   if (! equal63(_Inf, "a")) {
     failed = failed + 1;
-    return("failed: expected " + str(_Inf) + ", was " + str("a"));
+    return "failed: expected " + str(_Inf) + ", was " + str("a");
   } else {
     passed = passed + 1;
   }
   if (! equal63(_NaN, "b")) {
     failed = failed + 1;
-    return("failed: expected " + str(_NaN) + ", was " + str("b"));
+    return "failed: expected " + str(_NaN) + ", was " + str("b");
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["add", function () {
@@ -3798,131 +3798,131 @@ add(tests, ["add", function () {
   add(l, "c");
   if (! equal63(["a", "b", "c"], l)) {
     failed = failed + 1;
-    return("failed: expected " + str(["a", "b", "c"]) + ", was " + str(l));
+    return "failed: expected " + str(["a", "b", "c"]) + ", was " + str(l);
   } else {
     passed = passed + 1;
   }
   if (! equal63(undefined, add([], "a"))) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(add([], "a")));
+    return "failed: expected " + str(undefined) + ", was " + str(add([], "a"));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["drop", function () {
   var l = ["a", "b", "c"];
   if (! equal63("c", drop(l))) {
     failed = failed + 1;
-    return("failed: expected " + str("c") + ", was " + str(drop(l)));
+    return "failed: expected " + str("c") + ", was " + str(drop(l));
   } else {
     passed = passed + 1;
   }
   if (! equal63("b", drop(l))) {
     failed = failed + 1;
-    return("failed: expected " + str("b") + ", was " + str(drop(l)));
+    return "failed: expected " + str("b") + ", was " + str(drop(l));
   } else {
     passed = passed + 1;
   }
   if (! equal63("a", drop(l))) {
     failed = failed + 1;
-    return("failed: expected " + str("a") + ", was " + str(drop(l)));
+    return "failed: expected " + str("a") + ", was " + str(drop(l));
   } else {
     passed = passed + 1;
   }
   if (! equal63(undefined, drop(l))) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(drop(l)));
+    return "failed: expected " + str(undefined) + ", was " + str(drop(l));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["last", function () {
   if (! equal63(3, last([1, 2, 3]))) {
     failed = failed + 1;
-    return("failed: expected " + str(3) + ", was " + str(last([1, 2, 3])));
+    return "failed: expected " + str(3) + ", was " + str(last([1, 2, 3]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(undefined, last([]))) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(last([])));
+    return "failed: expected " + str(undefined) + ", was " + str(last([]));
   } else {
     passed = passed + 1;
   }
   if (! equal63("c", last(["a", "b", "c"]))) {
     failed = failed + 1;
-    return("failed: expected " + str("c") + ", was " + str(last(["a", "b", "c"])));
+    return "failed: expected " + str("c") + ", was " + str(last(["a", "b", "c"]));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["join", function () {
   if (! equal63([1, 2, 3], join([1, 2], [3]))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, 3]) + ", was " + str(join([1, 2], [3])));
+    return "failed: expected " + str([1, 2, 3]) + ", was " + str(join([1, 2], [3]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, 2], join([], [1, 2]))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2]) + ", was " + str(join([], [1, 2])));
+    return "failed: expected " + str([1, 2]) + ", was " + str(join([], [1, 2]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([], join([], []))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(join([], [])));
+    return "failed: expected " + str([]) + ", was " + str(join([], []));
   } else {
     passed = passed + 1;
   }
   if (! equal63([], join(undefined, undefined))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(join(undefined, undefined)));
+    return "failed: expected " + str([]) + ", was " + str(join(undefined, undefined));
   } else {
     passed = passed + 1;
   }
   if (! equal63([], join(undefined, []))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(join(undefined, [])));
+    return "failed: expected " + str([]) + ", was " + str(join(undefined, []));
   } else {
     passed = passed + 1;
   }
   if (! equal63([], join())) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(join()));
+    return "failed: expected " + str([]) + ", was " + str(join());
   } else {
     passed = passed + 1;
   }
   if (! equal63([], join([]))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(join([])));
+    return "failed: expected " + str([]) + ", was " + str(join([]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([1], join([1], undefined))) {
     failed = failed + 1;
-    return("failed: expected " + str([1]) + ", was " + str(join([1], undefined)));
+    return "failed: expected " + str([1]) + ", was " + str(join([1], undefined));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a"], join(["a"], []))) {
     failed = failed + 1;
-    return("failed: expected " + str(["a"]) + ", was " + str(join(["a"], [])));
+    return "failed: expected " + str(["a"]) + ", was " + str(join(["a"], []));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a"], join(undefined, ["a"]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["a"]) + ", was " + str(join(undefined, ["a"])));
+    return "failed: expected " + str(["a"]) + ", was " + str(join(undefined, ["a"]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a"], join(["a"]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["a"]) + ", was " + str(join(["a"])));
+    return "failed: expected " + str(["a"]) + ", was " + str(join(["a"]));
   } else {
     passed = passed + 1;
   }
@@ -3932,7 +3932,7 @@ add(tests, ["join", function () {
     failed = failed + 1;
     var _x705 = ["a"];
     _x705.b = true;
-    return("failed: expected " + str(_x705) + ", was " + str(join(["a"], {["b"]: true})));
+    return "failed: expected " + str(_x705) + ", was " + str(join(["a"], {["b"]: true}));
   } else {
     passed = passed + 1;
   }
@@ -3946,7 +3946,7 @@ add(tests, ["join", function () {
     _x710.b = true;
     var _x712 = ["b"];
     _x712.b = true;
-    return("failed: expected " + str(_x710) + ", was " + str(join(["a"], _x712)));
+    return "failed: expected " + str(_x710) + ", was " + str(join(["a"], _x712));
   } else {
     passed = passed + 1;
   }
@@ -3960,7 +3960,7 @@ add(tests, ["join", function () {
     _x715.b = 10;
     var _x716 = ["a"];
     _x716.b = true;
-    return("failed: expected " + str(_x715) + ", was " + str(join(_x716, {["b"]: 10})));
+    return "failed: expected " + str(_x715) + ", was " + str(join(_x716, {["b"]: 10}));
   } else {
     passed = passed + 1;
   }
@@ -3974,7 +3974,7 @@ add(tests, ["join", function () {
     _x719.b = 10;
     var _x720 = [];
     _x720.b = 10;
-    return("failed: expected " + str(_x719) + ", was " + str(join({["b"]: true}, _x720)));
+    return "failed: expected " + str(_x719) + ", was " + str(join({["b"]: true}, _x720));
   } else {
     passed = passed + 1;
   }
@@ -3985,34 +3985,34 @@ add(tests, ["join", function () {
   var l = join(_x721, _x722);
   if (! equal63(1, l.b)) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str(l.b));
+    return "failed: expected " + str(1) + ", was " + str(l.b);
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, l.c)) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(l.c));
+    return "failed: expected " + str(2) + ", was " + str(l.c);
   } else {
     passed = passed + 1;
   }
   if (! equal63("b", l[1])) {
     failed = failed + 1;
-    return("failed: expected " + str("b") + ", was " + str(l[1]));
+    return "failed: expected " + str("b") + ", was " + str(l[1]);
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["rev", function () {
   if (! equal63([], rev([]))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(rev([])));
+    return "failed: expected " + str([]) + ", was " + str(rev([]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([3, 2, 1], rev([1, 2, 3]))) {
     failed = failed + 1;
-    return("failed: expected " + str([3, 2, 1]) + ", was " + str(rev([1, 2, 3])));
+    return "failed: expected " + str([3, 2, 1]) + ", was " + str(rev([1, 2, 3]));
   } else {
     passed = passed + 1;
   }
@@ -4026,40 +4026,40 @@ add(tests, ["rev", function () {
     _x730.a = true;
     var _x731 = [1, 2, 3];
     _x731.a = true;
-    return("failed: expected " + str(_x730) + ", was " + str(rev(_x731)));
+    return "failed: expected " + str(_x730) + ", was " + str(rev(_x731));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["map", function (_) {
   if (! equal63([], map(function (_) {
-    return(_);
+    return _;
   }, []))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(map(function (_) {
-      return(_);
-    }, [])));
+    return "failed: expected " + str([]) + ", was " + str(map(function (_) {
+      return _;
+    }, []));
   } else {
     passed = passed + 1;
   }
   if (! equal63([1], map(function (_) {
-    return(_);
+    return _;
   }, [1]))) {
     failed = failed + 1;
-    return("failed: expected " + str([1]) + ", was " + str(map(function (_) {
-      return(_);
-    }, [1])));
+    return "failed: expected " + str([1]) + ", was " + str(map(function (_) {
+      return _;
+    }, [1]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([2, 3, 4], map(function (_) {
-    return(_ + 1);
+    return _ + 1;
   }, [1, 2, 3]))) {
     failed = failed + 1;
-    return("failed: expected " + str([2, 3, 4]) + ", was " + str(map(function (_) {
-      return(_ + 1);
-    }, [1, 2, 3])));
+    return "failed: expected " + str([2, 3, 4]) + ", was " + str(map(function (_) {
+      return _ + 1;
+    }, [1, 2, 3]));
   } else {
     passed = passed + 1;
   }
@@ -4068,16 +4068,16 @@ add(tests, ["map", function (_) {
   var _x742 = [1, 2, 3];
   _x742.a = 4;
   if (! equal63(_x741, map(function (_) {
-    return(_ + 1);
+    return _ + 1;
   }, _x742))) {
     failed = failed + 1;
     var _x743 = [2, 3, 4];
     _x743.a = 5;
     var _x744 = [1, 2, 3];
     _x744.a = 4;
-    return("failed: expected " + str(_x743) + ", was " + str(map(function (_) {
-      return(_ + 1);
-    }, _x744)));
+    return "failed: expected " + str(_x743) + ", was " + str(map(function (_) {
+      return _ + 1;
+    }, _x744));
   } else {
     passed = passed + 1;
   }
@@ -4086,16 +4086,16 @@ add(tests, ["map", function (_) {
   var _x746 = [];
   _x746.a = true;
   if (! equal63(_x745, map(function (_) {
-    return(_);
+    return _;
   }, _x746))) {
     failed = failed + 1;
     var _x747 = [];
     _x747.a = true;
     var _x748 = [];
     _x748.a = true;
-    return("failed: expected " + str(_x747) + ", was " + str(map(function (_) {
-      return(_);
-    }, _x748)));
+    return "failed: expected " + str(_x747) + ", was " + str(map(function (_) {
+      return _;
+    }, _x748));
   } else {
     passed = passed + 1;
   }
@@ -4104,16 +4104,16 @@ add(tests, ["map", function (_) {
   var _x750 = [];
   _x750.b = false;
   if (! equal63(_x749, map(function (_) {
-    return(_);
+    return _;
   }, _x750))) {
     failed = failed + 1;
     var _x751 = [];
     _x751.b = false;
     var _x752 = [];
     _x752.b = false;
-    return("failed: expected " + str(_x751) + ", was " + str(map(function (_) {
-      return(_);
-    }, _x752)));
+    return "failed: expected " + str(_x751) + ", was " + str(map(function (_) {
+      return _;
+    }, _x752));
   } else {
     passed = passed + 1;
   }
@@ -4124,7 +4124,7 @@ add(tests, ["map", function (_) {
   _x754.a = true;
   _x754.b = false;
   if (! equal63(_x753, map(function (_) {
-    return(_);
+    return _;
   }, _x754))) {
     failed = failed + 1;
     var _x755 = [];
@@ -4133,20 +4133,20 @@ add(tests, ["map", function (_) {
     var _x756 = [];
     _x756.a = true;
     _x756.b = false;
-    return("failed: expected " + str(_x755) + ", was " + str(map(function (_) {
-      return(_);
-    }, _x756)));
+    return "failed: expected " + str(_x755) + ", was " + str(map(function (_) {
+      return _;
+    }, _x756));
   } else {
     passed = passed + 1;
   }
   var evens = function (_) {
     if (_ % 2 === 0) {
-      return(_);
+      return _;
     }
   };
   if (! equal63([2, 4, 6], map(evens, [1, 2, 3, 4, 5, 6]))) {
     failed = failed + 1;
-    return("failed: expected " + str([2, 4, 6]) + ", was " + str(map(evens, [1, 2, 3, 4, 5, 6])));
+    return "failed: expected " + str([2, 4, 6]) + ", was " + str(map(evens, [1, 2, 3, 4, 5, 6]));
   } else {
     passed = passed + 1;
   }
@@ -4162,52 +4162,52 @@ add(tests, ["map", function (_) {
     var _x764 = [1, 2, 3, 4, 5, 6];
     _x764.a = 7;
     _x764.b = 8;
-    return("failed: expected " + str(_x763) + ", was " + str(map(evens, _x764)));
+    return "failed: expected " + str(_x763) + ", was " + str(map(evens, _x764));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["cut", function () {
   if (! equal63([], cut([]))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(cut([])));
+    return "failed: expected " + str([]) + ", was " + str(cut([]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a"], cut(["a"]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["a"]) + ", was " + str(cut(["a"])));
+    return "failed: expected " + str(["a"]) + ", was " + str(cut(["a"]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["b", "c"], cut(["a", "b", "c"], 1))) {
     failed = failed + 1;
-    return("failed: expected " + str(["b", "c"]) + ", was " + str(cut(["a", "b", "c"], 1)));
+    return "failed: expected " + str(["b", "c"]) + ", was " + str(cut(["a", "b", "c"], 1));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["b", "c"], cut(["a", "b", "c", "d"], 1, 3))) {
     failed = failed + 1;
-    return("failed: expected " + str(["b", "c"]) + ", was " + str(cut(["a", "b", "c", "d"], 1, 3)));
+    return "failed: expected " + str(["b", "c"]) + ", was " + str(cut(["a", "b", "c", "d"], 1, 3));
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, 2, 3], cut([1, 2, 3], 0, 10))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, 3]) + ", was " + str(cut([1, 2, 3], 0, 10)));
+    return "failed: expected " + str([1, 2, 3]) + ", was " + str(cut([1, 2, 3], 0, 10));
   } else {
     passed = passed + 1;
   }
   if (! equal63([1], cut([1, 2, 3], -4, 1))) {
     failed = failed + 1;
-    return("failed: expected " + str([1]) + ", was " + str(cut([1, 2, 3], -4, 1)));
+    return "failed: expected " + str([1]) + ", was " + str(cut([1, 2, 3], -4, 1));
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, 2, 3], cut([1, 2, 3], -4))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, 3]) + ", was " + str(cut([1, 2, 3], -4)));
+    return "failed: expected " + str([1, 2, 3]) + ", was " + str(cut([1, 2, 3], -4));
   } else {
     passed = passed + 1;
   }
@@ -4221,7 +4221,7 @@ add(tests, ["cut", function () {
     _x792.a = true;
     var _x793 = [1, 2];
     _x793.a = true;
-    return("failed: expected " + str(_x792) + ", was " + str(cut(_x793, 1)));
+    return "failed: expected " + str(_x792) + ", was " + str(cut(_x793, 1));
   } else {
     passed = passed + 1;
   }
@@ -4239,14 +4239,14 @@ add(tests, ["cut", function () {
     var _x797 = [];
     _x797.a = true;
     _x797.b = 2;
-    return("failed: expected " + str(_x796) + ", was " + str(cut(_x797)));
+    return "failed: expected " + str(_x796) + ", was " + str(cut(_x797));
   } else {
     passed = passed + 1;
   }
   var l = [1, 2, 3];
   if (! equal63([], cut(l, l.length || 0))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(cut(l, l.length || 0)));
+    return "failed: expected " + str([]) + ", was " + str(cut(l, l.length || 0));
   } else {
     passed = passed + 1;
   }
@@ -4259,226 +4259,226 @@ add(tests, ["cut", function () {
     failed = failed + 1;
     var _x801 = [];
     _x801.a = true;
-    return("failed: expected " + str(_x801) + ", was " + str(cut(_l9, _l9.length || 0)));
+    return "failed: expected " + str(_x801) + ", was " + str(cut(_l9, _l9.length || 0));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["clip", function () {
   if (! equal63("uux", clip("quux", 1))) {
     failed = failed + 1;
-    return("failed: expected " + str("uux") + ", was " + str(clip("quux", 1)));
+    return "failed: expected " + str("uux") + ", was " + str(clip("quux", 1));
   } else {
     passed = passed + 1;
   }
   if (! equal63("uu", clip("quux", 1, 3))) {
     failed = failed + 1;
-    return("failed: expected " + str("uu") + ", was " + str(clip("quux", 1, 3)));
+    return "failed: expected " + str("uu") + ", was " + str(clip("quux", 1, 3));
   } else {
     passed = passed + 1;
   }
   if (! equal63("", clip("quux", 5))) {
     failed = failed + 1;
-    return("failed: expected " + str("") + ", was " + str(clip("quux", 5)));
+    return "failed: expected " + str("") + ", was " + str(clip("quux", 5));
   } else {
     passed = passed + 1;
   }
   if (! equal63("ab", clip("ab", 0, 4))) {
     failed = failed + 1;
-    return("failed: expected " + str("ab") + ", was " + str(clip("ab", 0, 4)));
+    return "failed: expected " + str("ab") + ", was " + str(clip("ab", 0, 4));
   } else {
     passed = passed + 1;
   }
   if (! equal63("ab", clip("ab", -4, 4))) {
     failed = failed + 1;
-    return("failed: expected " + str("ab") + ", was " + str(clip("ab", -4, 4)));
+    return "failed: expected " + str("ab") + ", was " + str(clip("ab", -4, 4));
   } else {
     passed = passed + 1;
   }
   if (! equal63("a", clip("ab", -1, 1))) {
     failed = failed + 1;
-    return("failed: expected " + str("a") + ", was " + str(clip("ab", -1, 1)));
+    return "failed: expected " + str("a") + ", was " + str(clip("ab", -1, 1));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["search", function () {
   if (! equal63(undefined, search("", "a"))) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(search("", "a")));
+    return "failed: expected " + str(undefined) + ", was " + str(search("", "a"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(0, search("", ""))) {
     failed = failed + 1;
-    return("failed: expected " + str(0) + ", was " + str(search("", "")));
+    return "failed: expected " + str(0) + ", was " + str(search("", ""));
   } else {
     passed = passed + 1;
   }
   if (! equal63(0, search("a", ""))) {
     failed = failed + 1;
-    return("failed: expected " + str(0) + ", was " + str(search("a", "")));
+    return "failed: expected " + str(0) + ", was " + str(search("a", ""));
   } else {
     passed = passed + 1;
   }
   if (! equal63(0, search("abc", "a"))) {
     failed = failed + 1;
-    return("failed: expected " + str(0) + ", was " + str(search("abc", "a")));
+    return "failed: expected " + str(0) + ", was " + str(search("abc", "a"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(2, search("abcd", "cd"))) {
     failed = failed + 1;
-    return("failed: expected " + str(2) + ", was " + str(search("abcd", "cd")));
+    return "failed: expected " + str(2) + ", was " + str(search("abcd", "cd"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(undefined, search("abcd", "ce"))) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(search("abcd", "ce")));
+    return "failed: expected " + str(undefined) + ", was " + str(search("abcd", "ce"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(undefined, search("abc", "z"))) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(search("abc", "z")));
+    return "failed: expected " + str(undefined) + ", was " + str(search("abc", "z"));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["split", function () {
   if (! equal63([], split("", ""))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(split("", "")));
+    return "failed: expected " + str([]) + ", was " + str(split("", ""));
   } else {
     passed = passed + 1;
   }
   if (! equal63([], split("", ","))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(split("", ",")));
+    return "failed: expected " + str([]) + ", was " + str(split("", ","));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a"], split("a", ","))) {
     failed = failed + 1;
-    return("failed: expected " + str(["a"]) + ", was " + str(split("a", ",")));
+    return "failed: expected " + str(["a"]) + ", was " + str(split("a", ","));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a", ""], split("a,", ","))) {
     failed = failed + 1;
-    return("failed: expected " + str(["a", ""]) + ", was " + str(split("a,", ",")));
+    return "failed: expected " + str(["a", ""]) + ", was " + str(split("a,", ","));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a", "b"], split("a,b", ","))) {
     failed = failed + 1;
-    return("failed: expected " + str(["a", "b"]) + ", was " + str(split("a,b", ",")));
+    return "failed: expected " + str(["a", "b"]) + ", was " + str(split("a,b", ","));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a", "b", ""], split("a,b,", ","))) {
     failed = failed + 1;
-    return("failed: expected " + str(["a", "b", ""]) + ", was " + str(split("a,b,", ",")));
+    return "failed: expected " + str(["a", "b", ""]) + ", was " + str(split("a,b,", ","));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a", "b"], split("azzb", "zz"))) {
     failed = failed + 1;
-    return("failed: expected " + str(["a", "b"]) + ", was " + str(split("azzb", "zz")));
+    return "failed: expected " + str(["a", "b"]) + ", was " + str(split("azzb", "zz"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(["a", "b", ""], split("azzbzz", "zz"))) {
     failed = failed + 1;
-    return("failed: expected " + str(["a", "b", ""]) + ", was " + str(split("azzbzz", "zz")));
+    return "failed: expected " + str(["a", "b", ""]) + ", was " + str(split("azzbzz", "zz"));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["reduce", function () {
   if (! equal63("a", reduce(function (_0, _1) {
-    return(_0 + _1);
+    return _0 + _1;
   }, ["a"]))) {
     failed = failed + 1;
-    return("failed: expected " + str("a") + ", was " + str(reduce(function (_0, _1) {
-      return(_0 + _1);
-    }, ["a"])));
+    return "failed: expected " + str("a") + ", was " + str(reduce(function (_0, _1) {
+      return _0 + _1;
+    }, ["a"]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(6, reduce(function (_0, _1) {
-    return(_0 + _1);
+    return _0 + _1;
   }, [1, 2, 3]))) {
     failed = failed + 1;
-    return("failed: expected " + str(6) + ", was " + str(reduce(function (_0, _1) {
-      return(_0 + _1);
-    }, [1, 2, 3])));
+    return "failed: expected " + str(6) + ", was " + str(reduce(function (_0, _1) {
+      return _0 + _1;
+    }, [1, 2, 3]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, [2, 3]], reduce(function (_0, _1) {
-    return([_0, _1]);
+    return [_0, _1];
   }, [1, 2, 3]))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, [2, 3]]) + ", was " + str(reduce(function (_0, _1) {
-      return([_0, _1]);
-    }, [1, 2, 3])));
+    return "failed: expected " + str([1, [2, 3]]) + ", was " + str(reduce(function (_0, _1) {
+      return [_0, _1];
+    }, [1, 2, 3]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, 2, 3, 4, 5], reduce(function (_0, _1) {
-    return(join(_0, _1));
+    return join(_0, _1);
   }, [[1], [2, 3], [4, 5]]))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, 3, 4, 5]) + ", was " + str(reduce(function (_0, _1) {
-      return(join(_0, _1));
-    }, [[1], [2, 3], [4, 5]])));
+    return "failed: expected " + str([1, 2, 3, 4, 5]) + ", was " + str(reduce(function (_0, _1) {
+      return join(_0, _1);
+    }, [[1], [2, 3], [4, 5]]));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["keep", function () {
   if (! equal63([], keep(function (_) {
-    return(_);
+    return _;
   }, []))) {
     failed = failed + 1;
-    return("failed: expected " + str([]) + ", was " + str(keep(function (_) {
-      return(_);
-    }, [])));
+    return "failed: expected " + str([]) + ", was " + str(keep(function (_) {
+      return _;
+    }, []));
   } else {
     passed = passed + 1;
   }
   var even = function (_) {
-    return(_ % 2 === 0);
+    return _ % 2 === 0;
   };
   if (! equal63([6], keep(even, [5, 6, 7]))) {
     failed = failed + 1;
-    return("failed: expected " + str([6]) + ", was " + str(keep(even, [5, 6, 7])));
+    return "failed: expected " + str([6]) + ", was " + str(keep(even, [5, 6, 7]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([[1], [2, 3]], keep(function (_) {
-    return((_.length || 0) > 0);
+    return (_.length || 0) > 0;
   }, [[], [1], [], [2, 3]]))) {
     failed = failed + 1;
-    return("failed: expected " + str([[1], [2, 3]]) + ", was " + str(keep(function (_) {
-      return((_.length || 0) > 0);
-    }, [[], [1], [], [2, 3]])));
+    return "failed: expected " + str([[1], [2, 3]]) + ", was " + str(keep(function (_) {
+      return (_.length || 0) > 0;
+    }, [[], [1], [], [2, 3]]));
   } else {
     passed = passed + 1;
   }
   var even63 = function (_) {
-    return(_ % 2 === 0);
+    return _ % 2 === 0;
   };
   if (! equal63([2, 4, 6], keep(even63, [1, 2, 3, 4, 5, 6]))) {
     failed = failed + 1;
-    return("failed: expected " + str([2, 4, 6]) + ", was " + str(keep(even63, [1, 2, 3, 4, 5, 6])));
+    return "failed: expected " + str([2, 4, 6]) + ", was " + str(keep(even63, [1, 2, 3, 4, 5, 6]));
   } else {
     passed = passed + 1;
   }
@@ -4494,95 +4494,95 @@ add(tests, ["keep", function () {
     var _x868 = [1, 2, 3, 4, 5, 6];
     _x868.a = 7;
     _x868.b = 8;
-    return("failed: expected " + str(_x867) + ", was " + str(keep(even63, _x868)));
+    return "failed: expected " + str(_x867) + ", was " + str(keep(even63, _x868));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["in?", function () {
   if (! equal63(true, in63("x", ["x", "y", "z"]))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(in63("x", ["x", "y", "z"])));
+    return "failed: expected " + str(true) + ", was " + str(in63("x", ["x", "y", "z"]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, in63(7, [5, 6, 7]))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(in63(7, [5, 6, 7])));
+    return "failed: expected " + str(true) + ", was " + str(in63(7, [5, 6, 7]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(undefined, in63("baz", ["no", "can", "do"]))) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(in63("baz", ["no", "can", "do"])));
+    return "failed: expected " + str(undefined) + ", was " + str(in63("baz", ["no", "can", "do"]));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["find", function () {
   if (! equal63(undefined, find(function (_) {
-    return(_);
+    return _;
   }, []))) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(find(function (_) {
-      return(_);
-    }, [])));
+    return "failed: expected " + str(undefined) + ", was " + str(find(function (_) {
+      return _;
+    }, []));
   } else {
     passed = passed + 1;
   }
   if (! equal63(7, find(function (_) {
-    return(_);
+    return _;
   }, [7]))) {
     failed = failed + 1;
-    return("failed: expected " + str(7) + ", was " + str(find(function (_) {
-      return(_);
-    }, [7])));
+    return "failed: expected " + str(7) + ", was " + str(find(function (_) {
+      return _;
+    }, [7]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, find(function (_) {
-    return(_ === 7);
+    return _ === 7;
   }, [2, 4, 7]))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(find(function (_) {
-      return(_ === 7);
-    }, [2, 4, 7])));
+    return "failed: expected " + str(true) + ", was " + str(find(function (_) {
+      return _ === 7;
+    }, [2, 4, 7]));
   } else {
     passed = passed + 1;
   }
   var _x881 = [2, 4];
   _x881.foo = 7;
   if (! equal63(true, find(function (_) {
-    return(_ === 7);
+    return _ === 7;
   }, _x881))) {
     failed = failed + 1;
     var _x882 = [2, 4];
     _x882.foo = 7;
-    return("failed: expected " + str(true) + ", was " + str(find(function (_) {
-      return(_ === 7);
-    }, _x882)));
+    return "failed: expected " + str(true) + ", was " + str(find(function (_) {
+      return _ === 7;
+    }, _x882));
   } else {
     passed = passed + 1;
   }
   var _x883 = [2, 4];
   _x883.bar = true;
   if (! equal63(true, find(function (_) {
-    return(_ === true);
+    return _ === true;
   }, _x883))) {
     failed = failed + 1;
     var _x884 = [2, 4];
     _x884.bar = true;
-    return("failed: expected " + str(true) + ", was " + str(find(function (_) {
-      return(_ === true);
-    }, _x884)));
+    return "failed: expected " + str(true) + ", was " + str(find(function (_) {
+      return _ === true;
+    }, _x884));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, in63(7, [2, 4, 7]))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(in63(7, [2, 4, 7])));
+    return "failed: expected " + str(true) + ", was " + str(in63(7, [2, 4, 7]));
   } else {
     passed = passed + 1;
   }
@@ -4592,7 +4592,7 @@ add(tests, ["find", function () {
     failed = failed + 1;
     var _x888 = [2, 4];
     _x888.foo = 7;
-    return("failed: expected " + str(true) + ", was " + str(in63(7, _x888)));
+    return "failed: expected " + str(true) + ", was " + str(in63(7, _x888));
   } else {
     passed = passed + 1;
   }
@@ -4602,227 +4602,227 @@ add(tests, ["find", function () {
     failed = failed + 1;
     var _x890 = [2, 4];
     _x890.bar = true;
-    return("failed: expected " + str(true) + ", was " + str(in63(true, _x890)));
+    return "failed: expected " + str(true) + ", was " + str(in63(true, _x890));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["first", function () {
   if (! equal63(undefined, first(function (_) {
-    return(_);
+    return _;
   }, []))) {
     failed = failed + 1;
-    return("failed: expected " + str(undefined) + ", was " + str(first(function (_) {
-      return(_);
-    }, [])));
+    return "failed: expected " + str(undefined) + ", was " + str(first(function (_) {
+      return _;
+    }, []));
   } else {
     passed = passed + 1;
   }
   if (! equal63(7, first(function (_) {
-    return(_);
+    return _;
   }, [7]))) {
     failed = failed + 1;
-    return("failed: expected " + str(7) + ", was " + str(first(function (_) {
-      return(_);
-    }, [7])));
+    return "failed: expected " + str(7) + ", was " + str(first(function (_) {
+      return _;
+    }, [7]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, first(function (_) {
-    return(_ === 7);
+    return _ === 7;
   }, [2, 4, 7]))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(first(function (_) {
-      return(_ === 7);
-    }, [2, 4, 7])));
+    return "failed: expected " + str(true) + ", was " + str(first(function (_) {
+      return _ === 7;
+    }, [2, 4, 7]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(4, first(function (_) {
-    return(_ > 3 && _);
+    return _ > 3 && _;
   }, [1, 2, 3, 4, 5, 6]))) {
     failed = failed + 1;
-    return("failed: expected " + str(4) + ", was " + str(first(function (_) {
-      return(_ > 3 && _);
-    }, [1, 2, 3, 4, 5, 6])));
+    return "failed: expected " + str(4) + ", was " + str(first(function (_) {
+      return _ > 3 && _;
+    }, [1, 2, 3, 4, 5, 6]));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["sort", function () {
   if (! equal63(["a", "b", "c"], sort(["c", "a", "b"]))) {
     failed = failed + 1;
-    return("failed: expected " + str(["a", "b", "c"]) + ", was " + str(sort(["c", "a", "b"])));
+    return "failed: expected " + str(["a", "b", "c"]) + ", was " + str(sort(["c", "a", "b"]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([3, 2, 1], sort([1, 2, 3], _62))) {
     failed = failed + 1;
-    return("failed: expected " + str([3, 2, 1]) + ", was " + str(sort([1, 2, 3], _62)));
+    return "failed: expected " + str([3, 2, 1]) + ", was " + str(sort([1, 2, 3], _62));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["type", function () {
   if (! equal63(true, typeof("abc") === "string")) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(typeof("abc") === "string"));
+    return "failed: expected " + str(true) + ", was " + str(typeof("abc") === "string");
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, typeof(17) === "string")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof(17) === "string"));
+    return "failed: expected " + str(false) + ", was " + str(typeof(17) === "string");
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, typeof(["a"]) === "string")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof(["a"]) === "string"));
+    return "failed: expected " + str(false) + ", was " + str(typeof(["a"]) === "string");
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, typeof(true) === "string")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof(true) === "string"));
+    return "failed: expected " + str(false) + ", was " + str(typeof(true) === "string");
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, typeof({}) === "string")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof({}) === "string"));
+    return "failed: expected " + str(false) + ", was " + str(typeof({}) === "string");
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, typeof("abc") === "number")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof("abc") === "number"));
+    return "failed: expected " + str(false) + ", was " + str(typeof("abc") === "number");
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, typeof(17) === "number")) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(typeof(17) === "number"));
+    return "failed: expected " + str(true) + ", was " + str(typeof(17) === "number");
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, typeof(["a"]) === "number")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof(["a"]) === "number"));
+    return "failed: expected " + str(false) + ", was " + str(typeof(["a"]) === "number");
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, typeof(true) === "number")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof(true) === "number"));
+    return "failed: expected " + str(false) + ", was " + str(typeof(true) === "number");
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, typeof({}) === "number")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof({}) === "number"));
+    return "failed: expected " + str(false) + ", was " + str(typeof({}) === "number");
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, typeof("abc") === "boolean")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof("abc") === "boolean"));
+    return "failed: expected " + str(false) + ", was " + str(typeof("abc") === "boolean");
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, typeof(17) === "boolean")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof(17) === "boolean"));
+    return "failed: expected " + str(false) + ", was " + str(typeof(17) === "boolean");
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, typeof(["a"]) === "boolean")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof(["a"]) === "boolean"));
+    return "failed: expected " + str(false) + ", was " + str(typeof(["a"]) === "boolean");
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, typeof(true) === "boolean")) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(typeof(true) === "boolean"));
+    return "failed: expected " + str(true) + ", was " + str(typeof(true) === "boolean");
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, typeof({}) === "boolean")) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(typeof({}) === "boolean"));
+    return "failed: expected " + str(false) + ", was " + str(typeof({}) === "boolean");
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, !( typeof(undefined) === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(!( typeof(undefined) === "object")));
+    return "failed: expected " + str(true) + ", was " + str(!( typeof(undefined) === "object"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, !( typeof("abc") === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(!( typeof("abc") === "object")));
+    return "failed: expected " + str(true) + ", was " + str(!( typeof("abc") === "object"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, !( typeof(42) === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(!( typeof(42) === "object")));
+    return "failed: expected " + str(true) + ", was " + str(!( typeof(42) === "object"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, !( typeof(true) === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(!( typeof(true) === "object")));
+    return "failed: expected " + str(true) + ", was " + str(!( typeof(true) === "object"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(true, !( typeof(function () {
   }) === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str(!( typeof(function () {
-    }) === "object")));
+    return "failed: expected " + str(true) + ", was " + str(!( typeof(function () {
+    }) === "object"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, !( typeof([1]) === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(!( typeof([1]) === "object")));
+    return "failed: expected " + str(false) + ", was " + str(!( typeof([1]) === "object"));
   } else {
     passed = passed + 1;
   }
   if (! equal63(false, !( typeof({}) === "object"))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(!( typeof({}) === "object")));
+    return "failed: expected " + str(false) + ", was " + str(!( typeof({}) === "object"));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["apply", function () {
   if (! equal63(4, apply(function (_0, _1) {
-    return(_0 + _1);
+    return _0 + _1;
   }, [2, 2]))) {
     failed = failed + 1;
-    return("failed: expected " + str(4) + ", was " + str(apply(function (_0, _1) {
-      return(_0 + _1);
-    }, [2, 2])));
+    return "failed: expected " + str(4) + ", was " + str(apply(function (_0, _1) {
+      return _0 + _1;
+    }, [2, 2]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([2, 2], apply(function () {
     var a = unstash(Array.prototype.slice.call(arguments, 0));
-    return(a);
+    return a;
   }, [2, 2]))) {
     failed = failed + 1;
-    return("failed: expected " + str([2, 2]) + ", was " + str(apply(function () {
+    return "failed: expected " + str([2, 2]) + ", was " + str(apply(function () {
       var a = unstash(Array.prototype.slice.call(arguments, 0));
-      return(a);
-    }, [2, 2])));
+      return a;
+    }, [2, 2]));
   } else {
     passed = passed + 1;
   }
@@ -4830,13 +4830,13 @@ add(tests, ["apply", function () {
   l.foo = 17;
   if (! equal63(17, apply(function () {
     var a = unstash(Array.prototype.slice.call(arguments, 0));
-    return(a.foo);
+    return a.foo;
   }, l))) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str(apply(function () {
+    return "failed: expected " + str(17) + ", was " + str(apply(function () {
       var a = unstash(Array.prototype.slice.call(arguments, 0));
-      return(a.foo);
-    }, l)));
+      return a.foo;
+    }, l));
   } else {
     passed = passed + 1;
   }
@@ -4845,16 +4845,16 @@ add(tests, ["apply", function () {
   if (! equal63(42, apply(function () {
     var _r194 = unstash(Array.prototype.slice.call(arguments, 0));
     var foo = _r194.foo;
-    return(foo);
+    return foo;
   }, _x924))) {
     failed = failed + 1;
     var _x925 = [];
     _x925.foo = 42;
-    return("failed: expected " + str(42) + ", was " + str(apply(function () {
+    return "failed: expected " + str(42) + ", was " + str(apply(function () {
       var _r195 = unstash(Array.prototype.slice.call(arguments, 0));
       var foo = _r195.foo;
-      return(foo);
-    }, _x925)));
+      return foo;
+    }, _x925));
   } else {
     passed = passed + 1;
   }
@@ -4862,69 +4862,69 @@ add(tests, ["apply", function () {
   _x928.foo = 42;
   if (! equal63(42, apply(function (_x926) {
     var foo = _x926.foo;
-    return(foo);
+    return foo;
   }, [_x928]))) {
     failed = failed + 1;
     var _x931 = [];
     _x931.foo = 42;
-    return("failed: expected " + str(42) + ", was " + str(apply(function (_x929) {
+    return "failed: expected " + str(42) + ", was " + str(apply(function (_x929) {
       var foo = _x929.foo;
-      return(foo);
-    }, [_x931])));
+      return foo;
+    }, [_x931]));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["eval", function () {
   var eval = compiler.eval;
   if (! equal63(4, eval(["+", 2, 2]))) {
     failed = failed + 1;
-    return("failed: expected " + str(4) + ", was " + str(eval(["+", 2, 2])));
+    return "failed: expected " + str(4) + ", was " + str(eval(["+", 2, 2]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(5, eval(["let", "a", 3, ["+", 2, "a"]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(5) + ", was " + str(eval(["let", "a", 3, ["+", 2, "a"]])));
+    return "failed: expected " + str(5) + ", was " + str(eval(["let", "a", 3, ["+", 2, "a"]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(9, eval(["do", ["var", "x", 7], ["+", "x", 2]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(9) + ", was " + str(eval(["do", ["var", "x", 7], ["+", "x", 2]])));
+    return "failed: expected " + str(9) + ", was " + str(eval(["do", ["var", "x", 7], ["+", "x", 2]]));
   } else {
     passed = passed + 1;
   }
   if (! equal63(6, eval(["apply", "+", ["quote", [1, 2, 3]]]))) {
     failed = failed + 1;
-    return("failed: expected " + str(6) + ", was " + str(eval(["apply", "+", ["quote", [1, 2, 3]]])));
+    return "failed: expected " + str(6) + ", was " + str(eval(["apply", "+", ["quote", [1, 2, 3]]]));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 add(tests, ["parameters", function () {
   if (! equal63(42, (function (_x952) {
     var a = _x952[0];
-    return(a);
+    return a;
   })([42]))) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str((function (_x954) {
+    return "failed: expected " + str(42) + ", was " + str((function (_x954) {
       var a = _x954[0];
-      return(a);
-    })([42])));
+      return a;
+    })([42]));
   } else {
     passed = passed + 1;
   }
   var f = function (a, _x956) {
     var b = _x956[0];
     var c = _x956[1];
-    return([a, b, c]);
+    return [a, b, c];
   };
   if (! equal63([1, 2, 3], f(1, [2, 3]))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, 3]) + ", was " + str(f(1, [2, 3])));
+    return "failed: expected " + str([1, 2, 3]) + ", was " + str(f(1, [2, 3]));
   } else {
     passed = passed + 1;
   }
@@ -4933,11 +4933,11 @@ add(tests, ["parameters", function () {
     var c = cut(_x962, 1);
     var _r203 = unstash(Array.prototype.slice.call(arguments, 2));
     var d = cut(_r203, 0);
-    return([a, b, c, d]);
+    return [a, b, c, d];
   };
   if (! equal63([1, 2, [3, 4], [5, 6, 7]], _f(1, [2, 3, 4], 5, 6, 7))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, [3, 4], [5, 6, 7]]) + ", was " + str(_f(1, [2, 3, 4], 5, 6, 7)));
+    return "failed: expected " + str([1, 2, [3, 4], [5, 6, 7]]) + ", was " + str(_f(1, [2, 3, 4], 5, 6, 7));
   } else {
     passed = passed + 1;
   }
@@ -4946,25 +4946,25 @@ add(tests, ["parameters", function () {
     var c = cut(_x972, 1);
     var _r204 = unstash(Array.prototype.slice.call(arguments, 2));
     var d = cut(_r204, 0);
-    return([a, b, c, d]);
+    return [a, b, c, d];
   };
   if (! equal63([1, 2, [3, 4], [5, 6, 7]], apply(_f1, [1, [2, 3, 4], 5, 6, 7]))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, [3, 4], [5, 6, 7]]) + ", was " + str(apply(_f1, [1, [2, 3, 4], 5, 6, 7])));
+    return "failed: expected " + str([1, 2, [3, 4], [5, 6, 7]]) + ", was " + str(apply(_f1, [1, [2, 3, 4], 5, 6, 7]));
   } else {
     passed = passed + 1;
   }
   if (! equal63([3, 4], (function (a, b) {
     var _r205 = unstash(Array.prototype.slice.call(arguments, 2));
     var c = cut(_r205, 0);
-    return(c);
+    return c;
   })(1, 2, 3, 4))) {
     failed = failed + 1;
-    return("failed: expected " + str([3, 4]) + ", was " + str((function (a, b) {
+    return "failed: expected " + str([3, 4]) + ", was " + str((function (a, b) {
       var _r206 = unstash(Array.prototype.slice.call(arguments, 2));
       var c = cut(_r206, 0);
-      return(c);
-    })(1, 2, 3, 4)));
+      return c;
+    })(1, 2, 3, 4));
   } else {
     passed = passed + 1;
   }
@@ -4973,25 +4973,25 @@ add(tests, ["parameters", function () {
     var y = cut(_x986, 1);
     var _r207 = unstash(Array.prototype.slice.call(arguments, 2));
     var z = cut(_r207, 0);
-    return([y, z]);
+    return [y, z];
   };
   if (! equal63([[3, 4], [5, 6, 7]], _f2(1, [2, 3, 4], 5, 6, 7))) {
     failed = failed + 1;
-    return("failed: expected " + str([[3, 4], [5, 6, 7]]) + ", was " + str(_f2(1, [2, 3, 4], 5, 6, 7)));
+    return "failed: expected " + str([[3, 4], [5, 6, 7]]) + ", was " + str(_f2(1, [2, 3, 4], 5, 6, 7));
   } else {
     passed = passed + 1;
   }
   if (! equal63(42, (function () {
     var _r208 = unstash(Array.prototype.slice.call(arguments, 0));
     var foo = _r208.foo;
-    return(foo);
+    return foo;
   })(stash33({["foo"]: 42})))) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str((function () {
+    return "failed: expected " + str(42) + ", was " + str((function () {
       var _r209 = unstash(Array.prototype.slice.call(arguments, 0));
       var foo = _r209.foo;
-      return(foo);
-    })(stash33({["foo"]: 42}))));
+      return foo;
+    })(stash33({["foo"]: 42})));
   } else {
     passed = passed + 1;
   }
@@ -5000,16 +5000,16 @@ add(tests, ["parameters", function () {
   if (! equal63(42, apply(function () {
     var _r210 = unstash(Array.prototype.slice.call(arguments, 0));
     var foo = _r210.foo;
-    return(foo);
+    return foo;
   }, _x996))) {
     failed = failed + 1;
     var _x997 = [];
     _x997.foo = 42;
-    return("failed: expected " + str(42) + ", was " + str(apply(function () {
+    return "failed: expected " + str(42) + ", was " + str(apply(function () {
       var _r211 = unstash(Array.prototype.slice.call(arguments, 0));
       var foo = _r211.foo;
-      return(foo);
-    }, _x997)));
+      return foo;
+    }, _x997));
   } else {
     passed = passed + 1;
   }
@@ -5017,15 +5017,15 @@ add(tests, ["parameters", function () {
   _x999.foo = 42;
   if (! equal63(42, (function (_x998) {
     var foo = _x998.foo;
-    return(foo);
+    return foo;
   })(_x999))) {
     failed = failed + 1;
     var _x1001 = [];
     _x1001.foo = 42;
-    return("failed: expected " + str(42) + ", was " + str((function (_x1000) {
+    return "failed: expected " + str(42) + ", was " + str((function (_x1000) {
       var foo = _x1000.foo;
-      return(foo);
-    })(_x1001)));
+      return foo;
+    })(_x1001));
   } else {
     passed = passed + 1;
   }
@@ -5033,7 +5033,7 @@ add(tests, ["parameters", function () {
     var foo = _x1002.foo;
     var _r214 = unstash(Array.prototype.slice.call(arguments, 2));
     var b = _r214.bar;
-    return([a, b, foo]);
+    return [a, b, foo];
   };
   var _x1005 = [];
   _x1005.foo = 42;
@@ -5041,7 +5041,7 @@ add(tests, ["parameters", function () {
     failed = failed + 1;
     var _x1007 = [];
     _x1007.foo = 42;
-    return("failed: expected " + str([10, 20, 42]) + ", was " + str(_f3(10, _x1007, stash33({["bar"]: 20}))));
+    return "failed: expected " + str([10, 20, 42]) + ", was " + str(_f3(10, _x1007, stash33({["bar"]: 20})));
   } else {
     passed = passed + 1;
   }
@@ -5049,7 +5049,7 @@ add(tests, ["parameters", function () {
     var foo = _x1008.foo;
     var _r215 = unstash(Array.prototype.slice.call(arguments, 2));
     var b = _r215.bar;
-    return([a, b, foo]);
+    return [a, b, foo];
   };
   var _x1012 = ["list"];
   _x1012.foo = 42;
@@ -5061,21 +5061,21 @@ add(tests, ["parameters", function () {
     _x1015.foo = 42;
     var _x1014 = [10, _x1015];
     _x1014.bar = 20;
-    return("failed: expected " + str([10, 20, 42]) + ", was " + str(apply(_f4, _x1014)));
+    return "failed: expected " + str([10, 20, 42]) + ", was " + str(apply(_f4, _x1014));
   } else {
     passed = passed + 1;
   }
   if (! equal63(1, (function (a) {
     var _r216 = unstash(Array.prototype.slice.call(arguments, 1));
     var b = _r216.b;
-    return((a || 0) + b);
+    return (a || 0) + b;
   })(stash33({["b"]: 1})))) {
     failed = failed + 1;
-    return("failed: expected " + str(1) + ", was " + str((function (a) {
+    return "failed: expected " + str(1) + ", was " + str((function (a) {
       var _r217 = unstash(Array.prototype.slice.call(arguments, 1));
       var b = _r217.b;
-      return((a || 0) + b);
-    })(stash33({["b"]: 1}))));
+      return (a || 0) + b;
+    })(stash33({["b"]: 1})));
   } else {
     passed = passed + 1;
   }
@@ -5084,16 +5084,16 @@ add(tests, ["parameters", function () {
   if (! equal63(1, apply(function (a) {
     var _r218 = unstash(Array.prototype.slice.call(arguments, 1));
     var b = _r218.b;
-    return((a || 0) + b);
+    return (a || 0) + b;
   }, _x1016))) {
     failed = failed + 1;
     var _x1017 = [];
     _x1017.b = 1;
-    return("failed: expected " + str(1) + ", was " + str(apply(function (a) {
+    return "failed: expected " + str(1) + ", was " + str(apply(function (a) {
       var _r219 = unstash(Array.prototype.slice.call(arguments, 1));
       var b = _r219.b;
-      return((a || 0) + b);
-    }, _x1017)));
+      return (a || 0) + b;
+    }, _x1017));
   } else {
     passed = passed + 1;
   }
@@ -5102,43 +5102,43 @@ add(tests, ["parameters", function () {
     var _r220 = unstash(Array.prototype.slice.call(arguments, 0));
     var a = _r220.a;
     add(l, a);
-    return(a);
+    return a;
   };
   var g = function (a, b) {
     var _r221 = unstash(Array.prototype.slice.call(arguments, 2));
     var c = _r221.c;
     add(l, [a, b, c]);
-    return(c);
+    return c;
   };
   var x = f(stash33({["a"]: g(f(stash33({["a"]: 10})), f(stash33({["a"]: 20})), stash33({["c"]: f(stash33({["a"]: 42}))}))}));
   if (! equal63(42, x)) {
     failed = failed + 1;
-    return("failed: expected " + str(42) + ", was " + str(x));
+    return "failed: expected " + str(42) + ", was " + str(x);
   } else {
     passed = passed + 1;
   }
   if (! equal63([10, 20, 42, [10, 20, 42], 42], l)) {
     failed = failed + 1;
-    return("failed: expected " + str([10, 20, 42, [10, 20, 42], 42]) + ", was " + str(l));
+    return "failed: expected " + str([10, 20, 42, [10, 20, 42], 42]) + ", was " + str(l);
   } else {
     passed = passed + 1;
   }
   var _f5 = function () {
     var args = unstash(Array.prototype.slice.call(arguments, 0));
-    return(args);
+    return args;
   };
   if (! equal63([1, 2, 3], _f5(1, 2, 3))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, 3]) + ", was " + str(_f5(1, 2, 3)));
+    return "failed: expected " + str([1, 2, 3]) + ", was " + str(_f5(1, 2, 3));
   } else {
     passed = passed + 1;
   }
   if (! equal63([1, 2, 3], apply(_f5, [1, 2, 3]))) {
     failed = failed + 1;
-    return("failed: expected " + str([1, 2, 3]) + ", was " + str(apply(_f5, [1, 2, 3])));
+    return "failed: expected " + str([1, 2, 3]) + ", was " + str(apply(_f5, [1, 2, 3]));
   } else {
     passed = passed + 1;
-    return(passed);
+    return passed;
   }
 }]);
 if (typeof(_x1029) === "undefined" || _x1029 === null) {

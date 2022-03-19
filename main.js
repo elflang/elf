@@ -18,12 +18,12 @@ var to_string = function (l) {
     s = s + str(x);
     _i = _i + 1;
   }
-  return(s);
+  return s;
 };
 if (typeof(pp) === "undefined" || pp === null) {
   pp = function () {
     var xs = unstash(Array.prototype.slice.call(arguments, 0));
-    return(print(to_string(xs)));
+    return print(to_string(xs));
   };
 }
 var eval_print = function (form) {
@@ -31,10 +31,10 @@ var eval_print = function (form) {
   if (!( typeof(form) === "undefined" || form === null)) {
     var _id = (function () {
       try {
-        return([true, compiler.eval(form)]);
+        return [true, compiler.eval(form)];
       }
       catch (_e9) {
-        return([false, _e9.message, _e9.stack]);
+        return [false, _e9.message, _e9.stack];
       }
     })();
     var ok = _id[0];
@@ -47,12 +47,12 @@ var eval_print = function (form) {
     thatexpr = form;
     that = x;
     if (!( typeof(x) === "undefined" || x === null)) {
-      return(pp(x));
+      return pp(x);
     }
   }
 };
 var rep = function (s) {
-  return(eval_print(reader["read-string"](s)));
+  return eval_print(reader["read-string"](s));
 };
 repl = function () {
   var buf = "";
@@ -63,24 +63,24 @@ repl = function () {
     if (!( form === more)) {
       eval_print(form);
       buf = "";
-      return(system.write("> "));
+      return system.write("> ");
     }
   };
   system.write("> ");
   var _in = process.stdin;
   _in.setEncoding("utf8");
-  return(_in.on("data", rep1));
+  return _in.on("data", rep1);
 };
 var skip_shebang = function (s) {
   if (s) {
     if (! str_starts63(s, "#!")) {
-      return(s);
+      return s;
     }
     var i = search(s, "\n");
     if (i) {
-      return(clip(s, i + 1));
+      return clip(s, i + 1);
     } else {
-      return("");
+      return "";
     }
   }
 };
@@ -90,16 +90,16 @@ compile_string = function (s) {
   var form = compiler.expand(join(["do"], body));
   var _do = compiler.compile(form, stash33({["stmt"]: true}));
   compiler.reset();
-  return(_do);
+  return _do;
 };
 compile_file = function (path) {
-  return(compile_string(system["read-file"](path)));
+  return compile_string(system["read-file"](path));
 };
 load = function (path) {
-  return(compiler.run(compile_file(path)));
+  return compiler.run(compile_file(path));
 };
 var run_file = function (path) {
-  return(compiler.run(system["read-file"](path)));
+  return compiler.run(system["read-file"](path));
 };
 elf_usage = function () {
   print("usage: elf [options] <object files>");
@@ -108,7 +108,7 @@ elf_usage = function () {
   print("  -o <output>\tOutput file");
   print("  -t <target>\tTarget language (default: lua)");
   print("  -e <expr>\tExpression to evaluate");
-  return(system.exit());
+  return system.exit();
 };
 var elf_file63 = function (path) {
   var _id2 = str_ends63(path, ".e");
@@ -131,10 +131,10 @@ var elf_file63 = function (path) {
     }
     _e3 = _e5;
   }
-  return(_e3);
+  return _e3;
 };
 var script_file63 = function (path) {
-  return(str_ends63(path, "." + "js"));
+  return str_ends63(path, "." + "js");
 };
 elf_main = function () {
   var arg = system.argv[0];
@@ -202,9 +202,9 @@ elf_main = function () {
   }
   if (typeof(input) === "undefined" || input === null) {
     if (expr) {
-      return(rep(expr));
+      return rep(expr);
     } else {
-      return(repl());
+      return repl();
     }
   } else {
     if (target1) {
@@ -212,24 +212,24 @@ elf_main = function () {
     }
     var code = compile_file(input);
     if (typeof(output) === "undefined" || output === null || output === "-") {
-      return(print(code));
+      return print(code);
     } else {
-      return(system["write-file"](output, code));
+      return system["write-file"](output, code);
     }
   }
 };
 str_starts63 = function (str, x) {
   if ((x.length || 0) > (str.length || 0)) {
-    return(false);
+    return false;
   } else {
-    return(x === clip(str, 0, x.length || 0));
+    return x === clip(str, 0, x.length || 0);
   }
 };
 str_ends63 = function (str, x) {
   if ((x.length || 0) > (str.length || 0)) {
-    return(false);
+    return false;
   } else {
-    return(x === clip(str, (str.length || 0) - (x.length || 0)));
+    return x === clip(str, (str.length || 0) - (x.length || 0));
   }
 };
 import33 = function (module) {
@@ -257,7 +257,7 @@ import33 = function (module) {
   compiler.eval(e);
   var _do1 = import37;
   delete import37;
-  return(_do1);
+  return _do1;
 };
 if (typeof(_x10) === "undefined" || _x10 === null) {
   _x10 = true;

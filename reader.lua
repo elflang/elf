@@ -3,26 +3,26 @@ setenv("defreader", stash33({["macro"] = function (_x6, ...)
   local s = _x6[2]
   local _r1 = unstash({...})
   local body = cut(_r1, 0)
-  return({"=", {"get", "read-table", char}, join({"fn", {s}}, body)})
+  return {"=", {"get", "read-table", char}, join({"fn", {s}}, body)}
 end}))
 local delimiters = {["["] = true, [")"] = true, ["}"] = true, [";"] = true, ["("] = true, ["\n"] = true, ["\r"] = true, ["{"] = true, ["]"] = true}
 local whitespace = {["\t"] = true, ["\r"] = true, [" "] = true, ["\n"] = true}
 local function stream(str, more)
-  return({["len"] = #(str), ["pos"] = 0, ["more"] = more, ["string"] = str})
+  return {["len"] = #(str), ["pos"] = 0, ["more"] = more, ["string"] = str}
 end
 local function peek_char(s)
   local _len = s.len
   local pos = s.pos
   local string = s.string
   if pos < _len then
-    return(char(string, pos))
+    return char(string, pos)
   end
 end
 local function read_char(s)
   local c = peek_char(s)
   if c then
     s.pos = s.pos + 1
-    return(c)
+    return c
   end
 end
 local function skip_non_code(s)
@@ -47,7 +47,7 @@ local function skip_non_code(s)
     end
     any63 = true
   end
-  return(any63)
+  return any63
 end
 local read_table = {}
 local eof = {}
@@ -55,9 +55,9 @@ local function read(s)
   skip_non_code(s)
   local c = peek_char(s)
   if c == nil then
-    return(eof)
+    return eof
   else
-    return((read_table[c] or read_table[""])(s))
+    return (read_table[c] or read_table[""])(s)
   end
 end
 local function read_all(s)
@@ -72,19 +72,19 @@ local function read_all(s)
     end
     add(l, form)
   end
-  return(l)
+  return l
 end
 local function read_string(str, more)
   local x = read(stream(str, more))
   if not( x == eof) then
-    return(x)
+    return x
   end
 end
 local function key63(atom)
-  return(type(atom) == "string" and #(atom) > 1 and char(atom, #(atom) - 1) == ":")
+  return type(atom) == "string" and #(atom) > 1 and char(atom, #(atom) - 1) == ":"
 end
 local function flag63(atom)
-  return(type(atom) == "string" and #(atom) > 1 and char(atom, 0) == ":")
+  return type(atom) == "string" and #(atom) > 1 and char(atom, 0) == ":"
 end
 local function expected(s, c)
   local pos = s.pos
@@ -97,33 +97,33 @@ local function expected(s, c)
     error("Expected " .. c .. " at " .. pos)
     _e1 = nil
   end
-  return(_e1)
+  return _e1
 end
 local function wrap(s, x)
   local y = read(s)
   if y == s.more then
-    return(y)
+    return y
   else
-    return({x, y})
+    return {x, y}
   end
 end
 local function maybe_number(str)
   if number_code63(code(str, #(str) - 1)) then
-    return(number(str))
+    return number(str)
   end
 end
 local function real63(x)
-  return(type(x) == "number" and not nan63(x) and not inf63(x))
+  return type(x) == "number" and not nan63(x) and not inf63(x)
 end
 local function valid_access63(str)
-  return(#(str) > 2 and not( "." == char(str, 0)) and not( "." == char(str, #(str) - 1)) and not search(str, ".."))
+  return #(str) > 2 and not( "." == char(str, 0)) and not( "." == char(str, #(str) - 1)) and not search(str, "..")
 end
 local function parse_index(a, b)
   local n = number(a)
   if n == nil then
-    return({"get", b, {"quote", a}})
+    return {"get", b, {"quote", a}}
   else
-    return({"at", b, n})
+    return {"at", b, n}
   end
 end
 local function parse_access(str, prev)
@@ -134,7 +134,7 @@ local function parse_access(str, prev)
     _e2 = {}
   end
   local parts = _e2
-  return(reduce(parse_index, rev(join(parts, split(str, ".")))))
+  return reduce(parse_index, rev(join(parts, split(str, "."))))
 end
 local function read_atom(s, basic63)
   local str = ""
@@ -153,34 +153,34 @@ local function read_atom(s, basic63)
     str = str .. read_char(s)
   end
   if str == "true" then
-    return(true)
+    return true
   else
     if str == "false" then
-      return(false)
+      return false
     else
       if str == "nan" then
-        return(nan)
+        return nan
       else
         if str == "-nan" then
-          return(nan)
+          return nan
         else
           if str == "inf" then
-            return(inf)
+            return inf
           else
             if str == "-inf" then
-              return(-inf)
+              return -inf
             else
               if basic63 then
-                return(str)
+                return str
               else
                 local n = maybe_number(str)
                 if real63(n) then
-                  return(n)
+                  return n
                 else
                   if dot63 and valid_access63(str) then
-                    return(parse_access(str))
+                    return parse_access(str)
                   else
-                    return(str)
+                    return str
                   end
                 end
               end
@@ -220,7 +220,7 @@ local function read_list(s, ending)
       end
     end
   end
-  return(r)
+  return r
 end
 local function read_next(s, prev, ws63)
   local _e = peek_char(s)
@@ -228,37 +228,37 @@ local function read_next(s, prev, ws63)
     read_char(s)
     skip_non_code(s)
     if not peek_char(s) then
-      return(s.more or eof)
+      return s.more or eof
     else
       local x = read_atom(s, true)
       if x == eof or x == s.more then
-        return(x)
+        return x
       else
-        return(read_next(s, parse_access(x, prev)))
+        return read_next(s, parse_access(x, prev))
       end
     end
   else
     if "(" == _e then
       if ws63 then
-        return(prev)
+        return prev
       else
         local _x17 = read_list(s, ")")
         if _x17 == s.more then
-          return(_x17)
+          return _x17
         else
-          return(read_next(s, join({prev}, _x17), skip_non_code(s)))
+          return read_next(s, join({prev}, _x17), skip_non_code(s))
         end
       end
     else
-      return(prev)
+      return prev
     end
   end
 end
 read_table[""] = function (s)
-  return(read_next(s, read_atom(s)))
+  return read_next(s, read_atom(s))
 end
 read_table["("] = function (s)
-  return(read_next(s, read_list(s, ")"), skip_non_code(s)))
+  return read_next(s, read_list(s, ")"), skip_non_code(s))
 end
 read_table[")"] = function (s)
   error("Unexpected ) at " .. s.pos)
@@ -269,7 +269,7 @@ function ontree(f, l, ...)
   if not( skip and skip(l)) then
     local y = f(l)
     if y then
-      return(y)
+      return y
     end
     if not not( type(l) == "table") then
       local _l = l
@@ -278,14 +278,14 @@ function ontree(f, l, ...)
         local x = _l[_i]
         local _y = ontree(f, x, stash33({["skip"] = skip}))
         if _y then
-          return(_y)
+          return _y
         end
       end
     end
   end
 end
 function hd_is63(l, val)
-  return(type(l) == "table" and l[1] == val)
+  return type(l) == "table" and l[1] == val
 end
 setenv("%fn", stash33({["macro"] = function (body)
   local n = -1
@@ -301,22 +301,22 @@ setenv("%fn", stash33({["macro"] = function (body)
           add(l, "_" .. chr(48 + n))
         end
       end
-      return(nil)
+      return nil
     end
   end, body, stash33({["skip"] = function (_)
-    return(hd_is63(_, "%fn"))
+    return hd_is63(_, "%fn")
   end}))
   if any63 and #(l) == 0 then
     add(l, "_")
   end
-  return({"fn", l, body})
+  return {"fn", l, body}
 end}))
 read_table["["] = function (s)
   local x = read_list(s, "]")
   if x == s.more then
-    return(x)
+    return x
   else
-    return(read_next(s, {"%fn", x}, skip_non_code(s)))
+    return read_next(s, {"%fn", x}, skip_non_code(s))
   end
 end
 read_table["]"] = function (s)
@@ -325,7 +325,7 @@ end
 read_table["{"] = function (s)
   local x = read_list(s, "}")
   if x == s.more then
-    return(x)
+    return x
   else
     local e = x[1]
     x = cut(x, 1)
@@ -336,7 +336,7 @@ read_table["{"] = function (s)
       e = {op, e, a}
       x = bs
     end
-    return(read_next(s, e, skip_non_code(s)))
+    return read_next(s, e, skip_non_code(s))
   end
 end
 read_table["}"] = function (s)
@@ -361,7 +361,7 @@ read_table["\""] = function (s)
       end
     end
   end
-  return(r)
+  return r
 end
 read_table["|"] = function (s)
   read_char(s)
@@ -379,27 +379,27 @@ read_table["|"] = function (s)
       end
     end
   end
-  return(r)
+  return r
 end
 read_table["'"] = function (s)
   read_char(s)
-  return(wrap(s, "quote"))
+  return wrap(s, "quote")
 end
 read_table["`"] = function (s)
   read_char(s)
-  return(wrap(s, "quasiquote"))
+  return wrap(s, "quasiquote")
 end
 read_table[","] = function (s)
   read_char(s)
   if peek_char(s) == "@" then
     read_char(s)
-    return(wrap(s, "unquote-splicing"))
+    return wrap(s, "unquote-splicing")
   else
-    return(wrap(s, "unquote"))
+    return wrap(s, "unquote")
   end
 end
 read_table["#"] = function (s)
   read_char(s)
-  return(wrap(s, "len"))
+  return wrap(s, "len")
 end
-return({["read-string"] = read_string, ["read-all"] = read_all, ["read"] = read, ["read-table"] = read_table, ["stream"] = stream})
+return {["read-string"] = read_string, ["read-all"] = read_all, ["read"] = read, ["read-table"] = read_table, ["stream"] = stream}

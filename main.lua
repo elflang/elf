@@ -24,12 +24,12 @@ local function to_string(l)
     s = s .. str(x)
     _i = _i + 1
   end
-  return(s)
+  return s
 end
 if pp == nil then
   function pp(...)
     local xs = unstash({...})
-    return(print(to_string(xs)))
+    return print(to_string(xs))
   end
 end
 local function eval_print(form)
@@ -41,11 +41,11 @@ local function eval_print(form)
     local _e
     if xpcall(function ()
       _x5 = compiler.eval(form)
-      return(_x5)
+      return _x5
     end, function (_)
       _msg1 = clip(_, search(_, ": ") + 2)
       _trace1 = debug.traceback()
-      return(_trace1)
+      return _trace1
     end) then
       _e = {true, _x5}
     else
@@ -62,12 +62,12 @@ local function eval_print(form)
     thatexpr = form
     that = x
     if not( x == nil) then
-      return(pp(x))
+      return pp(x)
     end
   end
 end
 local function rep(s)
-  return(eval_print(reader["read-string"](s)))
+  return eval_print(reader["read-string"](s))
 end
 function repl()
   local buf = ""
@@ -78,12 +78,12 @@ function repl()
     if not( form == more) then
       eval_print(form)
       buf = ""
-      return(system.write("> "))
+      return system.write("> ")
     end
   end
   system.write("> ")
   if process then
-    return(process.stdin.on(process.stdin, "data", rep1))
+    return process.stdin.on(process.stdin, "data", rep1)
   else
     while true do
       local s = io.read()
@@ -98,13 +98,13 @@ end
 local function skip_shebang(s)
   if s then
     if not str_starts63(s, "#!") then
-      return(s)
+      return s
     end
     local i = search(s, "\n")
     if i then
-      return(clip(s, i + 1))
+      return clip(s, i + 1)
     else
-      return("")
+      return ""
     end
   end
 end
@@ -114,16 +114,16 @@ function compile_string(s)
   local form = compiler.expand(join({"do"}, body))
   local _do = compiler.compile(form, stash33({["stmt"] = true}))
   compiler.reset()
-  return(_do)
+  return _do
 end
 function compile_file(path)
-  return(compile_string(system["read-file"](path)))
+  return compile_string(system["read-file"](path))
 end
 function load(path)
-  return(compiler.run(compile_file(path)))
+  return compiler.run(compile_file(path))
 end
 local function run_file(path)
-  return(compiler.run(system["read-file"](path)))
+  return compiler.run(system["read-file"](path))
 end
 function elf_usage()
   print("usage: elf [options] <object files>")
@@ -132,7 +132,7 @@ function elf_usage()
   print("  -o <output>\tOutput file")
   print("  -t <target>\tTarget language (default: lua)")
   print("  -e <expr>\tExpression to evaluate")
-  return(system.exit())
+  return system.exit()
 end
 local function elf_file63(path)
   local _id2 = str_ends63(path, ".e")
@@ -155,10 +155,10 @@ local function elf_file63(path)
     end
     _e4 = _e6
   end
-  return(_e4)
+  return _e4
 end
 local function script_file63(path)
-  return(str_ends63(path, "." .. "lua"))
+  return str_ends63(path, "." .. "lua")
 end
 function elf_main()
   local arg = system.argv[1]
@@ -226,9 +226,9 @@ function elf_main()
   end
   if input == nil then
     if expr then
-      return(rep(expr))
+      return rep(expr)
     else
-      return(repl())
+      return repl()
     end
   else
     if target1 then
@@ -236,24 +236,24 @@ function elf_main()
     end
     local code = compile_file(input)
     if output == nil or output == "-" then
-      return(print(code))
+      return print(code)
     else
-      return(system["write-file"](output, code))
+      return system["write-file"](output, code)
     end
   end
 end
 function str_starts63(str, x)
   if #(x) > #(str) then
-    return(false)
+    return false
   else
-    return(x == clip(str, 0, #(x)))
+    return x == clip(str, 0, #(x))
   end
 end
 function str_ends63(str, x)
   if #(x) > #(str) then
-    return(false)
+    return false
   else
-    return(x == clip(str, #(str) - #(x)))
+    return x == clip(str, #(str) - #(x))
   end
 end
 function import33(module)
@@ -274,7 +274,7 @@ function import33(module)
   compiler.eval(e)
   local _do1 = import37
   import37 = nil
-  return(_do1)
+  return _do1
 end
 if _x15 == nil then
   _x15 = true

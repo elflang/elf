@@ -22,14 +22,14 @@ var exit = function (code) {
 };
 var argv = cut(process.argv, 2);
 var shell = function (cmd) {
-  var x = child_process.execSync(cmd);
-  return x.toString();
+  var _x = child_process.execSync(cmd);
+  return _x.toString();
 };
 var path_join = function () {
-  var parts = unstash(Array.prototype.slice.call(arguments, 0));
+  var _parts = unstash(Array.prototype.slice.call(arguments, 0));
   return reduce(function (_0, _1) {
     return _0 + path_separator + _1;
-  }, parts) || "";
+  }, _parts) || "";
 };
 var reload = function (module) {
   delete require.cache[require.resolve(module)];

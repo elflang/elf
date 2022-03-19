@@ -83,21 +83,14 @@
     `(%object ,@(mapo [do _] body)))
 
   (mac let (bs rest: body)
-    (if (toplevel?)
-        (return (w/frame (macroexpand `(let ,bs ,@body)))))
     (if (atom? bs) `(let (,bs ,(hd body)) ,@(tl body))
         (none? bs) `(do ,@body)
       (let ((lh rh rest: bs2) bs
-            (id val rest: bs1) (bind lh rh))
-        (let renames ()
-          (if (or (bound? id) (toplevel?))
-              (let id1 (uniq id)
-                (assign renames (list id id1))
-                (assign id id1))
-            (setenv id :variable))
-          `(do (%local ,id ,val)
-               (w/sym ,renames
-                 (let ,(join bs1 bs2) ,@body)))))))
+            (id val rest: bs1) (bind lh rh)
+            id1 (uniq id))
+        `(do (%local ,id1 ,val)
+             (w/sym ,id ,id1
+               (let ,(join bs1 bs2) ,@body))))))
 
   (mac = l
     (case #l
@@ -177,21 +170,23 @@
           (setenv ,x :variable))
         ,@body)))
 
-  (mac w/mac (name args definition rest: body)
+  (mac %scope body
     (w/frame
-      (macroexpand
-        `(do (%compile-time (mac ,name ,args ,definition))
-             ,@body))))
+      `(%expansion
+         ,(macroexpand `(do ,@body)))))
+
+  (mac w/mac (name args definition rest: body)
+    `(%scope
+       (%compile-time (mac ,name ,args ,definition))
+       ,@body))
 
   (mac w/sym (expansions rest: body)
     (if (atom? expansions)
         `(w/sym (,expansions ,(hd body)) ,@(tl body))
-      (w/frame
-        (macroexpand
-          `(do (%compile-time
-                 ,@(xform (pair expansions)
-                          `(defsym ,@_)))
-               ,@body)))))
+      `(%scope
+         (%compile-time
+           ,@(xform (pair expansions) `(defsym ,@_)))
+         ,@body)))
 
   (mac w/uniq (names rest: body)
     (if (atom? names)
@@ -319,9 +314,6 @@
       (if (hd? form 'complement)
           `(,(at form 1) ,@body)
         `(not (,form ,@body)))))
-
-  (deftransformer expansion ((expansion) form)
-    form)
 
   nil)
 

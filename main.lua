@@ -9,60 +9,60 @@ reader = require("reader")
 compiler = require("compiler")
 system = require("system")
 local function to_string(l)
-  local s = ""
+  local _s = ""
   local sep
-  local _x = l
-  local _n = #(_x)
-  local _i = 0
-  while _i < _n do
-    local x = _x[_i + 1]
+  local __x = l
+  local __n = #(__x)
+  local __i = 0
+  while __i < __n do
+    local _x1 = __x[__i + 1]
     if sep then
-      s = s .. sep
+      _s = _s .. sep
     else
       sep = " "
     end
-    s = s .. str(x)
-    _i = _i + 1
+    _s = _s .. str(_x1)
+    __i = __i + 1
   end
-  return s
+  return _s
 end
 if pp == nil then
   function pp(...)
-    local xs = unstash({...})
-    return print(to_string(xs))
+    local _xs = unstash({...})
+    return print(to_string(_xs))
   end
 end
 local function eval_print(form)
   compiler.reset()
   if not( form == nil) then
-    local _x5 = nil
-    local _msg1 = nil
-    local _trace1 = nil
-    local _e
+    local __x6 = nil
+    local __msg1 = nil
+    local __trace1 = nil
+    local _e1
     if xpcall(function ()
-      _x5 = compiler.eval(form)
-      return _x5
+      __x6 = compiler.eval(form)
+      return __x6
     end, function (_)
-      _msg1 = clip(_, search(_, ": ") + 2)
-      _trace1 = debug.traceback()
-      return _trace1
+      __msg1 = clip(_, search(_, ": ") + 2)
+      __trace1 = debug.traceback()
+      return __trace1
     end) then
-      _e = {true, _x5}
+      _e1 = {true, __x6}
     else
-      _e = {false, _msg1, _trace1}
+      _e1 = {false, __msg1, __trace1}
     end
-    local _id = _e
-    local ok = _id[1]
-    local x = _id[2]
-    local trace = _id[3]
-    if not ok then
-      print("error: " .. x .. "\n" .. trace)
+    local __id = _e1
+    local _ok = __id[1]
+    local _x9 = __id[2]
+    local _trace2 = __id[3]
+    if not _ok then
+      print("error: " .. _x9 .. "\n" .. _trace2)
       return
     end
     thatexpr = form
-    that = x
-    if not( x == nil) then
-      return pp(x)
+    that = _x9
+    if not( _x9 == nil) then
+      return pp(_x9)
     end
   end
 end
@@ -70,14 +70,14 @@ local function rep(s)
   return eval_print(reader["read-string"](s))
 end
 function repl()
-  local buf = ""
+  local _buf = ""
   local function rep1(s)
-    buf = buf .. s
-    local more = {}
-    local form = reader["read-string"](buf, more)
-    if not( form == more) then
-      eval_print(form)
-      buf = ""
+    _buf = _buf .. s
+    local _more = {}
+    local _form = reader["read-string"](_buf, _more)
+    if not( _form == _more) then
+      eval_print(_form)
+      _buf = ""
       return system.write("> ")
     end
   end
@@ -86,9 +86,9 @@ function repl()
     return process.stdin.on(process.stdin, "data", rep1)
   else
     while true do
-      local s = io.read()
-      if s then
-        rep1(s .. "\n")
+      local _s1 = io.read()
+      if _s1 then
+        rep1(_s1 .. "\n")
       else
         break
       end
@@ -100,9 +100,9 @@ local function skip_shebang(s)
     if not str_starts63(s, "#!") then
       return s
     end
-    local i = search(s, "\n")
-    if i then
-      return clip(s, i + 1)
+    local _i1 = search(s, "\n")
+    if _i1 then
+      return clip(s, _i1 + 1)
     else
       return ""
     end
@@ -112,9 +112,9 @@ function compile_string(s)
   compiler.reset()
   local body = reader["read-all"](skip_shebang(s))
   local form = compiler.expand(join({"do"}, body))
-  local _do = compiler.compile(form, stash33({["stmt"] = true}))
+  local __do = compiler.compile(form, stash33({["stmt"] = true}))
   compiler.reset()
-  return _do
+  return __do
 end
 function compile_file(path)
   return compile_string(system["read-file"](path))
@@ -123,7 +123,7 @@ function load(path)
   return compiler.run(compile_file(path))
 end
 local function run_file(path)
-  return compiler.run(system["read-file"](path))
+  return compiler.run(system["read-file"](path), path)
 end
 function elf_usage()
   print("usage: elf [options] <object files>")
@@ -136,109 +136,109 @@ function elf_usage()
 end
 local function elf_file63(path)
   local _id2 = str_ends63(path, ".e")
-  local _e4
+  local _e5
   if _id2 then
-    _e4 = _id2
+    _e5 = _id2
   else
     local _id3 = system["file-exists?"](path)
-    local _e6
+    local _e7
     if _id3 then
-      local s = system["read-file"](path)
-      local _e7
-      if s then
-        local bang = clip(s, 0, search(s, "\n"))
-        _e7 = str_starts63(bang, "#!") and search(bang, "elf")
+      local _s2 = system["read-file"](path)
+      local _e8
+      if _s2 then
+        local _bang = clip(_s2, 0, search(_s2, "\n"))
+        _e8 = str_starts63(_bang, "#!") and search(_bang, "elf")
       end
-      _e6 = _e7
+      _e7 = _e8
     else
-      _e6 = _id3
+      _e7 = _id3
     end
-    _e4 = _e6
+    _e5 = _e7
   end
-  return _e4
+  return _e5
 end
 local function script_file63(path)
   return str_ends63(path, "." .. "lua")
 end
 function elf_main()
-  local arg = system.argv[1]
-  if arg then
-    if in63(arg, {"-h", "--help"}) then
+  local _arg = system.argv[1]
+  if _arg then
+    if in63(_arg, {"-h", "--help"}) then
       elf_usage()
     end
-    if elf_file63(arg) then
+    if elf_file63(_arg) then
       system.argv = cut(system.argv, 1)
-      load(arg)
+      load(_arg)
       return
     end
-    if script_file63(arg) then
+    if script_file63(_arg) then
       system.argv = cut(system.argv, 1)
-      run_file(arg)
+      run_file(_arg)
       return
     end
   end
-  local pre = {}
-  local input = nil
-  local output = nil
-  local target1 = nil
-  local expr = nil
-  local argv = system.argv
-  local n = #(argv)
-  local i = 0
-  while i < n do
-    local a = argv[i + 1]
-    if a == "-c" or a == "-o" or a == "-t" or a == "-e" then
-      if i == n - 1 then
-        print("missing argument for " .. a)
+  local _pre = {}
+  local _input = nil
+  local _output = nil
+  local _target1 = nil
+  local _expr = nil
+  local _argv = system.argv
+  local _n1 = #(_argv)
+  local _i2 = 0
+  while _i2 < _n1 do
+    local _a = _argv[_i2 + 1]
+    if _a == "-c" or _a == "-o" or _a == "-t" or _a == "-e" then
+      if _i2 == _n1 - 1 then
+        print("missing argument for " .. _a)
       else
-        i = i + 1
-        local val = argv[i + 1]
-        if a == "-c" then
-          input = val
+        _i2 = _i2 + 1
+        local _val = _argv[_i2 + 1]
+        if _a == "-c" then
+          _input = _val
         else
-          if a == "-o" then
-            output = val
+          if _a == "-o" then
+            _output = _val
           else
-            if a == "-t" then
-              target1 = val
+            if _a == "-t" then
+              _target1 = _val
             else
-              if a == "-e" then
-                expr = val
+              if _a == "-e" then
+                _expr = _val
               end
             end
           end
         end
       end
     else
-      if not( "-" == char(a, 0)) then
-        add(pre, a)
+      if not( "-" == char(_a, 0)) then
+        add(_pre, _a)
       end
     end
-    i = i + 1
+    _i2 = _i2 + 1
   end
-  local _x10 = pre
-  local _n1 = #(_x10)
-  local _i1 = 0
-  while _i1 < _n1 do
-    local file = _x10[_i1 + 1]
-    run_file(file)
-    _i1 = _i1 + 1
+  local __x12 = _pre
+  local __n2 = #(__x12)
+  local __i3 = 0
+  while __i3 < __n2 do
+    local _file = __x12[__i3 + 1]
+    run_file(_file)
+    __i3 = __i3 + 1
   end
-  if input == nil then
-    if expr then
-      return rep(expr)
+  if _input == nil then
+    if _expr then
+      return rep(_expr)
     else
       return repl()
     end
   else
-    if target1 then
-      target42 = target1
+    if _target1 then
+      target42 = _target1
     end
-    local code = compile_file(input)
-    if output == nil or output == "-" then
-      return print(code)
+    local _code = compile_file(_input)
+    if _output == nil or _output == "-" then
+      return print(_code)
     else
-      return system["write-file"](output, code)
+      return system["write-file"](_output, _code)
     end
   end
 end
@@ -257,26 +257,26 @@ function str_ends63(str, x)
   end
 end
 function import33(module)
-  local _e8
+  local _e9
   if type(module) == "string" then
-    _e8 = require(module)
+    _e9 = require(module)
   else
-    _e8 = module
+    _e9 = module
   end
-  import37 = _e8
-  local e = {"do"}
-  local _l = module
-  local k = nil
-  for k in next, _l do
-    local v = _l[k]
-    add(e, {"def", k, {"get", "import%", {"quote", k}}})
+  import37 = _e9
+  local _e = {"do"}
+  local __l = module
+  local _k = nil
+  for _k in next, __l do
+    local _v = __l[_k]
+    add(_e, {"def", _k, {"get", "import%", {"quote", _k}}})
   end
-  compiler.eval(e)
-  local _do1 = import37
+  compiler.eval(_e)
+  local __do1 = import37
   import37 = nil
-  return _do1
+  return __do1
 end
-if _x15 == nil then
-  _x15 = true
+if _x17 == nil then
+  _x17 = true
   elf_main()
 end

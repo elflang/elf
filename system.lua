@@ -8,29 +8,33 @@ if luvit63 then
   end
 end
 local function read_file(path)
-  local f,e = io.open(path)
-  if not f then
-    error(e)
+  local __id = {io.open(path)}
+  local _f = __id[1]
+  local _e = __id[2]
+  if not _f then
+    error(_e)
   end
-  local s = f.read(f, "*a")
-  f.close(f)
-  return s
+  local _s = _f.read(_f, "*a")
+  _f.close(_f)
+  return _s
 end
 local function write_file(path, data)
-  local f,e = io.open(path, "w")
-  if not f then
-    error(e)
+  local __id1 = {io.open(path, "w")}
+  local _f1 = __id1[1]
+  local _e1 = __id1[2]
+  if not _f1 then
+    error(_e1)
   end
-  local s = f.write(f, data)
-  f.close(f)
-  return s
+  local _s1 = _f1.write(_f1, data)
+  _f1.close(_f1)
+  return _s1
 end
 local function file_exists63(path)
-  local f = io.open(path)
-  if not( f == nil) then
-    f.close(f)
+  local _f2 = io.open(path)
+  if not( _f2 == nil) then
+    _f2.close(_f2)
   end
-  return not( f == nil)
+  return not( _f2 == nil)
 end
 local path_separator = char(_G.package.config or "/", 0)
 local function get_environment_variable(name)
@@ -53,25 +57,25 @@ local function exit(code)
 end
 local argv = arg
 if argv == nil then
-  local _e
+  local _e2
   if args then
-    _e = cut(args, 1)
+    _e2 = cut(args, 1)
   end
-  argv = _e
+  argv = _e2
 end
 if argv == nil then
   argv = {}
 end
 argv = cut(argv, 0)
 local function shell(cmd)
-  local x = io.popen(cmd)
-  return x.read(x, "*a")
+  local _x4 = io.popen(cmd)
+  return _x4.read(_x4, "*a")
 end
 local function path_join(...)
-  local parts = unstash({...})
+  local _parts = unstash({...})
   return reduce(function (_0, _1)
     return _0 .. path_separator .. _1
-  end, parts) or ""
+  end, _parts) or ""
 end
 local function reload(module)
   package.loaded[module] = nil

@@ -42,13 +42,13 @@
       (require 'require)(path)(file)))
 
   (var read-file (path)
-    (let |f,e| (io.open path)
+    (let ((f e) (list (io.open path)))
       (unless f (error e))
       (with s (f.read f "*a")
         (f.close f))))
 
   (var write-file (path data)
-    (let |f,e| (io.open path "w")
+    (let ((f e) (list (io.open path "w")))
       (unless f (error e))
       (with s (f.write f data)
         (f.close f))))

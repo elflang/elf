@@ -198,6 +198,7 @@
           args (tl form)
           form `(,x ,@args))
       (if (is x nil) (map macroexpand args)
+          (is x '%expansion) (hd args)
           (is x '%local) (expand-local form)
           (is x '%function) (expand-function form)
           (is x '%global-function) (expand-definition form)
@@ -601,8 +602,8 @@
   (var run run-js))
 
 (%lua
-  (var run (code)
-    (let |f,e| (run-lua code)
+  (var run (code name)
+    (let ((f e) (list (run-lua code name)))
       (if f (f) (error (cat e " in " code))))))
 
 (var eval (form)
@@ -670,11 +671,13 @@
   (compile-function args body))
 
 (defspecial %global-function (name args body) :stmt :tr
+  (setenv name :variable)
   (if lua? (let x (compile-function args body name: name)
              (cat (indentation) x))
     (compile `(assign ,name (%function ,args ,body)) :stmt)))
 
 (defspecial %local-function (name args body) :stmt :tr
+  (setenv name :variable)
   (if lua? (let x (compile-function args body name: name prefix: 'local)
              (cat (indentation) x))
     (compile `(%local ,name (%function ,args ,body)) :stmt)))
@@ -697,6 +700,7 @@
     (cat (indentation) e)))
 
 (defspecial %local (name value) :stmt
+  (setenv name :variable)
   (let (id (compile name)
         value1 (compile value)
         rh (if (~nil? value) (cat " = " value1) "")

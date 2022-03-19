@@ -288,9 +288,8 @@ c"
         b (obj x: 20)
         f [do 30])
     (eq 10 a)
-    (eq 10 |a|)
-    (eq 20 |b.x|)
-    (eq 30 |f()|)
+    (eq 20 b.x)
+    (eq 30 (f))
     (var x 0)
     (var y (do |x = x + 1|
                (++ x)))
@@ -413,7 +412,7 @@ c"
           (if (is i 19)
               (break)
             (++ i)))
-      (eq nil a)
+      (eq nil b)
       (eq 19 i))
     (while (< (with j (++ i)) 21))
     (eq 21 i)
@@ -482,11 +481,11 @@ c"
       (eq true (num? x)))))
 
 (deftest fn
-  (let f [+ _ 10])
+  (let f [+ _ 10]
     (eq 20 (f 10))
     (eq 30 (f 20))
     (eq 40 ([+ _ 10] 30))
-    (eq '(2 3 4) (xform '(1 2 3) (+ _ 1))))
+    (eq '(2 3 4) (xform '(1 2 3) (+ _ 1)))))
 
 (deftest define
   (var x 20)

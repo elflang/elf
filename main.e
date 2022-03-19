@@ -83,7 +83,7 @@
   (compiler.run (compile-file path)))
 
 (var run-file (path)
-  (compiler.run (system.read-file path)))
+  (compiler.run (system.read-file path) path))
 
 (def elf-usage ()
   (print "usage: elf [options] <object files>")

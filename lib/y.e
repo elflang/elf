@@ -25,24 +25,4 @@
     (print (str (list k1 v l)))
     (if (nil? k) (return k1))
     (if (is k k1) (= k nil))))
-  
-
-                
-                
-              
-
-
-
-(def car (a)
-  (if (nil? a) a
-    (hd a)))
-
-;(def cdr (a)
-;  (if (nil? a) a
-;      (
-
-;(def y-put (l k rest: args)
-;  (let (v (hd args)
-;        wipe? (none? args))
-;    (if (list? l)
 

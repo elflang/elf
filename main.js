@@ -3,51 +3,51 @@ reader = require("reader");
 compiler = require("compiler");
 system = require("system");
 var to_string = function (l) {
-  var s = "";
+  var _s = "";
   var sep;
-  var _x = l;
-  var _n = _x.length || 0;
-  var _i = 0;
-  while (_i < _n) {
-    var x = _x[_i];
+  var __x = l;
+  var __n = __x.length || 0;
+  var __i = 0;
+  while (__i < __n) {
+    var _x1 = __x[__i];
     if (sep) {
-      s = s + sep;
+      _s = _s + sep;
     } else {
       sep = " ";
     }
-    s = s + str(x);
-    _i = _i + 1;
+    _s = _s + str(_x1);
+    __i = __i + 1;
   }
-  return s;
+  return _s;
 };
 if (typeof(pp) === "undefined" || pp === null) {
   pp = function () {
-    var xs = unstash(Array.prototype.slice.call(arguments, 0));
-    return print(to_string(xs));
+    var _xs = unstash(Array.prototype.slice.call(arguments, 0));
+    return print(to_string(_xs));
   };
 }
 var eval_print = function (form) {
   compiler.reset();
   if (!( typeof(form) === "undefined" || form === null)) {
-    var _id = (function () {
+    var __id = (function () {
       try {
         return [true, compiler.eval(form)];
       }
-      catch (_e9) {
-        return [false, _e9.message, _e9.stack];
+      catch (_e10) {
+        return [false, _e10.message, _e10.stack];
       }
     })();
-    var ok = _id[0];
-    var x = _id[1];
-    var trace = _id[2];
-    if (! ok) {
-      print(trace);
+    var _ok = __id[0];
+    var _x4 = __id[1];
+    var _trace = __id[2];
+    if (! _ok) {
+      print(_trace);
       return;
     }
     thatexpr = form;
-    that = x;
-    if (!( typeof(x) === "undefined" || x === null)) {
-      return pp(x);
+    that = _x4;
+    if (!( typeof(_x4) === "undefined" || _x4 === null)) {
+      return pp(_x4);
     }
   }
 };
@@ -55,14 +55,14 @@ var rep = function (s) {
   return eval_print(reader["read-string"](s));
 };
 repl = function () {
-  var buf = "";
+  var _buf = "";
   var rep1 = function (s) {
-    buf = buf + s;
-    var more = [];
-    var form = reader["read-string"](buf, more);
-    if (!( form === more)) {
-      eval_print(form);
-      buf = "";
+    _buf = _buf + s;
+    var _more = [];
+    var _form = reader["read-string"](_buf, _more);
+    if (!( _form === _more)) {
+      eval_print(_form);
+      _buf = "";
       return system.write("> ");
     }
   };
@@ -76,9 +76,9 @@ var skip_shebang = function (s) {
     if (! str_starts63(s, "#!")) {
       return s;
     }
-    var i = search(s, "\n");
-    if (i) {
-      return clip(s, i + 1);
+    var _i1 = search(s, "\n");
+    if (_i1) {
+      return clip(s, _i1 + 1);
     } else {
       return "";
     }
@@ -88,9 +88,9 @@ compile_string = function (s) {
   compiler.reset();
   var body = reader["read-all"](skip_shebang(s));
   var form = compiler.expand(join(["do"], body));
-  var _do = compiler.compile(form, stash33({["stmt"]: true}));
+  var __do = compiler.compile(form, stash33({["stmt"]: true}));
   compiler.reset();
-  return _do;
+  return __do;
 };
 compile_file = function (path) {
   return compile_string(system["read-file"](path));
@@ -99,7 +99,7 @@ load = function (path) {
   return compiler.run(compile_file(path));
 };
 var run_file = function (path) {
-  return compiler.run(system["read-file"](path));
+  return compiler.run(system["read-file"](path), path);
 };
 elf_usage = function () {
   print("usage: elf [options] <object files>");
@@ -112,109 +112,109 @@ elf_usage = function () {
 };
 var elf_file63 = function (path) {
   var _id2 = str_ends63(path, ".e");
-  var _e3;
+  var _e4;
   if (_id2) {
-    _e3 = _id2;
+    _e4 = _id2;
   } else {
     var _id3 = system["file-exists?"](path);
-    var _e5;
+    var _e6;
     if (_id3) {
-      var s = system["read-file"](path);
-      var _e6;
-      if (s) {
-        var bang = clip(s, 0, search(s, "\n"));
-        _e6 = str_starts63(bang, "#!") && search(bang, "elf");
+      var _s1 = system["read-file"](path);
+      var _e7;
+      if (_s1) {
+        var _bang = clip(_s1, 0, search(_s1, "\n"));
+        _e7 = str_starts63(_bang, "#!") && search(_bang, "elf");
       }
-      _e5 = _e6;
+      _e6 = _e7;
     } else {
-      _e5 = _id3;
+      _e6 = _id3;
     }
-    _e3 = _e5;
+    _e4 = _e6;
   }
-  return _e3;
+  return _e4;
 };
 var script_file63 = function (path) {
   return str_ends63(path, "." + "js");
 };
 elf_main = function () {
-  var arg = system.argv[0];
-  if (arg) {
-    if (in63(arg, ["-h", "--help"])) {
+  var _arg = system.argv[0];
+  if (_arg) {
+    if (in63(_arg, ["-h", "--help"])) {
       elf_usage();
     }
-    if (elf_file63(arg)) {
+    if (elf_file63(_arg)) {
       system.argv = cut(system.argv, 1);
-      load(arg);
+      load(_arg);
       return;
     }
-    if (script_file63(arg)) {
+    if (script_file63(_arg)) {
       system.argv = cut(system.argv, 1);
-      run_file(arg);
+      run_file(_arg);
       return;
     }
   }
-  var pre = [];
-  var input = undefined;
-  var output = undefined;
-  var target1 = undefined;
-  var expr = undefined;
-  var argv = system.argv;
-  var n = argv.length || 0;
-  var i = 0;
-  while (i < n) {
-    var a = argv[i];
-    if (a === "-c" || a === "-o" || a === "-t" || a === "-e") {
-      if (i === n - 1) {
-        print("missing argument for " + a);
+  var _pre = [];
+  var _input = undefined;
+  var _output = undefined;
+  var _target1 = undefined;
+  var _expr = undefined;
+  var _argv = system.argv;
+  var _n1 = _argv.length || 0;
+  var _i2 = 0;
+  while (_i2 < _n1) {
+    var _a = _argv[_i2];
+    if (_a === "-c" || _a === "-o" || _a === "-t" || _a === "-e") {
+      if (_i2 === _n1 - 1) {
+        print("missing argument for " + _a);
       } else {
-        i = i + 1;
-        var val = argv[i];
-        if (a === "-c") {
-          input = val;
+        _i2 = _i2 + 1;
+        var _val = _argv[_i2];
+        if (_a === "-c") {
+          _input = _val;
         } else {
-          if (a === "-o") {
-            output = val;
+          if (_a === "-o") {
+            _output = _val;
           } else {
-            if (a === "-t") {
-              target1 = val;
+            if (_a === "-t") {
+              _target1 = _val;
             } else {
-              if (a === "-e") {
-                expr = val;
+              if (_a === "-e") {
+                _expr = _val;
               }
             }
           }
         }
       }
     } else {
-      if (!( "-" === char(a, 0))) {
-        add(pre, a);
+      if (!( "-" === char(_a, 0))) {
+        add(_pre, _a);
       }
     }
-    i = i + 1;
+    _i2 = _i2 + 1;
   }
-  var _x5 = pre;
-  var _n1 = _x5.length || 0;
-  var _i1 = 0;
-  while (_i1 < _n1) {
-    var file = _x5[_i1];
-    run_file(file);
-    _i1 = _i1 + 1;
+  var __x7 = _pre;
+  var __n2 = __x7.length || 0;
+  var __i3 = 0;
+  while (__i3 < __n2) {
+    var _file = __x7[__i3];
+    run_file(_file);
+    __i3 = __i3 + 1;
   }
-  if (typeof(input) === "undefined" || input === null) {
-    if (expr) {
-      return rep(expr);
+  if (typeof(_input) === "undefined" || _input === null) {
+    if (_expr) {
+      return rep(_expr);
     } else {
       return repl();
     }
   } else {
-    if (target1) {
-      target42 = target1;
+    if (_target1) {
+      target42 = _target1;
     }
-    var code = compile_file(input);
-    if (typeof(output) === "undefined" || output === null || output === "-") {
-      return print(code);
+    var _code = compile_file(_input);
+    if (typeof(_output) === "undefined" || _output === null || _output === "-") {
+      return print(_code);
     } else {
-      return system["write-file"](output, code);
+      return system["write-file"](_output, _code);
     }
   }
 };
@@ -233,33 +233,33 @@ str_ends63 = function (str, x) {
   }
 };
 import33 = function (module) {
-  var _e7;
+  var _e8;
   if (typeof(module) === "string") {
-    _e7 = require(module);
+    _e8 = require(module);
   } else {
-    _e7 = module;
+    _e8 = module;
   }
-  import37 = _e7;
-  var e = ["do"];
-  var _l = module;
-  var k = undefined;
-  for (k in _l) {
-    var v = _l[k];
-    var _e8;
-    if (numeric63(k)) {
-      _e8 = parseInt(k);
+  import37 = _e8;
+  var _e = ["do"];
+  var __l = module;
+  var _k = undefined;
+  for (_k in __l) {
+    var _v = __l[_k];
+    var _e9;
+    if (numeric63(_k)) {
+      _e9 = parseInt(_k);
     } else {
-      _e8 = k;
+      _e9 = _k;
     }
-    var _k = _e8;
-    add(e, ["def", _k, ["get", "import%", ["quote", _k]]]);
+    var _k1 = _e9;
+    add(_e, ["def", _k1, ["get", "import%", ["quote", _k1]]]);
   }
-  compiler.eval(e);
-  var _do1 = import37;
+  compiler.eval(_e);
+  var __do1 = import37;
   delete import37;
-  return _do1;
+  return __do1;
 };
-if (typeof(_x10) === "undefined" || _x10 === null) {
-  _x10 = true;
+if (typeof(_x12) === "undefined" || _x12 === null) {
+  _x12 = true;
   elf_main();
 }

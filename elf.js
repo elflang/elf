@@ -481,11 +481,17 @@ var setup = function () {
   };
   setenv("cat!", stash33({["macro"]: cat33__macro}));
   var _4343__macro = function (n, by) {
-    return ["=", n, ["+", n, by || 1]];
+    if (typeof(by) === "undefined" || by === null) {
+      by = 1;
+    }
+    return ["=", n, ["+", n, by]];
   };
   setenv("++", stash33({["macro"]: _4343__macro}));
   var ____macro = function (n, by) {
-    return ["=", n, ["-", n, by || 1]];
+    if (typeof(by) === "undefined" || by === null) {
+      by = 1;
+    }
+    return ["=", n, ["-", n, by]];
   };
   setenv("--", stash33({["macro"]: ____macro}));
   var export__macro = function () {

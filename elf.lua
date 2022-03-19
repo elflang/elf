@@ -466,11 +466,17 @@ local function setup()
   end
   setenv("cat!", stash33({["macro"] = cat33__macro}))
   local function _4343__macro(n, by)
-    return {"=", n, {"+", n, by or 1}}
+    if by == nil then
+      by = 1
+    end
+    return {"=", n, {"+", n, by}}
   end
   setenv("++", stash33({["macro"] = _4343__macro}))
   local function ____macro(n, by)
-    return {"=", n, {"-", n, by or 1}}
+    if by == nil then
+      by = 1
+    end
+    return {"=", n, {"-", n, by}}
   end
   setenv("--", stash33({["macro"] = ____macro}))
   local function export__macro(...)

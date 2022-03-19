@@ -252,8 +252,8 @@
   (mac join! (a rest: bs) `(= ,a (join ,a ,@bs)))
   (mac cat!  (a rest: bs) `(= ,a (cat  ,a ,@bs)))
 
-  (mac ++ (n by) `(= ,n (+ ,n ,(or by 1))))
-  (mac -- (n by) `(= ,n (- ,n ,(or by 1))))
+  (mac ++ (n (o by 1)) `(= ,n (+ ,n ,by)))
+  (mac -- (n (o by 1)) `(= ,n (- ,n ,by)))
 
   (mac export names
     (if js? `(do ,@(xform names

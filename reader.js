@@ -1,8 +1,8 @@
-setenv("defreader", stash33({["macro"]: function (_x6) {
-  var char = _x6[0];
-  var s = _x6[1];
-  var _r1 = unstash(Array.prototype.slice.call(arguments, 1));
-  var body = cut(_r1, 0);
+setenv("defreader", stash33({["macro"]: function (_x) {
+  var char = _x[0];
+  var s = _x[1];
+  var _r = unstash(Array.prototype.slice.call(arguments, 1));
+  var body = cut(_r, 0);
   return ["=", ["get", "read-table", char], join(["fn", [s]], body)];
 }}));
 var delimiters = {["["]: true, [")"]: true, ["}"]: true, [";"]: true, ["("]: true, ["\n"]: true, ["\r"]: true, ["{"]: true, ["]"]: true};
@@ -89,10 +89,10 @@ var flag63 = function (atom) {
 var expected = function (s, c) {
   var pos = s.pos;
   var more = s.more;
-  var _id8 = more;
+  var _id6 = more;
   var _e1;
-  if (_id8) {
-    _e1 = _id8;
+  if (_id6) {
+    _e1 = _id6;
   } else {
     throw new Error("Expected " + c + " at " + pos);
     _e1 = undefined;
@@ -242,11 +242,11 @@ var read_next = function (s, prev, ws63) {
       if (ws63) {
         return prev;
       } else {
-        var _x16 = read_list(s, ")");
-        if (_x16 === s.more) {
-          return _x16;
+        var _x10 = read_list(s, ")");
+        if (_x10 === s.more) {
+          return _x10;
         } else {
-          return read_next(s, join([prev], _x16), skip_non_code(s));
+          return read_next(s, join([prev], _x10), skip_non_code(s));
         }
       }
     } else {
@@ -264,8 +264,8 @@ read_table[")"] = function (s) {
   throw new Error("Unexpected ) at " + s.pos);
 };
 ontree = function (f, l) {
-  var _r24 = unstash(Array.prototype.slice.call(arguments, 2));
-  var skip = _r24.skip;
+  var _r23 = unstash(Array.prototype.slice.call(arguments, 2));
+  var skip = _r23.skip;
   if (!( skip && skip(l))) {
     var y = f(l);
     if (y) {

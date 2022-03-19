@@ -9,29 +9,31 @@
 (var failed 0)
 (var tests ())
 
-(mac test (x msg)
-  `(if (not ,x)
-       (do (= failed (+ failed 1))
-	   (return ,msg))
-     (++ passed)))
+(during-compilation
+
+  (mac test (x msg)
+    `(if (not ,x)
+         (do (= failed (+ failed 1))
+       (return ,msg))
+       (++ passed)))
+
+  (mac eq (a b)
+    `(test (equal? ,a ,b)
+     (cat "failed: expected " (str ,a) ", was " (str ,b))))
+
+  (mac deftest (name rest: body)
+    `(add tests (list ',name [do ,@body]))))
 
 (var equal? (a b)
   (if (atom? a) (is a b)
     (is (str a) (str b))))
-
-(mac eq (a b)
-  `(test (equal? ,a ,b)
-	 (cat "failed: expected " (str ,a) ", was " (str ,b))))
-
-(mac deftest (name rest: body)
-  `(add tests (list ',name [do ,@body])))
 
 (def run-tests ()
   (each ((name f)) tests
     (let result (f)
       (when (str? result)
         (print (cat " " name " " result)))))
-  (print (cat " " passed " passed, " failed " failed")))
+    (print (cat " " passed " passed, " failed " failed")))
 
 (deftest reader
   (let read reader.read-string
@@ -670,7 +672,8 @@ c"
       (eq 20 b))))
 
 (deftest defsym
-  (defsym zzz 42)
+  (during-compilation
+    (defsym zzz 42))
   (eq zzz 42))
 
 (deftest macros-and-symbols

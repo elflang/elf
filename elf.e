@@ -2,19 +2,21 @@
 
 (var setup ()
 
-  ;; Usually, macros are like variables: if a macro is defined within
-  ;; a function, then it's local to that function.  In this case,
-  ;; however, we want all macros defined within SETUP to be global.  We
-  ;; accomplish this by replacing the local environment frame with the
-  ;; global environment frame at compile time.
-
-  (%compile-time
-    (assign environment*.-1 environment*.0))
-
   (defsym t true)
   (defsym js? (is target* 'js))
   (defsym lua? (is target* 'lua))
   (defsym global* (target lua: _G js: (if (nil? global) window global)))
+
+  (mac %compile-time forms
+    (compiler.eval `(do ,@forms))
+    nil)
+
+  (mac when-compiling body
+    (compiler.eval `(do ,@body)))
+
+  (mac during-compilation body
+    (with form `(do ,@body)
+      (compiler.eval form)))
 
   (mac %js forms (if js? `(do ,@forms)))
   (mac %lua forms (if lua? `(do ,@forms)))
@@ -133,18 +135,13 @@
          ,g)))
 
   (mac mac (name args rest: body)
-    (let form `(setenv ',name macro: (fn ,args ,@body))
-      (compiler.eval form)
-      form))
+    `(setenv ',name macro: (fn ,args ,@body) ,@(keys body)))
 
   (mac defspecial (name args rest: body)
-    (let form `(setenv ',name special: (fn ,args ,@body) ,@(keys body))
-      (compiler.eval form)
-      form))
+    `(setenv ',name special: (fn ,args ,@body) ,@(keys body)))
 
-  (mac defsym (name expansion)
-    (setenv name symbol: expansion)
-    `(setenv ',name symbol: ',expansion))
+  (mac defsym (name expansion rest: props)
+    `(setenv ',name symbol: ',expansion ,@(keys props)))
 
   (mac var (name x rest: body)
     (setenv name :variable)
@@ -173,17 +170,19 @@
 
   (mac w/mac (name args definition rest: body)
     (w/frame
-      (macroexpand `(mac ,name ,args ,definition))
-      `(do ,@(macroexpand body))))
+      (macroexpand
+        `(do (%compile-time (mac ,name ,args ,definition))
+             ,@body))))
 
   (mac w/sym (expansions rest: body)
     (if (atom? expansions)
         `(w/sym (,expansions ,(hd body)) ,@(tl body))
       (w/frame
-        (map (fn ((name exp))
-               (macroexpand `(defsym ,name ,exp)))
-             (pair expansions))
-        `(do ,@(macroexpand body)))))
+        (macroexpand
+          `(do (%compile-time
+                 ,@(xform (pair expansions)
+                          `(defsym ,@_)))
+               ,@body)))))
 
   (mac w/uniq (names rest: body)
     (if (atom? names)
@@ -256,10 +255,6 @@
         (each k names
           (= (get x k) k))
         `(return (obj ,@x)))))
-
-  (mac %compile-time forms
-    (compiler.eval `(do ,@forms))
-    nil)
 
   (mac once forms
     (w/uniq x

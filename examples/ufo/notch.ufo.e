@@ -68,15 +68,16 @@ math.modf,math.fmod, math.pi, math.cos, math.sin, math.abs, math.sqrt, bit.band,
         (if {random() > {sqrt(sqrt({yd * yd + {zd * zd}})) - 0.8}}
             {level at i = 0})))))
 
-(mac vars (names values rest: more)
-  (if (some? more) `(do (vars ,names ,values) ,(xform (pair more) `(vars ,@_)))
-      (atom? names) `(vars (,names) (,values))
-      (none? names) nil
-    (let ((x rest: ys) names
-          (a rest: bs) values)
-        (if (atom? x)
-            `(do (var ,x ,a) (vars ,ys ,bs))
-          `(do ,(xform x `(var ,_)) (= ,x ,a) (vars ,ys ,bs))))))
+(during-compilation
+  (mac vars (names values rest: more)
+    (if (some? more) `(do (vars ,names ,values) ,(xform (pair more) `(vars ,@_)))
+        (atom? names) `(vars (,names) (,values))
+        (none? names) nil
+      (let ((x rest: ys) names
+            (a rest: bs) values)
+          (if (atom? x)
+              `(do (var ,x ,a) (vars ,ys ,bs))
+            `(do ,(xform x `(var ,_)) (= ,x ,a) (vars ,ys ,bs)))))))
 
 
 (var renderMinecraft (screen time)

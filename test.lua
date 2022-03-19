@@ -4,7 +4,7 @@ local compiler = require("compiler")
 local passed = 0
 local failed = 0
 local tests = {}
-setenv("test", stash33({macro = function (x, msg)
+setenv("test", stash33({["macro"] = function (x, msg)
   return({"if", {"not", x}, {"do", {"=", "failed", {"+", "failed", 1}}, {"return", msg}}, {"++", "passed"}})
 end}))
 local function equal63(a, b)
@@ -14,10 +14,10 @@ local function equal63(a, b)
     return(str(a) == str(b))
   end
 end
-setenv("eq", stash33({macro = function (a, b)
+setenv("eq", stash33({["macro"] = function (a, b)
   return({"test", {"equal?", a, b}, {"cat", "\"failed: expected \"", {"str", a}, "\", was \"", {"str", b}}})
 end}))
-setenv("deftest", stash33({macro = function (name, ...)
+setenv("deftest", stash33({["macro"] = function (name, ...)
   local _r6 = unstash({...})
   local body = cut(_r6, 0)
   return({"add", "tests", {"list", {"quote", name}, {"%fn", join({"do"}, body)}}})
@@ -1238,7 +1238,7 @@ add(tests, {"quasiquote", function ()
   end
   local _a1 = 17
   local b = {1, 2}
-  local _c = {a = 10}
+  local _c = {["a"] = 10}
   local _x324 = {}
   _x324.a = 10
   local d = _x324
@@ -1332,23 +1332,23 @@ add(tests, {"quasiquote", function ()
   else
     passed = passed + 1
   end
-  if not equal63(true, ({foo = true}).foo) then
+  if not equal63(true, ({["foo"] = true}).foo) then
     failed = failed + 1
-    return("failed: expected " .. str(true) .. ", was " .. str(({foo = true}).foo))
+    return("failed: expected " .. str(true) .. ", was " .. str(({["foo"] = true}).foo))
   else
     passed = passed + 1
   end
-  if not equal63(17, ({bar = 17}).bar) then
+  if not equal63(17, ({["bar"] = 17}).bar) then
     failed = failed + 1
-    return("failed: expected " .. str(17) .. ", was " .. str(({bar = 17}).bar))
+    return("failed: expected " .. str(17) .. ", was " .. str(({["bar"] = 17}).bar))
   else
     passed = passed + 1
   end
-  if not equal63(17, ({baz = function ()
+  if not equal63(17, ({["baz"] = function ()
     return(17)
   end}).baz()) then
     failed = failed + 1
-    return("failed: expected " .. str(17) .. ", was " .. str(({baz = function ()
+    return("failed: expected " .. str(17) .. ", was " .. str(({["baz"] = function ()
       return(17)
     end}).baz()))
   else
@@ -1472,7 +1472,7 @@ add(tests, {"calls", function ()
     return(42)
   end
   local l = {f}
-  local o = {f = f}
+  local o = {["f"] = f}
   if not equal63(42, f()) then
     failed = failed + 1
     return("failed: expected " .. str(42) .. ", was " .. str(f()))
@@ -1515,7 +1515,7 @@ add(tests, {"calls", function ()
 end})
 add(tests, {"id", function ()
   local a = 10
-  local b = {x = 20}
+  local b = {["x"] = 20}
   local f = function ()
     return(30)
   end
@@ -2371,15 +2371,15 @@ add(tests, {"for", function ()
   end
 end})
 add(tests, {"table", function ()
-  if not equal63(10, ({a = 10}).a) then
+  if not equal63(10, ({["a"] = 10}).a) then
     failed = failed + 1
-    return("failed: expected " .. str(10) .. ", was " .. str(({a = 10}).a))
+    return("failed: expected " .. str(10) .. ", was " .. str(({["a"] = 10}).a))
   else
     passed = passed + 1
   end
-  if not equal63(true, ({a = true}).a) then
+  if not equal63(true, ({["a"] = true}).a) then
     failed = failed + 1
-    return("failed: expected " .. str(true) .. ", was " .. str(({a = true}).a))
+    return("failed: expected " .. str(true) .. ", was " .. str(({["a"] = true}).a))
   else
     passed = passed + 1
     return(passed)
@@ -2414,9 +2414,9 @@ add(tests, {"empty", function ()
   else
     passed = passed + 1
   end
-  if not equal63(false, empty63({a = true})) then
+  if not equal63(false, empty63({["a"] = true})) then
     failed = failed + 1
-    return("failed: expected " .. str(false) .. ", was " .. str(empty63({a = true})))
+    return("failed: expected " .. str(false) .. ", was " .. str(empty63({["a"] = true})))
   else
     passed = passed + 1
   end
@@ -3452,7 +3452,7 @@ add(tests, {"destructuring", function ()
   else
     passed = passed + 1
   end
-  local _id17 = {foo = 99}
+  local _id17 = {["foo"] = 99}
   local foo = _id17.foo
   if not equal63(99, foo) then
     failed = failed + 1
@@ -3470,7 +3470,7 @@ add(tests, {"destructuring", function ()
   else
     passed = passed + 1
   end
-  local _id19 = {foo = 99}
+  local _id19 = {["foo"] = 99}
   local a = _id19.foo
   if not equal63(99, a) then
     failed = failed + 1
@@ -3478,7 +3478,7 @@ add(tests, {"destructuring", function ()
   else
     passed = passed + 1
   end
-  local _id20 = {foo = {98, 99}}
+  local _id20 = {["foo"] = {98, 99}}
   local _id21 = _id20.foo
   local a = _id21[1]
   local b = _id21[2]
@@ -3496,7 +3496,7 @@ add(tests, {"destructuring", function ()
   end
   local _x674 = {99}
   _x674.baz = true
-  local _id22 = {foo = 42, bar = _x674}
+  local _id22 = {["foo"] = 42, ["bar"] = _x674}
   local foo = _id22.foo
   local _id23 = _id22.bar
   local baz = _id23.baz
@@ -3660,7 +3660,7 @@ add(tests, {"w/sym", function ()
   end
 end})
 add(tests, {"defsym", function ()
-  setenv("zzz", stash33({symbol = 42}))
+  setenv("zzz", stash33({["symbol"] = 42}))
   if not equal63(42, 42) then
     failed = failed + 1
     return("failed: expected " .. str(42) .. ", was " .. str(42))
@@ -4021,11 +4021,11 @@ add(tests, {"join", function ()
   end
   local _x737 = {"a"}
   _x737.b = true
-  if not equal63(_x737, join({"a"}, {b = true})) then
+  if not equal63(_x737, join({"a"}, {["b"] = true})) then
     failed = failed + 1
     local _x739 = {"a"}
     _x739.b = true
-    return("failed: expected " .. str(_x739) .. ", was " .. str(join({"a"}, {b = true})))
+    return("failed: expected " .. str(_x739) .. ", was " .. str(join({"a"}, {["b"] = true})))
   else
     passed = passed + 1
   end
@@ -4047,13 +4047,13 @@ add(tests, {"join", function ()
   _x747.b = 10
   local _x748 = {"a"}
   _x748.b = true
-  if not equal63(_x747, join(_x748, {b = 10})) then
+  if not equal63(_x747, join(_x748, {["b"] = 10})) then
     failed = failed + 1
     local _x749 = {"a"}
     _x749.b = 10
     local _x750 = {"a"}
     _x750.b = true
-    return("failed: expected " .. str(_x749) .. ", was " .. str(join(_x750, {b = 10})))
+    return("failed: expected " .. str(_x749) .. ", was " .. str(join(_x750, {["b"] = 10})))
   else
     passed = passed + 1
   end
@@ -4061,13 +4061,13 @@ add(tests, {"join", function ()
   _x751.b = 10
   local _x752 = {}
   _x752.b = 10
-  if not equal63(_x751, join({b = true}, _x752)) then
+  if not equal63(_x751, join({["b"] = true}, _x752)) then
     failed = failed + 1
     local _x753 = {}
     _x753.b = 10
     local _x754 = {}
     _x754.b = 10
-    return("failed: expected " .. str(_x753) .. ", was " .. str(join({b = true}, _x754)))
+    return("failed: expected " .. str(_x753) .. ", was " .. str(join({["b"] = true}, _x754)))
   else
     passed = passed + 1
   end
@@ -5078,13 +5078,13 @@ add(tests, {"parameters", function ()
     local _r224 = unstash({...})
     local foo = _r224.foo
     return(foo)
-  end)(stash33({foo = 42}))) then
+  end)(stash33({["foo"] = 42}))) then
     failed = failed + 1
     return("failed: expected " .. str(42) .. ", was " .. str((function (...)
       local _r225 = unstash({...})
       local foo = _r225.foo
       return(foo)
-    end)(stash33({foo = 42}))))
+    end)(stash33({["foo"] = 42}))))
   else
     passed = passed + 1
   end
@@ -5130,11 +5130,11 @@ add(tests, {"parameters", function ()
   end
   local _x1055 = {}
   _x1055.foo = 42
-  if not equal63({10, 20, 42}, _f3(10, _x1055, stash33({bar = 20}))) then
+  if not equal63({10, 20, 42}, _f3(10, _x1055, stash33({["bar"] = 20}))) then
     failed = failed + 1
     local _x1057 = {}
     _x1057.foo = 42
-    return("failed: expected " .. str({10, 20, 42}) .. ", was " .. str(_f3(10, _x1057, stash33({bar = 20}))))
+    return("failed: expected " .. str({10, 20, 42}) .. ", was " .. str(_f3(10, _x1057, stash33({["bar"] = 20}))))
   else
     passed = passed + 1
   end
@@ -5162,13 +5162,13 @@ add(tests, {"parameters", function ()
     local _r232 = unstash({...})
     local b = _r232.b
     return((a or 0) + b)
-  end)(stash33({b = 1}))) then
+  end)(stash33({["b"] = 1}))) then
     failed = failed + 1
     return("failed: expected " .. str(1) .. ", was " .. str((function (a, ...)
       local _r233 = unstash({...})
       local b = _r233.b
       return((a or 0) + b)
-    end)(stash33({b = 1}))))
+    end)(stash33({["b"] = 1}))))
   else
     passed = passed + 1
   end
@@ -5203,7 +5203,7 @@ add(tests, {"parameters", function ()
     add(l, {a, b, c})
     return(c)
   end
-  local x = f(stash33({a = g(f(stash33({a = 10})), f(stash33({a = 20})), stash33({c = f(stash33({a = 42}))}))}))
+  local x = f(stash33({["a"] = g(f(stash33({["a"] = 10})), f(stash33({["a"] = 20})), stash33({["c"] = f(stash33({["a"] = 42}))}))}))
   if not equal63(42, x) then
     failed = failed + 1
     return("failed: expected " .. str(42) .. ", was " .. str(x))

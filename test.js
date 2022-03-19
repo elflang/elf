@@ -4,7 +4,7 @@ var compiler = require("compiler");
 var passed = 0;
 var failed = 0;
 var tests = [];
-setenv("test", stash33({macro: function (x, msg) {
+setenv("test", stash33({["macro"]: function (x, msg) {
   return(["if", ["not", x], ["do", ["=", "failed", ["+", "failed", 1]], ["return", msg]], ["++", "passed"]]);
 }}));
 var equal63 = function (a, b) {
@@ -14,10 +14,10 @@ var equal63 = function (a, b) {
     return(str(a) === str(b));
   }
 };
-setenv("eq", stash33({macro: function (a, b) {
+setenv("eq", stash33({["macro"]: function (a, b) {
   return(["test", ["equal?", a, b], ["cat", "\"failed: expected \"", ["str", a], "\", was \"", ["str", b]]]);
 }}));
-setenv("deftest", stash33({macro: function (name) {
+setenv("deftest", stash33({["macro"]: function (name) {
   var _r6 = unstash(Array.prototype.slice.call(arguments, 1));
   var body = cut(_r6, 0);
   return(["add", "tests", ["list", ["quote", name], ["%fn", join(["do"], body)]]]);
@@ -1236,7 +1236,7 @@ add(tests, ["quasiquote", function () {
   }
   var _a1 = 17;
   var b = [1, 2];
-  var _c = {a: 10};
+  var _c = {["a"]: 10};
   var _x319 = [];
   _x319.a = 10;
   var d = _x319;
@@ -1330,23 +1330,23 @@ add(tests, ["quasiquote", function () {
   } else {
     passed = passed + 1;
   }
-  if (! equal63(true, {foo: true}.foo)) {
+  if (! equal63(true, {["foo"]: true}.foo)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str({foo: true}.foo));
+    return("failed: expected " + str(true) + ", was " + str({["foo"]: true}.foo));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(17, {bar: 17}.bar)) {
+  if (! equal63(17, {["bar"]: 17}.bar)) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str({bar: 17}.bar));
+    return("failed: expected " + str(17) + ", was " + str({["bar"]: 17}.bar));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(17, {baz: function () {
+  if (! equal63(17, {["baz"]: function () {
     return(17);
   }}.baz())) {
     failed = failed + 1;
-    return("failed: expected " + str(17) + ", was " + str({baz: function () {
+    return("failed: expected " + str(17) + ", was " + str({["baz"]: function () {
       return(17);
     }}.baz()));
   } else {
@@ -1470,7 +1470,7 @@ add(tests, ["calls", function () {
     return(42);
   };
   var l = [f];
-  var o = {f: f};
+  var o = {["f"]: f};
   if (! equal63(42, f())) {
     failed = failed + 1;
     return("failed: expected " + str(42) + ", was " + str(f()));
@@ -1513,7 +1513,7 @@ add(tests, ["calls", function () {
 }]);
 add(tests, ["id", function () {
   var a = 10;
-  var b = {x: 20};
+  var b = {["x"]: 20};
   var f = function () {
     return(30);
   };
@@ -2369,15 +2369,15 @@ add(tests, ["for", function () {
   }
 }]);
 add(tests, ["table", function () {
-  if (! equal63(10, {a: 10}.a)) {
+  if (! equal63(10, {["a"]: 10}.a)) {
     failed = failed + 1;
-    return("failed: expected " + str(10) + ", was " + str({a: 10}.a));
+    return("failed: expected " + str(10) + ", was " + str({["a"]: 10}.a));
   } else {
     passed = passed + 1;
   }
-  if (! equal63(true, {a: true}.a)) {
+  if (! equal63(true, {["a"]: true}.a)) {
     failed = failed + 1;
-    return("failed: expected " + str(true) + ", was " + str({a: true}.a));
+    return("failed: expected " + str(true) + ", was " + str({["a"]: true}.a));
   } else {
     passed = passed + 1;
     return(passed);
@@ -2412,9 +2412,9 @@ add(tests, ["empty", function () {
   } else {
     passed = passed + 1;
   }
-  if (! equal63(false, empty63({a: true}))) {
+  if (! equal63(false, empty63({["a"]: true}))) {
     failed = failed + 1;
-    return("failed: expected " + str(false) + ", was " + str(empty63({a: true})));
+    return("failed: expected " + str(false) + ", was " + str(empty63({["a"]: true})));
   } else {
     passed = passed + 1;
   }
@@ -3359,7 +3359,7 @@ add(tests, ["destructuring", function () {
   } else {
     passed = passed + 1;
   }
-  var _id17 = {foo: 99};
+  var _id17 = {["foo"]: 99};
   var foo = _id17.foo;
   if (! equal63(99, foo)) {
     failed = failed + 1;
@@ -3377,7 +3377,7 @@ add(tests, ["destructuring", function () {
   } else {
     passed = passed + 1;
   }
-  var _id19 = {foo: 99};
+  var _id19 = {["foo"]: 99};
   var a = _id19.foo;
   if (! equal63(99, a)) {
     failed = failed + 1;
@@ -3385,7 +3385,7 @@ add(tests, ["destructuring", function () {
   } else {
     passed = passed + 1;
   }
-  var _id20 = {foo: [98, 99]};
+  var _id20 = {["foo"]: [98, 99]};
   var _id21 = _id20.foo;
   var a = _id21[0];
   var b = _id21[1];
@@ -3403,7 +3403,7 @@ add(tests, ["destructuring", function () {
   }
   var _x640 = [99];
   _x640.baz = true;
-  var _id22 = {foo: 42, bar: _x640};
+  var _id22 = {["foo"]: 42, ["bar"]: _x640};
   var foo = _id22.foo;
   var _id23 = _id22.bar;
   var baz = _id23.baz;
@@ -3567,7 +3567,7 @@ add(tests, ["w/sym", function () {
   }
 }]);
 add(tests, ["defsym", function () {
-  setenv("zzz", stash33({symbol: 42}));
+  setenv("zzz", stash33({["symbol"]: 42}));
   if (! equal63(42, 42)) {
     failed = failed + 1;
     return("failed: expected " + str(42) + ", was " + str(42));
@@ -3928,11 +3928,11 @@ add(tests, ["join", function () {
   }
   var _x703 = ["a"];
   _x703.b = true;
-  if (! equal63(_x703, join(["a"], {b: true}))) {
+  if (! equal63(_x703, join(["a"], {["b"]: true}))) {
     failed = failed + 1;
     var _x705 = ["a"];
     _x705.b = true;
-    return("failed: expected " + str(_x705) + ", was " + str(join(["a"], {b: true})));
+    return("failed: expected " + str(_x705) + ", was " + str(join(["a"], {["b"]: true})));
   } else {
     passed = passed + 1;
   }
@@ -3954,13 +3954,13 @@ add(tests, ["join", function () {
   _x713.b = 10;
   var _x714 = ["a"];
   _x714.b = true;
-  if (! equal63(_x713, join(_x714, {b: 10}))) {
+  if (! equal63(_x713, join(_x714, {["b"]: 10}))) {
     failed = failed + 1;
     var _x715 = ["a"];
     _x715.b = 10;
     var _x716 = ["a"];
     _x716.b = true;
-    return("failed: expected " + str(_x715) + ", was " + str(join(_x716, {b: 10})));
+    return("failed: expected " + str(_x715) + ", was " + str(join(_x716, {["b"]: 10})));
   } else {
     passed = passed + 1;
   }
@@ -3968,13 +3968,13 @@ add(tests, ["join", function () {
   _x717.b = 10;
   var _x718 = [];
   _x718.b = 10;
-  if (! equal63(_x717, join({b: true}, _x718))) {
+  if (! equal63(_x717, join({["b"]: true}, _x718))) {
     failed = failed + 1;
     var _x719 = [];
     _x719.b = 10;
     var _x720 = [];
     _x720.b = 10;
-    return("failed: expected " + str(_x719) + ", was " + str(join({b: true}, _x720)));
+    return("failed: expected " + str(_x719) + ", was " + str(join({["b"]: true}, _x720)));
   } else {
     passed = passed + 1;
   }
@@ -4985,13 +4985,13 @@ add(tests, ["parameters", function () {
     var _r208 = unstash(Array.prototype.slice.call(arguments, 0));
     var foo = _r208.foo;
     return(foo);
-  })(stash33({foo: 42})))) {
+  })(stash33({["foo"]: 42})))) {
     failed = failed + 1;
     return("failed: expected " + str(42) + ", was " + str((function () {
       var _r209 = unstash(Array.prototype.slice.call(arguments, 0));
       var foo = _r209.foo;
       return(foo);
-    })(stash33({foo: 42}))));
+    })(stash33({["foo"]: 42}))));
   } else {
     passed = passed + 1;
   }
@@ -5037,11 +5037,11 @@ add(tests, ["parameters", function () {
   };
   var _x1005 = [];
   _x1005.foo = 42;
-  if (! equal63([10, 20, 42], _f3(10, _x1005, stash33({bar: 20})))) {
+  if (! equal63([10, 20, 42], _f3(10, _x1005, stash33({["bar"]: 20})))) {
     failed = failed + 1;
     var _x1007 = [];
     _x1007.foo = 42;
-    return("failed: expected " + str([10, 20, 42]) + ", was " + str(_f3(10, _x1007, stash33({bar: 20}))));
+    return("failed: expected " + str([10, 20, 42]) + ", was " + str(_f3(10, _x1007, stash33({["bar"]: 20}))));
   } else {
     passed = passed + 1;
   }
@@ -5069,13 +5069,13 @@ add(tests, ["parameters", function () {
     var _r216 = unstash(Array.prototype.slice.call(arguments, 1));
     var b = _r216.b;
     return((a || 0) + b);
-  })(stash33({b: 1})))) {
+  })(stash33({["b"]: 1})))) {
     failed = failed + 1;
     return("failed: expected " + str(1) + ", was " + str((function (a) {
       var _r217 = unstash(Array.prototype.slice.call(arguments, 1));
       var b = _r217.b;
       return((a || 0) + b);
-    })(stash33({b: 1}))));
+    })(stash33({["b"]: 1}))));
   } else {
     passed = passed + 1;
   }
@@ -5110,7 +5110,7 @@ add(tests, ["parameters", function () {
     add(l, [a, b, c]);
     return(c);
   };
-  var x = f(stash33({a: g(f(stash33({a: 10})), f(stash33({a: 20})), stash33({c: f(stash33({a: 42}))}))}));
+  var x = f(stash33({["a"]: g(f(stash33({["a"]: 10})), f(stash33({["a"]: 20})), stash33({["c"]: f(stash33({["a"]: 42}))}))}));
   if (! equal63(42, x)) {
     failed = failed + 1;
     return("failed: expected " + str(42) + ", was " + str(x));

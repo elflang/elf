@@ -1,14 +1,14 @@
-setenv("defreader", stash33({macro: function (_x6) {
+setenv("defreader", stash33({["macro"]: function (_x6) {
   var char = _x6[0];
   var s = _x6[1];
   var _r1 = unstash(Array.prototype.slice.call(arguments, 1));
   var body = cut(_r1, 0);
   return(["=", ["get", "read-table", char], join(["fn", [s]], body)]);
 }}));
-var delimiters = {"[": true, ")": true, "}": true, ";": true, "(": true, "\n": true, "\r": true, "{": true, "]": true};
-var whitespace = {"\t": true, "\r": true, " ": true, "\n": true};
+var delimiters = {["["]: true, [")"]: true, ["}"]: true, [";"]: true, ["("]: true, ["\n"]: true, ["\r"]: true, ["{"]: true, ["]"]: true};
+var whitespace = {["\t"]: true, ["\r"]: true, [" "]: true, ["\n"]: true};
 var stream = function (str, more) {
-  return({len: str.length || 0, pos: 0, more: more, string: str});
+  return({["len"]: str.length || 0, ["pos"]: 0, ["more"]: more, ["string"]: str});
 };
 var peek_char = function (s) {
   var _len = s.len;
@@ -283,7 +283,7 @@ ontree = function (f, l) {
           _e3 = _i;
         }
         var __i = _e3;
-        var _y = ontree(f, x, stash33({skip: skip}));
+        var _y = ontree(f, x, stash33({["skip"]: skip}));
         if (_y) {
           return(_y);
         }
@@ -294,7 +294,7 @@ ontree = function (f, l) {
 hd_is63 = function (l, val) {
   return(typeof(l) === "object" && l[0] === val);
 };
-setenv("%fn", stash33({macro: function (body) {
+setenv("%fn", stash33({["macro"]: function (body) {
   var n = -1;
   var l = [];
   var any63 = undefined;
@@ -310,7 +310,7 @@ setenv("%fn", stash33({macro: function (body) {
       }
       return(undefined);
     }
-  }, body, stash33({skip: function (_) {
+  }, body, stash33({["skip"]: function (_) {
     return(hd_is63(_, "%fn"));
   }}));
   if (any63 && (l.length || 0) === 0) {

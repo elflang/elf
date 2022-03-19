@@ -1,6 +1,6 @@
 if setfenv then
   _G._require = require
-  setfenv(1, setmetatable({}, {__newindex = _G, __index = _G}))
+  setfenv(1, setmetatable({}, {["__newindex"] = _G, ["__index"] = _G}))
   luvit63 = not( require == _G._require)
   require = _G._require
 end
@@ -112,7 +112,7 @@ function compile_string(s)
   compiler.reset()
   local body = reader["read-all"](skip_shebang(s))
   local form = compiler.expand(join({"do"}, body))
-  local _do = compiler.compile(form, stash33({stmt = true}))
+  local _do = compiler.compile(form, stash33({["stmt"] = true}))
   compiler.reset()
   return(_do)
 end

@@ -260,10 +260,7 @@
         t)))
 
 (def key (k)
-  (let i (inner k)
-    (if (valid-id? i) i
-        js? k
-      (cat "[" k "]"))))
+  (cat "[" (compile k) "]"))
 
 (def mapo (f l)
   (with o ()
@@ -697,8 +694,6 @@
     (each (k v) (pair forms)
       (when (num? k)
         (let ((k v) v)
-          (unless (str? k)
-            (error (cat "Illegal key: " (str k))))
           (cat! s c (key k) sep (compile v))
           (= c ", "))))
     (cat s "}")))

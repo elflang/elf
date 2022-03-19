@@ -88,7 +88,7 @@ compile_string = function (s) {
   compiler.reset();
   var body = reader["read-all"](skip_shebang(s));
   var form = compiler.expand(join(["do"], body));
-  var _do = compiler.compile(form, stash33({stmt: true}));
+  var _do = compiler.compile(form, stash33({["stmt"]: true}));
   compiler.reset();
   return(_do);
 };

@@ -1,4 +1,4 @@
-setenv("defreader", stash33({macro = function (_x6, ...)
+setenv("defreader", stash33({["macro"] = function (_x6, ...)
   local char = _x6[1]
   local s = _x6[2]
   local _r1 = unstash({...})
@@ -8,7 +8,7 @@ end}))
 local delimiters = {["["] = true, [")"] = true, ["}"] = true, [";"] = true, ["("] = true, ["\n"] = true, ["\r"] = true, ["{"] = true, ["]"] = true}
 local whitespace = {["\t"] = true, ["\r"] = true, [" "] = true, ["\n"] = true}
 local function stream(str, more)
-  return({len = #(str), pos = 0, more = more, string = str})
+  return({["len"] = #(str), ["pos"] = 0, ["more"] = more, ["string"] = str})
 end
 local function peek_char(s)
   local _len = s.len
@@ -276,7 +276,7 @@ function ontree(f, l, ...)
       local _i = nil
       for _i in next, _l do
         local x = _l[_i]
-        local _y = ontree(f, x, stash33({skip = skip}))
+        local _y = ontree(f, x, stash33({["skip"] = skip}))
         if _y then
           return(_y)
         end
@@ -287,7 +287,7 @@ end
 function hd_is63(l, val)
   return(type(l) == "table" and l[1] == val)
 end
-setenv("%fn", stash33({macro = function (body)
+setenv("%fn", stash33({["macro"] = function (body)
   local n = -1
   local l = {}
   local any63 = nil
@@ -303,7 +303,7 @@ setenv("%fn", stash33({macro = function (body)
       end
       return(nil)
     end
-  end, body, stash33({skip = function (_)
+  end, body, stash33({["skip"] = function (_)
     return(hd_is63(_, "%fn"))
   end}))
   if any63 and #(l) == 0 then
@@ -402,4 +402,4 @@ read_table["#"] = function (s)
   read_char(s)
   return(wrap(s, "len"))
 end
-return({["read-string"] = read_string, ["read-all"] = read_all, read = read, ["read-table"] = read_table, stream = stream})
+return({["read-string"] = read_string, ["read-all"] = read_all, ["read"] = read, ["read-table"] = read_table, ["stream"] = stream})

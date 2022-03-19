@@ -619,15 +619,19 @@ local function setup()
     local compose = _id33[1]
     local fns = cut(_id33, 1)
     local body = cut(_x281, 1)
+    local _e9
     if #(fns) == 0 then
-      return macroexpand(join({"do"}, body))
+      _e9 = join({"do"}, body)
     else
+      local _e10
       if #(fns) == 1 then
-        return macroexpand(join(fns, body))
+        _e10 = join(fns, body)
       else
-        return macroexpand({join({compose}, almost(fns)), join({last(fns)}, body)})
+        _e10 = {join({compose}, almost(fns)), join({last(fns)}, body)}
       end
+      _e9 = _e10
     end
+    return macroexpand(_e9)
   end
   setenv("compose", stash33({["transformer"] = compose__transformer}))
   local function complement__transformer(_x286)
@@ -635,11 +639,13 @@ local function setup()
     local complement = _id35[1]
     local form = _id35[2]
     local body = cut(_x286, 1)
+    local _e11
     if hd63(form, "complement") then
-      return macroexpand(join({form[2]}, body))
+      _e11 = join({form[2]}, body)
     else
-      return macroexpand({"not", join({form}, body)})
+      _e11 = {"not", join({form}, body)}
     end
+    return macroexpand(_e11)
   end
   setenv("complement", stash33({["transformer"] = complement__transformer}))
   local function expansion__transformer(_x290)
@@ -671,25 +677,25 @@ function obj63(x)
 end
 function hd63(l, x)
   local _id41 = obj63(l)
-  local _e11
+  local _e14
   if _id41 then
-    local _e12
+    local _e15
     if type(x) == "function" then
-      _e12 = x(l[1])
+      _e15 = x(l[1])
     else
-      local _e13
+      local _e16
       if x == nil then
-        _e13 = l[1]
+        _e16 = l[1]
       else
-        _e13 = l[1] == x
+        _e16 = l[1] == x
       end
-      _e12 = _e13
+      _e15 = _e16
     end
-    _e11 = _e12
+    _e14 = _e15
   else
-    _e11 = _id41
+    _e14 = _id41
   end
-  return _e11
+  return _e14
 end
 function complement(f)
   return function (...)
@@ -772,11 +778,11 @@ function char(s, n)
   return clip(s, n, n + 1)
 end
 function code(s, n)
-  local _e14
+  local _e17
   if n then
-    _e14 = n + 1
+    _e17 = n + 1
   end
-  return string.byte(s, _e14)
+  return string.byte(s, _e17)
 end
 function chr(c)
   return string.char(c)
@@ -965,11 +971,11 @@ function unstash(args)
   return args
 end
 function search(s, pattern, start)
-  local _e15
+  local _e18
   if start then
-    _e15 = start + 1
+    _e18 = start + 1
   end
-  local start = _e15
+  local start = _e18
   local i = string.find(s, pattern, start, true)
   return i and i - 1
 end
@@ -1066,25 +1072,25 @@ function escape(s)
   while i < #(s) do
     local c = char(s, i)
     local _e2 = c
-    local _e16
+    local _e19
     if "\n" == _e2 then
-      _e16 = "\\n"
+      _e19 = "\\n"
     else
-      local _e17
+      local _e20
       if "\"" == _e2 then
-        _e17 = "\\\""
+        _e20 = "\\\""
       else
-        local _e18
+        local _e21
         if "\\" == _e2 then
-          _e18 = "\\\\"
+          _e21 = "\\\\"
         else
-          _e18 = c
+          _e21 = c
         end
-        _e17 = _e18
+        _e20 = _e21
       end
-      _e16 = _e17
+      _e19 = _e20
     end
-    s1 = s1 .. _e16
+    s1 = s1 .. _e19
     i = i + 1
   end
   return s1 .. "\""
@@ -1178,13 +1184,13 @@ function setenv(k, ...)
   local _r125 = unstash({...})
   local _keys = cut(_r125, 0)
   if type(k) == "string" then
-    local _e19
+    local _e22
     if _keys.toplevel then
-      _e19 = environment42[1]
+      _e22 = environment42[1]
     else
-      _e19 = last(environment42)
+      _e22 = last(environment42)
     end
-    local frame = _e19
+    local frame = _e22
     local entry = frame[k] or {}
     local _l14 = _keys
     local _k = nil

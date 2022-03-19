@@ -309,14 +309,16 @@
   (mac fn? (x) `(isa ,x 'function))
 
   (deftransformer compose ((compose rest: fns) rest: body)
-    (if (none? fns) (macroexpand `(do ,@body))
-        (one? fns) (macroexpand `(,@fns ,@body))
-      (macroexpand `((,compose ,@(almost fns)) (,(last fns) ,@body)))))
+    (macroexpand
+      (if (none? fns) `(do ,@body)
+          (one? fns) `(,@fns ,@body)
+        `((,compose ,@(almost fns)) (,(last fns) ,@body)))))
 
   (deftransformer complement ((complement form) rest: body)
-    (if (hd? form 'complement)
-        (macroexpand `(,(at form 1) ,@body))
-      (macroexpand `(not (,form ,@body)))))
+    (macroexpand
+      (if (hd? form 'complement)
+          `(,(at form 1) ,@body)
+        `(not (,form ,@body)))))
 
   (deftransformer expansion ((expansion) form)
     form)
